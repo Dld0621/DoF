@@ -1,0 +1,84 @@
+﻿深度下篇：实验、局限与复现路线
+
+What does seventy-five percent actually mean? / 75%究竟说明了什么？
+Seventy-five point two percent sounds impressive, but first identify exactly what was tested. This averages seven complete teleoperation tasks using the five-finger SharpaWave hand. A human still supplies the intended motion throughout these experiments. Each task has fifteen trials, so one success changes its score by almost seven percentage points. These results demonstrate useful control under this protocol, rather than general autonomous manipulation.
+75.2%很亮眼，但先确认测的是什么。这是五指SharpaWave完成七项遥操作任务的平均值。这些实验始终由人提供运动意图。每项15次试验，一次成功就改变近7个百分点。这些结果说明该协议下控制有效，不能推出通用自主操作。
+Source: DoF explanatory schematic · Table 1; SharpaWave seven-task teleoperation
+
+Read success and progress separately / 成功率和任务进度要分开读
+Consider a hammer trial that completes five stages, then fails before the final two. Its success contribution is zero, because the entire sequence was not completed. Its task progress contribution is five sevenths, because earlier stages still count. Average these quantities across all fifteen trials to obtain the reported metrics. Progress rewards partial completion; it does not measure speed, throughput, or precise tracking error.
+假设一次锤子试验完成五步，最后两步失败。它对成功率的贡献为零，因为流程没有全部完成。任务进度贡献是七分之五，已完成步骤仍计分。将这两个量分别对15次试验取平均，就得到表中指标。进度计入部分完成，不代表速度、吞吐量或精确跟踪误差。
+Source: DoF explanatory schematic · Section 4.2; illustrative 5-of-7 trial
+
+The test includes returning the tool / 完成使用，还要把工具放回
+The three reorientation tasks require picking up, rotating, and placing an object back down. The tool tasks add interaction with the environment and further changes of grip. Hammering, for example, continues through pulling nails and returning the hammer. A convincing middle step therefore cannot stand in for complete task success. Also notice the bandage tape: these experimental objects receive added surface friction.
+三项重定向任务都要求拿起、转向，再放回物体。工具任务还加入环境交互，以及后续的换握。例如锤子任务还要拔钉，并把锤子放回。因此，中途某一步很漂亮，不等于整个任务成功。还要注意绷带胶带：实验对物体表面摩擦做了增强。
+Source: TeleDexter · Fig.3 · Appendix B.1 · arXiv:2607.11481v1
+
+A survival curve reveals where trials fail / 阶段存活曲线，能定位失败环节
+Figure six follows how many of the original fifteen trials reach each successive stage. Read its horizontal axis as task stages, not elapsed time. For bulb replacement, all fifteen reach the fourth stage, while thirteen finish the complete sequence. The drop appears during the final return phase, after the bulb has been unscrewed. That localizes a bottleneck more clearly than a single headline percentage.
+Figure 6记录最初15次试验中，有多少到达后续各阶段。横轴是任务阶段，不是经过的时间。灯泡任务15次都到达第四步，最后13次完成全流程。下降出现在旋出灯泡之后的最后放回流程中。这比单独一个总成功率，更能定位薄弱环节。
+Source: DoF explanatory redraw · Figure 6; DoF redraw from reported stage counts
+
+A comparison depends on its implementation / 比较结论，也依赖基线怎样实现
+Before ranking methods, inspect which tasks and implementations actually enter the comparison. SimToolReal is evaluated on three tool tasks, so its average covers a different task set. The authors also reimplement DexGen and replace one rollout component with their own controller. These choices matter when interpreting the size of the reported advantage. The table supports a comparison under this setup, not a universal ranking across robotics.
+排名之前，先看比较实际包含了哪些任务和实现。SimToolReal只测三项工具任务，其平均值覆盖范围不同。作者还重新实现DexGen，并用自己的控制器替换一处轨迹生成模块。理解性能优势有多大时，这些选择都很重要。表格支持的是此设置下的比较，不能变成整个机器人的通用排名。
+Source: TeleDexter · Table 1 & Appendix D · arXiv:2607.11481v1
+
+Cross-hand reuse is not shared policy weights / 跨手复用数据，不等于共用策略权重
+The second robot hand provides a useful test of the overall pipeline across different morphologies. LeapHand has four fingers, compared with five on SharpaWave. The same human references are reused, but retargeting and controller training remain hand specific. LeapHand completes sixty percent of cylinder trials and seventy-three point three percent of cuboid trials. These are two evaluated tasks, not the complete seven-task benchmark transferred unchanged.
+第二种机器人手检验了这套流程能否适配不同形态。LeapHand是四指，而SharpaWave是五指。两者复用人类参考动作，但重定向和控制器训练仍分别进行。LeapHand圆柱任务成功率60%，长方体为73.3%。这里只评测了两项任务，并非原封不动迁移整套七任务基准。
+Source: Author project demonstration · original encoded speed retained · bigai-dex.github.io
+
+What any-to-any actually tests / Any-to-any测的究竟是哪种转换
+The any-to-any experiment asks whether a grasp can transition between targets sampled from recorded reference frames. Success requires object position within two centimeters and orientation within twenty degrees. Each active target receives up to twenty seconds before the trial terminates. Cylinder trials average forty-one point one consecutive targets; cuboid trials average twelve point one. That tests new transitions within reference coverage, not arbitrary unseen objects or poses.
+Any-to-any检验抓握能否在已记录参考帧采样的目标之间转换。成功要求物体位置误差小于2厘米，朝向误差小于20度。当前目标最多尝试20秒，超时就结束试验。圆柱平均连续完成41.1个目标，长方体为12.1个。它检验参考覆盖范围内的新转换，不代表任意未知物体或姿态。
+Source: TeleDexter · Table 6 · Appendix A.1 · arXiv:2607.11481v1
+
+Sparse targets change the control problem / 稀疏目标，改变了控制问题本身
+Table four compares sparse-goal training with dense tracking, then evaluates both controllers in two different ways. In dense evaluation, a new reference arrives every control step. In sparse evaluation, the next target arrives only after the current target is reached. For the hammer, sparse training reaches one hundred eighty-six point six goals, versus two point seven. Compare matching columns: episode length and completed goals are different quantities.
+Table 4比较稀疏目标与密集跟踪训练，再用两种方式评估。密集评估在每个控制步更新参考。稀疏评估只有达到当前目标，才给出下一个目标。锤子稀疏评估中，稀疏训练完成186.6个目标，对照为2.7个。应在同一列比较：回合长度和完成目标数不是同一量。
+Source: TeleDexter · Table 4 · simulation ablation · arXiv:2607.11481v1
+
+Action masking tests robustness to imperfect execution / 动作屏蔽，检验执行不理想时的稳健性
+Action masking occasionally holds selected joint commands at their previous values during training. It encourages the controller to cope when the commanded motion is not fully executed. For the screwdriver, removing this mechanism reduces complete success from seventy-three point three percent to zero. Hammer and cuboid performance also decline in the reported ablation. This supports its benefit here, without isolating which physical actuator defect it compensates for.
+动作屏蔽会在训练时，偶尔让部分关节命令保持上一值。它鼓励控制器适应指令运动未完全执行的情况。螺丝刀任务去掉该机制，完整成功率从73.3%降到零。论文的消融中，锤子和长方体性能也下降。这支持它在此处有效，但没有单独确定补偿了哪种执行器缺陷。
+Source: DoF explanatory schematic · Table 5; real-world action-masking ablation
+
+Training curves need an uncertainty check / 看训练曲线，也要看不确定性
+Figure five separates the full training recipe from versions without the curriculum or without SAPG. Follow the curves across environment steps, rather than comparing a single attractive endpoint. The full recipe achieves higher reward and more consecutive successes in this hammer experiment. However, the plot does not show error bands or variation across independent training seeds. Treat the ordering as evidence from the reported runs, not a universal guarantee.
+Figure 5对比完整训练方案、去掉课程，以及去掉SAPG。应沿环境步数观察曲线，而非只挑一个漂亮终点。在这项锤子实验中，完整方案获得更高奖励和更多连续成功。但图中没有误差带，也没有独立训练种子间的波动。因此，排序是已报告运行的证据，不是普遍保证。
+Source: TeleDexter · Fig.5 · Appendix A.2 · arXiv:2607.11481v1
+
+Autonomy is a separately trained experiment / 自主执行，是另行训练的一套实验
+The autonomous results come from a separate learning stage using demonstrations collected through teleoperation. Each task receives fifty expert robot demonstrations, followed by fifteen evaluation trials. A diffusion policy uses third-person and wrist RGB observations with frozen visual encoders. Two observation frames condition a prediction of sixteen actions. This is task-specific imitation learning, not the original teleoperation controller suddenly operating without a person.
+自主结果来自另一个学习阶段，数据通过遥操作收集。每项任务收集50条专家机器人示范，再做15次评测。扩散策略使用第三视角和腕部RGB观测，以及冻结的视觉编码器。两帧观测用于预测16个动作。这是针对任务的模仿学习，并非原遥操作控制器直接去掉人。
+Source: Author project demonstration · original encoded speed retained · bigai-dex.github.io
+
+Read every denominator in the autonomy table / 自主结果表，要逐个读清分母
+In the autonomy table, each stage reports survivors relative to the previous stage. For bulb installation, fifteen attempts shrink to thirteen, then twelve, then eight, and finally seven. Seven out of eight at the last stage therefore does not mean eighty-seven percent overall success. Overall success remains seven out of fifteen, or forty-six point seven percent. The largest intermediate loss occurs at alignment, giving us a concrete target for improvement.
+自主结果表中，每一阶段的分母是上一阶段存活数。灯泡安装从15次，依次剩下13、12、8，最后7次。最后一步的八分之七，并不代表整体成功率87%。整体仍是十五分之七，即46.7%。中间损失最多的是对准阶段，这给出了具体改进方向。
+Source: DoF explanatory redraw · Table 3; conditional vs full-task success
+
+Similar task names can hide different protocols / 相近的任务名，可能对应不同难度
+Do not compare the autonomous hammer score directly against the complete teleoperation hammer score. The autonomous version uses larger nails and foam, and omits pulling nails and returning the tool. Bulb installation omits unscrewing and the final return sequence. Brushing also becomes a shorter forward-sweeping task. These experiments establish a demonstration-learning pathway, while leaving harder autonomous sequences for further validation.
+不能直接拿自主锤子分数，对比完整遥操作锤子分数。自主版使用更大钉子和泡沫，并省去拔钉、放回工具。灯泡安装省去了旋出和最后放回流程。刷扫也变为较短的向前扫任务。这些实验建立了示范学习路径，更难的自主长流程仍待验证。
+Source: DoF explanatory schematic · Table 3; Appendix B.2; task protocols differ
+
+Three failure modes suggest three different repairs / 三种失败，指向不同改进方向
+The failure examples separate external disturbances, jammed contact transitions, and tracking that stalls without dropping the object. A hammer impact can push the hand-object state outside familiar training conditions. A finger that fails to lift can obstruct the next grasp. Missing tactile feedback may also leave sliding and pressing difficult to distinguish. These are representative mechanisms and author interpretations, not measured failure frequencies or proof that touch alone solves them.
+失败案例分为外部扰动、换接触卡住，以及不掉物却停滞。锤击可能把手和物体推离熟悉的训练状态。未成功抬离的手指，可能阻碍下一次换握。缺少触觉反馈，也可能难以区分滑动和按压。这是代表性机制和作者解释，并非频率统计或触觉单独解决问题的证明。
+Source: TeleDexter · Fig.7 · Appendix A.4 · arXiv:2607.11481v1
+
+The reproducible unit is an object-specific controller / 复现单位，是针对物体的控制器
+For each object, the dataset contains one hundred fifty twenty-second trajectories, or fifty minutes of human motion. Each controller then requires its own training, reported at roughly one day on four RTX fifty-ninety GPUs. Deployment retains optical markers, object tracking, calibration, and the human operator. These requirements are part of the system, rather than incidental laboratory decoration. A new object therefore adds both data collection and policy-training work.
+每个物体有150条、每条20秒的轨迹，合计50分钟人类动作。每个控制器还要分别训练，论文报告约需4张RTX 5090训练一天。部署仍保留光学标记、物体跟踪、标定和操作者。这些要求属于系统本身，不是无关的实验室布置。因此，新物体仍需要增加采集数据和训练策略的工作。
+Source: DoF explanatory schematic · Appendix C.6, C.9; Section 6
+
+A careful reproduction starts with matched evidence / 可靠复现，从对齐证据开始
+Start reproduction with one object and the original stage definitions, then log every trial through completion or failure. Match friction, sensing, target tolerances, and control timing before changing the method. Clarify the appendix discrepancy between thirty-hertz capture and sixty-hertz reference timing. Also request the unspecified tolerance-curriculum schedule before claiming an exact replication. The strongest takeaway is a practical bridge from human targets to contact-rich control, with clearly bounded evidence.
+复现先选一个物体，沿用原阶段定义，逐次记录成功或失败。修改方法之前，先对齐摩擦、感知、目标容差和控制节拍。附录30赫兹采集与60赫兹参考节拍的差异，需要先澄清。宣称精确复现前，还应确认未明确列出的容差课程日程。最有力的结论，是把人类目标接到复杂接触控制上的实用路径。
+Source: DoF explanatory schematic · Appendix B–E; same protocol before new claims
+
+https://arxiv.org/pdf/2607.11481v1
+https://bigai-dex.github.io/blog/teledexter/

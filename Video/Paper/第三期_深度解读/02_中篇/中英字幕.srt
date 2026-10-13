@@ -1,0 +1,349 @@
+﻿1
+00:00:00,850 --> 00:00:06,590
+Part two follows one intention from the tracked hand into the robot: pinch a small object.
+中篇沿着跟踪到的人手信息进入机器人，先看一个简单意图：捏住小物体。
+
+2
+00:00:06,970 --> 00:00:12,910
+The human model has five fingers; Allegro has four, with different joint axes and locations.
+人手模型有五根手指，Allegro只有四根，关节轴和位置也不同。
+
+3
+00:00:13,550 --> 00:00:18,090
+Copying each human joint angle therefore does not preserve where the robot fingertips meet.
+因此，逐个照抄人手关节角，无法保持机器人指尖的会合位置。
+
+4
+00:00:18,750 --> 00:00:23,770
+DexPilot asks robot fingertips to reproduce spatial relationships that matter for grasping.
+DexPilot转而要求机器人指尖复现对抓握重要的空间关系。
+
+5
+00:00:24,290 --> 00:00:28,750
+This changes retargeting from matching anatomy into optimizing useful geometry.
+这样，重定向就从匹配解剖结构，变为优化有用的几何关系。
+
+6
+00:00:29,500 --> 00:00:34,000
+In Figure eight, four arrows connect the palm to four represented fingertips.
+数图8里的箭头：四条从掌心连接到四个参与映射的指尖。
+
+7
+00:00:34,360 --> 00:00:38,180
+Three more run from the index, middle, and ring fingertips toward the thumb.
+另外三条从食指、中指和无名指指尖指向拇指。
+
+8
+00:00:38,400 --> 00:00:42,920
+Three connect pairs among those primary fingers, giving ten illustrated vectors.
+余下三条连接这三根主指之间的两两组合，图中合计十条向量。
+
+9
+00:00:43,340 --> 00:00:46,780
+The human little finger has no matching fingertip in this set.
+图示向量集中，人手小指没有对应的机器人指尖。
+
+10
+00:00:47,100 --> 00:00:53,540
+Palm vectors retain the overall arrangement, while fingertip vectors describe closing gaps and coordinating a grasp.
+掌心向量保留整体布局，指尖间向量描述间隙闭合和抓握协同。
+
+11
+00:00:54,106 --> 00:01:00,326
+Each vector points between two coordinate origins and is expressed in the coordinate frame where it starts.
+每条向量连接两个坐标原点，并用起点所在坐标系表示。
+
+12
+00:01:00,766 --> 00:01:07,086
+Its length measures separation, while its components also depend on the orientation of that local frame.
+长度表示间距，而向量各分量还取决于局部坐标系的朝向。
+
+13
+00:01:07,646 --> 00:01:13,931
+Matching only distances would discard these directional relationships and allow more geometrically different solutions.
+如果只匹配距离，就会丢掉这些方向关系，允许更多几何形态不同的解。
+
+14
+00:01:13,946 --> 00:01:19,111
+Corresponding human and robot frames must therefore have similar placement and orientation.
+因此，论文要求人手和机器人模型的对应坐标系具有相近的位置与朝向。
+
+15
+00:01:19,126 --> 00:01:24,086
+Frame conventions are part of the method, not decorative axes on the illustration.
+坐标约定是方法的一部分，图里的坐标轴并非装饰。
+
+16
+00:01:24,760 --> 00:01:30,100
+Hold the tracked human joint angles fixed, and search over the Allegro joint angles.
+固定跟踪得到的人手关节角，搜索Allegro的关节角。
+
+17
+00:01:30,400 --> 00:01:36,700
+For every selected vector, compare the robot vector with a human direction multiplied by a chosen target length.
+对每条选定向量，将机器人向量与“人手方向乘以目标长度”比较。
+
+18
+00:01:36,940 --> 00:01:43,660
+Square that three-dimensional error, multiply it by a switching weight, and sum the contributions with a one-half factor.
+把三维误差平方，乘上切换权重，再求和并乘二分之一。
+
+19
+00:01:44,040 --> 00:01:49,465
+A separate penalty on the robot joint angles favors a more open hand when other objectives permit it.
+另一项对机器人关节角的惩罚，在其他目标允许时偏向更张开的手型。
+
+20
+00:01:49,480 --> 00:01:55,860
+There is no object mesh, contact force target, or human-to-robot joint-angle difference in this objective.
+这个目标里没有物体网格、接触力目标，也没有人手机器人关节角之差。
+
+21
+00:01:56,478 --> 00:02:01,918
+First consider a human fingertip separation larger than the threshold called epsilon.
+先看人手指尖间距大于阈值epsilon的情况。
+
+22
+00:02:02,298 --> 00:02:07,458
+The weight is one, and the target length is the measured length multiplied by one point six.
+此时权重为1，目标长度等于测得长度乘以1.6。
+
+23
+00:02:07,918 --> 00:02:13,738
+The normalized human vector supplies the direction, so this branch scales the vector without rotating it.
+归一化的人手向量提供方向，因此这一分支只缩放向量，不改变方向。
+
+24
+00:02:13,938 --> 00:02:18,558
+This accommodates different hand geometry while retaining an interpretable mapping.
+这样可以适应手部几何差异，同时保持与操作者动作之间可理解的对应。
+
+25
+00:02:18,878 --> 00:02:24,038
+But simply scaling a small tracking gap would preserve a gap precisely when a pinch needs closure.
+但如果把很小的跟踪间隙直接缩放，恰好需要捏合时，间隙仍会存在。
+
+26
+00:02:24,666 --> 00:02:29,986
+The first projected set contains vectors from each primary finger toward the thumb.
+第一类投影向量从各根主指指向拇指。
+
+27
+00:02:30,506 --> 00:02:36,126
+When the applicable separation is at or below epsilon, its weight rises from one to two hundred.
+当对应间距小于等于epsilon时，权重从1提高到200。
+
+28
+00:02:36,346 --> 00:02:41,306
+Its target length becomes one ten-thousandth of a meter, which is one tenth of a millimeter.
+目标长度变为万分之一米，也就是0.1毫米。
+
+29
+00:02:41,686 --> 00:02:47,366
+That is a very small nonzero geometric target, rather than an exact zero-distance constraint.
+这是一个很小但非零的几何目标，并非严格零距离约束。
+
+30
+00:02:47,946 --> 00:02:53,846
+The optimizer prioritizes closing that relationship even if lower-weight vectors cannot match perfectly.
+优化器此时优先闭合这组指尖关系，即使其他低权重向量无法完美匹配。
+
+31
+00:02:54,437 --> 00:03:01,537
+Closing multiple primary fingers toward the same thumb creates another problem: those fingers may crowd each other.
+多根主指同时向拇指闭合，会带来另一个问题：它们可能互相挤在一起。
+
+32
+00:03:02,257 --> 00:03:07,657
+The second set contains vectors between primary fingers when both are being projected with the thumb.
+当两根主指都向拇指投影时，它们之间的向量属于第二类集合。
+
+33
+00:03:08,117 --> 00:03:14,497
+For the projected branch, the specified target separation is three centimeters, with a weight of four hundred.
+在投影分支中，指定目标间距为3厘米，权重为400。
+
+34
+00:03:15,017 --> 00:03:20,822
+These priorities encourage precision grasping while discouraging the primary fingers from collapsing together.
+这些更高优先级促进精细抓握，同时抑制主指相互塌缩到一起。
+
+35
+00:03:20,837 --> 00:03:28,717
+The printed formulation is a weighted geometric penalty, so the three-centimeter target is not a proven hard collision constraint.
+印出的公式是加权几何惩罚，所以3厘米目标并不是已证明的硬碰撞约束。
+
+36
+00:03:29,285 --> 00:03:36,385
+The printed equations switch branches using a distance threshold, together with the primary and secondary set definitions.
+印出的公式结合距离阈值，以及两类集合的定义，切换不同分支。
+
+37
+00:03:37,085 --> 00:03:41,285
+However, this version does not publish a numerical value for epsilon.
+但这一版本没有公开epsilon的具体数值。
+
+38
+00:03:41,705 --> 00:03:47,305
+It also does not specify separate activation and release thresholds or a hysteresis state machine.
+它也没有写出独立的开启、释放阈值，或滞回状态机。
+
+39
+00:03:47,745 --> 00:03:52,630
+The appendix says that the projection threshold can require tuning when grasping small objects.
+附录说明，抓取小物体时可能需要调节投影阈值。
+
+40
+00:03:52,645 --> 00:03:59,265
+Exact reproduction needs those details; importing thresholds from later software would change the evidence.
+因此精确复现仍需这些实现细节；套用后来软件中的常见阈值，会改变证据来源。
+
+41
+00:03:59,892 --> 00:04:05,852
+Imagine pinching one small cube; this is an illustration, not an additional experiment.
+设想操作者引导机器人捏住一个小方块；这段过程是解释性示意，并非新增实验。
+
+42
+00:04:06,552 --> 00:04:13,132
+While the fingers remain separated, the optimizer follows the scaled human vectors and the robot approaches the object.
+手指尚未靠拢时，优化器跟随缩放后的人手向量，机器人接近物体。
+
+43
+00:04:13,592 --> 00:04:20,332
+As the thumb and index relationship enters the projection branch, its desired gap shrinks and its priority increases.
+当拇指与食指关系进入投影分支时，目标间隙缩小，优先级提高。
+
+44
+00:04:20,732 --> 00:04:27,257
+The physical cube obstructs further closure, but the geometric objective alone does not determine the resulting contact force.
+真实方块会阻挡继续闭合，但几何目标本身无法决定最终接触力。
+
+45
+00:04:27,272 --> 00:04:35,632
+When releasing that same cube, projection can delay opening, which explains why a helpful pinch mechanism can also hinder precise placement.
+释放同一个方块时，投影可能拖延张开，这也解释了有利于捏合的机制为何会妨碍精确放置。
+
+46
+00:04:36,240 --> 00:04:43,720
+Different robot joint configurations can produce similar fingertip relationships, leaving redundant solutions.
+不同的机器人关节构型，可能产生相近的指尖关系，因此解存在冗余。
+
+47
+00:04:44,320 --> 00:04:48,925
+DexPilot adds the squared magnitude of the Allegro joint angles, weighted by zero point zero zero two five.
+DexPilot加入Allegro关节角的平方范数，权重为0.0025。
+
+48
+00:04:48,940 --> 00:04:54,060
+Zero angles correspond to the fully open hand in this model.
+在这个模型里，零角度对应完全张开的手。
+
+49
+00:04:54,640 --> 00:05:00,545
+The authors report that this preference helped avoid problematic minima, such as fingers curling into the palm.
+作者报告，这种偏好有助于避开手指卷入掌心等不良局部极小值。
+
+50
+00:05:00,560 --> 00:05:07,880
+This term penalizes distance from zero, not change from the previous frame; temporal smoothing is handled separately.
+这一项惩罚偏离零角度，而不是与上一帧的差值；时间平滑另行处理。
+
+51
+00:05:08,589 --> 00:05:14,069
+The distal joint of each primary robot finger is constrained to equal its medial joint.
+机器人每根主指的远端关节，被约束为等于其中间关节。
+
+52
+00:05:14,449 --> 00:05:18,589
+This reduces redundancy and search space while encouraging humanlike motion.
+这减少了冗余与搜索空间，并用关节耦合形成接近人手的运动。
+
+53
+00:05:19,089 --> 00:05:24,889
+The authors solve the objective with sequential least-squares quadratic programming from the NLopt library.
+作者使用NLopt库中的序列最小二乘二次规划方法求解目标。
+
+54
+00:05:25,429 --> 00:05:29,929
+The first solve starts at zero; later solves start from the previous solution.
+第一次求解从机器人零角度开始，之后每次都从上一帧解开始。
+
+55
+00:05:30,489 --> 00:05:34,749
+Forward kinematics tests how changing candidate robot joints changes the vectors.
+正向运动学提供候选机器人向量，因此每次数值更新都能评估关节变化如何改变几何关系。
+
+56
+00:05:35,418 --> 00:05:42,198
+A first-order low-pass filter is applied after optimization to reduce tracking noise in the retargeted angles.
+优化之后，再用一阶低通滤波器降低重定向角度中的跟踪噪声。
+
+57
+00:05:42,738 --> 00:05:47,178
+It also smooths the abrupt changes introduced when projection switches branches.
+它还会平滑投影分支切换引入的突变。
+
+58
+00:05:47,898 --> 00:05:55,058
+The paper does not report the filter coefficient, so an exact numerical replay requires another implementation detail.
+论文未报告滤波系数，因此精确数值复现还需要这一实现细节。
+
+59
+00:05:55,458 --> 00:06:02,463
+The appendix also reports an attempted neural retargeter whose accuracy was unsatisfactory compared with online optimization.
+附录还报告了神经网络重定向尝试，其精度相对于在线优化并不令人满意。
+
+60
+00:06:02,478 --> 00:06:08,318
+Without quantitative ablations, this is an author observation rather than a universal ranking.
+那里没有提供定量重定向消融，因此这属于作者观察，而非测得的普遍性能排名。
+
+61
+00:06:08,905 --> 00:06:16,445
+Finger retargeting handles the grasp configuration; a separate motion generator handles the robot palm pose.
+手指重定向处理抓握构型，独立的运动生成器处理机器人手掌位姿。
+
+62
+00:06:17,025 --> 00:06:22,445
+Riemannian Motion Policies combine acceleration fields for pose following and collision avoidance.
+黎曼运动策略将位姿跟随与碰撞规避对应的加速度场组合起来。
+
+63
+00:06:23,065 --> 00:06:27,165
+Collision planes help keep the arm and palm away from the table and the operator.
+碰撞平面帮助机械臂和手掌避开桌面与操作者。
+
+64
+00:06:27,685 --> 00:06:35,290
+An initial open-hand calibration aligns camera and robot coordinates, with both palms parallel to the table and fingers forward.
+初始张手标定对齐相机与机器人坐标，两只手掌都平行于桌面、手指朝前。
+
+65
+00:06:35,305 --> 00:06:43,141
+The resulting arm trajectories go to a torque-level impedance controller, which executes the generated motion on the physical arm.
+生成的机械臂轨迹交给力矩级阻抗控制器，在真实机械臂上执行。
+
+66
+00:06:43,591 --> 00:06:48,431
+The paper sends target arm trajectories to the arm controller at two hundred hertz.
+论文以200赫兹向机械臂控制器发送目标轨迹。
+
+67
+00:06:48,571 --> 00:06:53,031
+It sends retargeted Allegro angles to the hand joint controller at thirty hertz.
+以30赫兹向手部关节控制器发送重定向后的Allegro角度。
+
+68
+00:06:53,531 --> 00:06:59,151
+These are command update rates, not a statement that the complete vision-to-motion delay is five milliseconds.
+这些是指令更新频率，并不表示从视觉到运动的完整延迟只有5毫秒。
+
+69
+00:06:59,911 --> 00:07:05,711
+The architecture section reports approximately one second of overall latency across the chained components.
+系统架构部分报告，串联各模块后的总体延迟约为1秒。
+
+70
+00:07:06,211 --> 00:07:14,071
+The pilot must therefore judge and correct a delayed physical interaction, which makes the experimental protocol essential to interpreting the results.
+因此操作者必须判断并修正存在延迟的物理交互，这让实验协议成为理解结果的关键。

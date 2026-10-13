@@ -1,0 +1,714 @@
+﻿1
+00:00:01,000 --> 00:00:06,455
+Two hand trackers report tiny errors. Will they place a robot fingertip equally well?
+两个动捕系统误差都很小，机器人指尖就一样准吗？
+
+2
+00:00:06,480 --> 00:00:10,335
+First, ask what each one measures, and where its reference comes from.
+先问清楚：测的是什么，参考答案又从哪来？
+
+3
+00:00:10,360 --> 00:00:15,535
+Welcome to DoF Infra, episode five: how motion capture gets its ground truth.
+欢迎来到 DoF Infra 第五期：动捕的真值从哪来。
+
+4
+00:00:15,560 --> 00:00:19,480
+We will build the measurement chain, then unpack the major tracking routes.
+这次先搭起测量链，再逐条拆解主要动捕路线。
+
+5
+00:00:19,921 --> 00:00:25,676
+A camera observes pixels. An inertial sensor observes rotation rate and specific force.
+相机观测像素；惯性传感器观测角速度和比力。
+
+6
+00:00:25,701 --> 00:00:31,056
+Calibration and reconstruction turn those signals into positions, joint angles, or a mesh.
+经过标定与重建，信号才变成位置、关节角或网格。
+
+7
+00:00:31,081 --> 00:00:35,636
+A dataset may call that fitted result ground truth, with its own uncertainty.
+数据集可能把拟合结果称为 GT，但它仍有不确定性。
+
+8
+00:00:35,661 --> 00:00:38,196
+Robot contact adds another chain:
+机器人接触还需要另一条链路：
+
+9
+00:00:38,221 --> 00:00:42,381
+coordinate transforms, retargeting, control, and physical interaction.
+坐标变换、重定向、控制和物理交互。
+
+10
+00:00:42,834 --> 00:00:45,049
+Start with optical motion capture.
+先看光学动捕。
+
+11
+00:00:45,074 --> 00:00:49,389
+Several calibrated infrared cameras observe small reflective markers.
+多台标定后的红外相机观察小型反光标记。
+
+12
+00:00:49,414 --> 00:00:54,709
+Matching the same marker across views lets the system triangulate its three-dimensional position.
+确认不同视角中的同一个标记，就能三角化它的三维位置。
+
+13
+00:00:54,734 --> 00:00:59,949
+HOT3D uses nineteen markers per hand, specified as three-millimeter markers.
+HOT3D 每只手使用十九个标记，论文标注尺寸为三毫米。
+
+14
+00:00:59,974 --> 00:01:05,314
+That number describes marker size. It is not a three-millimeter accuracy guarantee.
+三毫米说的是标记尺寸，并不是精度保证。
+
+15
+00:01:05,977 --> 00:01:12,112
+Intrinsics describe the camera projection and distortion. Extrinsics place cameras in a shared frame.
+内参描述成像与畸变；外参把相机放入同一坐标系。
+
+16
+00:01:12,137 --> 00:01:17,832
+A calibrated object establishes scale. Headset and robot frames need their own transforms.
+标定物确定尺度；头显和机器人坐标也需要各自的变换。
+
+17
+00:01:17,857 --> 00:01:22,412
+Check known distances across the actual workspace, including its edges.
+要在实际工作区复查已知距离，边缘区域也要检查。
+
+18
+00:01:22,437 --> 00:01:27,877
+A small calibration residual alone does not validate accuracy on independent measurements.
+标定残差很小，还不能代替独立测量验证。
+
+19
+00:01:28,384 --> 00:01:32,779
+Now move the fingertip. Two cameras must observe the same physical instant.
+现在让指尖移动：两台相机需要观察同一个真实时刻。
+
+20
+00:01:32,804 --> 00:01:37,739
+At one meter per second, ten milliseconds of mismatch means roughly ten millimeters.
+速度一米每秒时，错开十毫秒就约等于十毫米。
+
+21
+00:01:37,764 --> 00:01:41,499
+This is a simple illustration, not a measurement of any product.
+这是简化示例，并非对某个产品的实测。
+
+22
+00:01:41,524 --> 00:01:45,859
+Hardware triggering controls sampling; timestamps identify samples.
+硬件触发控制采样，时间戳标识样本。
+
+23
+00:01:45,884 --> 00:01:47,944
+Also check drift and dropped frames.
+还要检查漂移与丢帧。
+
+24
+00:01:48,417 --> 00:01:52,952
+Surface markers do not sit at the rotation centers hidden inside your fingers.
+表面标记并不位于手指内部的关节旋转中心。
+
+25
+00:01:52,977 --> 00:01:58,052
+Scan or calibrate the person, then fit a skeleton and surface to the observations.
+先扫描或标定个体，再用观测拟合骨架与表面。
+
+26
+00:01:58,077 --> 00:02:03,072
+In HOT3D, fitting a personalized hand model produces the reference motion.
+HOT3D 通过拟合个体化手模型，生成参考动作。
+
+27
+00:02:03,097 --> 00:02:07,837
+The mesh follows that model. Each frame is not a new complete surface scan.
+网格随模型运动；每一帧并不是重新扫描了完整表面。
+
+28
+00:02:08,191 --> 00:02:14,586
+Check marker identity, reprojection residuals, impossible joint motion, and missing observations.
+检查标记身份、重投影残差、异常关节运动和缺失观测。
+
+29
+00:02:14,611 --> 00:02:17,106
+Keep confidence and validity masks.
+保留置信度和有效性标记。
+
+30
+00:02:17,131 --> 00:02:20,966
+Interpolated motion should remain distinguishable from measured samples.
+插值动作，应当能与真实测量样本区分。
+
+31
+00:02:20,991 --> 00:02:25,246
+An independent scanner, measurement rig, or manually checked subset
+独立扫描、测量装置或人工复核子集，
+
+32
+00:02:25,271 --> 00:02:27,026
+can reveal systematic mistakes.
+可以揭示系统性错误。
+
+33
+00:02:27,051 --> 00:02:31,571
+If both methods share the same assumptions, agreement may hide the same bias.
+若两套方法共享相同假设，结果一致也可能包含同样偏差。
+
+34
+00:02:31,976 --> 00:02:33,431
+Markers are optional.
+标记点并非必需。
+
+35
+00:02:33,456 --> 00:02:38,531
+InterHand uses synchronized views and human annotations to bootstrap hand detection.
+InterHand 用同步视角和人工标注启动手部检测。
+
+36
+00:02:38,556 --> 00:02:43,951
+Consistent two-dimensional keypoints are triangulated; unreliable views can be rejected.
+把一致的二维关键点三角化，并剔除不可靠视角。
+
+37
+00:02:43,976 --> 00:02:49,711
+Automatic detections expand the three-dimensional labels. A later hand-model fit can add meshes.
+自动检测扩展三维标注；后续再拟合手模型，可以得到网格。
+
+38
+00:02:49,736 --> 00:02:53,071
+These labels contain annotation and reconstruction error,
+这些标签包含标注与重建误差，
+
+39
+00:02:53,096 --> 00:02:55,856
+especially for occluded anatomical landmarks.
+被遮挡的解剖点尤其如此。
+
+40
+00:02:56,368 --> 00:03:02,688
+SHOW3D moves multi-view capture outdoors: two headset views and up to eight backpack views.
+SHOW3D 把多视角采集带到户外：两个头戴视角，最多八个背负视角。
+
+41
+00:03:03,028 --> 00:03:06,828
+Its synchronized cameras support markerless hand and object annotation.
+同步相机支持无标记的手部与物体标注。
+
+42
+00:03:07,208 --> 00:03:11,728
+A separate optical marker setup tracks the headset relative to the moving backpack rig.
+另一路光学标记跟踪头显相对移动背架的位置。
+
+43
+00:03:12,008 --> 00:03:15,628
+So the hands are markerless, but the entire capture system is not.
+因此手上没有标记，并不代表整套采集系统完全无标记。
+
+44
+00:03:15,908 --> 00:03:20,163
+The authors check hand labels against a camera dome and independent manual annotations.
+作者用相机穹顶和独立人工标注，检查手部标签质量。
+
+45
+00:03:20,188 --> 00:03:22,008
+That validation matters:
+这种验证很关键：
+
+46
+00:03:22,288 --> 00:03:26,508
+an automatically generated label needs evidence before becoming a trusted reference.
+自动生成的标签，需要证据才能成为可靠参考。
+
+47
+00:03:26,963 --> 00:03:30,738
+A depth camera adds measured surface distance to color images.
+深度相机在彩色图像之外，增加表面距离观测。
+
+48
+00:03:30,763 --> 00:03:35,378
+Back-project valid pixels, align the cameras, and fit hand and object models.
+反投影有效像素，对齐相机，再拟合人手与物体模型。
+
+49
+00:03:35,403 --> 00:03:41,038
+HO-Cap combines multiple RGB-D cameras with segmentation and temporal optimization.
+HO-Cap 结合多台 RGB-D 相机、分割和时序优化。
+
+50
+00:03:41,063 --> 00:03:43,738
+Occluded surfaces still need inference.
+遮挡表面仍需推断。
+
+51
+00:03:43,763 --> 00:03:47,743
+Offline annotation can use future frames that live control cannot.
+离线标注可利用实时控制拿不到的未来帧。
+
+52
+00:03:48,354 --> 00:03:53,109
+With one RGB camera, a learned prior resolves much of the missing depth.
+只有一个 RGB 相机时，模型先验承担了许多缺失深度的推断。
+
+53
+00:03:53,134 --> 00:03:58,709
+WiLoR detects and reconstructs hands. HaWoR also addresses hand motion in world space.
+WiLoR 检测并重建人手；HaWoR 进一步处理世界空间中的手部运动。
+
+54
+00:03:58,734 --> 00:04:03,569
+A plausible hand shape does not by itself establish its absolute scale or position.
+手形看起来合理，并不能单独确定绝对尺度与位置。
+
+55
+00:04:03,594 --> 00:04:08,814
+Check camera motion, root placement, and whether the evaluation removes scale or translation.
+需要检查相机运动、手根位置，以及评测是否消除了尺度或平移。
+
+56
+00:04:09,429 --> 00:04:14,984
+Inertial sensors work through visual occlusion, but sparse sensors leave many joints unobserved.
+惯性传感器不怕视觉遮挡，但稀疏布置会留下大量未观测关节。
+
+57
+00:04:15,009 --> 00:04:18,804
+A body model and learned motion prior fill in those degrees of freedom.
+人体模型和运动先验，用来补足这些自由度。
+
+58
+00:04:18,829 --> 00:04:24,384
+DIP uses seventeen sensors to optimize reference poses, while sparse inference uses six.
+DIP 用十七个传感器优化参考姿态，稀疏推理只用六个。
+
+59
+00:04:24,409 --> 00:04:30,049
+ProbIP models uncertainty in this body-tracking route. Its scores do not describe finger accuracy.
+ProbIP 在这条全身动捕路线中建模不确定性，成绩不能套到手指上。
+
+60
+00:04:30,527 --> 00:04:33,722
+Gloves can use bend sensors, inertial sensing,
+手套可使用弯曲或惯性传感，
+
+61
+00:04:33,747 --> 00:04:37,082
+electromagnetic tracking, or mechanical joint measurements.
+也可采用电磁跟踪，或机械关节测量。
+
+62
+00:04:37,107 --> 00:04:42,322
+DexCap combines electromagnetic finger sensing with visual tracking for the wrist and scene.
+DexCap 将手指电磁感知，与手腕及场景的视觉跟踪结合。
+
+63
+00:04:42,347 --> 00:04:47,882
+Fit and calibration matter. Metal can distort electromagnetic fields; a glove can slip.
+贴合与标定很重要：金属会扰动电磁场，手套也可能滑移。
+
+64
+00:04:47,907 --> 00:04:53,407
+DexUMI instead uses a wearable mechanism to reduce human-to-robot kinematic differences.
+DexUMI 则用可穿戴机构，减少人手与机器人之间的运动学差异。
+
+65
+00:04:54,053 --> 00:04:59,248
+For virtual reality, let us trace UmeTrack from reference capture to runtime.
+VR 部分，用 UmeTrack 从参考采集一路拆到实时推理。
+
+66
+00:04:59,273 --> 00:05:05,268
+Its dataset uses thirty-six external motion-capture cameras to track small markers on hands.
+它的数据集利用三十六台外部动捕相机，跟踪手上的小标记。
+
+67
+00:05:05,293 --> 00:05:09,628
+A scanned hand profile and marker-based tracking provide the motion reference.
+扫描得到的手部参数，与基于标记的跟踪共同提供动作参考。
+
+68
+00:05:09,653 --> 00:05:12,908
+The deployed visual tracker consumes headset images.
+运行时视觉跟踪器接收头显图像。
+
+69
+00:05:12,933 --> 00:05:15,733
+The external rig belongs to reference collection.
+外部装置用于采集参考。
+
+70
+00:05:16,302 --> 00:05:21,877
+Headset cameras have wide fields of view, and the hand moves across distorted image regions.
+头显相机视野很广，人手会在不同畸变区域间移动。
+
+71
+00:05:21,902 --> 00:05:26,857
+UmeTrack forms perspective hand crops using calibrated camera geometry.
+UmeTrack 利用标定的相机几何，生成手部透视裁剪。
+
+72
+00:05:26,882 --> 00:05:31,077
+This normalizes the region while preserving how each camera looks at the hand.
+这一步规范输入区域，同时保留各相机观察人手的几何关系。
+
+73
+00:05:31,102 --> 00:05:37,342
+At runtime, a previous pose can guide tracking crops; initialization remains a separate requirement.
+跟踪时可用上一帧姿态引导裁剪；初始化仍需要另外解决。
+
+74
+00:05:37,781 --> 00:05:40,036
+Each crop enters an image encoder.
+每个裁剪进入图像编码器。
+
+75
+00:05:40,061 --> 00:05:43,956
+Camera geometry transforms the learned features into a common frame.
+相机几何再把特征变换到公共坐标系。
+
+76
+00:05:43,981 --> 00:05:49,676
+The fusion module combines available views, so one view can help with another view’s occlusion.
+融合模块结合可用视角，用一个视角补充另一个视角的遮挡。
+
+77
+00:05:49,701 --> 00:05:54,696
+One-view and two-view tracking share the framework. Not every camera sees every hand.
+单视角和双视角共享框架，并非每台相机都能看见每只手。
+
+78
+00:05:54,721 --> 00:05:59,901
+Its intermediate representation is learned features, rather than a measured depth point cloud.
+中间表示是学习到的特征，而非实测深度点云。
+
+79
+00:06:00,338 --> 00:06:05,293
+A temporal module carries information from preceding frames into the current estimate.
+时序模块把之前帧的信息，带入当前估计。
+
+80
+00:06:05,318 --> 00:06:09,733
+That history helps when observations are noisy or temporarily ambiguous.
+历史信息可以帮助处理噪声和暂时的观测歧义。
+
+81
+00:06:09,758 --> 00:06:14,673
+A motion prior can suggest a hidden finger, but cannot create a new observation.
+运动先验能够推测隐藏手指，却不能产生新的真实观测。
+
+82
+00:06:14,698 --> 00:06:20,478
+After an occlusion, compare recovery and delay, not just how smooth the animation looks.
+遮挡结束后，要检查恢复与延迟，不能只看动画是否平滑。
+
+83
+00:06:20,985 --> 00:06:26,340
+When a hand skeleton is known, its joint locations and axes condition pose prediction.
+手部骨架已知时，关节位置与旋转轴作为姿态预测的条件。
+
+84
+00:06:26,365 --> 00:06:30,740
+It predicts twenty joint angles and a six-degree-of-freedom root transform.
+它预测二十个关节角，以及六自由度的手根变换。
+
+85
+00:06:30,765 --> 00:06:35,380
+Forward kinematics places the joints. Skinning then moves the mesh with the bones.
+正向运动学定位关节，蒙皮再让网格随骨骼运动。
+
+86
+00:06:35,405 --> 00:06:39,040
+Its unknown-skeleton calibration estimates overall scale;
+未知骨架标定估计整体尺度，
+
+87
+00:06:39,065 --> 00:06:42,105
+that is not a complete personalized surface scan.
+并不等于完整个体表面扫描。
+
+88
+00:06:42,526 --> 00:06:47,761
+The official repository corrects earlier metrics and improves unknown-skeleton calibration.
+官方仓库修正了早期指标，并改进未知骨架标定。
+
+89
+00:06:47,786 --> 00:06:52,701
+For known skeletons, it reports nine point four millimeters for separate hands.
+已知骨架时，分离双手的平均关节误差为九点四毫米。
+
+90
+00:06:52,726 --> 00:06:57,461
+But the released evaluation uses ground-truth poses to generate the tracking crops.
+但公开评测使用 GT 姿态生成跟踪裁剪区域。
+
+91
+00:06:57,486 --> 00:07:02,846
+This score therefore does not validate the complete detection and lost-track recovery pipeline.
+因此这个成绩并未验证完整的检测与掉踪恢复流程。
+
+92
+00:07:03,306 --> 00:07:08,861
+HOT3D provides a more recent example of a controlled comparison using UmeTrack.
+HOT3D 提供了较新的 UmeTrack 受控比较实例。
+
+93
+00:07:08,886 --> 00:07:12,141
+With joint training, the reported keypoint error drops
+联合训练条件下，报告的关键点误差
+
+94
+00:07:12,166 --> 00:07:14,821
+from fifteen point four to ten point nine millimeters.
+从十五点四降到十点九毫米。
+
+95
+00:07:14,846 --> 00:07:19,261
+The change is from one view to two, with ground-truth hand shape and boxes supplied.
+改变的是单视角到双视角，同时提供 GT 手形与边界框。
+
+96
+00:07:19,286 --> 00:07:21,601
+Keep those conditions beside the numbers.
+这些条件必须和数字放在一起。
+
+97
+00:07:21,626 --> 00:07:24,706
+They are not uncalibrated consumer-headset guarantees.
+不能当作未标定消费头显的精度保证。
+
+98
+00:07:25,304 --> 00:07:31,119
+World-space error includes where the hand is. Wrist-relative error removes global translation.
+世界空间误差包含手的位置；腕部相对误差去掉全局平移。
+
+99
+00:07:31,144 --> 00:07:35,319
+Procrustes alignment can additionally remove rotation and scale
+Procrustes 对齐还可以先去掉旋转与尺度，
+
+100
+00:07:35,344 --> 00:07:36,959
+before measuring shape agreement.
+然后再衡量形状一致性。
+
+101
+00:07:36,984 --> 00:07:42,459
+A reconstruction can score well after alignment while placing the robot’s fingers incorrectly.
+重建在对齐后可能分数很好，机器人指尖落点却仍然错误。
+
+102
+00:07:42,484 --> 00:07:47,944
+Report the target, coordinate frame, alignment, and error distribution beside every score.
+每个成绩旁边，都应写明目标量、坐标系、对齐方式与误差分布。
+
+103
+00:07:48,391 --> 00:07:51,806
+For current research, separate reconstruction quality,
+看前沿研究，要区分重建质量、
+
+104
+00:07:51,831 --> 00:07:54,726
+tracking robustness, and reference-data generation.
+跟踪鲁棒性，以及参考数据生成。
+
+105
+00:07:54,751 --> 00:07:57,786
+WiLoR and HaWoR address different visual outputs;
+WiLoR 与 HaWoR 面向不同视觉输出；
+
+106
+00:07:57,811 --> 00:08:00,786
+SHOW3D advances capture in varied environments.
+SHOW3D 推进多环境采集。
+
+107
+00:08:00,811 --> 00:08:03,766
+ProbIP studies sparse inertial uncertainty.
+ProbIP 研究稀疏惯性的不确定性。
+
+108
+00:08:03,791 --> 00:08:07,686
+DexCap and DexUMI optimize robot-data collection systems.
+DexCap 与 DexUMI 优化机器人数据采集系统。
+
+109
+00:08:07,711 --> 00:08:11,531
+Call a method state of the art only for a named benchmark and matched protocol.
+只有明确基准、对齐协议，才能讨论某个方法的 SOTA。
+
+110
+00:08:12,097 --> 00:08:15,652
+SHOW3D’s manual-reference hand-object evaluation
+SHOW3D 对人工参考的手物交互评测，
+
+111
+00:08:15,677 --> 00:08:19,032
+reports a median error of six point three six millimeters.
+报告的中位误差为六点三六毫米。
+
+112
+00:08:19,057 --> 00:08:22,992
+Its ninetieth percentile is sixteen point four eight millimeters.
+但第九十百分位达到十六点四八毫米。
+
+113
+00:08:23,017 --> 00:08:28,512
+Both describe the same evaluation. A single typical value hides the difficult tail.
+两者来自同一评测；只报典型值，会隐藏困难样本的尾部。
+
+114
+00:08:28,537 --> 00:08:34,937
+These evaluate annotation quality, not a real-time robot controller or every frame’s maximum error.
+这些数字评价标注质量，并非实时控制器或每帧最大误差。
+
+115
+00:08:35,393 --> 00:08:39,488
+A filter can reduce jitter while delaying the motion you want to reproduce.
+滤波能减少抖动，也可能推迟需要复现的动作。
+
+116
+00:08:39,513 --> 00:08:43,368
+Watch the peak: a smooth trajectory can still arrive too late.
+看峰值的位置：轨迹很平滑，也可能来得太晚。
+
+117
+00:08:43,393 --> 00:08:45,868
+Processing frames per second is throughput.
+每秒处理帧数，表示处理吞吐率。
+
+118
+00:08:45,893 --> 00:08:50,448
+End-to-end latency includes capture, transfer, inference, and control.
+端到端延迟还包括采集、传输、推理与控制。
+
+119
+00:08:50,473 --> 00:08:54,773
+Measure delay, dropped tracking, and recovery separately from static precision.
+延迟、掉踪与恢复，要和静态精度分别测量。
+
+120
+00:08:55,269 --> 00:09:00,144
+The robot has different link lengths, joint limits, and reachable contacts.
+机器人的连杆长度、关节限位和可达接触，都与人手不同。
+
+121
+00:09:00,169 --> 00:09:05,224
+Retargeting must map the intended motion into that robot’s feasible configuration.
+重定向需要把动作意图映射到机器人可执行的关节配置。
+
+122
+00:09:05,249 --> 00:09:11,504
+Geometric proximity does not establish contact force; force needs a separate sensing reference.
+几何接近并不代表接触力；测力需要独立的传感参考。
+
+123
+00:09:11,529 --> 00:09:15,804
+Validate motion capture first, then mapping and closed-loop grasping,
+先验证动捕，再验证映射与闭环抓取，
+
+124
+00:09:15,829 --> 00:09:17,649
+without combining their scores.
+不要把它们的成绩混成一个数字。
+
+125
+00:09:18,286 --> 00:09:20,701
+Use the same participants and motions,
+固定相同受试者与动作，
+
+126
+00:09:20,726 --> 00:09:24,101
+and synchronize each tracker with an independent reference.
+将各跟踪器与独立参考同步记录。
+
+127
+00:09:24,126 --> 00:09:28,141
+Include quick pinches, finger crossings, object occlusion,
+包括快速捏合、手指交叉和物体遮挡，
+
+128
+00:09:28,166 --> 00:09:30,521
+workspace edges, and repeated calibration.
+还要覆盖工作区边缘与重复标定。
+
+129
+00:09:30,546 --> 00:09:36,481
+Measure absolute wrist and fingertip error, relative pose, drift, dropout, and latency percentiles.
+测量绝对腕部与指尖误差、相对姿态、漂移、掉踪及延迟分位数。
+
+130
+00:09:36,506 --> 00:09:39,541
+Publish missing-data coverage and evaluation inputs,
+公开缺失数据的覆盖情况与评测输入，
+
+131
+00:09:39,566 --> 00:09:42,406
+including any ground-truth boxes or hand profiles.
+包括任何 GT 框或手部参数。
+
+132
+00:09:42,972 --> 00:09:44,827
+For a laboratory reference,
+如果要做实验室参考系统，
+
+133
+00:09:44,852 --> 00:09:49,527
+prioritize calibrated coverage, synchronization, and independent validation.
+优先保证标定覆盖、同步与独立验证。
+
+134
+00:09:49,552 --> 00:09:51,767
+For unencumbered hand interaction,
+如果要做裸手交互，
+
+135
+00:09:51,792 --> 00:09:55,707
+compare calibrated multi-view vision against simpler camera baselines.
+将标定多视角视觉与更简单的相机基线比较。
+
+136
+00:09:55,732 --> 00:09:59,867
+For mobile or occluded capture, consider headset tracking or wearables,
+移动或遮挡采集，可考虑头显跟踪或穿戴设备，
+
+137
+00:09:59,892 --> 00:10:01,627
+with their specific limitations.
+并验证各自的限制。
+
+138
+00:10:01,652 --> 00:10:07,232
+Fusion helps when sensors contribute complementary evidence; it also adds calibration work.
+传感器提供互补证据时，融合才有帮助，同时也增加标定工作。
+
+139
+00:10:07,594 --> 00:10:09,849
+Ground truth is a documented reference
+GT 是一套有据可查的参考，
+
+140
+00:10:09,874 --> 00:10:12,749
+with a known construction process and measured limitations.
+需要明确构建过程，并评估其局限性。
+
+141
+00:10:12,774 --> 00:10:17,909
+Ask what was directly observed, what was fitted, and what independent evidence checks it.
+追问哪些直接观测，哪些通过拟合，以及用什么独立证据验证。
+
+142
+00:10:17,934 --> 00:10:22,549
+Then compare methods under the same task and protocol, all the way to real contact.
+再在相同任务与协议下比较方法，一路验证到真实接触。
+
+143
+00:10:22,574 --> 00:10:27,434
+Find the papers and learning map in DoF. Build the reference before trusting the score.
+在 DoF 查看论文与学习地图：先建立参考，再相信分数。

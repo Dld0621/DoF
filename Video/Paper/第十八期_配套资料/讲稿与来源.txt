@@ -1,0 +1,55 @@
+﻿DoF Paper EP.18 | Two Clocks for Dexterous Touch
+视觉慢规划，触觉快修正
+
+01 A page starts to slip / 书页开始滑动时
+A robot turns a page, squeezes toothpaste, or transfers an egg between its hands. The task plan may stay unchanged while contact forces change quickly; T-Rex gives those processes different update rates.
+机器人翻页、挤牙膏，或双手传递鸡蛋。任务计划没变，接触已变；两者需要不同更新速度。
+Source: https://arxiv.org/pdf/2606.17055v1#page=1
+
+02 Separate the expensive work / 分开不同计算
+The architecture contains a latent expert, an action expert, and a tactile expert. Visual-language context supports a coarse action plan, while a smaller tactile pathway handles more frequent corrections within that plan.
+架构包含潜变量、动作和触觉三个专家。视觉语言支撑粗动作，轻量触觉支路频繁修正。
+Source: https://arxiv.org/pdf/2606.17055v1#page=4
+
+03 Complete the action with touch / 用触觉完成动作生成
+The slow expert performs the first part of flow-based action denoising and caches its context. The tactile expert reuses that context and completes the remaining steps with newer contact observations.
+慢专家完成前半段动作去噪，并缓存上下文。触觉专家复用缓存，用更新的接触观测完成后续。
+Source: https://arxiv.org/pdf/2606.17055v1#page=4
+
+04 Touch has a history / 触觉也有时间信息
+A temporal encoder compresses recent force history, alongside current force and fingertip deformation features. This preserves how contact changes over time, instead of treating each tactile measurement as an isolated static snapshot.
+时序编码器压缩力历史，并结合当前力和形变。因此能利用接触如何变化，而不只看静态瞬间。
+Source: https://arxiv.org/pdf/2606.17055v1#page=4
+
+05 From human video to robot touch / 从人类视频到机器人触觉
+Training proceeds from human-video pretraining to tactile-rich robot data, then task-specific demonstrations. The physical platform has two twenty-two-degree-of-freedom hands, so this paper directly studies multi-finger, bimanual contact behaviors.
+训练依次使用人类视频、触觉机器人数据和任务示教。双手各二十二自由度，直接研究双手多指接触。
+Source: https://arxiv.org/pdf/2606.17055v1#page=3
+
+06 What the benchmark asks / 基准考察什么
+The main comparison covers twelve tasks with sixteen randomized trials per task. Several tasks award credit for intermediate stages, so the reported average combines more than a strict pass-or-fail outcome.
+主比较有十二项任务，每项随机测试十六次。若干任务给中间阶段分，汇总并非纯通过率。
+Source: https://arxiv.org/pdf/2606.17055v1#page=7
+
+07 Read the score honestly / 准确读取分数
+T-Rex reaches a sixty-five-percent average protocol score, compared with thirty-five for EgoScale. The thirty-point gap supports this matched comparison; it does not mean sixty-five percent of all trials fully completed every stage.
+协议平均得分六十五，EgoScale 为三十五。相差三十个百分点，不能解释为完整通过率六十五。
+Source: https://arxiv.org/pdf/2606.17055v1#page=7
+
+08 Where touch still falls short / 有触觉仍会失败
+Precise, extended tasks still fail through collisions, slipping, poor alignment, and imperfect coordination. Sensor drift and missing dense palm sensing further limit transfer, even when fingertip feedback reacts faster than visual planning.
+精密长任务仍会碰撞、滑移、对不齐或协调失败。传感漂移和掌部触觉不足，也会限制迁移。
+Source: https://arxiv.org/pdf/2606.17055v1#page=1
+
+09 Match each signal to its role / 让信号各司其职
+The lesson is not simply to concatenate touch with a large visual model. T-Rex designs the data, representation, and execution schedule together so fast contact feedback can influence actions while broader task context remains available.
+重点不是把触觉直接拼到大视觉模型后面。数据、表示与执行节奏要协同，让接触及时影响动作。
+Source: https://arxiv.org/pdf/2606.17055v1#page=4
+
+
+Sources
+https://arxiv.org/abs/2606.17055
+https://arxiv.org/pdf/2606.17055v1
+https://tactile-reactive-dexterous.github.io/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

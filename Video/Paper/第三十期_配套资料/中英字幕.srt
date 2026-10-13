@@ -1,0 +1,89 @@
+﻿1
+00:00:00,850 --> 00:00:05,290
+Turning a page requires more than moving a fingertip through the right trajectory.
+翻页不只是让指尖经过正确轨迹。
+
+2
+00:00:05,930 --> 00:00:11,030
+The robot must separate the paper and regulate contact without picking up several sheets.
+机器人还要分离纸页，避免同时带起多页。
+
+3
+00:00:11,628 --> 00:00:19,088
+UVTA records synchronized images, tactile signals, wrist pose, and hand motion during human demonstrations.
+UVTA同步记录人类图像、触觉、腕姿和手部运动。
+
+4
+00:00:19,608 --> 00:00:25,228
+A tactile motion-capture apparatus makes the contact evidence available alongside the visible action.
+触觉动捕装置让可见动作拥有对应接触证据。
+
+5
+00:00:25,829 --> 00:00:30,849
+Human and robot sensing enter an aligned visual-tactile interaction representation.
+人类和机器人感知进入对齐的视触觉交互表征。
+
+6
+00:00:31,369 --> 00:00:36,529
+The purpose is to share useful interaction structure while retaining actions suitable for each embodiment.
+目标是共享交互规律，同时保留各手型适用的动作。
+
+7
+00:00:37,435 --> 00:00:43,455
+The model jointly predicts future action trajectories and future tactile trajectories during training.
+训练时，模型联合预测未来动作轨迹和触觉轨迹。
+
+8
+00:00:44,015 --> 00:00:49,815
+This auxiliary tactile objective encourages the representation to encode what an action should feel like.
+辅助触觉目标促使表征理解动作应产生怎样的接触。
+
+9
+00:00:50,327 --> 00:00:56,427
+Future tactile prediction helps train the model; it is not a separate deployed controller output.
+未来触觉预测用于训练，并非独立部署控制输出。
+
+10
+00:00:56,807 --> 00:01:02,047
+At execution, the robot carries out robot actions and receives new sensory observations.
+执行时机器人输出动作，并接收新的感知观测。
+
+11
+00:01:02,740 --> 00:01:08,020
+Each of five tasks uses one hundred fifty robot and one thousand human demonstrations.
+五项任务各150条机器人、1000条人类示范。
+
+12
+00:01:08,780 --> 00:01:12,580
+Each method is evaluated ten times per task on the physical robot.
+每种方法每任务进行10次真机评测。
+
+13
+00:01:13,136 --> 00:01:19,256
+The reported average is seventy percent, compared with twenty-nine for the retrained T-Rex baseline.
+报告平均70%，对应重训T-Rex基线29%。
+
+14
+00:01:19,576 --> 00:01:25,036
+Here, the metric awards partial credit for completed stages rather than counting only complete tasks.
+这里按完成阶段给部分分数，并非只数完整成功。
+
+15
+00:01:25,606 --> 00:01:30,626
+Separating a page earns point three; flipping multiple pages earns point seven.
+分离纸页得0.3分，翻多页得0.7分。
+
+16
+00:01:31,006 --> 00:01:36,066
+Only correctly flipping a single page earns one, so an average score is not full success.
+正确翻一页才得1分，平均得分不等于完整成功率。
+
+17
+00:01:36,695 --> 00:01:42,235
+Removing future tactile prediction reduces the average score to forty-two under this protocol.
+移除未来触觉预测，同协议平均分降到42。
+
+18
+00:01:42,835 --> 00:01:49,955
+The evidence supports contact-aware representation learning, with small evaluation counts and explicitly partial-credit outcomes.
+证据支持接触表征学习，但试验少且需保留计分定义。

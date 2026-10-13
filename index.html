@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f4ef"><meta name="description" content="DoF 的具身智能知识主页。观看 Paper 深度解读与 Infra 系列，从原论文、真实演示和逐步推演理解机器人。">
+  <title>DoF — 具身智能，从理解开始</title>
+  <link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="style.css">
+
+  <link rel="canonical" href="https://dld0621.github.io/DoF/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DoF">
+  <meta property="og:title" content="DoF — Embodied AI, Understood">
+  <meta property="og:description" content="41 个主题，52 个视频。用原论文、真实演示和逐步推演理解具身智能。Explore the bilingual DoF learning library.">
+  <meta property="og:url" content="https://dld0621.github.io/DoF/">
+  <meta property="og:image" content="https://dld0621.github.io/DoF/assets/brand-poster.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="#" aria-label="返回 DoF 首页" data-i18n-aria-label="homeAria">DoF <span>LEARNING LIBRARY</span></a>
+    <a class="brand" href="#" aria-label="DoF 首页" data-i18n-aria-label="brandAria"><img src="assets/logo.png" alt="DoF Embodied AI"></a>
+    <div class="header-actions"><nav aria-label="主导航" data-i18n-aria-label="navAria"><a href="/DoF/retargeting/" data-i18n="courseLink">系统课程</a><a href="#library" data-series="paper">Paper</a><a href="#library" data-series="infra">Infra</a><a href="https://github.com/Dld0621/Embodied-AI-Paper-Analysis" target="_blank" rel="noopener">GitHub ↗</a></nav><div class="language-switch" role="group" aria-label="Language / 语言"><button type="button" data-lang="zh" aria-label="切换到中文" aria-pressed="true">中文</button><button type="button" data-lang="en" aria-label="Switch to English" aria-pressed="false">EN</button></div></div>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy"><div class="eyebrow"><span class="status-dot"></span> THE DOF KNOWLEDGE COLLECTION</div>
+        <h1 id="hero-title" data-i18n="heroTitle">理解具身智能，<br><span>从这里开始。</span></h1>
+        <p data-i18n="heroDescription">从世界模型、VLA，到灵巧操作与机器人控制。<br class="desktop-break">用论文原图、真实演示和逐步推演，把方法讲清楚。</p>
+        <div class="hero-actions"><a class="button primary" href="#library" data-i18n="explore">探索全部解读 <span>↘</span></a><a class="text-link" href="#routes" data-i18n="findRoute">找到你的学习路线 <span>→</span></a></div>
+        <dl class="stats"><div><dt id="topic-stat">—</dt><dd data-i18n="stat1">解读主题</dd></div><div><dt id="video-stat">—</dt><dd data-i18n="stat2">视频内容</dd></div><div><dt id="time-stat">—</dt><dd data-i18n="stat3">累计讲解</dd></div></dl>
+      </div>
+      <div class="hero-art"><img src="assets/brand-poster.png" alt="DoF 品牌视觉：人手与机器人手相接，连接智能与物理世界" data-i18n-alt="heroAlt"><div class="art-caption"><span>INTELLIGENCE IN ACTION</span><span>OPEN · COLLABORATE · EMPOWER</span></div></div>
+    </section>
+    <section id="continue-section" class="continue-section" hidden=""><div class="continue-label" data-i18n="continueLabel">继续上次的探索</div><button id="continue-button" class="continue-button"></button><button id="clear-progress" class="quiet" title="清除继续观看记录" data-i18n="clearProgress" data-i18n-title="clearProgressAria">清除记录</button></section>
+    <section class="course-banner"><div><div class="eyebrow">NEW / DOF FIELD NOTES 001</div><h2 data-i18n="courseBannerTitle">灵巧手重定向，从头讲透。</h2><p data-i18n="courseBannerDescription">六章深度视频 · 28 项方法 · 可操作的几何实验与评测协议</p></div><a href="/DoF/retargeting/" class="button primary" data-i18n="courseBannerAction">进入双语课程 ↗</a></section>
+    <section class="featured-section" aria-labelledby="featured-title"><div class="section-heading"><div><div class="eyebrow">GO DEEPER</div><h2 id="featured-title" data-i18n="featuredTitle">把一篇论文，真正拆开。</h2></div><span class="section-note" data-i18n="featuredNote">两组深度解读 · 从原理走到实验</span></div><div id="featured-grid" class="featured-grid"></div></section>
+    <section id="routes" class="routes-section" aria-labelledby="route-title"><div class="section-heading"><div><div class="eyebrow">A WAY THROUGH</div><h2 id="route-title" data-i18n="routeTitle">从一个问题开始。</h2></div><span class="section-note" data-i18n="routeNote">选择路线，按顺序看下去</span></div><div class="routes">
+      <button class="route" data-route="foundations"><span class="route-no" data-i18n="foundations.route-no">01 / 建立认知</span><h3 data-i18n="foundationsh3">机器人怎样理解世界？</h3><p data-i18n="foundationsp">世界模型 → VLA → 三维表示</p><span class="route-bottom" data-i18n="foundations.route-bottom">从 Infra 开始 <b>↗</b></span></button>
+      <button class="route" data-route="teleoperation"><span class="route-no" data-i18n="teleoperation.route-no">02 / 从人到机器人</span><h3 data-i18n="teleoperationh3">你的手，如何控制它的手？</h3><p data-i18n="teleoperationp">视觉动捕 → 重定向 → 遥操作</p><span class="route-bottom" data-i18n="teleoperation.route-bottom">走进灵巧操作 <b>↗</b></span></button>
+      <button class="route" data-route="policy"><span class="route-no" data-i18n="policy.route-no">03 / 从演示到策略</span><h3 data-i18n="policyh3">机器人怎样学会一个动作？</h3><p data-i18n="policyp">ACT → Diffusion Policy → 3D 策略</p><span class="route-bottom" data-i18n="policy.route-bottom">理解学习方法 <b>↗</b></span></button>
+    </div></section>
+    <section id="library" class="library-section" aria-labelledby="library-title"><div class="section-heading library-heading"><div><div class="eyebrow">THE COLLECTION</div><h2 id="library-title" data-i18n="libraryTitle">所有解读，都在这里。</h2></div><label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input id="search" type="search" placeholder="搜索论文、方法或关键词" aria-label="搜索全部解读" data-i18n-placeholder="searchPlaceholder" data-i18n-aria-label="searchAria"><kbd>/</kbd></label></div>
+      <div class="library-toolbar"><div class="tabs" role="group" aria-label="选择系列" data-i18n-aria-label="seriesAria"><button class="tab active" data-filter="all" aria-pressed="true"><span data-i18n="all">全部</span><span id="count-all"></span></button><button class="tab" data-filter="paper" aria-pressed="false">Paper <span id="count-paper"></span></button><button class="tab" data-filter="infra" aria-pressed="false">Infra <span id="count-infra"></span></button><button class="tab" data-filter="course" aria-pressed="false"><span data-i18n="courseLabel">系统课程</span> <span id="count-course"></span></button><button class="tab" data-filter="saved" aria-pressed="false"><span data-i18n="saved">我的收藏</span><span id="count-saved"></span></button></div><label class="sort-label"><span data-i18n="sort">排序</span><select id="sort" aria-label="内容排序" data-i18n-aria-label="sortAria"><option value="recommended" data-i18n="recommended">推荐顺序</option><option value="episode" data-i18n="episodeOrder">按期数</option><option value="duration" data-i18n="durationOrder">短时优先</option></select></label></div>
+      <div id="topic-filters" class="topic-filters" role="group" aria-label="主题筛选" data-i18n-aria-label="topicsAria"></div><div id="active-route" class="active-route" hidden=""></div>
+      <div class="results-line"><span id="result-count" aria-live="polite"></span><button id="reset-filters" class="quiet" hidden="" data-i18n="clearFilters">清除筛选</button></div>
+      <div id="library-grid" class="library-grid"></div><div id="empty-state" class="empty-state" hidden=""><span>↗</span><h3 data-i18n="emptyTitle">换个关键词，再探索一下。</h3><p data-i18n="emptyDescription">可以搜索“点云”“触觉”“VLA”或论文名称。</p><button class="button" id="empty-reset" data-i18n="allExplainers">查看全部解读</button></div><div class="more-row"><button class="button" id="load-more">继续浏览 <span>↓</span></button></div>
+    </section>
+    <section class="research-section"><div><div class="eyebrow">KEEP EXPLORING</div><h2 data-i18n="researchTitle">看懂之后，<br>回到研究本身。</h2></div><div class="research-copy"><p data-i18n="researchDescription">视频建立直觉，原论文提供依据。<br>在 DoF 研究地图里继续检索、比较和追踪方法。</p><a class="text-link" href="https://github.com/Dld0621/Embodied-AI-Paper-Analysis" target="_blank" rel="noopener" data-i18n="researchLink">打开 DoF Research Map <span>↗</span></a></div><a class="qr-link" href="https://github.com/Dld0621/Embodied-AI-Paper-Analysis" target="_blank" rel="noopener"><img src="assets/qr.png" alt="DoF GitHub 项目二维码" data-i18n-alt="qrAlt"><span data-i18n="qrCaption">扫码访问 GitHub</span></a></section>
+  </main>
+  <footer class="site-footer"><div><strong>DoF</strong> <span>Bridging Intelligence and the Physical World.</span></div><div>Paper Breakdown · Embodied AI Infra</div><small data-i18n="footerNote">DoF 内容库 · 英文讲解 / 中英字幕 · 更新于 2026.10.12</small></footer>
+  <dialog id="watch-dialog" aria-labelledby="watch-title"><div class="watch-header"><div><div class="eyebrow" id="watch-kicker"></div><h2 id="watch-title"></h2></div><div class="watch-tools"><div class="language-switch" role="group" aria-label="Language / 语言"><button type="button" data-lang="zh" aria-label="切换到中文" aria-pressed="true">中文</button><button type="button" data-lang="en" aria-label="Switch to English" aria-pressed="false">EN</button></div><button id="close-watch" class="icon-button" aria-label="关闭播放器" data-i18n-aria-label="closeAria">✕</button></div></div><div class="watch-layout"><div class="watch-main"><video id="player" controls="" playsinline="" preload="metadata"></video><p id="video-error" class="video-error" hidden="" data-i18n="videoError">视频暂时无法播放，请检查网络连接后重试。</p><div class="watch-meta"><h3 id="variant-title"></h3><button id="watch-save" class="save-button"></button></div><p id="watch-description"></p><div id="watch-resources" class="resources"></div><details class="chapters-details" id="chapters-details"><summary><span data-i18n="chapterNavigation">章节导航</span><span id="chapter-count"></span></summary><div id="chapters" class="chapter-list"></div></details></div><aside class="watch-aside"><div class="eyebrow">IN THIS EXPLAINER</div><h3 data-i18n="chooseContent">选择内容</h3><div id="variant-list" class="variant-list"></div><div class="watch-aside-note" data-i18n="watchNote">从概览建立直觉，<br>跟随深度解读拆开细节。</div></aside></div></dialog>
+  <div id="toast" class="toast" role="status" hidden=""></div>
+  <noscript><p class="noscript">请启用 JavaScript 以切换语言和使用播放器。 / Enable JavaScript to switch languages and use the player.</p></noscript>
+  <script src="catalog.js"></script><script src="locale.js"></script><script src="app.js"></script>
+
+</body></html>

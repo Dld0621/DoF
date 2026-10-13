@@ -1,0 +1,17 @@
+﻿Sources and evidence
+
+- OpenVLA physical robot clips: https://openvla.github.io/ . Application context only; source playback speeds remain labelled.
+- ElasticFusion (RSS 2015): https://www.roboticsproceedings.org/rss11/p01.pdf . Original Fig. 1 supports surfel mapping from RGB-D.
+- OctoMap (2013): https://octomap.github.io/ . Probabilistic 3D mapping and adaptive octree organization.
+- DeepSDF (CVPR 2019): https://arxiv.org/abs/1901.05103 . Signed distance representation.
+- Voxblox (IROS 2017): https://arxiv.org/abs/1611.03631 . TSDF integration and ESDF construction for planning; original Fig. 1.
+- Stable Neo-Hookean Flesh Simulation (2018): https://www.tkim.graphics/NEO/ . Original Fig. 11, tetrahedral simulation context.
+- NeRF (ECCV 2020): https://www.matthewtancik.com/nerf . Original Fig. 2 and official Fern video.
+- 3D Gaussian Splatting (SIGGRAPH 2023): https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/ . Original Fig. 2 and official Bicycle rendering.
+- 2D Gaussian Splatting (SIGGRAPH 2024): https://surfsplatting.github.io/ . Original Fig. 3 and official comparison.
+- MANO (SIGGRAPH Asia 2017): https://mano.is.tue.mpg.de/ . Fig. 10 detail, pose basis; separate from physical hand dynamics.
+- 4D Gaussian Splatting (CVPR 2024): https://guanjunwu.github.io/4dgs/ . Original Fig. 3, time-dependent deformation.
+
+Repository: https://github.com/Dld0621/3D-Vision-Zero-to-Hero
+
+Publicly accessible project media and research figures retain their original attribution. Their availability is not a verified general redistribution license. This file records sources, not publication permission.

@@ -1,0 +1,54 @@
+﻿DoF Paper EP.31 | SoTa | Give Human and Robot Hands the Same Touch Map
+SoTa：让人手与机器人共享一张触觉地图
+
+01 One cup, not the stack / 只拿一只杯子
+A hand lifts a thin cup, but accidentally brings the nested cups along. SoTa explores how full-hand tactile sensing and human demonstrations can improve this kind of interaction.
+手拿起薄杯，却把套在一起的杯子都带起来。SoTa研究全手触觉和人类示范怎样改善这种交互。
+Source: https://arxiv.org/pdf/2610.02338v1; fixed PDF page 1. Full Figure 1 crop including all visual rows and labels, without body text.
+
+02 A shared sensor layout / 两种手，同样的触觉布局
+The soft capacitive skins place two hundred two sensing elements across corresponding finger and palm regions. Human and robot skins fit different shapes while preserving this shared layout.
+柔性电容皮肤在对应手指和手掌区域布置202个单元。人手和机器人皮肤适配不同外形，但保持共享布局。
+Source: https://arxiv.org/pdf/2610.02338v1; Figures 2 and 3 | skin and collection, PDF p4
+
+03 Fabric, electrodes, contact / 传感皮肤如何感受接触
+Layered fabric electrodes create a thin, deformable sensor that responds to contact. The paper reports material cost below ten dollars per skin, not the price of a complete system.
+多层织物电极形成能响应接触的薄柔性传感器。每片材料成本低于10美元，并非整套系统售价。
+Source: https://arxiv.org/pdf/2610.02338v1; Figures 2 and 3 | skin and collection, PDF p4
+
+04 Share the tactile encoder / 共享触觉编码器
+Corresponding sensing layouts allow both embodiments to use a common tactile encoder. This avoids learning a separate cross-sensor conversion just to relate human contact to robot contact.
+对应传感布局使两种手型能够共享触觉编码器。无需先学习额外跨传感器转换来关联人机接触。
+Source: https://arxiv.org/pdf/2610.02338v1; Figure 4 | policy and auxiliary learning, PDF p5
+
+05 What human data supervises / 人类数据监督什么？
+The policy builds on FTP-1, with an auxiliary language objective describing task phases. Human demonstrations support representation learning; their movements do not directly supervise the robot action output.
+策略基于FTP-1，辅助语言目标描述任务阶段。人类示范辅助表征学习，不直接监督机器人动作输出。
+Source: https://arxiv.org/pdf/2610.02338v1; Figure 4 | policy and auxiliary learning, PDF p5
+
+06 Hold robot data constant / 固定机器人数据预算
+Experiments cover box reorientation, cup separation, and plug insertion across eight test conditions. Comparisons hold robot demonstrations fixed, adding one hundred fifty human demonstrations per task.
+实验覆盖盒子换向、分杯、插头，共八种测试条件。对照固定机器人示教，每任务增加150条人类示范。
+Source: https://arxiv.org/pdf/2610.02338v1; fixed PDF page 6. Complete original figure, legend and caption; no graphic content redrawn.
+
+07 Complete success improves / 完整成功率的改变
+The mean across conditions rises from twenty-two point eight to forty-five point nine percent. Each policy receives forty attempts per condition; partial completion counts as failure.
+各条件均值由22.8%升至45.9%。每策略每条件40次，部分完成算失败。
+Source: https://arxiv.org/pdf/2610.02338v1; fixed PDF page 6. Complete original figure, legend and caption; no graphic content redrawn.
+
+08 Touch is not automatically enough / 有触觉，不代表总会更好
+Adding tactile input alone does not improve every unfamiliar-object condition and sometimes reduces performance. The study also uses one training seed per method and task, limiting conclusions about training variability.
+只加入触觉并非所有未见条件都提升，有时反而下降。每方法每任务仅一个训练种子，训练波动尚不充分。
+Source: https://arxiv.org/pdf/2610.02338v1; fixed PDF page 6. Complete original figure, legend and caption; no graphic content redrawn.
+
+09 A hardware-data connection / 把传感硬件与数据连接起来
+The important connection runs from a shared physical sensor layout to reusable human contact data. SoTa names the skin; it is not a claim of winning every dexterous-manipulation benchmark.
+关键链路是从共享传感布局走向可复用人类接触数据。SoTa是皮肤名称，并不意味着赢得所有灵巧操作基准。
+Source: https://arxiv.org/pdf/2610.02338v1; fixed PDF page 1. Full Figure 1 crop including all visual rows and labels, without body text.
+
+
+Sources
+https://arxiv.org/pdf/2610.02338v1
+https://sota-skin.github.io/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

@@ -1,0 +1,158 @@
+﻿DoF｜π*0.6 × RECAP｜指定声线·英文讲解与中英文字幕版
+时长：03:11；1080×1920；30fps。
+
+英文旁白：使用用户提供视频的约9秒英文语音样本，在本机复用声线生成新讲解。
+原样本：9a9617c12d0ce1878d2f69372ed155.mp4；采样区间5.36–14.48秒。
+背景音乐：原创电子氛围音乐，旁白期间降低音量。
+字幕：英文在上、中文在下，按生成音频逐章对齐，已烧录入视频；另附双语SRT。
+画面：论文原页→Figure放大→重点框选→对应官网机器人演示；图表不重绘。
+品牌：复用用户既有科研海报的DoF原素材，左上角标识与淡背景水印。
+
+论文：https://arxiv.org/abs/2511.14759
+论文版本：https://arxiv.org/html/2511.14759v2
+官方博客及演示：https://www.pi.website/blog/pistar06
+风格参考：https://www.xiaohongshu.com/explore/6abcb29e000000001c02e0fa
+
+逐段英文与中文字幕：
+
+00:00–00:16｜From demonstrations to experience
+A robot can copy a demonstration
+机器人可以模仿示范。
+But how does it learn from its own mistakes
+但它怎样从自己的失误中学习？
+That is the question behind π*0.6,
+这就是 π*0.6 想解决的问题。
+and its training recipe, RECAP
+它采用的训练方法，叫 RECAP。
+Let us follow the paper, from the architecture to the robot results
+从框架到机器人结果，一起看原论文。
+
+00:16–00:43｜The VLA architecture
+Start with Figure 3.
+先看图 3。
+Images, the task instruction, and joint states go into the model
+图像、任务指令和关节状态输入模型。
+Gemma 3 predicts the next subtask.
+Gemma 3 预测下一步子任务。
+The flow matching action expert then generates continuous action chunks
+流匹配动作专家生成连续动作块。
+Those joint and gripper commands run at 50Hz.
+关节和夹爪指令以 50Hz 执行。
+FAST adds a separate, discrete action training signal
+FAST 提供独立的离散动作训练信号。
+A stop gradient keeps the continuous action loss
+停止梯度，让连续动作损失
+from updating the shared vision language backbone
+不会更新共享的视觉语言主干。
+
+00:43–00:58｜Experience and corrections
+Now watch this box assembly clip from their website
+看这段官网的装箱演示。
+The robot starts on its own
+机器人先自主执行。
+A person can take over and correct a mistake
+遇到失误时，人可以接管纠正。
+The red and green borders show those two modes
+红绿边框标出这两种执行状态。
+Corrections and task success labels feed the next training round
+纠错和成功标签进入下一轮训练。
+
+00:58–01:19｜Value and advantage
+Figure 4 shows how experience becomes a learning signal.
+图 4：经验怎样变成学习信号。
+Each step has a time cost. Failure adds a penalty
+每一步有时间成本，失败还有惩罚。
+The value model estimates the remaining cost of completing the task
+价值模型估计完成任务的剩余代价。
+After a mistake, value drops. After recovery, it rises
+失误后价值下降，恢复后回升。
+Rewards and value changes over the next few steps
+随后几步的奖励和价值变化
+give us the action advantage
+共同构成动作优势。
+
+01:19–01:45｜Where the condition goes
+Back to Figure 3. This small indicator is the key.
+回到图 3，关键是这个小标记。
+It comes after the subtask, but before the actions
+它位于子任务之后、动作之前。
+So it changes action prediction
+因此它影响的是动作预测。
+For autonomous rollouts, advantages above the task specific threshold get a positive label
+自主轨迹中，超过任务阈值的优势标为正。
+Other rollout samples get a negative label
+其余自主轨迹样本标为负。
+Expert corrections are labeled positive
+专家纠错样本则标为正。
+Training keeps both kinds of experience
+训练保留这两类经验。
+At execution, we ask for the positive condition
+执行时，指定正优势条件。
+
+01:45–02:03｜Training the action generator
+Equation 4 connects that condition to action training.
+公式 4 把优势条件接入动作训练。
+Discrete actions use cross entropy
+离散动作用交叉熵。
+Continuous actions use the flow matching loss
+连续动作用流匹配损失。
+This lets RECAP use the existing generative training recipe,
+RECAP 可以沿用生成动作训练方式，
+without directly computing an exact continuous action likelihood
+绕开直接计算精确连续动作似然。
+
+02:03–02:23｜Success and speed
+Figure 11: the same robot data for T-shirts and shorts.
+图 11：同一批恤衫和短裤机器人数据。
+RECAP completes about 60 successful tasks per hour.
+RECAP 每小时成功完成约 60 次。
+AWR completes about 30.
+AWR 约 30 次。
+Their success rates, on the right, are fairly close
+右侧的成功率却比较接近。
+The useful difference here is execution speed,
+这里有信息量的差异，是执行速度，
+as well as whether the task succeeds
+它和任务能否成功，需要一起看。
+
+02:23–02:49｜Real task results
+Figure 7 gives us the task-level results.
+图 7 展示具体任务的结果。
+Coffee throughput rises from 14.7
+咖啡吞吐量从 14.7 次/h，
+to 28.8 successes per hour.
+提高到 28.8 次/h。
+For the hardest button down shirt in diverse laundry,
+多样衣物中最难的纽扣衬衫，
+it rises from 3.85 to 8.3 successes per hour.
+从 3.85 提高到 8.3 次/h。
+Baseline: offline RL plus demonstration fine-tuning.
+对照是离线强化学习加示范微调。
+The website clips show the motions
+官网片段帮助我们看动作过程。
+These plots are the evidence for the improvement
+这些实验图，才是提升的定量证据。
+
+02:49–03:10｜The learning loop and its limits
+Finally, look at the training loop
+最后看训练循环。
+Collect experience, update the value model, then retrain the policy offline
+收集经验、更新价值模型、离线重训策略。
+It still needs human success labels, corrections, and environment resets
+仍需人工成功标签、纠错和环境重置。
+The contribution is a practical way to feed real task feedback
+它把真实任务反馈，
+into VLA action training, and improve over successive rounds.
+接入 VLA 动作训练，逐轮改进。
+
+官网片段只展示动作过程，定量提升以论文图表为准。
+
+论文证据与分析边界：
+P1/Fig.1：训练整体流程。
+P4/Fig.3 + P6/V-A：Gemma 3 4B、SigLIP 400M、860M 流匹配动作专家；50Hz 是关节/夹爪指令频率，不是 VLM 推理频率。FAST 离散动作与连续动作独立预测，离散动作不是动作专家输入。停止梯度防止连续动作损失更新共享 VLM。
+P5/Fig.4 + P6/V-C：每步 -1，成功末步 0，失败末步 -C_fail；价值用归一化回报训练，估计任务完成代价。N 步奖励和状态价值差构成优势。
+P4/Fig.3 + P6/V-B：I=1[A>ε_task]；阈值依任务设定，不能简化成固定 A>0；自主轨迹按阈值分正负，专家纠错样本标为正。条件在子任务之后、离散/连续动作之前；训练包含两类经验，默认执行 I=True。
+P6/Eq.4：离散交叉熵与连续流匹配训练目标；精确连续动作似然难以直接求值。不是声称 PPO 不可用；论文另有近似似然的 PPO 基线。
+P10/Fig.11：同一批 T-shirts/shorts 机器人数据，RECAP 吞吐量约60/h，AWR约30/h；成功率约95%和91%。训练配置与输入条件并非完全一致，不是单一变量的完全隔离实验。
+P9/Fig.7：基线是 OfflineRL + target demonstration SFT；咖啡14.7→28.8/h；多样衣物定量测最难纽扣衬衫3.85→8.3/h。不是跨 VLA 的统一排行榜。
+P6/Algorithm1 + P11/Discussion：分批收集后离线更新，依赖人工成功标签、纠错和环境重置。成片未将其描述成持续在线自主更新。

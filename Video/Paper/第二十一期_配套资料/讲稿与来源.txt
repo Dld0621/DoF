@@ -1,0 +1,55 @@
+﻿DoF Paper EP.21 | Searching for Contact with Force
+看不准时，机器人怎样靠力找位置？
+
+01 The hole is not where expected / 孔位和预期不一致
+A peg touches the rim because the estimated hole position is slightly wrong. FORGE teaches a robot to use contact force while searching, rather than repeatedly pushing toward the same inaccurate visual target.
+估计孔位稍有偏差，插销就会碰到边缘。FORGE 学习利用接触力搜索，不只是继续朝目标推。
+Source: https://arxiv.org/pdf/2408.04587v2#page=3
+
+02 Force becomes policy input / 把力交给策略
+The recurrent policy receives robot motion state, estimated contact force, and a force threshold. It predicts relative motion targets for impedance control, along with a signal estimating whether the assembly step has succeeded.
+循环策略读取运动状态、估计接触力和力阈值。输出阻抗运动目标，并预测装配步骤是否成功。
+Source: https://arxiv.org/pdf/2408.04587v2#page=1
+
+03 Learn to respect a threshold / 学习遵守力阈值
+During training, contact force above the chosen threshold incurs an additional penalty. The threshold also conditions the policy, allowing different behaviors for gentle searching and tasks that genuinely require stronger insertion forces.
+训练中，超过阈值的接触力会带来额外惩罚。阈值也作为策略输入，区分轻柔搜索与高力插入。
+Source: https://arxiv.org/pdf/2408.04587v2#page=3
+
+04 Randomize the execution conditions / 随机化执行条件
+Dynamics and controller gains vary in simulation, preparing the policy for uncertain hardware behavior. This is distinct from merely adding noise to a camera image: the training must cover how actions produce forces.
+仿真随机化动力学和控制增益，覆盖执行不确定性。不只给图像加噪，还要覆盖动作怎样产生力。
+Source: https://arxiv.org/pdf/2408.04587v2#page=3
+
+05 How force is measured / 力来自哪里
+The Franka setup estimates end-effector force from joint torques, without requiring an external force-torque sensor. Most evaluations start from calibrated fixtures and inject position errors, so their disturbance protocol is deliberately controlled.
+Franka 用关节力矩估计末端力，无需外置力传感器。多数测试预先标定工件，再人为加入位置误差。
+Source: https://arxiv.org/pdf/2408.04587v2#page=4
+
+06 Read the matched results / 读取同协议结果
+Across forty-five trials per task, FORGE reaches ninety-eight percent on medium-gear meshing. The matched IndustReal baseline reaches eighty-seven percent; peg insertion and nut threading show different gains, so one average would hide useful detail.
+每任务四十五次，中型齿轮啮合成功率九十八。同表基线八十七；插销和螺母任务增益各不相同。
+Source: https://arxiv.org/pdf/2408.04587v2#page=5
+
+07 What nut success means / 螺母成功怎样定义
+Nut threading reaches sixty-nine percent, compared with thirty-six for the matched baseline. Here success means engaging roughly a quarter of one thread, not tightening the nut all the way to the base.
+螺母任务六十九，匹配基线三十六。成功只要求约四分之一牙接合，并非拧到底。
+Source: https://arxiv.org/pdf/2408.04587v2#page=5
+
+08 Tolerance is not a guarantee / 容错不是安全保证
+The five-millimeter number describes injected input error, not final positioning precision. A soft force penalty also cannot guarantee a hard force limit; excessive uncertainty or a threshold set too low can still prevent completion.
+五毫米指人为输入误差，不是最终定位精度。软惩罚不保证力硬上限；误差或阈值仍会导致失败。
+Source: https://arxiv.org/pdf/2408.04587v2#page=6
+
+09 Use touch to guide the search / 用接触指导搜索
+FORGE makes contact a useful source of information during assembly under uncertainty. Its practical value depends on the task, sensing calibration, force settings, and success criterion, which must stay visible when comparing methods.
+FORGE 让装配中的接触成为有用信息。评估时应同时保留任务、标定、力设置和成功定义。
+Source: https://arxiv.org/pdf/2408.04587v2#page=7
+
+
+Sources
+https://arxiv.org/abs/2408.04587
+https://arxiv.org/pdf/2408.04587v2
+https://noseworm.github.io/forge/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

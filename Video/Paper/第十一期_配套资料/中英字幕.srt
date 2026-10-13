@@ -1,0 +1,124 @@
+﻿1
+00:00:00,850 --> 00:00:05,290
+Rotating an object becomes harder when gravity pulls it away from the palm.
+重力把物体拉离手掌时，旋转更困难。
+
+2
+00:00:05,810 --> 00:00:11,850
+AnyRotate adds continuous tactile information to control rotation across different hand orientations.
+AnyRotate加入连续触觉，适应不同手部朝向。
+
+3
+00:00:12,230 --> 00:00:17,870
+It studies commanded rotation axes, rather than precise stopping at every possible final pose.
+它研究指定旋转轴，不是任意最终姿态精准停止。
+
+4
+00:00:18,522 --> 00:00:24,182
+Optical fingertip sensors observe deformation as the fingers contact and load the object.
+光学指尖传感器观察接触与受载时的形变。
+
+5
+00:00:24,622 --> 00:00:30,382
+A learned perception model estimates contact orientation and force-related information from those images.
+感知模型从图像估计接触朝向和力相关信息。
+
+6
+00:00:30,902 --> 00:00:35,382
+These features provide more detail than a simple contact-on or contact-off signal.
+这些特征比简单的有接触、无接触更丰富。
+
+7
+00:00:35,987 --> 00:00:42,387
+Robot motion supplies contact-pose labels, while a force-torque sensor supplies force labels.
+机器人运动提供接触姿态标签，力矩传感器提供力标签。
+
+8
+00:00:42,587 --> 00:00:47,447
+Each fingertip uses three thousand real images to train and test its perception model.
+每个指尖用3000张实拍图训练与测试感知。
+
+9
+00:00:47,967 --> 00:00:53,027
+Zero-shot policy transfer therefore does not mean the entire system uses no real data.
+所以策略零样本迁移不等于整个系统不用实拍数据。
+
+10
+00:00:53,591 --> 00:00:59,511
+A privileged teacher learns rotation in simulation with access to object and gravity information.
+特权教师在仿真中利用物体与重力信息学习旋转。
+
+11
+00:01:00,091 --> 00:01:04,891
+A student learns from observable history, target axes, and continuous tactile features.
+学生从可观测历史、目标轴和连续触觉中学习。
+
+12
+00:01:05,231 --> 00:01:08,791
+The deployed policy does not receive the object's true pose as an input.
+部署策略不把物体真实位姿作为输入。
+
+13
+00:01:09,322 --> 00:01:14,022
+With the palm downward, dense touch reaches one point three three turns around x.
+掌朝下时，连续触觉绕x轴达到1.33圈。
+
+14
+00:01:14,502 --> 00:01:18,302
+Binary touch reaches point-eight-seven turns in the same reported comparison.
+同一对照中，二值触觉达到0.87圈。
+
+15
+00:01:18,842 --> 00:01:23,722
+The difference supports richer contact features within this platform and experimental protocol.
+差异支持该平台、该协议下更丰富的接触特征。
+
+16
+00:01:24,458 --> 00:01:29,938
+The study also tests six hand orientations and rotation around different commanded axes.
+研究还测试六种手朝向和不同指定旋转轴。
+
+17
+00:01:30,598 --> 00:01:34,138
+Rotation is measured in turns, while time ends at dropping or stopping.
+旋转用圈数，时间到掉落或停转时终止。
+
+18
+00:01:35,038 --> 00:01:38,478
+Comparison requires matched objects, axes, and termination rules;
+比较需要统一物体、旋转轴与终止规则；
+
+19
+00:01:39,018 --> 00:01:40,958
+target-pose error measures a different goal.
+目标姿态误差衡量的是另一种目标。
+
+20
+00:01:41,431 --> 00:01:47,711
+Sharp edges and multiple simultaneous contacts are difficult for the simplified contact representation.
+尖锐边缘与多点同时接触，难以被简化表示处理。
+
+21
+00:01:48,191 --> 00:01:52,751
+Some hand orientations also expose mechanical limits of the finger actuators.
+某些朝向还会暴露手指驱动器的机械限制。
+
+22
+00:01:53,091 --> 00:01:57,431
+Better sensing cannot automatically overcome all of those hardware and modeling constraints.
+更好感知也不能自动克服全部硬件与建模限制。
+
+23
+00:01:58,118 --> 00:02:04,398
+AnyRotate demonstrates why contact direction and loading can matter beyond detecting contact alone.
+AnyRotate说明，接触方向与负载比仅知接触更有用。
+
+24
+00:02:04,798 --> 00:02:09,678
+The strongest evidence is improved continuous rotation within matched tactile comparisons.
+最强证据来自同协议触觉对照下的持续旋转改善。
+
+25
+00:02:10,218 --> 00:02:14,938
+Precise assembly or final orientation would still require their own objectives and tests.
+精密装配或最终姿态仍需要各自目标和测试。

@@ -1,0 +1,84 @@
+﻿深度中篇：控制器怎样学会接触与换握
+
+A controller learns the missing contact strategy / 控制器学习的是缺失的接触策略
+Our screwdriver is already grasped, but its shaft still points sideways. The operator requests a new orientation and a compatible arrangement of fingertips. Reinforcement learning trains the controller by trying actions in simulation and rewarding useful outcomes. The missing lesson is how to change contacts while keeping the tool supported. We can inspect that lesson through its inputs, actions, goals, and rewards.
+螺丝刀已经抓住，但刀杆仍然横着。操作者给出新的朝向，以及与之匹配的指尖排列。强化学习通过仿真试动作，并奖励有用的结果。它要补上的，是换接触时怎样继续托住工具。从输入、动作、目标和奖励，可以拆开这堂课。
+Source: Author project demonstration · original encoded speed retained · bigai-dex.github.io
+
+What enters the policy / 究竟输入了哪些量
+Each control step starts with a numerical description of the hand and screwdriver. It includes joint positions, their sine and cosine encodings, object pose, and gravity direction. Targets, target errors, and the previous command complete the packet. That totals one hundred forty-two values for SharpaWave, or one hundred twelve for LeapHand. Images, measured contact forces, and joint velocities are absent from this policy input.
+每个控制步，先用数值描述手和螺丝刀。包括关节位置及正余弦、物体位姿和重力方向。再加入目标、目标误差和上一条命令。SharpaWave合计142维，LeapHand为112维。这个策略输入不包含图像、实测接触力或关节速度。
+Source: TeleDexter · Table 7 · PDF p.20 · arXiv:2607.11481v1
+
+An action can mean hold still / 动作也可以是保持原位
+The policy produces one normalized action value for each controllable hand joint. These values adjust the previous position command rather than replacing it with copied human angles. A deadzone makes outputs between minus point one and plus point one produce no change. Larger outputs produce scaled increments, clipped to the joint limits. Holding a useful contact therefore becomes an explicit option during screwdriver rotation.
+策略为每个可控手关节输出一个归一化动作值。这些值调整上一位置命令，并不直接照搬人手角度。死区使负0.1到正0.1之间的输出不产生变化。更大的输出转成缩放增量，再裁到关节限位内。因此，转动螺丝刀时可以明确选择维持有用接触。
+Source: DoF explanatory schematic · Appendix C.1
+
+Targets wait for the hand / 目标会等待手完成动作
+During training, a reference trajectory supplies destinations for both fingertips and object pose. The active destination stays in place until the robot satisfies its arrival conditions. This leaves time to lift a finger, roll the screwdriver, and rebuild support. The illustrated sequence is one possible strategy, not a prescribed motor script. The real operator later supplies live goals; deployment does not replay this training timetable.
+训练时，参考轨迹同时提供指尖与物体的目标。当前目标会保持，直到机器人满足到达条件。这样才有时间抬指、滚动螺丝刀，再建立支撑。动画是一种可能策略，并非预先规定的电机脚本。实机目标由操作者实时提供，并不重播训练时间表。
+Source: DoF explanatory schematic · Section 3.1; training only
+
+Three checks must pass together / 三个检查必须同时通过
+A rotated screwdriver alone does not complete the training subgoal. Its position error must be below one centimeter, and every fingertip error below three centimeters. The object rotation error must also be below ten degrees. All conditions must hold for a randomly selected five to fifteen consecutive frames. These are arrival thresholds used for training, not a measurement of achieved hardware precision.
+螺丝刀转到目标朝向，还不算完成训练子目标。物体位置误差须小于1厘米，每个指尖误差小于3厘米。物体旋转误差还须小于10度。所有条件须连续保持随机选定的5到15帧。这些是训练到达阈值，不是实机精度的测量结果。
+Source: DoF explanatory schematic · Table 8; training thresholds, not measured accuracy
+
+The next goal can change demonstrations / 下一目标可以来自另一段示范
+After a hit, the usual next target comes from later in the same demonstration. The allowed reference gap grows as training becomes harder. With ten percent probability, the system instead chooses another demonstration for the same object. It keeps the frame index while changing the target trajectory. The simulated screwdriver stays where it is, forcing the controller to connect different demonstrated configurations.
+到达后，下一目标通常来自同一示范的后续位置。训练越深入，允许的参考间隔越大。但有10%的概率，改选同一物体的另一段示范。此时保留帧索引，只更换目标所在轨迹。仿真螺丝刀不会瞬移，控制器必须连接不同示范状态。
+Source: DoF explanatory schematic · Appendix C.4; same-object target switching
+
+The main reward pays for arrival / 主要奖励在真正到达时触发
+The main reward appears when that sustained arrival condition is met. Its score combines fingertip accuracy with object position and rotation accuracy. An exponential curve turns each error into a score that increases as the error shrinks. A larger reference jump receives a larger multiplier, reducing the appeal of trivially nearby goals. For our screwdriver, moving fingers without delivering the required object pose cannot trigger this bonus.
+主要奖励只在持续到达条件满足时出现。分数同时考虑指尖、物体位置和物体旋转精度。指数函数把误差变成分数，误差越小，分数越高。参考跨度越大，乘数越高，降低只追极近目标的吸引力。只移动手指，却没让螺丝刀达到目标，就不能触发该奖励。
+Source: DoF explanatory schematic · Equations 5–7; schematic signals
+
+A small guide and a running cost / 少量引导奖励，加上持续时间成本
+An untrained hand may never reach the first screwdriver target without some guidance. A smaller dense reward therefore scores tracking at every step, including selected finger knuckles. Its outer scale is point one, while each step also costs point one. The guide helps exploration, and the running cost discourages staying near a goal forever. Neither should be mistaken for a direct measurement of grip force or task success.
+未经训练的手可能连第一个螺丝刀目标都到不了。所以每步还给较小的密集跟踪奖励，包含特定指节。它的外层权重是0.1，每一步另扣0.1。引导项帮助探索，时间成本抑制永远停在目标附近。这两者都不是抓握力或任务成功的直接测量。
+Source: TeleDexter · Table 8 · PDF p.21 · arXiv:2607.11481v1
+
+Difficulty grows along several axes / 训练难度从多个方向逐渐增加
+The hand first learns with reduced weight and easier goal transitions. Gravity rises from zero to normal strength over thirty-two thousand frames per simulated environment. The maximum reference gap grows from forty frames to about eighty. Allowed command freezes also become longer, and the dense object reward gradually gains weight. These coordinated changes make maintaining and changing screwdriver contacts progressively more demanding.
+手先在较轻负载和较容易的目标变化下学习。每个仿真环境经历32000帧，重力从零增至正常值。最大参考间隔从40帧增长到约80帧。允许冻结命令的时长也变长，密集物体奖励逐渐增强。这些变化逐步提高了维持和切换螺丝刀接触的难度。
+Source: DoF explanatory schematic · Appendix C.3; reference-frame rate unresolved
+
+A reset changes the state, not just the target / 重置状态与更换目标是两回事
+Changing the target leaves the current hand and object state intact. An episode reset is different: it restarts the simulated system from a reference configuration. The sampled starting frame comes from the first ninety percent of its assigned clip. Excessive object position error, unsafe velocities, or too many unsuccessful tracking frames trigger termination. This exposes learning to many screwdriver states instead of only repeating the opening grasp.
+更换目标时，当前手和物体状态保持原样。回合重置则不同：仿真系统从一个参考配置重新开始。起始帧从分配片段的前90%中随机选择。物体位置误差过大、速度不安全或超差帧过多，都会终止回合。这样能学习多种螺丝刀状态，而不只是反复练习初始握法。
+Source: DoF explanatory schematic · Appendix C.4; target reset vs state reset
+
+Mask three joints, keep their old commands / 选三个关节，暂时保持旧命令
+Simulation often lets every motor follow a fresh command at exactly the expected moment. Random action masking deliberately interrupts that convenient coordination during training. When no mask is active, each step has a fifteen percent chance of starting one. Three joint dimensions then keep their old commands for a sampled duration. Other joints receive fresh commands, and the freeze limit eventually reaches ten control steps.
+仿真里，所有电机往往能按预期时刻接收新命令。随机动作掩码在训练时，故意打断这种理想协调。没有活跃掩码时，每步有15%的概率触发新掩码。随后，三个关节维度在随机时长内保持旧命令。其他关节接收新命令，冻结上限最终增至10个控制步。
+Source: DoF explanatory schematic · Appendix C.8; selected DoFs, not fingers
+
+Why stale commands change the learned strategy / 为什么过期命令会改变学到的策略
+Imagine one screwdriver-supporting joint receiving an older command while neighboring joints move. The command can remain stale for several control steps. A strategy depending on perfectly simultaneous motor motion becomes unreliable under this stress test. The policy must learn contact transitions that tolerate partially delayed responses. The held command does not physically lock the joint; the object and fingers still obey simulated dynamics.
+想象支撑螺丝刀的某个关节仍接收旧指令，而相邻关节继续运动。这条旧指令可能持续若干个控制步。依赖电机绝对同步的策略，在这种测试下就不可靠。策略必须学会容忍部分响应延迟的接触切换。保持命令并不会把关节机械锁死，物体与手指仍遵守仿真动力学。
+Source: DoF explanatory schematic · Appendix C.8; commands held, joints not locked
+
+Vary the screwdriver and the measurements / 同时改变工具物理与观测误差
+Domain randomization changes simulated conditions so the policy cannot rely on one perfectly calibrated world. Object mass ranges from half to twice its nominal value, with friction and size varied too. Position noise, orientation noise, delayed observations, and external forces add further uncertainty. Our illustrated screwdriver becomes heavier, slipperier, or imperfectly observed across training episodes. This broadens experience, but real tool impacts still expose a documented training gap.
+域随机化改变仿真条件，避免策略依赖一个完美标定的世界。物体质量从标称值的一半到两倍，摩擦与尺寸也会变化。位置噪声、朝向噪声、观测延迟与外力继续增加不确定性。教学示例中的螺丝刀会在不同训练回合变重、变滑或被观测得不准。这扩大了经验范围，但真实工具冲击仍是论文记录的训练缺口。
+Source: TeleDexter · Table 9 · PDF p.25 · arXiv:2607.11481v1
+
+Exploration needs more than one easy trick / 探索不能只找到一种容易的动作
+The same screwdriver references can require rolling, finger gaiting, and larger changes of grasp. Learning only one convenient motion would leave much of that repertoire uncovered. The authors use SAPG, which combines gradients from multiple independently exploring policy blocks. Their configuration uses six blocks and a recurrent network with five hundred twelve memory units. That memory helps use recent context without adding measured velocity or tactile forces to the observations.
+同一组螺丝刀参考可能需要滚动、换指和更大幅度的换握。只学会一种方便的动作，就覆盖不了这些变化。作者使用SAPG，汇聚多个独立探索策略块的梯度。配置采用六个策略块，以及512个记忆单元的循环网络。这种记忆帮助利用近期上下文，而无需额外输入实测速度或触觉力。
+Source: DoF explanatory schematic · Table 10; Appendix A.2; C.9
+
+Single-stage describes training, not universal coverage / 单阶段描述训练方式，不代表通用覆盖
+Each controller trains for roughly ten billion simulated environment steps on four RTX fifty-ninety GPUs. The authors report sixty-two thousand four hundred parallel environments and about one day of training. One training run can learn several contact behaviors for its object. Single-stage does not mean one controller already handles every unfamiliar tool. The published method still collects reference motions and trains a dedicated policy for a new object.
+每个控制器在四张RTX5090上训练约100亿个仿真环境步。作者报告62400个并行环境，训练约一天。一次训练可以学会该物体的多种接触行为。单阶段并不意味着一个控制器已能处理所有陌生工具。公开方法处理新物体时，仍需采集参考动作并训练专门策略。
+Source: DoF explanatory schematic · Appendix C.9; Section 6
+
+The mechanism is clear; several details remain open / 机制可以理解，部分细节仍待确认
+Understanding the mechanism does not require pretending that every reproduction detail is settled. Capture is reported at thirty hertz, while one curriculum conversion assumes sixty-hertz references. The main text mentions tightening tolerances without a complete appendix schedule. The surface-attraction threshold also lacks a stated unit. We retain those uncertainties, then ask the practical question: how reliably does this learned loop work on real hardware?
+理解机制，不等于所有复现细节都已经明确。采集写的是30赫兹，而一处课程换算用了60赫兹参考。正文提到收紧容差，但附录没有完整调度。表面吸引阈值也没有注明单位。保留这些不确定性后，再看实际问题：这个学习闭环在真机上究竟有多可靠？
+Source: DoF explanatory schematic · Appendix C.3, C.5, C.6; unresolved details
+
+https://arxiv.org/pdf/2607.11481v1
+https://bigai-dex.github.io/blog/teledexter/

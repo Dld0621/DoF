@@ -1,0 +1,94 @@
+﻿1
+00:00:00,850 --> 00:00:06,790
+Human fingers and robot joints have different mechanics, even when both open a microwave door.
+即使都在开微波炉，人手和机器人结构也不同。
+
+2
+00:00:07,310 --> 00:00:12,270
+Dexterous Point Policy asks whether a small set of three-dimensional points can connect them.
+DPP研究能否用少量三维点连接两种手型。
+
+3
+00:00:12,774 --> 00:00:19,434
+The shared abstraction uses a wrist point and five fingertips, alongside task-relevant object points.
+共享表示包含手腕、五个指尖和任务相关物体点。
+
+4
+00:00:19,914 --> 00:00:25,934
+Both observations and predicted actions use this geometry instead of directly sharing incompatible joint angles.
+观测与预测动作都用这套几何，避免直接共享异构关节角。
+
+5
+00:00:26,578 --> 00:00:33,418
+Object segmentation, depth estimation, and hand tracking turn demonstrations into three-dimensional trajectories.
+分割、深度估计和手追踪把示范转成三维轨迹。
+
+6
+00:00:33,798 --> 00:00:40,338
+Lightweight manual contact annotation supplies contact points; human data still requires structured preparation.
+轻量人工标注提供接触点，数据仍需结构化处理。
+
+7
+00:00:41,012 --> 00:00:45,592
+An autoregressive transformer learns point-level behavior from human videos,
+自回归Transformer学习人类点轨迹，
+
+8
+00:00:45,772 --> 00:00:47,752
+then adapts to individual tasks.
+再适配各项任务。
+
+9
+00:00:48,132 --> 00:00:53,532
+The policy predicts hand-point motion and contact information rather than a finished robot motor command.
+策略预测手部点运动与接触信息，而非直接电机指令。
+
+10
+00:00:54,103 --> 00:00:59,303
+Inverse kinematics converts predicted points into commands for the robot hand and arm.
+逆运动学把预测点转换为手臂与手的指令。
+
+11
+00:00:59,623 --> 00:01:05,563
+A contact-aware closing bias helps establish a grasp, but does not measure actual contact force.
+接触感知闭合偏置帮助抓握，但没有测量真实接触力。
+
+12
+00:01:06,108 --> 00:01:11,988
+The physical system uses OpenArm arms and Inspire hands, trained without robot demonstrations.
+真机采用OpenArm和Inspire手，无机器人示教。
+
+13
+00:01:12,508 --> 00:01:17,928
+Each task uses one hundred human demonstrations and twenty-four single-attempt evaluation trials.
+每任务100条人类示范，24次单次尝试评测。
+
+14
+00:01:18,592 --> 00:01:25,372
+Average success across eight tasks is seventy-five percent, but the three manipulation tasks are harder.
+八任务平均75%，其中三项操作任务更难。
+
+15
+00:01:26,212 --> 00:01:32,732
+Opening reaches eighty-seven point five; scrubbing sixty-two point five; spraying forty-one point seven percent.
+开微波炉87.5%、刷洗62.5%、喷洒41.7%。
+
+16
+00:01:33,298 --> 00:01:38,818
+The low baseline scores come from methods adapted under the same human-only data constraint.
+较低基线分数来自相同纯人类数据约束下的适配。
+
+17
+00:01:39,318 --> 00:01:43,942
+They do not establish superiority over every robot-trained vision-language-action model.
+不能由此推出优于所有机器人数据训练的VLA。
+
+18
+00:01:44,392 --> 00:01:50,492
+A shared point representation reduces the embodiment gap while keeping the control conversion explicit.
+共享点表示缩小形态差距，同时保留明确控制转换。
+
+19
+00:01:51,032 --> 00:01:58,332
+Its practical limits remain point extraction, stereo depth, robot geometry, and reliable inverse kinematics.
+实际边界包括点提取、立体深度、机器人几何和逆解。

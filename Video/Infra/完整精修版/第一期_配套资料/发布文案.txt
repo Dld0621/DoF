@@ -1,0 +1,12 @@
+﻿DoF Infra EP.01 | Before a Robot Moves: World Models
+
+机器人动手之前，能不能先预见后果？
+
+从同一只杯子的抓取任务出发，4 分钟看清世界模型：观测怎样变成状态，动作怎样改变预测，为什么执行一步后还要重新观察。结合 DayDreamer、TD-MPC2、V-JEPA 2 与 RoboDreamer 的原论文图和官方演示，区分训练中的想象、执行时的规划，以及生成视频、仿真结果和真实机器人证据。
+
+DoF Infra 第一期，为具身智能建立可追溯的认知基础。英文解说 / 中英字幕 / 原论文与演示索引。
+GitHub：https://github.com/Dld0621/Embodied-AI-Paper-Analysis
+
+#具身智能 #世界模型 #机器人学习 #WorldModel #DoF_Infra #DoF_AGI
+
+制作说明：AI 合成配音；动画为原理示意，不是实验测量。

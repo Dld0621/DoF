@@ -1,0 +1,14 @@
+﻿00:00 姿态对了，为什么还会掉？ / The pose is right. Why does it drop?
+00:32 目标角度不是力 / A target is not a force
+01:05 QuasiSim：改变优化所处的物理环境 / QuasiSim changes the optimization world
+01:38 收紧约束，再验证执行 / Tighten constraints, then verify
+02:09 ManipTrans：先学会跟随手部运动 / ManipTrans first learns hand motion
+02:41 残差负责交互修正 / A residual handles interaction
+03:15 先看基线，再读分数 / Read the baselines before the score
+03:50 把所有计算成本算进去 / Account for all computation
+04:23 SPIDER：搜索控制序列 / SPIDER searches control sequences
+04:56 物理可行，不一定符合原意 / Physical does not always mean intended
+05:29 生成吞吐，不是播放帧率 / Throughput is not playback speed
+06:00 DexH2R：按任务修正动作 / DexH2R: task-conditioned correction
+06:37 TeleDexter：给子目标，让控制器执行 / TeleDexter: command subgoals
+07:13 先选清楚需要什么产物 / Choose the output you actually need

@@ -1,0 +1,49 @@
+﻿DoF Paper EP.35 | UmeTrack: From Headset Images to a Moving Hand
+UmeTrack：头显画面怎样还原运动人手
+
+01 Before teleoperation comes the hand estimate / 遥操作之前，先估计人手
+When two hands overlap in a headset image, several fingers can disappear at once. UmeTrack combines camera geometry, multiple views, and temporal memory to estimate hand motion. It is a perception foundation for interaction, not a robot manipulation policy.
+头显里双手重叠时，多根手指会同时消失。UmeTrack结合相机几何、多视角与时序估计人手。它是交互的感知基础，不是机器人操作策略。
+Source: https://arxiv.org/pdf/2211.00099v1; PDF page 7
+
+02 Resample without losing camera geometry / 重采样，同时保留相机几何
+Wide-angle headset images are resampled into perspective hand crops with known camera transforms. This gives the network a consistent view while retaining the geometric relationship between cameras. Cropping is a distinct step from finding a lost hand in the full image.
+广角头显画面按已知变换重采样成人手透视裁剪。这样让输入视角一致，并保留相机间几何关系。裁剪与在完整画面重新找回丢失的人手是两步。
+Source: https://arxiv.org/pdf/2211.00099v1; PDF page 3
+
+03 Fuse learned features in a common frame / 在共同坐标中融合学习特征
+Each crop becomes learned features that are transformed into a common coordinate frame. Features from available views are fused before the temporal module updates its state. These transformed features are not a measured depth point cloud.
+每个裁剪先编码，再变换到共同坐标系。可用视角的特征先融合，再更新时序模块状态。这些变换后的特征不是实测深度点云。
+Source: https://arxiv.org/pdf/2211.00099v1; PDF page 3
+
+04 Predict pose, then build the hand / 先预测姿态，再构造人手
+The known-skeleton branch predicts twenty joint angles plus a six-dimensional root pose. Forward kinematics places the joints, and skinning produces the corresponding hand surface. The unknown-skeleton route estimates scale rather than a complete personalized surface scan.
+已知骨架分支预测20个关节角与六维根姿态。正运动学放置关节，蒙皮生成对应人手表面。未知骨架路线估计尺度，并非完整个体表面扫描。
+Source: https://arxiv.org/pdf/2211.00099v1; PDF page 5
+
+05 Training references come from another system / 训练参考来自另一套系统
+Real training labels come from a separate thirty-six-camera optical motion-capture setup. Surface markers and scanned hand models are fitted to recover the labeled motion. The headset does not generate those reference poses independently from its own predictions.
+真实训练标签来自另一套36相机光学动捕系统。表面标记与扫描手模型经过拟合，恢复标注运动。头显并不是独立用自身预测生成这些参考姿态。
+Source: https://arxiv.org/pdf/2211.00099v1; PDF page 5, Section 4: external 36-camera motion-capture labels.
+
+06 Temporal evidence helps through occlusion / 时序证据帮助渡过遮挡
+Recent observations help maintain a plausible hand when part of it becomes hidden. But memory cannot directly observe a new motion that every camera misses. Smooth output must therefore be considered alongside position error and tracking failures.
+部分人手被遮挡时，近期观测帮助维持合理姿态。但所有相机都没看到的新动作，记忆无法直接观测。因此，平滑输出应与位置误差和追踪失败一起看。
+Source: https://arxiv.org/pdf/2211.00099v1; PDF page 7
+
+07 Read the corrected results and evaluation inputs / 核对修正结果与评测输入
+The official corrected table reports nine point four millimeters for known, separate hands. Public evaluation also provides ground-truth-guided crops, which simplifies the input localization problem. That score is not end-to-end detection, recovery, or robot fingertip accuracy.
+官方修正表中，已知手型分离双手误差9.4毫米。公开评测还使用真值引导裁剪，简化了定位问题。这个分数不是完整检测、重捕获或机器人指尖精度。
+Source: Original Table 3; highlighted 9.4 mm agrees with official corrected README. Original MPJPA and unknown-skeleton columns are superseded; do not present them as corrected results. https://github.com/facebookresearch/UmeTrack#results
+
+08 Keep the sensing and control claims separate / 分开感知与控制结论
+UmeTrack offers a clear example of geometry-aware visual tracking and model-based hand representation. For teleoperation, calibration, robot retargeting, contact, and latency remain additional engineering problems. Use it to understand the pipeline, without calling a historical tracker today's universal winner.
+UmeTrack展示了结合几何的视觉追踪与模型人手表示。遥操作还要解决标定、重定向、接触与延迟。用它理解链路，不把历史方法称作今天的通用冠军。
+Source: https://arxiv.org/pdf/2211.00099v1; PDF page 5
+
+
+Sources
+https://arxiv.org/pdf/2211.00099v1
+https://github.com/facebookresearch/UmeTrack
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

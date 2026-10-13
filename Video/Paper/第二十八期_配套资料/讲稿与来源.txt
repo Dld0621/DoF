@@ -1,0 +1,54 @@
+﻿DoF Paper EP.28 | DEX-X | Recover the Touch Missing from Video
+DEX-X：人类视频没有触觉，机器人怎样学？
+
+01 Video cannot measure touch / 视频里缺失的触觉
+A human video shows fingers moving around a cup, but never measures their contact forces. DEX-X uses simulated interaction to recover supervision that ordinary video cannot directly provide.
+视频能看到手指绕杯运动，却没有测量接触力。DEX-X用仿真交互补充普通视频缺失的监督。
+Source: Original paper Figure 1, human-to-simulation cup example · PDF p. 1 · arXiv:2609.07747v1
+
+02 Reconstruct the interaction / 重建手与物体的交互
+First, reconstruct the hand and object motion from a monocular human demonstration. Retargeted references guide a simulated robot, while physical contacts generate additional force information.
+首先，从单目人类示范重建手与物体运动。重定向参考引导仿真机器人，接触产生额外力信息。
+Source: https://arxiv.org/pdf/2609.07747v1; Figure 2 | teacher and student, PDF p3
+
+03 Train a privileged teacher / 先训练有特权信息的教师
+A reinforcement-learning teacher receives reference motion, object state, and tactile contact information. This privileged input makes skill learning easier inside simulation, where otherwise hidden quantities are available.
+强化学习教师读取参考运动、物体状态和触觉。仿真提供现实中难直接观测的信息，帮助学习技能。
+Source: https://arxiv.org/pdf/2609.07747v1; Figure 2 | teacher and student, PDF p3
+
+04 Distill a deployable student / 蒸馏成可部署的学生
+The teacher is distilled into a student using point clouds, touch, and proprioception. Deployment still uses the retargeted motion reference; the policy is not instruction-only general intelligence.
+教师蒸馏为使用点云、触觉和本体状态的学生。部署仍用重定向运动参考，并非仅靠语言任意操作。
+Source: https://arxiv.org/pdf/2609.07747v1; Figure 2 | teacher and student, PDF p3
+
+05 A physical feedback loop / 真实视触觉闭环
+Real experiments use a Franka FR3 arm with a SharpaWave hand and fingertip force sensing. The policy runs at thirty hertz without task-specific real-world fine-tuning.
+真机采用Franka FR3机械臂，搭配SharpaWave手与指尖力感知。策略30赫兹运行，无需任务专用真机微调。
+Source: https://arxiv.org/pdf/2609.07747v1; Figure 3 | real robot, PDF p6
+
+06 Four real outcomes / 四项真实任务结果
+Thirty attempts per task yield twenty-eight successful cube picks and twenty-four successful pours. Lifting a cup succeeds twenty-two times; sustained scraping succeeds sixteen times.
+每任务30次，方块成功28次，倒水24次。提杯成功22次，持续刮擦成功16次。
+Source: https://arxiv.org/pdf/2609.07747v1; Figure 5 | stage and final outcomes, PDF p8
+
+07 What the tactile ablation says / 触觉消融究竟说明什么
+Removing tactile input reduces cube success from twenty-eight to eleven out of thirty. That is evidence about one sensory component, not a head-to-head comparison against another complete algorithm.
+去掉触觉后，方块成功从28次降至11次。这是感知组件消融，并非与另一完整算法对决。
+Source: https://arxiv.org/pdf/2609.07747v1; Tables 2 and 3 | ablation and unseen geometry, PDF p7
+
+08 Where transfer weakens / 泛化仍然会失效
+Square-cube and duck variants fall to seven or eight successes out of thirty. A thin-cube variant reaches twenty-three, so geometry transfer is uneven.
+方形立方体与鸭子变体仅成功7或8次，共30次。薄立方体达到23次，说明几何迁移效果并不均衡。
+Source: https://arxiv.org/pdf/2609.07747v1; Table 3, fixed PDF page 7: Square Cube 8/30, Big Duck 8/30, Small Duck 7/30, Thin Cube 23/30.
+
+09 The bridge is physical / 从视频走向物理交互
+The central contribution is the bridge: reconstruct motion, generate contact supervision, then distill a sensory policy. The remaining challenge is reliable geometry transfer and prolonged tool contact.
+核心链路是重建运动、生成接触监督、蒸馏感知策略。难点仍是稳定的几何泛化和长期工具接触。
+Source: https://arxiv.org/pdf/2609.07747v1; Figure 2 | teacher and student, PDF p3
+
+
+Sources
+https://arxiv.org/pdf/2609.07747v1
+https://dexx-code.github.io/dexx-code/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

@@ -1,0 +1,90 @@
+﻿保留接触，不只复制姿态
+Preserve the Contact, Not Just the Pose
+
+The fingers match. The cup still falls. / 手像了，杯子为什么还掉？
+Imagine closing a robot hand around a cup using a human demonstration. The fingertips look right, but one finger floats above the surface. Another finger pushes through the cup in the reconstructed geometry. Matching the hand alone has missed the interaction that makes the grasp work. This chapter follows contact from a geometric label to a robot motion reference. We will also separate preserving contact from producing enough force to lift.
+想象一下，我们根据人类示范，让机器人合手握住杯子。指尖位置看起来很像，却有一根手指悬在杯面上方。另一根手指则在重建的几何中穿进了杯子。只匹配手的形状，遗漏了真正支撑抓取的手物交互。这一章追踪接触如何从几何标签，变成机器人动作参考。我们也要分清：保持接触，与产生足够的提起力，是两件事。
+https://arxiv.org/abs/2402.04820v1
+https://arxiv.org/abs/2606.16272v2
+
+Attach the description to the object / 把接触描述固定在物体上
+First, imagine painting a small dot on the side of that cup. As the cup moves across the table, the dot changes its world position. Its position relative to the cup stays the same throughout the rigid motion. An object coordinate frame lets us describe contact on that moving surface. Subtract the object translation, then undo its rotation to express a world point locally. Apply the current object pose to move that local target back into the scene. This only works when the estimated object pose is reliable.
+首先，想象在杯子的侧面画一个小点。杯子在桌面上移动时，这个点的世界坐标会变化。但在刚体运动中，它相对杯子的位置始终不变。物体坐标系让我们能在这片移动表面上描述接触。先减去物体平移，再消除它的旋转，就得到点的局部坐标。再应用当前物体位姿，就能把这个局部目标放回场景。这种表示的可靠性，取决于物体位姿估计是否准确。
+https://arxiv.org/abs/2608.07045v2
+https://arxiv.org/abs/2606.16272v2
+
+What counts as contact? / 什么才算接触？
+A contact label usually needs a definition before an optimizer can use it. A common geometric rule marks a hand point as touching when surface distance is small. But a threshold is a modeling choice, not a measurement of contact force. Noisy meshes can create false contact; missing surfaces can hide real contact. Record whether labels came from annotation, reconstructed geometry, simulation, or physical sensors. For our cup, also ask which finger region touches which part of the object. That correspondence matters more than a single yes-or-no contact flag.
+优化器使用接触标签之前，必须先定义什么算接触。常见的几何规则是：手部点到物体表面的距离足够小，就标为接触。但距离阈值是建模选择，不是接触力的测量值。网格噪声可能制造假接触，缺失表面也可能掩盖真实接触。需要记录标签来自标注、重建几何、仿真，还是物理传感器。对于这个杯子，还要问：手指的哪个区域，接触物体的哪个部分？这层对应关系，比一个简单的接触或未接触标志更有信息。
+https://arxiv.org/abs/2402.04820v1
+https://arxiv.org/abs/2609.28660v2
+https://arxiv.org/abs/2608.07045v2
+
+Transfer a contact patch / 迁移一片接触区域
+Kinematic Motion Retargeting starts with accurate hand and object meshes and a motion sequence. Its original overview also requires dense contact annotations on the hand or object. The target hand needs a skeleton-driven mesh and manually specified surface correspondences. These include virtual markers and axial curves that identify matching regions. The method transfers contact areas, estimates a trajectory, refines it, then fits smooth splines. The output is a kinematic trajectory; it does not yet solve contact forces.
+Kinematic Motion Retargeting 从准确的手物网格和一段动作序列开始。这张原始总览图还要求提供手部或物体上的稠密接触标注。目标手需要骨架驱动的网格，以及人工指定的表面对应关系。其中包括用于标识对应区域的虚拟标记点和轴向曲线。方法先迁移接触区域，再估计并细化轨迹，最后拟合平滑样条。输出是一条运动学轨迹；此时还没有求解接触力。
+https://arxiv.org/abs/2402.04820v1
+
+Surface meaning survives a different hand / 换一种手，接触语义仍要保留
+Look at the phone sequence: contact spreads and moves as the manipulation changes. A fingertip-only target cannot describe the palm supporting the phone during a whole-hand grasp. The method uses surface distances and directions to transfer those richer contact regions. Geodesic distance means distance along the hand surface, rather than straight through space. Annotations establish which regions should correspond when finger numbers or proportions differ. This flexibility costs preparation and accurate geometry; it is not a camera-only tracking system.
+看这段手机操作：随着动作变化，接触区域会扩展和移动。只用指尖目标，无法描述包握时手掌对手机的支撑。这个方法利用表面上的距离与方向，迁移这些更丰富的接触区域。测地距离指沿着手部表面走过的距离，而不是穿过空间的直线距离。当手指数量或比例不同，标注负责建立区域之间应有的对应。这种灵活性需要前期准备和准确几何；它本身不是纯相机跟踪系统。
+https://arxiv.org/abs/2402.04820v1
+
+Keep the neighborhood around the hand / 保持手周围的局部关系
+TopoRetarget takes another route: preserve a local graph connecting the hand and object. In its overview, bone directions first provide an initial robot hand configuration. Human hand keypoints and sampled object points become vertices in an interaction mesh. The robot uses corresponding vertices with the same graph connections for comparison. For our cup, a finger is now constrained by nearby object points as well as hand structure. The objective follows the relationship, rather than copying every global point position exactly.
+TopoRetarget 走另一条路线：保留连接手和物体的局部图结构。在总览图中，骨骼方向首先给出机器人手的初始构型。人手关键点和物体表面采样点，成为交互网格中的顶点。机器人使用对应顶点，并沿用同一套图连接关系进行比较。对于杯子，手指现在同时受到附近物体点和手部结构的约束。目标函数关注这些关系，而不是逐个精确复制所有全局点坐标。
+https://arxiv.org/abs/2606.16272v2
+
+A Laplacian is a local difference / 拉普拉斯坐标描述局部差异
+The graph objective uses a quantity called a weighted Laplacian coordinate. For one vertex, take its displacement from each neighbor, then average those displacements. TopoRetarget gives nearby neighbors more weight using distances measured in the human reference. The robot tries to reproduce these local differences under its own joint constraints. Move the whole cup and hand together: relative relationships can remain unchanged. Move only the finger away: its relationship with the cup changes immediately. This is a geometric preservation objective, not an estimator of friction or force.
+图优化中使用了一个量，叫作加权拉普拉斯坐标。对一个顶点，计算它相对各个邻居的位移，再对这些位移加权平均。TopoRetarget 根据人类参考中的距离，让更近的邻居获得更大权重。机器人在自身关节约束下，尽量复现这些局部差异。如果手和杯子一起移动，相对关系可以保持不变。如果只把手指移开，它与杯子的关系就会立刻变化。这是保持几何关系的目标，不是摩擦或力的估计器。
+https://arxiv.org/abs/2606.16272v2
+
+Avoid penetration without claiming stability / 避免穿透，不等于稳定抓取
+A geometric optimizer can reduce contact error by driving a finger into the object. TopoRetarget combines interaction, direction, regularization, and signed-distance constraints. Its penetration formulation uses a soft tolerance together with a hard bound. A geometric penetration allowance is not a measurement of physical deformation. A plausible contact pattern is still only a reference for the downstream controller. When the cup leaves the table, the robot must actually support its weight. That is where geometry alone stops answering the full manipulation question.
+几何优化器可能通过把手指压进物体，来降低接触误差。所以 TopoRetarget 把交互保持、方向、正则项和有符号距离约束结合起来。它的穿透处理同时使用软容差和硬边界。几何模型允许的小幅穿透，不能被当作实测的物理形变。合理的接触分布，仍然只是下游控制器的参考。当杯子离开桌面时，机器人必须真正支撑住它的重量。在这里，仅靠几何已经无法回答完整的操作问题。
+https://arxiv.org/abs/2606.16272v2
+
+DexFlow stabilizes the contact sequence / DexFlow：稳定接触序列
+DexFlow adds a practical question: what happens when detected contact flickers between frames? Its pipeline starts with reconstructed hand-object sequences and an initial robot mapping. A dual-threshold contact detector and temporal processing stabilize the contact information. It refines fingers sequentially using contact distance, alignment, and penetration terms. This helps when noisy geometry reports flickering contact during an otherwise steady grasp. Its simulated grasp-generation protocol differs from continuous real-world teleoperation.
+DexFlow 补充了一个实际问题：检测到的接触在相邻帧反复跳变，怎么办？这张原始流程图从重建的人手与物体序列，以及初始机器人映射开始。双阈值接触检测与时间处理，用于稳定这些接触信息。随后逐根优化手指，结合接触距离、方向对齐与穿透项。当一次稳定抓握被噪声几何交替判成接触和分离时，这个思路很有用。但它的仿真抓取生成评测，与连续真机遥操作的协议并不相同。
+https://arxiv.org/abs/2505.01083v1
+
+Change the hand model, then recover contact / 先适应手型，再恢复接触
+Morphometric Imitation addresses a different source of error: hand proportions themselves. Its morphometric optimization first adapts a human hand model to the robot morphology. The figure separates morphology matching, contact matching, and robot pose recovery. Changing palm width or finger length can destroy contacts that were correct before scaling. The second stage therefore reposes the adapted hand to recover the demonstrated contact locations. Finally, skeletal transfer and inverse kinematics recover robot joint configurations. This separates morphology adjustment from solving the contact damage it creates.
+Morphometric Imitation 处理另一种误差来源：手的比例本身。其中的形态优化，首先把人手模型适配到机器人手型。原图展示了手型匹配、接触匹配和机器人姿态恢复三个阶段。改变手掌宽度或手指长度，可能破坏缩放之前正确的接触。所以第二阶段要重新调整适配后的手姿，恢复示范中的接触位置。最后，通过骨架迁移和逆运动学恢复机器人关节构型。这就把手型适配，与修复适配造成的接触变化，明确分开了。
+https://arxiv.org/abs/2609.28660v2
+
+The contact threshold belongs to the protocol / 接触阈值属于具体协议
+The paper defines reference-mesh contact using a four-point-five-millimeter distance threshold. That threshold follows the GRAB setting; it is not a universal physical constant. Shared mesh topology preserves vertex identities between the human and adapted hand models. During approach, the method can track regions that will later form the grasp. Those future contact regions are motion targets, not claims that contact already exists. Experiments separate kinematic contact quality, dynamic retargeting, and visuomotor deployment.
+在这篇论文中，参考网格的接触检测使用四点五毫米距离阈值。这个阈值遵循 GRAB 的设置，并不是普适的物理常数。人手模型与适配模型拥有相同网格拓扑，因此接触匹配时可保持顶点身份。在接近物体时，方法也能跟踪之后将参与抓握的区域。这些未来接触区域是动作目标，不代表此刻已经发生接触。实验也分别评估运动学接触质量、动力学重定向，以及最终视觉运动策略部署。
+https://arxiv.org/abs/2609.28660v2
+
+C2Dex repairs contact before transfer / C2Dex：迁移前先修复接触
+Now suppose our input is a single video instead of a clean recorded trajectory. C2Dex first estimates the moving hand, object geometry, and object pose. In the original pipeline, candidate contacts are aligned in the canonical object frame. Clustering within stable segments identifies persistent contact locations on the object. These targets refine the human reconstruction before guiding contact-preserving robot retargeting. Laplacian optimization preserves local relationships; residual learning improves physical execution. The same contact representation connects perception and action transfer.
+现在假设输入是一段单目视频，而不是干净的记录轨迹。C2Dex 首先估计运动中的手、物体几何，以及物体位姿。在原始流程图中，候选接触会对齐到规范的物体坐标系。局部稳定片段中的观测经过聚类，得到持续存在的物体侧接触位置。这些目标先细化人手重建，再指导保持接触的机器人重定向。拉普拉斯优化保持局部关系，独立的残差学习阶段进一步改善物理执行。同一套接触表示，由此连接起感知与动作迁移。
+https://arxiv.org/abs/2608.07045v2
+
+Read each result at the correct level / 在正确层级解读结果
+C2Dex illustrates why a pipeline result and a retargeter result need separate labels. Its isolated retargeting comparison supplies ground-truth hand-object trajectories to the methods. End-to-end comparisons start from video, including reconstruction errors and residual learning. Real-robot tests use controlled open-loop replay, rather than a general recovery policy. The figure shows cleaner contacts, but an image alone cannot establish a full-task success rate. Object pose drift and frequent contact switching remain important limitations of this pipeline.
+C2Dex 也说明了为什么整条系统和重定向模块的结果必须分开标注。它的独立重定向比较，向各方法提供参考真值手物轨迹。端到端比较则从视频开始，包含重建误差与残差学习。真机展示采用受控条件下的开环轨迹回放，并非通用扰动恢复策略。这张图展示了更合理的接触，但单张图片不能证明完整任务成功率。物体位姿漂移，以及频繁的接触切换，仍是这套流程的重要局限。
+https://arxiv.org/abs/2608.07045v2
+
+Debug the interface before adding force control / 先定位接口，再加入力控制
+Return to the cup and inspect the transfer in a fixed order. First verify object pose and scale, then inspect the contact labels and surface correspondence. Next check whether the robot reaches those contacts within joint and collision constraints. Finally test whether real forces keep the object supported during lift and transport. Force-aware methods such as ReForce add measured contact feedback to correct a motion reference. That requires additional sensing; it cannot silently be assumed in a camera-only system. The next chapter crosses from geometric references into physically executable behavior.
+回到这个杯子，按固定顺序检查动作迁移。先核对物体位姿和尺度，再检查接触标签与表面对应。接着检查机器人能否在不违反关节和碰撞约束的前提下到达这些接触。最后测试真实的力，能否在提起和搬运过程中持续支撑物体。像 ReForce 这样的力感知方法，会加入实测接触反馈来修正动作参考。这需要额外传感器，不能默认为纯相机系统已经具备的能力。下一章沿着这条边界，从几何参考走向物理上可执行的行为。
+https://arxiv.org/abs/2606.16272v2
+https://arxiv.org/abs/2609.28660v2
+https://arxiv.org/abs/2608.07045v2
+https://arxiv.org/abs/2608.15560v1
+
+视频补充来源 / Additional video sources
+TopoRetarget 参考 + 已训练控制器 / TopoRetarget + learned controller
+https://tsinghua-mars-lab.github.io/toporetarget-web/static/videos/real_stability.mp4
+https://tsinghua-mars-lab.github.io/toporetarget-web/
+完整视觉运动策略 · 作者演示 / Full visuomotor policy · author footage
+https://morphometricimitation.github.io/static/videos/selected/cup_0.mp4?v=594933c740
+https://morphometricimitation.github.io/
+C2Dex · 离线轨迹真机回放 / C2Dex · offline trajectory replay
+https://k-jie.github.io/C2Dex/assets/videos/real/pour_robot.mp4
+https://k-jie.github.io/C2Dex/

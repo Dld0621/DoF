@@ -1,0 +1,49 @@
+﻿DoF Paper EP.04 | DexCap: Record Human Skill, Then Teach the Robot
+DexCap：先记录人的技能，再教会机器人
+
+01 Collect the skill where it happens / 在技能发生的地方采集
+Packing a box requires both hands to coordinate motion, shape, and contact. DexCap records people doing these tasks directly, without operating a robot first. The harder question is turning that human motion into executable robot behavior.
+包装盒子，需要双手协调运动、形状和接触。DexCap直接记录人做任务，无需先操控机器人。更难的是，把人的运动变成机器人可执行动作。
+Source: https://arxiv.org/pdf/2403.07788v2; PDF page 7
+
+02 Three signals, one coordinate system / 三类信号，一个坐标系
+Gloves capture finger motion, wrist cameras track movement, and chest depth observes objects. Calibration connects these streams so the observed scene and hands share coordinates. The capture equipment is worn by the demonstrator, not required on autonomous robots.
+手套记录手指，腕部跟踪运动，胸前深度看物体。标定把这些数据流连接到共同坐标系。这些穿戴设备用于示教，不是自主机器人必需输入。
+Source: https://arxiv.org/pdf/2403.07788v2; PDF page 3
+
+03 Retarget both actions and observations / 动作和观测一起重定向
+Fingertip inverse kinematics maps human motion into the robot hand's joint targets. Point clouds are transformed into robot coordinates and augmented with robot geometry. This reduces the visual mismatch between human demonstrations and robot execution.
+指尖逆运动学把人手运动转成机器人关节目标。点云转到机器人坐标，并补入机器人几何。这样减小了人类示教与机器人执行的视觉差异。
+Source: https://arxiv.org/pdf/2403.07788v2; PDF page 5
+
+04 Learn a sequence, then execute / 学习动作序列，再执行
+DexIL encodes the point cloud and predicts future actions with a diffusion policy. The deployed policy reads scene observations and robot state to produce action chunks. Human capture trajectories supply supervision; they are not live object ground truth.
+DexIL编码点云，用扩散策略预测未来动作。部署策略读取场景和机器人状态，输出动作块。人类轨迹提供训练监督，不是实时物体真值。
+Source: https://arxiv.org/pdf/2403.07788v2; PDF page 5
+
+05 Correct what demonstrations miss / 修正示教未覆盖的失败
+During difficult rollouts, an operator can add residual corrections or take control. Those corrections become additional training data, mixed with the original demonstrations. Human intervention and the later autonomous evaluation must be reported separately.
+困难执行中，人可以添加残差修正或接管。修正会变成新数据，与原示教混合训练。人工介入与之后的自主评测必须分开报告。
+Source: https://arxiv.org/pdf/2403.07788v2; PDF page 5
+
+06 Packaging improves, but not equally everywhere / 包装改善，但并非处处同样有效
+For packaging, complete success rises from forty-seven to fifty-seven percent after correction. That is ten percentage points, while unseen-object results change much less. The tables use task-specific protocols, so demonstration counts should not be assumed equal.
+包装完整成功率经修正从47%升到57%。这是提升10个百分点，未见物体改善更小。各表使用不同任务协议，不能假定示教量相同。
+Source: https://arxiv.org/pdf/2403.07788v2; PDF page 10
+
+07 Partial progress can hide difficult failures / 局部进度会掩盖困难失败
+After thirty corrections, cutting reaches twenty percent complete success, while tea reaches twenty-five. Their higher subtask scores do not mean the entire task was completed. Accurate motion capture also omits the forces that made human contact succeed.
+30次修正后，剪切全成功20%，泡茶25%。更高的子任务分数不代表整项任务完成。准确动捕也没有记录人类接触成功所需的力。
+Source: https://arxiv.org/pdf/2403.07788v2; PDF page 10
+
+08 A data pipeline with a physical gap / 数据链路仍有物理差距
+DexCap makes collecting human dexterity practical, and correction data can improve execution. But different hand shapes, limited battery life, and missing force remain constraints. The next challenge is preserving contact outcomes, not just reproducing visible motion.
+DexCap让灵巧示教更易采集，修正数据能改善执行。但手型差异、续航与缺失力信息仍是限制。下一步要保留接触效果，而非只复制可见动作。
+Source: https://arxiv.org/pdf/2403.07788v2; PDF page 3
+
+
+Sources
+https://arxiv.org/pdf/2403.07788v2
+https://dex-cap.github.io/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

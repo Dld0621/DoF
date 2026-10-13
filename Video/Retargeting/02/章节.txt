@@ -1,0 +1,16 @@
+﻿00:00 角度相同，抓法不同 / Same angles, different grasp
+00:32 只优化真正可控的关节 / Optimize the joints you actually control
+01:05 位置IK：到哪儿，怎么弯 / Position IK asks where, not how
+01:37 向量比距离多保留什么 / Vectors preserve more than distances
+02:07 选哪些连线，决定保留什么 / The edge set is the method
+02:40 DexMV：别只盯着指尖 / DexMV adds the middle of the finger
+03:14 关节轨迹还不是动作 / A trajectory is not yet an action
+03:47 DexPilot：优先保住捏合 / DexPilot prioritizes a pinch
+04:18 投影是目标，不是接触测量 / Projection is an intended target
+04:51 库里的版本，需要单独标注 / The library version is a different baseline
+05:28 AKO：把目标逐项拆开 / AKO separates the objectives
+06:05 让手形与捏合平稳过渡 / Smoothly trade shape for pinch
+06:35 最后一节手指朝哪里 / Where the last finger segment points
+07:09 消融实验各自回答什么 / Ablations answer different questions
+07:44 求解器不是目标函数 / The solver is not the objective
+08:17 按照失败现象选择基线 / Choose baselines by the failure

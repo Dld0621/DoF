@@ -1,0 +1,14 @@
+﻿00:00 同一个意图，不同的人手与机器人 / Same intention. Different hands.
+00:32 先把整条遥操作链路拆开 / Read the whole pipeline first
+01:06 点云、关键点和 Mesh，分别提供什么 / What does a captured hand contain?
+01:38 机器人的自由度，不等于人手关键点数 / The robot has its own coordinates
+02:10 正运动学：从关节角计算几何关系 / Forward kinematics is the measuring tool
+02:42 逆运动学：找一个尽量满足要求的解 / Inverse kinematics is a constrained search
+03:15 坐标系错了，方向正确也会映射错 / Frames can change the meaning of a vector
+03:46 手腕负责位置，手指负责形状，但二者会耦合 / Wrist motion and finger shape are different jobs
+04:19 到底要保留角度、位置，还是接触关系 / What should remain invariant?
+04:50 缩放能对齐尺寸，却无法消除形态差异 / Scaling does not remove morphology
+05:20 精度、平滑和延迟，需要一起看 / Noise, delay, and missing observations
+05:53 参考动作，还不是执行结果 / A reference is not an executed trajectory
+06:23 先对齐看得见的动作，再加入接触修正 / Debug the smallest faithful motion first
+06:56 接下来，逐层拆解方法与 Baseline / The map for the next five chapters

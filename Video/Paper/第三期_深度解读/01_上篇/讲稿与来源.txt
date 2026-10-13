@@ -1,0 +1,76 @@
+﻿从点云恢复人手状态
+
+Three problems behind one movement / 一个动作，三个不同的问题
+DexPilot’s 2019 system lets a visible human hand steer a robot with twenty-three actuated joints. First, perception estimates where the hand is and how its fingers bend. Then retargeting translates that human configuration into targets the differently shaped robot hand can realize. Finally, motion generation and torque controllers move the physical robot toward those targets. Keeping these stages separate explains why accurate tracking alone does not guarantee a successful grasp.
+2019 年的 DexPilot 研究：如何仅靠观察人手，操控具有 23 个驱动关节的机器人。首先，感知模块估计手的位置、朝向，以及手指如何弯曲。接着，重定向把人的手型转成结构不同的机器人手能够实现的目标。最后，运动生成与力矩控制器驱动真实机器人接近这些目标。分清这三个环节，才能理解为什么跟踪准确，也未必能成功抓住物体。
+Source: Handa et al. · DexPilot (2019), v2 · PDF pp.1–3, §§I, III–VI; PDF p.4, Fig.4
+
+Four cameras, one coordinate frame / 四台相机，一个坐标系
+The studio uses four calibrated, synchronized RealSense D415 cameras around a black-covered table. Each depth image supplies surface samples in its own camera coordinates. Back projection and the calibrated camera transformations place those samples into one shared three-dimensional frame. Multiple viewpoints improve coverage, but still observe only surfaces visible to the cameras. The reported workspace measures eighty by fifty-five by thirty-eight centimeters, with depth observations ideally within one meter.
+工作区在铺有黑布的桌面周围布置四台经过标定、时间同步的 RealSense D415 相机。每张深度图提供的，都是该相机坐标系中的表面采样。通过反投影和标定得到的相机变换，这些采样点进入同一个三维坐标系。多个视角改善了覆盖范围，但得到的仍然只是相机可见的表面。论文工作空间为 80 × 55 × 38 厘米，并建议深度观测距离控制在一米以内。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.2, §III; PDF p.5, §VI(b); PDF p.3, Fig.3
+
+Observed points and an articulated model / 观测点与带关节的模型
+A point cloud contains observed locations, without any definition of fingers, bones, or joints. DexPilot supplies that structure through an articulated hand model assembled from separate surface meshes. Its twenty revolute joints comprise one spreading joint and three bending joints per finger. Separately, the whole hand has a rigid position and orientation, often described as its wrist or palm pose. Moving that global pose carries every finger together; changing finger angles changes the internal configuration.
+点云是一组观测到的位置，本身并不包含手指、骨骼或关节的结构定义。DexPilot 用多个独立表面网格组成带关节的手模型，补上这些结构。模型共有 20 个转动关节，每根手指包含一个侧向展开关节和三个弯曲关节。与手指关节分开，整只手还有刚体位置和朝向，通常称为手腕或手掌位姿。改变整体位姿会一起移动所有手指；改变手指角度，则会改变手的内部构型。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.3, §V; PDF p.4, Fig.4; PDF p.6, Fig.7
+
+Why DART needs a good starting point / DART 为什么需要好的初值
+DART tracks the hand by adjusting this articulated model to match the incoming point cloud. The previous frame usually supplies the starting estimate for its nonlinear optimization. When that estimate is poor, a plausible but incorrect alignment can trap the optimizer. The authors observed severe tracking failures every few minutes without the additional support described next. Learned pose priors and hand segmentation help steer fitting toward the hand and away from misleading alternatives.
+DART 通过调整这个带关节的模型，使其与输入点云相匹配，从而跟踪人手。非线性优化通常以上一帧的估计作为初值。一旦初值偏差太大，优化器就可能困在看似合理、实际错误的对齐结果中。作者报告，在后续辅助机制加入前，跟踪可能每隔几分钟就发生严重失败。学习得到的位姿先验与手部分割，帮助拟合靠近真正的手，并避开有干扰的解。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.3, §§V–VI; PDF pp.17–18, Appendix F
+
+Where the training labels come from / 训练标注从哪里来
+This creates a practical problem: training a reliable predictor first requires reliable examples of hand motion. DexPilot bootstraps those examples with a colored glove used during offline data collection. Visible color patches help estimate the global hand pose and isolate the hand points. DART then fits the depth observations and supplies pose, joint, and segmentation annotations for training. These are tracker-generated labels, so calling them ground truth does not make them independent physical measurements.
+这带来一个实际问题：训练可靠的预测网络，首先需要可靠的人手运动样本。DexPilot 在离线采集阶段使用彩色手套，启动这套标注流程。可见的色块帮助估计整手位姿，并从场景中分离出手部点。随后，DART 拟合深度观测，提供训练所需的位姿、关节和分割标注。这些是跟踪器生成的标签，因此即使论文称其为真值，也不等于独立的物理测量。
+Source: Handa et al. · DexPilot (2019), v2 · PDF pp.4–5, §VI(a–b); PDF pp.17–18, Appendix F, Fig.20
+
+GloveNet learns from color annotations / GloveNet 从色块标注中学习
+The glove carries five fingertip patches and three distinct patches on the back of the palm. Color thresholding produces patch masks, whose centers become two-dimensional training labels. Because lighting changes those thresholds, the authors collect fifty thousand images across different days. GloveNet uses an anti-aliased ResNet backbone and spatial softmax to predict eight keypoint locations. Background replacement and image augmentation discourage the network from confusing unrelated colors with glove markers.
+手套在五个指尖各有一个色块，手背另有三个颜色不同的色块。颜色阈值分割生成色块掩膜，再用其中心位置形成二维训练标签。光照变化会影响阈值，因此作者跨多天采集了五万张图像。GloveNet 采用抗混叠的 ResNet 主干与空间 softmax，预测八个关键点的位置。背景替换和图像增强减少网络把无关颜色误认为手套标记的情况。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.4, §VI(a); PDF pp.14–15, Appendix A, Fig.19, Table III
+
+Stability matters more than extra markers / 稳定性比更多标记更重要
+Four shifted versions of each camera image test whether predictions remain consistent. Undoing those shifts reveals prediction variation, which supplies a confidence measure across sixteen images. The pipeline rejects unreliable estimates and uses temporal filtering to stabilize the recovered three-dimensional points. Nevertheless, fingertip patches change their visible shape under occlusion, making their annotated centers inconsistent. The final glove-based pose estimate therefore uses only the three more stable patches on the palm.
+推理时，每个相机图像生成四个平移版本，检查预测是否一致。撤销这些平移后，十六张图像的预测波动提供置信度依据。流程会剔除不可靠的估计，并用时间滤波稳定恢复出的三维点。但在遮挡下，指尖色块的可见形状会变化，导致标注中心不稳定。因此，最终基于手套的位姿估计只使用手背上三个更稳定的色块。
+Source: Handa et al. · DexPilot (2019), v2 · PDF pp.14–15, Appendix A(b–c); PDF p.15, Appendix A, paragraph after Table III
+
+From three palm points to a useful crop / 三点位姿如何帮助裁出手部
+Depth lifts each predicted palm marker from its image coordinates into three dimensions. Camera transformations bring observations into a shared frame, where three markers constrain hand position and orientation. A triangle with coordinate axes illustrates this geometry, although the paper does not specify the exact rigid-fitting solver. The pose also defines a heuristic hand volume, so points outside it can be removed. DART consequently fits the hand instead of sliding its model onto the neighboring forearm.
+深度信息把每个预测出的手背标记，从图像坐标提升到三维空间。相机变换再将观测带入共同坐标系，由三个标记约束手的位置与朝向。可以用带坐标轴的三角形说明这个几何关系，但论文没有说明具体的刚体拟合求解器。该位姿还用于确定一个经验设定的手部包围体，从而移除体积外的点。这样，DART 就能拟合手部，减少模型滑向邻近前臂的情况。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.4, §VI(a); PDF p.5, opening paragraph
+
+Stage one finds the hand in the scene / 第一级先在场景中找到手
+The deployed system removes the glove and works on depth-derived point clouds of the bare hand. After fitting a plane to remove the table, the remaining cloud still includes the arm and body. Stage one uniformly samples eight thousand one hundred and ninety-two points for a PointNet++ based network. It predicts a hand mask and twenty-three keypoints: twenty on the fingers and three on the palm. Those twenty-three keypoints describe human geometry; they are distinct from the robot system’s twenty-three actuated joints.
+部署后的系统移除手套，处理由深度数据得到的裸手点云。拟合平面并去除桌面后，剩下的点云仍然包含手臂和身体。第一级均匀采样 8192 个点，输入基于 PointNet++ 的网络。网络预测手部掩膜与 23 个关键点：20 个位于手指，3 个位于手背。这 23 个关键点描述人手几何，与机器人系统的 23 个驱动关节是不同的概念。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.5, §VI(b); PDF p.6, Figs.6–7
+
+Keypoints emerge from local votes / 关键点来自局部投票
+The network does more than compress the scene into a single pose vector. Each input point predicts offsets toward the keypoints, effectively proposing where those landmarks should lie. Learned neighborhood masks and hand probabilities weight those proposals before averaging them into keypoint positions. Euclidean losses train both the offsets and final coordinates, while a classification loss trains hand segmentation. This lets useful local hand evidence contribute more strongly than irrelevant scene points.
+这个网络并不只是把场景压缩成一个位姿向量。每个输入点预测指向各关键点的偏移，相当于提出这些关节应在何处。学习得到的邻域掩膜与手部概率，为这些候选位置加权，再求平均得到关键点。欧氏损失训练偏移与最终坐标，分类损失则训练手部分割。这样，有用的局部手部信息就能比无关的场景点发挥更大作用。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.16, Appendix B(c), Table V; PDF pp.5–6, §VI(b), Fig.6
+
+Stage two spends its points on fingers / 第二级把采样集中到手指
+Uniform sampling over the whole scene leaves too few samples on the thin fingers. Stage two therefore returns to the original cloud and resamples the hand using stage one’s pose and segmentation. With its input focused on the hand, it refines the same twenty-three keypoints. This stage keeps the keypoint and voting losses but no longer needs the hand-segmentation loss. Randomizing the input hand pose during training helps it tolerate imperfect estimates from the first stage.
+对整个场景均匀采样，会使细小的手指只分到很少的点。因此，第二级利用第一级的位姿和分割，返回原始点云重新采样手部。输入集中在手部后，它进一步修正同一组 23 个关键点。这一级保留关键点损失和投票损失，不再需要手部分割损失。训练时随机扰动输入手位姿，帮助第二级容忍第一级估计中的误差。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.5, §VI(b); PDF p.6, Figs.6–7
+
+JointNet converts coordinates into angles / JointNet 把坐标转成关节角
+DART’s articulated model needs joint angles, whereas the point networks naturally predict three-dimensional keypoint coordinates. JointNet bridges these representations by flattening twenty-three points into a vector of sixty-nine numbers. The appendix specifies two hidden layers followed by an output layer that predicts twenty human finger angles. These estimates become priors for DART, which continues fitting the observed surface geometry. The learned prediction provides a useful starting point, and model fitting supplies the subsequent geometric refinement.
+DART 的关节模型需要关节角，而点云网络自然输出三维关键点坐标。JointNet 将 23 个点展平为 69 维向量，连接这两种表示。附录给出了两个隐藏层与一个输出层，预测人手的 20 个手指关节角。这些估计成为 DART 的先验，而 DART 继续拟合观测到的表面几何。学习得到的预测提供有用初值，模型拟合再进行几何细化。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.5, §VI(b); PDF p.16, Appendix C, Table VI; PDF pp.17–18, Appendix F
+
+What the reported training numbers establish / 训练数字究竟说明什么
+The two point-network stages use one hundred thousand point clouds, collected over seven to eight hours. Training takes fifteen hours on one Titan Xp, using multiple hands recorded inside the studio. A validation set of seven thousand examples yields reported errors of 9.7 millimeters for keypoints and 1.33 degrees per joint. These measurements assess agreement with the available annotations, whose provenance remains the glove-assisted tracking pipeline. They do not establish the same accuracy for unseen hand shapes, different cameras, or unconstrained environments.
+两级点云网络使用十万帧点云训练，数据采集耗时七到八小时。在一张 Titan Xp 上训练耗时十五小时，样本来自工作区内的多只人手。在七千个验证样本上，论文报告关键点误差为 9.7 毫米，平均每关节角误差为 1.33 度。这些数字衡量的是与现有标注的一致程度，而标注来源仍是手套辅助的跟踪流程。它们并不能证明系统对未见过的手型、不同相机或不受约束的环境也具有相同精度。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.5, §VI(b); PDF p.10, §X; PDF pp.17–18, Appendix F
+
+Tracking ends where retargeting begins / 跟踪的终点，重定向的起点
+The resulting tracker combines learned initialization with an articulated model, rather than relying on either component alone. Its demonstrated operating conditions include calibrated cameras, a bounded workspace, and hands reasonably close to the model’s geometry. The authors identify hand-shape variation, fingertip-contact accuracy, and system latency as remaining limitations. Even a correct human estimate still leaves a different problem: the robot has different fingers and joint axes. Part two follows that transition, showing how geometric retargeting turns human fingertip relationships into feasible robot grasps.
+最终的跟踪器把学习得到的初值与带关节的模型结合起来，两者共同工作。其展示过的运行条件包括已标定相机、有限工作区，以及几何形状与模型较接近的人手。作者指出，手型差异、指尖接触识别精度，以及系统延迟仍然是限制。即使人手估计正确，另一个问题仍然存在：机器人具有不同的手指结构与关节轴。第二部分将沿着这一步继续，解释几何重定向如何把人手指尖关系转成可实现的机器人抓握。
+Source: Handa et al. · DexPilot (2019), v2 · PDF p.5, §§VI(b), VII-A; PDF p.7, Fig.8; PDF p.10, §X; PDF pp.17–18, Appendix F
+
+https://arxiv.org/abs/1910.03135v2
+https://arxiv.org/pdf/1910.03135v2
+https://sites.google.com/view/dex-pilot
+https://creativecommons.org/licenses/by/4.0/

@@ -1,0 +1,53 @@
+﻿DoF Paper EP.29 | Dexterous Point Policy | A Shared Language of Points
+DPP：用三维关键点跨越人手与机器人
+
+01 Different hands, shared action / 手型不同，动作如何共享？
+Human fingers and robot joints have different mechanics, even when both open a microwave door. Dexterous Point Policy asks whether a small set of three-dimensional points can connect them.
+即使都在开微波炉，人手和机器人结构也不同。DPP研究能否用少量三维点连接两种手型。
+Source: https://arxiv.org/pdf/2606.10614v1; Figure 1 | shared point abstraction, PDF p2
+
+02 Six points for a hand / 一只手抽象为六个点
+The shared abstraction uses a wrist point and five fingertips, alongside task-relevant object points. Both observations and predicted actions use this geometry instead of directly sharing incompatible joint angles.
+共享表示包含手腕、五个指尖和任务相关物体点。观测与预测动作都用这套几何，避免直接共享异构关节角。
+Source: https://arxiv.org/pdf/2606.10614v1; Figure 2 | extraction and deployment, PDF p4
+
+03 Extract training signals / 从视频提取监督
+Object segmentation, depth estimation, and hand tracking turn demonstrations into three-dimensional trajectories. Lightweight manual contact annotation supplies contact points; human data still requires structured preparation.
+分割、深度估计和手追踪把示范转成三维轨迹。轻量人工标注提供接触点，数据仍需结构化处理。
+Source: https://arxiv.org/pdf/2606.10614v1; Figure 2 | extraction and deployment, PDF p4
+
+04 Predict point motion / 学习点如何移动
+An autoregressive transformer learns point-level behavior from human videos, then adapts to individual tasks. The policy predicts hand-point motion and contact information rather than a finished robot motor command.
+自回归Transformer学习人类点轨迹，再适配各项任务。策略预测手部点运动与接触信息，而非直接电机指令。
+Source: https://arxiv.org/pdf/2606.10614v1; Figure 2 | extraction and deployment, PDF p4
+
+05 Convert points into control / 从点目标变成关节动作
+Inverse kinematics converts predicted points into commands for the robot hand and arm. A contact-aware closing bias helps establish a grasp, but does not measure actual contact force.
+逆运动学把预测点转换为手臂与手的指令。接触感知闭合偏置帮助抓握，但没有测量真实接触力。
+Source: https://arxiv.org/pdf/2606.10614v1; Figure 2 | extraction and deployment, PDF p4
+
+06 No robot demonstrations / 无机器人示教的实验
+The physical system uses OpenArm arms and Inspire hands, trained without robot demonstrations. Each task uses one hundred human demonstrations and twenty-four single-attempt evaluation trials.
+真机采用OpenArm和Inspire手，无机器人示教。每任务100条人类示范，24次单次尝试评测。
+Source: https://arxiv.org/pdf/2606.10614v1; Figure 3 | real rollouts, PDF p7
+
+07 Look beyond the overall average / 总平均之外看具体任务
+Average success across eight tasks is seventy-five percent, but the three manipulation tasks are harder. Opening reaches eighty-seven point five; scrubbing sixty-two point five; spraying forty-one point seven percent.
+八任务平均75%，其中三项操作任务更难。开微波炉87.5%、刷洗62.5%、喷洒41.7%。
+Source: https://arxiv.org/pdf/2606.10614v1; Table 1 | eight real tasks, PDF p8
+
+08 Compare the data budgets / 比较时锁定数据条件
+The low baseline scores come from methods adapted under the same human-only data constraint. They do not establish superiority over every robot-trained vision-language-action model.
+较低基线分数来自相同纯人类数据约束下的适配。不能由此推出优于所有机器人数据训练的VLA。
+Source: https://arxiv.org/pdf/2606.10614v1; Table 1 | eight real tasks, PDF p8
+
+09 Geometry buys transfer / 几何表示带来的迁移
+A shared point representation reduces the embodiment gap while keeping the control conversion explicit. Its practical limits remain point extraction, stereo depth, robot geometry, and reliable inverse kinematics.
+共享点表示缩小形态差距，同时保留明确控制转换。实际边界包括点提取、立体深度、机器人几何和逆解。
+Source: https://arxiv.org/pdf/2606.10614v1; Figure 1 | shared point abstraction, PDF p2
+
+
+Sources
+https://arxiv.org/pdf/2606.10614v1
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

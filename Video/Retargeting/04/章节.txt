@@ -1,0 +1,14 @@
+﻿00:00 手像了，杯子为什么还掉？ / The fingers match. The cup still falls.
+00:26 把接触描述固定在物体上 / Attach the description to the object
+00:59 什么才算接触？ / What counts as contact?
+01:35 迁移一片接触区域 / Transfer a contact patch
+02:10 换一种手，接触语义仍要保留 / Surface meaning survives a different hand
+02:44 保持手周围的局部关系 / Keep the neighborhood around the hand
+03:17 拉普拉斯坐标描述局部差异 / A Laplacian is a local difference
+03:52 避免穿透，不等于稳定抓取 / Avoid penetration without claiming stability
+04:29 DexFlow：稳定接触序列 / DexFlow stabilizes the contact sequence
+05:03 先适应手型，再恢复接触 / Change the hand model, then recover contact
+05:43 接触阈值属于具体协议 / The contact threshold belongs to the protocol
+06:17 C2Dex：迁移前先修复接触 / C2Dex repairs contact before transfer
+06:56 在正确层级解读结果 / Read each result at the correct level
+07:30 先定位接口，再加入力控制 / Debug the interface before adding force control

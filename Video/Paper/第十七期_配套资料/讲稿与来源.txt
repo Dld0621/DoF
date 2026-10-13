@@ -1,0 +1,55 @@
+﻿DoF Paper EP.17 | A Robot in an Unfamiliar Home
+换一个家，机器人还会干活吗？
+
+01 Beyond a familiar tabletop / 走出熟悉的实验台
+A robot enters a new home and must put dishes away or collect laundry. Pi zero point five studies this environmental generalization problem, where objects, layouts, and intermediate steps change together.
+机器人进入陌生家庭，要收拾碗碟或衣物。π0.5 研究物体、布局与步骤同时变化的泛化。
+Source: https://arxiv.org/pdf/2504.16054v1#page=1
+
+02 Decide the next step / 先决定下一步
+A high-level prediction identifies the next semantic subtask from the current observations and instruction. For example, the robot may need to open a drawer before placing the object inside it.
+高层根据当前观测和指令，选择下一语义子任务。例如放入物体之前，要先把抽屉打开。
+Source: https://arxiv.org/pdf/2504.16054v1#page=4
+
+03 Turn intent into motion / 再把意图变成动作
+A continuous action expert then generates the movements needed to execute that subtask. Flow matching supplies action sequences for the mobile base, two arms, and grippers, conditioned on current robot observations.
+连续动作专家生成执行该子任务的运动。流匹配根据观测，为底盘、双臂和夹爪生成动作。
+Source: https://arxiv.org/pdf/2504.16054v1#page=4
+
+04 Learn from different kinds of data / 融合不同类型的数据
+The training recipe mixes robot actions, semantic task annotations, and visual-language supervision. Discrete action training and continuous control share useful representations, connecting web-scale understanding with the physical behaviors learned from robot demonstrations.
+训练混合机器人动作、语义标注与视觉语言任务。离散动作训练与连续控制共享表示，连接理解和行为。
+Source: https://arxiv.org/pdf/2504.16054v1#page=6
+
+05 Training is not deployment / 训练信息不等于部署输入
+At deployment, the policy uses camera views, robot proprioception, and language. The human high-level oracle is a comparison condition, not an extra operator silently choosing every subtask for the autonomous policy.
+部署使用相机、本体状态和语言。人工高层指令是对照条件，不是自主策略的隐藏输入。
+Source: https://arxiv.org/pdf/2504.16054v1#page=1
+
+06 What the home tests measure / 家庭测试究竟测什么
+The main real-home plots report task progress across previously unseen environments. Each task and environment receives ten trials, but the vertical axis counts completed stages rather than only entirely successful episodes.
+真实家庭主图统计未见环境中的任务进度。每任务每环境十次，纵轴按完成阶段计分。
+Source: https://arxiv.org/pdf/2504.16054v1#page=8
+
+07 Progress is not full completion / 进度不等于全部完成
+For four dishes, picking each one up and placing it down can earn separate points. A high progress score can therefore include unfinished episodes; it should not be presented as the full-task success probability.
+四件碗碟的拿起和放下，可以分别得分。高进度也可能包含未完成试验，不能替换成成功率。
+Source: https://arxiv.org/pdf/2504.16054v1#page=17
+
+08 Where generalization still fails / 泛化仍会在哪里失败
+Unfamiliar handles, difficult doors, arm occlusion, and repetitive behaviors still cause failures. These mobile-gripper demonstrations also do not measure fingertip slip control, multi-finger coordination, or tight-tolerance assembly accuracy.
+陌生把手、难开的门、遮挡与重复动作仍会失败。移动夹爪实验未测多指滑移控制或紧公差装配。
+Source: https://arxiv.org/pdf/2504.16054v1#page=1
+
+09 Two separate capability axes / 两条不同的能力轴
+Pi zero point five expands where a robot can attempt useful, extended tasks. For dexterous manipulation, environmental generalization and precise contact control must still be tested separately before claiming dependable everyday operation.
+π0.5 扩展了机器人尝试长任务的环境范围。环境泛化和精密接触仍需分别验证可靠性。
+Source: https://arxiv.org/pdf/2504.16054v1#page=6
+
+
+Sources
+https://arxiv.org/abs/2504.16054
+https://arxiv.org/pdf/2504.16054v1
+https://www.physicalintelligence.company/download/pi05.pdf
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

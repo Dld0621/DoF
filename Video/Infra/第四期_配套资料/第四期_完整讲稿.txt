@@ -1,0 +1,209 @@
+﻿DoF Infra EP.04 | Camera-Only Hand Tracking: From Pixels to Contact
+
+01 Your hand moves. Will the robot follow?
+Your fingers close around a cup. The robot almost does.
+你的手捏住杯子，机器人却差了一点。
+
+For camera-only teleoperation, which three-dimensional tracking method is actually more accurate?
+只用摄像头，哪种三维手部动捕更准？
+
+Welcome to DoF Infra, episode four.
+欢迎来到 DoF Infra 第四期。
+
+We will follow one pinch, from pixels to physical contact.
+这次跟着一次捏合，从像素走到真实接触。
+
+02 Start with more useful views.
+For precision, I would start with synchronized, calibrated cameras from different angles.
+精度优先，我会先选同步、标定的多视角相机。
+
+Use depth where it is reliable, then fit a consistent hand model.
+深度可靠时加入深度，再拟合连续的手模型。
+
+That is an engineering starting point, not a universal winner.
+这是工程起点，不是通用精度冠军。
+
+The object, viewing angles, and control delay can change the answer.
+物体、观察角度和控制延迟都会改变结果。
+
+03 From depth pixels to visible points.
+Start with a depth frame. Isolate the hand from the object and background.
+从一帧深度图开始，先分离人手、物体与背景。
+
+Each valid depth pixel, together with camera intrinsics, maps to a three-dimensional surface point.
+每个有效深度像素，结合相机内参，就能还原为三维表面点。
+
+Together, these points sample the visible surface, not the hidden side.
+这些点采样可见表面，并不包含被挡住的背面。
+
+Calibrated views can contribute more observed surfaces in one coordinate frame.
+标定后的视角可以在同一坐标系补充可见表面。
+
+04 Surface points are not finger joints.
+A point cloud records surfaces. Joint centers usually sit inside the hand.
+点云记录表面；关节中心通常位于手内部。
+
+A model estimates a skeleton from image or depth evidence and anatomical constraints.
+模型结合图像或深度证据与人体结构约束，估计骨架。
+
+Separate global wrist motion from local finger articulation. The same pinch can move anywhere in space.
+把手腕整体运动与手指局部弯曲分开；同一捏合可以发生在不同位置。
+
+05 A mesh is a fitted, articulated surface.
+An articulated mesh represents the hand with vertices and connected faces.
+关节驱动的 Mesh 用顶点和相连的面来表示人手。
+
+In MANO, shape describes hand proportions; pose describes joint rotations. Skinning moves the surface with the joints.
+在 MANO 中，形状描述手的比例，姿态描述关节旋转；蒙皮让表面随关节变形。
+
+Fit the model to observed landmarks or surfaces, with anatomical priors.
+用观测到的关键点或表面，加上人体结构先验来拟合模型。
+
+A plausible hidden finger is still inferred, not measured.
+看似合理的隐藏手指，仍然是推断而非测量。
+
+06 Motion is a sequence of consistent hand states.
+Reconstructing one frame gives a pose. Motion capture tracks how that pose changes over time.
+重建一帧得到姿态；动捕跟踪姿态随时间的变化。
+
+Keep finger identities consistent, and track wrist motion and articulation together.
+保持手指身份一致，同时跟踪手腕运动和关节变化。
+
+A fixed template gives vertices consistent identities; their positions still have to be estimated in every frame.
+固定模板让顶点编号一致，但每一帧的位置仍需重新估计。
+
+Temporal constraints reduce jitter, but predicted motion during occlusion still carries uncertainty.
+时序约束能抑制抖动，但遮挡期间预测的运动仍有不确定性。
+
+07 These are representations, not mandatory steps.
+There is no compulsory point-cloud-to-mesh pipeline.
+点云到网格，并不是所有方法都必须走的流程。
+
+HaMeR predicts a parametric hand mesh directly from an RGB image.
+HaMeR 直接从 RGB 图像预测参数化手模型。
+
+DexPilot combines depth observations, estimated joints, and articulated model tracking.
+DexPilot 结合深度观测、关节估计与关节模型跟踪。
+
+For teleoperation, extract wrist and fingertip targets, then retarget them to the robot.
+遥操作还要提取手腕与指尖目标，再映射到机器人。
+
+08 One image leaves depth uncertain.
+A single RGB camera is a convenient first prototype.
+单目 RGB 很适合快速搭建原型。
+
+But different three-dimensional hands can project to similar images.
+不同的三维手势，可能投影成相似图像。
+
+HaMeR reports six millimeters on FreiHAND after Procrustes alignment.
+HaMeR 的对齐后关节误差为六毫米。
+
+That alignment removes translation, rotation, and scale differences.
+这种对齐会消除平移、旋转和尺度差异。
+
+It does not promise six-millimeter accuracy in your robot coordinates.
+它不保证机器人坐标下也有六毫米精度。
+
+09 A second view must reveal something new.
+A second view helps when it reveals what the first camera cannot see.
+第二视角的价值，在于看见第一台的盲区。
+
+Calibrate every camera into the same frame and synchronize exposures.
+所有相机要统一坐标，并同步曝光时间。
+
+Otherwise, a moving fingertip is fused from different places or times.
+否则，运动指尖会被跨位置、跨时间地融合。
+
+HO-Cap illustrates calibrated multi-view reconstruction. Its annotation pipeline is not live control.
+HO-Cap 展示多视角重建；标注流程不等于实时控制。
+
+10 Compare within the same experiment.
+AnyTeleop offers a useful comparison inside one system.
+AnyTeleop 给出了同一系统内的对比。
+
+In its simulated piano task, wrong-key rates fell from twenty-eight point one percent,
+仿真钢琴任务中，误按率从百分之二十八点一，
+
+to twenty-one point eight, then twelve point five,
+降至二十一点八，再到十二点五，
+
+using RGB, RGB-D, and two RGB-D cameras.
+分别对应 RGB、RGB-D 和双 RGB-D。
+
+One trained operator, ten trials per setup. Task evidence, not sensor error in millimeters.
+同一操作者每组十次；误按率不等于毫米精度。
+
+11 Unknown fingers should stay uncertain.
+Now turn the hand sideways and hold the cup.
+现在把手转向侧面，再握住杯子。
+
+A model can predict hidden joints from anatomy and recent motion.
+模型能用手部结构与近期运动推断隐藏关节。
+
+Prediction is useful, but it is not a new observation.
+预测很有用，但并不等于新的观测。
+
+When confidence drops, reduce motion, hold, or stop according to the task.
+置信度下降时，应按任务减速、保持或停止。
+
+Recovery should be gradual, rather than snapping the robot to a new pose.
+恢复跟踪要渐进，避免机器人突然跳姿态。
+
+12 Preserve the grasp, not every angle.
+Tracking is only the first half. Human and robot hands have different geometry.
+动捕只完成一半，人手与机器人的结构不同。
+
+Copying joint angles can leave the robot pinch open.
+直接复制关节角，机器人可能捏不拢。
+
+Retarget fingertip relationships, thumb opposition, and wrist pose, within robot limits.
+应在关节限制内映射指尖关系、拇指对掌与腕姿。
+
+Then verify actual robot motion and contact. A virtual touch is not a measured grip force.
+再验证实际运动与接触；虚拟触碰不是实测握力。
+
+13 Fast frames can still produce slow control.
+Measure delay across the whole chain: exposure, estimation, communication, and robot response.
+延迟要贯穿曝光、估计、通信与机器人响应。
+
+A high frame rate alone does not tell you that delay.
+帧率高，不代表整条链路延迟低。
+
+Smoothing can reduce jitter while making fast pinches arrive late.
+平滑能抑制抖动，也可能让快速捏合滞后。
+
+Report both typical delay and the slowest tail, such as the ninety-fifth percentile.
+既要报典型延迟，也要看第九十五百分位。
+
+14 Test the failure that matters.
+Before choosing cameras, repeat the same grasp under the same controller.
+选相机前，用同一控制器重复相同抓取。
+
+Test open fingers, precise pinches, side views, occlusion, and reappearance.
+测试张手、精细捏合、侧视、遮挡与重新出现。
+
+Check absolute wrist and fingertip error against an independent reference where visible.
+参考可见时，独立测量腕部与指尖的绝对误差。
+
+Keep missing reference frames explicit. Count tracking loss, delay, failed grasps, and drops.
+明确参考缺失帧，并统计掉踪、延迟、失败与掉物。
+
+15 Choose the system that survives the grasp.
+My camera-only recommendation: RGB for a quick prototype, RGB-D for a fixed workspace,
+纯视觉建议：RGB 快速验证，RGB-D 定点起步，
+
+and calibrated multi-view capture when precision and occlusion justify the setup.
+精度与遮挡要求更高时，升级标定的多视角。
+
+Start with two complementary views; add more only when measured failures justify them.
+先用两个互补视角，再按实测失败补充相机。
+
+The goal is a repeatable grasp, not just a convincing digital hand.
+目标是可重复的抓取，而不只是好看的数字手。
+
+Explore the sources in the DoF research map.
+在 DoF 研究地图里继续查看原始论文。
+
+
+原始资料与使用范围
+详见第四期_选型分析.txt及第四期_素材来源.json。动态图为原理示意，非新硬件实验。

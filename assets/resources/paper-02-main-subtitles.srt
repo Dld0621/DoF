@@ -1,0 +1,254 @@
+﻿1
+00:00:00,250 --> 00:00:02,705
+Welcome to DoF Paper Breakdown
+这里是 DoF Paper 解读。
+
+2
+00:00:02,730 --> 00:00:06,725
+Today: π0.7, a steerable robot generalist
+今天讲 π0.7：可引导的机器人通用模型。
+
+3
+00:00:06,750 --> 00:00:10,605
+We will unpack the VLA framework and cross robot transfer
+拆解 VLA 框架与跨本体技能迁移。
+
+4
+00:00:10,630 --> 00:00:13,430
+Then check the evidence behind those capabilities
+再看这些能力背后的实验证据。
+
+5
+00:00:14,320 --> 00:00:19,455
+Last episode, RECAP turned robot experience into better specialist policies
+上一期，RECAP 用执行经验改进专用策略。
+
+6
+00:00:19,480 --> 00:00:23,795
+π0.7 asks how one generalist can reuse those skills
+π0.7：一个通用模型怎样复用这些技能？
+
+7
+00:00:23,820 --> 00:00:27,575
+The key is richer context about what to do, and how to do it
+关键是更丰富的上下文：做什么，怎样做。
+
+8
+00:00:27,600 --> 00:00:30,800
+Let us read the architecture, then check the evidence
+先拆框架，再看实验证据。
+
+9
+00:00:31,590 --> 00:00:33,905
+Figure 2 separates three roles
+图 2 把系统分成三个角色。
+
+10
+00:00:33,930 --> 00:00:37,265
+The high level policy proposes a language subtask
+高层策略提出语言子任务。
+
+11
+00:00:37,290 --> 00:00:40,605
+The world model generates images of a near future goal
+世界模型生成近期目标图像。
+
+12
+00:00:40,630 --> 00:00:45,105
+The VLA sees current images, joint states, and compressed visual history
+VLA 输入当前图像、关节状态和压缩历史。
+
+13
+00:00:45,130 --> 00:00:48,725
+Its flow matching action expert generates motor commands
+流匹配动作专家生成控制指令。
+
+14
+00:00:48,750 --> 00:00:53,870
+Goal images describe the destination. The action expert chooses how to reach it
+目标图像描述终点，动作专家决定怎样到达。
+
+15
+00:00:54,460 --> 00:00:56,955
+Figure 3 shows the expanded prompt
+图 3 展示扩展后的提示结构。
+
+16
+00:00:56,980 --> 00:01:02,075
+It combines the task, a subtask, visual subgoals, and episode metadata
+包含任务、子任务、视觉子目标和轨迹元数据。
+
+17
+00:01:02,100 --> 00:01:06,255
+A control label selects joint space or end effector commands
+控制标签选择关节空间或末端控制。
+
+18
+00:01:06,280 --> 00:01:10,940
+Prompt dropout lets the model combine optional prompt components at runtime
+提示随机丢弃让模型能按需组合可选输入。
+
+19
+00:01:11,730 --> 00:01:16,685
+Metadata describes speed, quality, and mistakes in each training episode
+元数据描述每条轨迹的速度、质量和失误。
+
+20
+00:01:16,710 --> 00:01:21,065
+That distinguishes good behavior from slower or unsuccessful attempts
+它把良好行为与低效、失败尝试区分开。
+
+21
+00:01:21,090 --> 00:01:25,105
+At runtime, the prompt asks for high quality and no mistakes
+执行时，提示指定高质量、无失误。
+
+22
+00:01:25,130 --> 00:01:29,850
+Those labels steer behavior. They do not guarantee a successful outcome
+标签引导行为，但不保证任务成功。
+
+23
+00:01:30,440 --> 00:01:33,015
+Figure 6 connects this back to RECAP
+图 6 把结果接回 RECAP。
+
+24
+00:01:33,040 --> 00:01:37,835
+Training includes rollouts from specialist policies, labeled with metadata
+训练纳入带元数据标签的专用策略轨迹。
+
+25
+00:01:37,860 --> 00:01:42,295
+One generalist matches specialist performance on these tested tasks
+同一通用模型在这些测试任务中接近专用模型。
+
+26
+00:01:42,320 --> 00:01:47,420
+Read success rate and throughput separately. The latter counts successes per hour
+成功率和吞吐量分开看；后者是每小时成功次数。
+
+27
+00:01:48,030 --> 00:01:51,985
+Now Figure 12, and the official UR5e folding clip
+图 12，结合官网 UR5e 叠衣服演示。
+
+28
+00:01:52,010 --> 00:01:55,345
+There is no laundry folding data for this target robot
+目标机器人没有叠衣服任务训练数据。
+
+29
+00:01:55,370 --> 00:01:58,005
+It does have training data for other tasks
+但它有其他任务的训练数据。
+
+30
+00:01:58,030 --> 00:02:03,285
+Skills transfer from a smaller robot, with grasp strategies adapted to the larger arms
+技能从较小机器人迁移，抓取策略随本体调整。
+
+31
+00:02:03,310 --> 00:02:07,285
+With generated subgoals, shirt folding success is 80%
+加入生成子目标后，叠恤衫成功率为 80%。
+
+32
+00:02:07,310 --> 00:02:11,670
+Experienced teleoperators score 80.6% in this comparison
+本次对比中，熟练遥操人员成功率为 80.6%。
+
+33
+00:02:12,420 --> 00:02:15,775
+For a new air fryer task, separate three stages
+新空气炸锅任务，要分清三个阶段。
+
+34
+00:02:15,800 --> 00:02:21,135
+A single zero shot instruction produces only partial execution in the website example
+官网示例中，一句零样本指令只完成了部分步骤。
+
+35
+00:02:21,160 --> 00:02:25,515
+Step by step language coaching helps the robot complete the sequence
+逐步语言指导帮助机器人完成任务序列。
+
+36
+00:02:25,540 --> 00:02:28,240
+Figure 15 tests this coached setting
+图 15 测试的是有人指导的设置。
+
+37
+00:02:28,810 --> 00:02:31,265
+Figure 16 is the next stage
+图 16 是下一阶段。
+
+38
+00:02:31,290 --> 00:02:36,525
+Coaching episodes train a high level policy to generate the subtasks automatically
+指导轨迹用于训练自动生成子任务的高层策略。
+
+39
+00:02:36,550 --> 00:02:42,085
+That creates an autonomous task policy without new teleoperated action demonstrations
+无需新增遥操动作示范，即可形成自主任务策略。
+
+40
+00:02:42,110 --> 00:02:45,745
+But it uses coaching data and extra high level training
+但它使用了指导数据和额外的高层训练。
+
+41
+00:02:45,770 --> 00:02:49,390
+Keep that distinction when interpreting zero shot claims
+解读零样本能力时，要保留这个区别。
+
+42
+00:02:50,080 --> 00:02:53,555
+Figure 18 tests the data argument
+图 18 是检验数据论点的重要实验。
+
+43
+00:02:53,580 --> 00:02:57,235
+Adding lower quality data can hurt a model without metadata
+没有元数据时，加入低质量数据可能降低表现。
+
+44
+00:02:57,260 --> 00:03:01,195
+With metadata, performance improves as the dataset expands
+有元数据时，表现随数据规模扩大而改善。
+
+45
+00:03:01,220 --> 00:03:06,935
+Removing the most diverse 20% hurts more than removing a random 20%
+移除最多样的 20%，比随机移除 20% 更伤性能。
+
+46
+00:03:06,960 --> 00:03:11,820
+The amounts match, so this comparison tests diversity beyond volume
+移除数量相同，因此能考察数据量之外的多样性。
+
+47
+00:03:12,470 --> 00:03:18,485
+The paper reports 60–80% success for unseen tasks or robot-task combinations
+论文报告：未见任务或任务本体组合成功率约 60–80%。
+
+48
+00:03:18,510 --> 00:03:22,545
+Related skills may still exist elsewhere in the large training mixture
+相关技能仍可能存在于庞大训练数据的其他部分。
+
+49
+00:03:22,570 --> 00:03:26,345
+My reading: richer context makes diverse experience more usable
+我的理解：更丰富的上下文，让多样经验更可用。
+
+50
+00:03:26,370 --> 00:03:29,865
+That is the connection from RECAP to a steerable generalist
+这就是从 RECAP 到可引导通用模型的联系。
+
+51
+00:03:29,890 --> 00:03:32,790
+DoF Paper Breakdown · EP.02
+这里是 DoF Paper 解读，第二期。

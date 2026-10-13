@@ -1,0 +1,454 @@
+﻿1
+00:00:00,850 --> 00:00:05,410
+Imagine closing a robot hand around a cup using a human demonstration.
+想象一下，我们根据人类示范，让机器人合手握住杯子。
+
+2
+00:00:05,910 --> 00:00:09,170
+The fingertips look right, but one finger floats above the surface.
+指尖位置看起来很像，却有一根手指悬在杯面上方。
+
+3
+00:00:09,630 --> 00:00:13,070
+Another finger pushes through the cup in the reconstructed geometry.
+另一根手指则在重建的几何中穿进了杯子。
+
+4
+00:00:13,410 --> 00:00:17,010
+Matching the hand alone has missed the interaction that makes the grasp work.
+只匹配手的形状，遗漏了真正支撑抓取的手物交互。
+
+5
+00:00:17,430 --> 00:00:21,790
+This chapter follows contact from a geometric label to a robot motion reference.
+这一章追踪接触如何从几何标签，变成机器人动作参考。
+
+6
+00:00:22,230 --> 00:00:26,330
+We will also separate preserving contact from producing enough force to lift.
+我们也要分清：保持接触，与产生足够的提起力，是两件事。
+
+7
+00:00:26,780 --> 00:00:30,880
+First, imagine painting a small dot on the side of that cup.
+首先，想象在杯子的侧面画一个小点。
+
+8
+00:00:31,300 --> 00:00:35,380
+As the cup moves across the table, the dot changes its world position.
+杯子在桌面上移动时，这个点的世界坐标会变化。
+
+9
+00:00:35,940 --> 00:00:40,000
+Its position relative to the cup stays the same throughout the rigid motion.
+但在刚体运动中，它相对杯子的位置始终不变。
+
+10
+00:00:40,280 --> 00:00:44,660
+An object coordinate frame lets us describe contact on that moving surface.
+物体坐标系让我们能在这片移动表面上描述接触。
+
+11
+00:00:44,960 --> 00:00:50,520
+Subtract the object translation, then undo its rotation to express a world point locally.
+先减去物体平移，再消除它的旋转，就得到点的局部坐标。
+
+12
+00:00:50,840 --> 00:00:54,785
+Apply the current object pose to move that local target back into the scene.
+再应用当前物体位姿，就能把这个局部目标放回场景。
+
+13
+00:00:54,800 --> 00:00:58,400
+This only works when the estimated object pose is reliable.
+这种表示的可靠性，取决于物体位姿估计是否准确。
+
+14
+00:00:59,066 --> 00:01:04,346
+A contact label usually needs a definition before an optimizer can use it.
+优化器使用接触标签之前，必须先定义什么算接触。
+
+15
+00:01:04,886 --> 00:01:09,706
+A common geometric rule marks a hand point as touching when surface distance is small.
+常见的几何规则是：手部点到物体表面的距离足够小，就标为接触。
+
+16
+00:01:09,926 --> 00:01:14,366
+But a threshold is a modeling choice, not a measurement of contact force.
+但距离阈值是建模选择，不是接触力的测量值。
+
+17
+00:01:14,746 --> 00:01:19,511
+Noisy meshes can create false contact; missing surfaces can hide real contact.
+网格噪声可能制造假接触，缺失表面也可能掩盖真实接触。
+
+18
+00:01:19,526 --> 00:01:25,751
+Record whether labels came from annotation, reconstructed geometry, simulation, or physical sensors.
+需要记录标签来自标注、重建几何、仿真，还是物理传感器。
+
+19
+00:01:25,766 --> 00:01:30,406
+For our cup, also ask which finger region touches which part of the object.
+对于这个杯子，还要问：手指的哪个区域，接触物体的哪个部分？
+
+20
+00:01:30,646 --> 00:01:34,506
+That correspondence matters more than a single yes-or-no contact flag.
+这层对应关系，比一个简单的接触或未接触标志更有信息。
+
+21
+00:01:35,113 --> 00:01:41,053
+Kinematic Motion Retargeting starts with accurate hand and object meshes and a motion sequence.
+Kinematic Motion Retargeting 从准确的手物网格和一段动作序列开始。
+
+22
+00:01:41,773 --> 00:01:46,993
+Its original overview also requires dense contact annotations on the hand or object.
+这张原始总览图还要求提供手部或物体上的稠密接触标注。
+
+23
+00:01:47,533 --> 00:01:52,853
+The target hand needs a skeleton-driven mesh and manually specified surface correspondences.
+目标手需要骨架驱动的网格，以及人工指定的表面对应关系。
+
+24
+00:01:53,533 --> 00:01:57,838
+These include virtual markers and axial curves that identify matching regions.
+其中包括用于标识对应区域的虚拟标记点和轴向曲线。
+
+25
+00:01:57,853 --> 00:02:05,153
+The method transfers contact areas, estimates a trajectory, refines it, then fits smooth splines.
+方法先迁移接触区域，再估计并细化轨迹，最后拟合平滑样条。
+
+26
+00:02:05,713 --> 00:02:10,253
+The output is a kinematic trajectory; it does not yet solve contact forces.
+输出是一条运动学轨迹；此时还没有求解接触力。
+
+27
+00:02:10,998 --> 00:02:16,418
+Look at the phone sequence: contact spreads and moves as the manipulation changes.
+看这段手机操作：随着动作变化，接触区域会扩展和移动。
+
+28
+00:02:16,758 --> 00:02:21,758
+A fingertip-only target cannot describe the palm supporting the phone during a whole-hand grasp.
+只用指尖目标，无法描述包握时手掌对手机的支撑。
+
+29
+00:02:22,258 --> 00:02:27,378
+The method uses surface distances and directions to transfer those richer contact regions.
+这个方法利用表面上的距离与方向，迁移这些更丰富的接触区域。
+
+30
+00:02:27,918 --> 00:02:32,658
+Geodesic distance means distance along the hand surface, rather than straight through space.
+测地距离指沿着手部表面走过的距离，而不是穿过空间的直线距离。
+
+31
+00:02:33,158 --> 00:02:37,998
+Annotations establish which regions should correspond when finger numbers or proportions differ.
+当手指数量或比例不同，标注负责建立区域之间应有的对应。
+
+32
+00:02:38,218 --> 00:02:43,958
+This flexibility costs preparation and accurate geometry; it is not a camera-only tracking system.
+这种灵活性需要前期准备和准确几何；它本身不是纯相机跟踪系统。
+
+33
+00:02:44,485 --> 00:02:50,285
+TopoRetarget takes another route: preserve a local graph connecting the hand and object.
+TopoRetarget 走另一条路线：保留连接手和物体的局部图结构。
+
+34
+00:02:50,585 --> 00:02:55,225
+In its overview, bone directions first provide an initial robot hand configuration.
+在总览图中，骨骼方向首先给出机器人手的初始构型。
+
+35
+00:02:55,665 --> 00:03:00,365
+Human hand keypoints and sampled object points become vertices in an interaction mesh.
+人手关键点和物体表面采样点，成为交互网格中的顶点。
+
+36
+00:03:00,825 --> 00:03:05,465
+The robot uses corresponding vertices with the same graph connections for comparison.
+机器人使用对应顶点，并沿用同一套图连接关系进行比较。
+
+37
+00:03:06,005 --> 00:03:11,010
+For our cup, a finger is now constrained by nearby object points as well as hand structure.
+对于杯子，手指现在同时受到附近物体点和手部结构的约束。
+
+38
+00:03:11,025 --> 00:03:16,585
+The objective follows the relationship, rather than copying every global point position exactly.
+目标函数关注这些关系，而不是逐个精确复制所有全局点坐标。
+
+39
+00:03:17,314 --> 00:03:22,034
+The graph objective uses a quantity called a weighted Laplacian coordinate.
+图优化中使用了一个量，叫作加权拉普拉斯坐标。
+
+40
+00:03:22,434 --> 00:03:27,654
+For one vertex, take its displacement from each neighbor, then average those displacements.
+对一个顶点，计算它相对各个邻居的位移，再对这些位移加权平均。
+
+41
+00:03:28,294 --> 00:03:33,154
+TopoRetarget gives nearby neighbors more weight using distances measured in the human reference.
+TopoRetarget 根据人类参考中的距离，让更近的邻居获得更大权重。
+
+42
+00:03:33,714 --> 00:03:38,074
+The robot tries to reproduce these local differences under its own joint constraints.
+机器人在自身关节约束下，尽量复现这些局部差异。
+
+43
+00:03:38,374 --> 00:03:42,659
+Move the whole cup and hand together: relative relationships can remain unchanged.
+如果手和杯子一起移动，相对关系可以保持不变。
+
+44
+00:03:42,674 --> 00:03:47,194
+Move only the finger away: its relationship with the cup changes immediately.
+如果只把手指移开，它与杯子的关系就会立刻变化。
+
+45
+00:03:47,674 --> 00:03:52,174
+This is a geometric preservation objective, not an estimator of friction or force.
+这是保持几何关系的目标，不是摩擦或力的估计器。
+
+46
+00:03:52,798 --> 00:03:58,658
+A geometric optimizer can reduce contact error by driving a finger into the object.
+几何优化器可能通过把手指压进物体，来降低接触误差。
+
+47
+00:03:59,498 --> 00:04:05,118
+TopoRetarget combines interaction, direction, regularization, and signed-distance constraints.
+所以 TopoRetarget 把交互保持、方向、正则项和有符号距离约束结合起来。
+
+48
+00:04:05,838 --> 00:04:10,238
+Its penetration formulation uses a soft tolerance together with a hard bound.
+它的穿透处理同时使用软容差和硬边界。
+
+49
+00:04:10,818 --> 00:04:15,138
+A geometric penetration allowance is not a measurement of physical deformation.
+几何模型允许的小幅穿透，不能被当作实测的物理形变。
+
+50
+00:04:15,678 --> 00:04:19,883
+A plausible contact pattern is still only a reference for the downstream controller.
+合理的接触分布，仍然只是下游控制器的参考。
+
+51
+00:04:19,898 --> 00:04:24,398
+When the cup leaves the table, the robot must actually support its weight.
+当杯子离开桌面时，机器人必须真正支撑住它的重量。
+
+52
+00:04:24,798 --> 00:04:28,658
+That is where geometry alone stops answering the full manipulation question.
+在这里，仅靠几何已经无法回答完整的操作问题。
+
+53
+00:04:29,467 --> 00:04:35,667
+DexFlow adds a practical question: what happens when detected contact flickers between frames?
+DexFlow 补充了一个实际问题：检测到的接触在相邻帧反复跳变，怎么办？
+
+54
+00:04:36,047 --> 00:04:41,207
+Its pipeline starts with reconstructed hand-object sequences and an initial robot mapping.
+这张原始流程图从重建的人手与物体序列，以及初始机器人映射开始。
+
+55
+00:04:41,507 --> 00:04:46,987
+A dual-threshold contact detector and temporal processing stabilize the contact information.
+双阈值接触检测与时间处理，用于稳定这些接触信息。
+
+56
+00:04:47,307 --> 00:04:52,427
+It refines fingers sequentially using contact distance, alignment, and penetration terms.
+随后逐根优化手指，结合接触距离、方向对齐与穿透项。
+
+57
+00:04:52,727 --> 00:04:57,372
+This helps when noisy geometry reports flickering contact during an otherwise steady grasp.
+当一次稳定抓握被噪声几何交替判成接触和分离时，这个思路很有用。
+
+58
+00:04:57,387 --> 00:05:02,907
+Its simulated grasp-generation protocol differs from continuous real-world teleoperation.
+但它的仿真抓取生成评测，与连续真机遥操作的协议并不相同。
+
+59
+00:05:03,562 --> 00:05:09,402
+Morphometric Imitation addresses a different source of error: hand proportions themselves.
+Morphometric Imitation 处理另一种误差来源：手的比例本身。
+
+60
+00:05:10,042 --> 00:05:15,042
+Its morphometric optimization first adapts a human hand model to the robot morphology.
+其中的形态优化，首先把人手模型适配到机器人手型。
+
+61
+00:05:15,862 --> 00:05:21,002
+The figure separates morphology matching, contact matching, and robot pose recovery.
+原图展示了手型匹配、接触匹配和机器人姿态恢复三个阶段。
+
+62
+00:05:21,442 --> 00:05:26,182
+Changing palm width or finger length can destroy contacts that were correct before scaling.
+改变手掌宽度或手指长度，可能破坏缩放之前正确的接触。
+
+63
+00:05:26,562 --> 00:05:32,007
+The second stage therefore reposes the adapted hand to recover the demonstrated contact locations.
+所以第二阶段要重新调整适配后的手姿，恢复示范中的接触位置。
+
+64
+00:05:32,022 --> 00:05:37,762
+Finally, skeletal transfer and inverse kinematics recover robot joint configurations.
+最后，通过骨架迁移和逆运动学恢复机器人关节构型。
+
+65
+00:05:38,282 --> 00:05:42,582
+This separates morphology adjustment from solving the contact damage it creates.
+这就把手型适配，与修复适配造成的接触变化，明确分开了。
+
+66
+00:05:43,177 --> 00:05:49,377
+The paper defines reference-mesh contact using a four-point-five-millimeter distance threshold.
+在这篇论文中，参考网格的接触检测使用四点五毫米距离阈值。
+
+67
+00:05:49,837 --> 00:05:54,457
+That threshold follows the GRAB setting; it is not a universal physical constant.
+这个阈值遵循 GRAB 的设置，并不是普适的物理常数。
+
+68
+00:05:55,197 --> 00:06:00,417
+Shared mesh topology preserves vertex identities between the human and adapted hand models.
+人手模型与适配模型拥有相同网格拓扑，因此接触匹配时可保持顶点身份。
+
+69
+00:06:00,717 --> 00:06:04,877
+During approach, the method can track regions that will later form the grasp.
+在接近物体时，方法也能跟踪之后将参与抓握的区域。
+
+70
+00:06:05,177 --> 00:06:10,562
+Those future contact regions are motion targets, not claims that contact already exists.
+这些未来接触区域是动作目标，不代表此刻已经发生接触。
+
+71
+00:06:10,577 --> 00:06:16,897
+Experiments separate kinematic contact quality, dynamic retargeting, and visuomotor deployment.
+实验也分别评估运动学接触质量、动力学重定向，以及最终视觉运动策略部署。
+
+72
+00:06:17,625 --> 00:06:22,805
+Now suppose our input is a single video instead of a clean recorded trajectory.
+现在假设输入是一段单目视频，而不是干净的记录轨迹。
+
+73
+00:06:23,365 --> 00:06:27,725
+C2Dex first estimates the moving hand, object geometry, and object pose.
+C2Dex 首先估计运动中的手、物体几何，以及物体位姿。
+
+74
+00:06:28,225 --> 00:06:33,165
+In the original pipeline, candidate contacts are aligned in the canonical object frame.
+在原始流程图中，候选接触会对齐到规范的物体坐标系。
+
+75
+00:06:33,525 --> 00:06:38,745
+Clustering within stable segments identifies persistent contact locations on the object.
+局部稳定片段中的观测经过聚类，得到持续存在的物体侧接触位置。
+
+76
+00:06:39,145 --> 00:06:44,910
+These targets refine the human reconstruction before guiding contact-preserving robot retargeting.
+这些目标先细化人手重建，再指导保持接触的机器人重定向。
+
+77
+00:06:44,925 --> 00:06:51,305
+Laplacian optimization preserves local relationships; residual learning improves physical execution.
+拉普拉斯优化保持局部关系，独立的残差学习阶段进一步改善物理执行。
+
+78
+00:06:51,785 --> 00:06:55,725
+The same contact representation connects perception and action transfer.
+同一套接触表示，由此连接起感知与动作迁移。
+
+79
+00:06:56,302 --> 00:07:02,002
+C2Dex illustrates why a pipeline result and a retargeter result need separate labels.
+C2Dex 也说明了为什么整条系统和重定向模块的结果必须分开标注。
+
+80
+00:07:02,522 --> 00:07:07,982
+Its isolated retargeting comparison supplies ground-truth hand-object trajectories to the methods.
+它的独立重定向比较，向各方法提供参考真值手物轨迹。
+
+81
+00:07:08,422 --> 00:07:13,342
+End-to-end comparisons start from video, including reconstruction errors and residual learning.
+端到端比较则从视频开始，包含重建误差与残差学习。
+
+82
+00:07:13,802 --> 00:07:18,942
+Real-robot tests use controlled open-loop replay, rather than a general recovery policy.
+真机展示采用受控条件下的开环轨迹回放，并非通用扰动恢复策略。
+
+83
+00:07:19,382 --> 00:07:24,787
+The figure shows cleaner contacts, but an image alone cannot establish a full-task success rate.
+这张图展示了更合理的接触，但单张图片不能证明完整任务成功率。
+
+84
+00:07:24,802 --> 00:07:30,022
+Object pose drift and frequent contact switching remain important limitations of this pipeline.
+物体位姿漂移，以及频繁的接触切换，仍是这套流程的重要局限。
+
+85
+00:07:30,668 --> 00:07:34,368
+Return to the cup and inspect the transfer in a fixed order.
+回到这个杯子，按固定顺序检查动作迁移。
+
+86
+00:07:34,748 --> 00:07:40,388
+First verify object pose and scale, then inspect the contact labels and surface correspondence.
+先核对物体位姿和尺度，再检查接触标签与表面对应。
+
+87
+00:07:40,988 --> 00:07:45,788
+Next check whether the robot reaches those contacts within joint and collision constraints.
+接着检查机器人能否在不违反关节和碰撞约束的前提下到达这些接触。
+
+88
+00:07:46,288 --> 00:07:50,848
+Finally test whether real forces keep the object supported during lift and transport.
+最后测试真实的力，能否在提起和搬运过程中持续支撑物体。
+
+89
+00:07:51,388 --> 00:07:56,388
+Force-aware methods such as ReForce add measured contact feedback to correct a motion reference.
+像 ReForce 这样的力感知方法，会加入实测接触反馈来修正动作参考。
+
+90
+00:07:56,728 --> 00:08:02,048
+That requires additional sensing; it cannot silently be assumed in a camera-only system.
+这需要额外传感器，不能默认为纯相机系统已经具备的能力。
+
+91
+00:08:02,508 --> 00:08:07,208
+The next chapter crosses from geometric references into physically executable behavior.
+下一章沿着这条边界，从几何参考走向物理上可执行的行为。

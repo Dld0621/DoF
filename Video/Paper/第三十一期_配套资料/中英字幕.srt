@@ -1,0 +1,89 @@
+﻿1
+00:00:00,850 --> 00:00:05,710
+A hand lifts a thin cup, but accidentally brings the nested cups along.
+手拿起薄杯，却把套在一起的杯子都带起来。
+
+2
+00:00:06,050 --> 00:00:11,790
+SoTa explores how full-hand tactile sensing and human demonstrations can improve this kind of interaction.
+SoTa研究全手触觉和人类示范怎样改善这种交互。
+
+3
+00:00:12,486 --> 00:00:18,966
+The soft capacitive skins place two hundred two sensing elements across corresponding finger and palm regions.
+柔性电容皮肤在对应手指和手掌区域布置202个单元。
+
+4
+00:00:19,446 --> 00:00:22,946
+Human and robot skins fit different shapes while preserving this shared layout.
+人手和机器人皮肤适配不同外形，但保持共享布局。
+
+5
+00:00:23,697 --> 00:00:28,837
+Layered fabric electrodes create a thin, deformable sensor that responds to contact.
+多层织物电极形成能响应接触的薄柔性传感器。
+
+6
+00:00:29,197 --> 00:00:34,737
+The paper reports material cost below ten dollars per skin, not the price of a complete system.
+每片材料成本低于10美元，并非整套系统售价。
+
+7
+00:00:35,258 --> 00:00:40,718
+Corresponding sensing layouts allow both embodiments to use a common tactile encoder.
+对应传感布局使两种手型能够共享触觉编码器。
+
+8
+00:00:41,118 --> 00:00:46,638
+This avoids learning a separate cross-sensor conversion just to relate human contact to robot contact.
+无需先学习额外跨传感器转换来关联人机接触。
+
+9
+00:00:47,112 --> 00:00:53,472
+The policy builds on FTP-1, with an auxiliary language objective describing task phases.
+策略基于FTP-1，辅助语言目标描述任务阶段。
+
+10
+00:00:53,892 --> 00:01:00,652
+Human demonstrations support representation learning; their movements do not directly supervise the robot action output.
+人类示范辅助表征学习，不直接监督机器人动作输出。
+
+11
+00:01:01,217 --> 00:01:07,897
+Experiments cover box reorientation, cup separation, and plug insertion across eight test conditions.
+实验覆盖盒子换向、分杯、插头，共八种测试条件。
+
+12
+00:01:08,557 --> 00:01:13,977
+Comparisons hold robot demonstrations fixed, adding one hundred fifty human demonstrations per task.
+对照固定机器人示教，每任务增加150条人类示范。
+
+13
+00:01:14,486 --> 00:01:20,026
+The mean across conditions rises from twenty-two point eight to forty-five point nine percent.
+各条件均值由22.8%升至45.9%。
+
+14
+00:01:20,346 --> 00:01:25,346
+Each policy receives forty attempts per condition; partial completion counts as failure.
+每策略每条件40次，部分完成算失败。
+
+15
+00:01:25,965 --> 00:01:32,665
+Adding tactile input alone does not improve every unfamiliar-object condition and sometimes reduces performance.
+只加入触觉并非所有未见条件都提升，有时反而下降。
+
+16
+00:01:33,345 --> 00:01:39,125
+The study also uses one training seed per method and task, limiting conclusions about training variability.
+每方法每任务仅一个训练种子，训练波动尚不充分。
+
+17
+00:01:39,857 --> 00:01:46,037
+The important connection runs from a shared physical sensor layout to reusable human contact data.
+关键链路是从共享传感布局走向可复用人类接触数据。
+
+18
+00:01:46,357 --> 00:01:51,197
+SoTa names the skin; it is not a claim of winning every dexterous-manipulation benchmark.
+SoTa是皮肤名称，并不意味着赢得所有灵巧操作基准。

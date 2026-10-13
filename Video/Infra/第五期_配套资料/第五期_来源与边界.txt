@@ -1,0 +1,120 @@
+﻿DoF Infra EP05｜来源与精度边界
+
+本片是科研科普与工程分析；未开展新的 DoF 硬件精度实测。
+官方影片中的 GT 轮廓是参考标注，不等于模型预测。
+UmeTrack 公开评测提供 GT 引导的裁剪；HOT3D 比较提供 GT 手型和边界框。
+不同数据集、坐标对齐、可见性及输入条件的误差，不能组成一张统一精度排行榜。
+
+一、原始研究与官方项目
+01. HOT3D 原论文，附录 C
+    https://arxiv.org/html/2411.19167v2#A3
+02. HOT3D 主文与质量控制
+    https://arxiv.org/html/2411.19167v2
+03. InterHand2.6M 原论文，§3.2、§5.3 / Fig.4
+    https://arxiv.org/pdf/2008.09309
+04. 作者项目，2020-11-26 更新
+    https://mks0601.github.io/InterHand2.6M/
+05. DIP 原论文，§3.3 与附录 F
+    https://arxiv.org/pdf/1810.04703
+06. 标定文档
+    https://docs.optitrack.com/v3.3/motive/calibration
+07. Precision Capture
+    https://docs.optitrack.com/v3.2/quick-start-guides/quick-start-guide-precision-capture
+08. eSync2 技术页
+    https://www.optitrack.com/accessories/esync-2
+09. 同步配置
+    https://docs.optitrack.com/v3.3/synchronization/synchronization-setup
+10. Plug-in Gait 计算说明
+    https://vicon-help.atlassian.net/wiki/spaces/Nexus212/pages/11246669
+11. Nexus 官方功能标定
+    https://www.vicon.com/software/nexus/
+12. AMASS 原论文
+    https://openaccess.thecvf.com/content_ICCV_2019/papers/Mahmood_AMASS_Archive_of_Motion_Capture_As_Surface_Shapes_ICCV_2019_paper.pdf
+13. 官方项目
+    https://irvlutd.github.io/HOCap/
+14. WiLoR 官方项目
+    https://rolpotamias.github.io/WiLoR/
+15. HaWoR CVPR 2025 原论文
+    https://www.openaccess.thecvf.com/content/CVPR2025/papers/Zhang_HaWoR_World-Space_Hand_Motion_Reconstruction_from_Egocentric_Videos_CVPR_2025_paper.pdf
+16. 论文正式页面
+    https://openaccess.thecvf.com/content/ICCV2025/html/Kim_Probabilistic_Inertial_Poser_ProbIP_Uncertainty-aware_Human_Motion_Modeling_from_Sparse_ICCV_2025_paper.html
+17. 官方实现
+    https://github.com/MinKim14/ProbIP-ICCV2025
+18. CVPR 2024 论文
+    https://openaccess.thecvf.com/content/CVPR2024/papers/Zhang_Dynamic_Inertial_Poser_DynaIP_Part-Based_Motion_Dynamics_Learning_for_Enhanced_CVPR_2024_paper.pdf
+19. 论文
+    https://arxiv.org/abs/2603.02130
+20. 项目与同步附录
+    https://sites.google.com/view/stereo-inertial-poser
+21. DexCap
+    https://dex-cap.github.io/
+22. DexUMI
+    https://dex-umi.github.io/
+23. UmeTrack §3–4，Fig.2–3
+    https://arxiv.org/pdf/2211.00099
+24. 官方勘误与结果表
+    https://github.com/facebookresearch/UmeTrack#results
+25. VIPER 技术表
+    https://polhemus.com/all-trackers/viper
+26. Quantum Metagloves 技术页
+    https://www.manus-meta.com/products/quantum-metagloves
+27. MANUS 当前产品
+    https://www.manus-meta.com/
+28. MANUS 标定文档
+    https://docs.manus-meta.com/3.1.1/Products/XR%20Metagloves/Calibration/
+29. Polhemus 金属畸变技术说明
+    https://polhemus.com/blog/polhemus-introduces-ftt
+30. HOT3D 官方 GT 配图
+    https://facebookresearch.github.io/hot3d/assets/hot3d_gt_annotations.jpg
+31. HOT3D Aria 官方视频
+    https://www.youtube.com/watch?v=V4luyrOhKfA
+32. Quest3 官方视频
+    https://www.youtube.com/watch?v=EeM_WBVd4BE
+33. 官方仓库
+    https://github.com/facebookresearch/UmeTrack
+34. HO-Cap pipeline 原图
+    https://irvlutd.github.io/HOCap/static/images/pipeline.png
+35. WiLoR 原始方法图
+    https://rolpotamias.github.io/WiLoR/static/images/Reconstruction_method.png
+36. MANUS EMF 原理
+    https://www.manus-meta.com/blog/emf-hand-tracking-technology-in-manus-metagloves
+37. 原论文 Fig.2、§3.1、附录 A
+    https://arxiv.org/html/2603.28760v1
+38. Table 5 与实验协议
+    https://arxiv.org/html/2603.28760v1#A3
+39. 官方数据卡
+    https://huggingface.co/datasets/facebook/show3d-dataset
+40. UmeTrack, SIGGRAPH Asia 2022, §§3–5
+    https://arxiv.org/html/2211.00099v1
+41. Official tracker.py
+    https://raw.githubusercontent.com/facebookresearch/UmeTrack/main/lib/tracker/tracker.py
+42. Known-skeleton evaluation
+    https://raw.githubusercontent.com/facebookresearch/UmeTrack/main/run_eval_known_skeleton.py
+43. Unknown-skeleton evaluation
+    https://raw.githubusercontent.com/facebookresearch/UmeTrack/main/run_eval_unknown_skeleton.py
+44. Official hand_tracking_toolkit README
+    https://raw.githubusercontent.com/facebookresearch/hand_tracking_toolkit/main/README.md
+45. GRAB, ECCV 2020, §3
+    https://arxiv.org/html/2008.11200v1
+46. InterHand2.6M, ECCV 2020, §3 and annotation evaluation
+    https://arxiv.org/html/2008.09309v1
+47. HO-Cap, §4
+    https://arxiv.org/html/2406.06843v3
+48. HOT3D, CVPR 2025, §4 and Appendices B–C
+    https://arxiv.org/html/2411.19167v1
+49. CVF PDF
+    https://openaccess.thecvf.com/content/CVPR2025/papers/Banerjee_HOT3D_Hand_and_Object_Tracking_in_3D_from_Egocentric_Multi-View_CVPR_2025_paper.pdf
+50. figure PNG
+    https://arxiv.org/html/2211.00099v1/system_overview_fig.png
+51. figure PNG
+    https://arxiv.org/html/2211.00099v1/resample_fig.png
+52. figure PNG
+    https://arxiv.org/html/2211.00099v1/qualitative_fig.png
+
+二、素材与出处
+完整素材路径、图号、来源链接和文件摘要见第五期_素材来源.json。
+该清单保留候选素材；脚本实际绑定的图示与影片列于 scene_bindings。
+HOT3D 数据集区分序列、手部标注和物体模型的许可条款；原许可与来源记录保留在素材清单中。
+
+三、DoF 研究地图
+https://github.com/Dld0621/Embodied-AI-Paper-Analysis

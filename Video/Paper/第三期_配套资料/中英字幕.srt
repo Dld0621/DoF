@@ -1,0 +1,119 @@
+﻿1
+00:00:00,850 --> 00:00:05,070
+Pulling a banknote from a wallet looks easy, until a robot tries.
+从钱包抽出纸币，对机器人并不简单。
+
+2
+00:00:05,470 --> 00:00:08,530
+The fingers must pinch a thin edge without pushing it away.
+指尖必须捏住薄边，不能把它推走。
+
+3
+00:00:08,950 --> 00:00:13,030
+DexPilot asks whether a person can guide that contact using bare hands.
+DexPilot让人用裸手引导这次接触。
+
+4
+00:00:13,579 --> 00:00:19,059
+Four depth cameras observe the operator, producing a fused three-dimensional point cloud.
+四台深度相机融合出三维点云。
+
+5
+00:00:19,539 --> 00:00:23,559
+Neural networks locate the hand and provide keypoints and joint-angle priors.
+网络定位人手，给出关键点和关节先验。
+
+6
+00:00:23,919 --> 00:00:27,719
+A model-based tracker then fits an articulated hand to those observations.
+模型跟踪器再把关节手模型拟合到观测。
+
+7
+00:00:28,485 --> 00:00:33,565
+Human fingers and Allegro fingers have different proportions and different motion limits.
+人手和Allegro的比例与运动范围不同。
+
+8
+00:00:34,025 --> 00:00:39,405
+So an optimizer matches relationships between fingertips, rather than copying every angle.
+优化器匹配指尖关系，而非照搬关节角。
+
+9
+00:00:39,825 --> 00:00:44,845
+Nearby fingertips receive special treatment, helping the robot preserve a useful pinch.
+临近指尖被特殊处理，以保留有效捏合。
+
+10
+00:00:45,438 --> 00:00:50,878
+The architecture separates learned perception, model tracking, and the robot control loop.
+架构分开处理感知、模型跟踪和机器人控制。
+
+11
+00:00:51,358 --> 00:00:55,378
+Hand targets feed arm motion generation and impedance control for execution.
+人手目标进入手臂运动生成与阻抗控制。
+
+12
+00:00:55,878 --> 00:00:59,578
+The paper reports roughly one second across the complete system chain.
+论文报告整条系统链约有一秒延迟。
+
+13
+00:01:00,089 --> 00:01:05,069
+Bare-hand operation does not mean the perception model learned without labeled examples.
+裸手操作不等于模型没有使用标注训练。
+
+14
+00:01:05,529 --> 00:01:10,049
+A colored glove helped initialize tracking and generate labels during data collection.
+采集时，彩色手套辅助初始化与标签生成。
+
+15
+00:01:10,329 --> 00:01:14,729
+Those tracked poses supervise a second stage that works on bare-hand point clouds.
+这些姿态再监督处理裸手点云的第二阶段。
+
+16
+00:01:15,378 --> 00:01:22,058
+Two trained operators attempted fifteen teleoperation tasks, with five consecutive trials per task.
+两名熟练操作者测试15项任务，各连续五次。
+
+17
+00:01:22,178 --> 00:01:27,298
+The plots measure task success and completion time, not fingertip localization error.
+图表统计成功率与耗时，不是指尖定位误差。
+
+18
+00:01:27,518 --> 00:01:31,578
+The human still chooses actions and reacts when a manipulation starts failing.
+动作选择和失败应对仍由操作者完成。
+
+19
+00:01:32,140 --> 00:01:36,440
+The paper mentions insertion with a clearance of one tenth of a millimeter.
+论文提到过间隙0.1毫米的插入。
+
+20
+00:01:36,760 --> 00:01:40,940
+But success was typically around ten percent and depended on initial placement.
+但通常成功率约10%，且依赖初始摆放。
+
+21
+00:01:41,440 --> 00:01:46,980
+That example cannot establish reliable submillimeter positioning for the complete robot system.
+这一案例不能证明系统具有稳定亚毫米精度。
+
+22
+00:01:47,621 --> 00:01:53,181
+DexPilot shows why good hand tracking still needs contact-aware mapping and human feedback.
+DexPilot说明，追踪还需要接触映射与人反馈。
+
+23
+00:01:53,561 --> 00:01:58,541
+It offers a practical route to demonstrations, while autonomous recovery remains separate.
+它提供示教采集路线，自主恢复是另一问题。
+
+24
+00:01:58,861 --> 00:02:04,021
+For precision work, judge the whole loop: observation, mapping, contact, and recovery.
+精细操作要看观测、映射、接触和恢复全链路。

@@ -1,0 +1,54 @@
+﻿DoF Paper EP.32 | FoLD | Copy the Function, Correct the Contact
+FoLD：模仿手形，为什么没推动物体？
+
+01 The hand looks right / 手形像了，物体却没动
+A robot copies a person closing a laptop, yet the screen follows the wrong motion. FoLD uses the object-motion error to guide corrections to the robot fingers.
+机器人模仿人关电脑，屏幕却没有按预期运动。FoLD利用物体运动误差指导机器人手指修正。
+Source: https://arxiv.org/pdf/2609.33551v1; fixed PDF page 1. Full Figure 1 crop including all visual rows and labels, without body text.
+
+02 Start from human interaction / 从人类手物交互开始
+Human demonstrations provide hand trajectories and the desired motion of an articulated object. An imitator retargets the motion, supplying a baseline that a residual policy can adjust.
+人类示范提供手轨迹和铰接物体的期望运动。模仿器重定向运动，残差策略在此基础上调整。
+Source: https://arxiv.org/pdf/2609.33551v1; Figure 2 | compensatory force field, PDF p4
+
+03 Estimate a compensatory field / 估计补偿力场
+When the object deviates, the method estimates a virtual compensatory force field. Current interaction state and contact structure describe what correction would better reproduce the demonstrated motion.
+物体偏离参考时，方法估计虚拟补偿力场。当前交互状态与接触结构描述所需运动修正。
+Source: https://arxiv.org/pdf/2609.33551v1; Figure 2 | compensatory force field, PDF p4
+
+04 Use force as information / 力场作为信息输入
+An encoder compresses this field into information for the residual policy. During evaluation, it does not secretly push the object with an external corrective force.
+编码器把力场压缩为残差策略的输入信息。评测时不会用外部补偿力直接推动物体。
+Source: https://arxiv.org/pdf/2609.33551v1; Figure 2 | compensatory force field, PDF p4
+
+05 Correct robot actions / 修正机器人的动作
+The policy changes the robot action so its own contacts can produce the desired object behavior. This requires known models, interaction states, and task-specific training within the simulated setup.
+策略改变机器人动作，由自身接触实现目标物体运动。这依赖已知模型、交互状态和仿真中的任务专门训练。
+Source: https://arxiv.org/pdf/2609.33551v1; Figure 2 | compensatory force field, PDF p4
+
+06 What the main score measures / 主指标衡量完成到哪里
+The main reported success measure is completed trajectory length divided by reference length. An attempt is truncated when positional error exceeds fifteen centimeters or rotation error exceeds forty degrees.
+主表所谓成功指标，是完成轨迹长度除以参考长度。位置超过15厘米或转角超过40度时截断。
+Source: https://arxiv.org/pdf/2609.33551v1; L/T completion definition | PDF p6
+
+07 A paired simulation comparison / 配对仿真结果
+Across twenty-seven paired hand-task units, completion ratio is point seven seven two versus point six zero six. Average articulation error falls from thirty-one point zero six to fourteen point eight three degrees.
+27个配对手型任务单元，完成比例0.772对0.606。平均铰接误差从31.06度降到14.83度。
+Source: https://arxiv.org/pdf/2609.33551v1; Table I | paired simulation comparison, PDF p6
+
+08 Real demonstration is open loop / 真机演示采用开环回放
+The physical laptop-closing and headphone-folding demonstrations replay trajectories without autonomous sensory feedback. They support execution feasibility, not validated closed-loop real-world task success.
+真机关电脑和折耳机采用无自主感知反馈的轨迹回放。它们支持执行可行性，尚不能证明真机闭环成功。
+Source: https://arxiv.org/pdf/2609.33551v1; Figure 7 | real open-loop replay, PDF p8
+
+09 Judge the object, not the pose / 评价物体效果，不只看手形
+FoLD shifts attention from matching hand geometry to producing the intended object motion. Results are not uniformly better across hands, so inspect the per-embodiment rows before generalizing.
+FoLD把关注点从手形相似转向物体运动效果。并非所有手型都更优，结论要保留逐手型差异。
+Source: https://arxiv.org/pdf/2609.33551v1; fixed PDF page 1. Full Figure 1 crop including all visual rows and labels, without body text.
+
+
+Sources
+https://arxiv.org/pdf/2609.33551v1
+https://gghgghgghgg.github.io/FoLD-project-page/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

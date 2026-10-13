@@ -1,0 +1,49 @@
+﻿DoF Paper EP.05 | Open-TeleVision: Give the Operator a Better View
+Open-TeleVision：让操作者真正看清接触
+
+01 Move the viewpoint before moving the fingers / 先移动视角，再移动手指
+An insertion can fail because the operator cannot see the gap clearly. Open-TeleVision lets the robot's stereo camera follow the operator's head movement. The central innovation is active visual feedback inside an immersive teleoperation loop.
+插入可能失败，只因操作者看不清间隙。机器人双目相机随操作者头部运动。核心创新是沉浸遥操作中的主动视觉反馈。
+Source: https://arxiv.org/pdf/2407.01512v2; original paper figure
+
+02 Two directions of information / 信息在两个方向流动
+The headset sends hand, wrist, and head poses toward the robot. Retargeting and inverse kinematics convert those poses into feasible joint commands. Stereo video travels back, allowing the person to adjust the next action.
+头显向机器人发送手、腕和头部姿态。重定向与逆运动学将姿态转成可行关节指令。双目视频回传，让人调整下一步动作。
+Source: https://arxiv.org/pdf/2407.01512v2; PDF page 2
+
+03 Keep the two platforms separate / 两种平台分别理解
+The experiments use an H1 platform with six-degree-of-freedom hands and a GR-1 platform. The latter uses simple grippers, so their dexterity should not be conflated. Moving the camera helps visibility, but does not directly measure contact force.
+实验包括配6自由度手的H1，以及GR-1。后者使用简单夹爪，不能混同两者的灵巧性。移动相机改善可见性，却不能直接测接触力。
+Source: https://arxiv.org/pdf/2407.01512v2; PDF page 3
+
+04 Teleoperation becomes training data / 遥操作变成训练数据
+Robot observations and commands recorded during teleoperation train an autonomous action-chunking policy. Stereo image features and robot state condition the future action sequence. At this stage, the operator is removed from the autonomous execution loop.
+遥操记录的观测和指令训练自主动作分块策略。双目图像特征和机器人状态作为动作序列条件。在这一阶段，操作者退出自主执行闭环。
+Source: https://arxiv.org/pdf/2407.01512v2; PDF page 2
+
+05 Small datasets, explicit evaluation units / 数据虽少，评测单位要明确
+Sorting uses ten long demonstrations per platform; the other tasks use twenty each. Each task is evaluated across five complete episodes containing repeated operations. An individual pick or placement is not automatically a successful full episode.
+分类每平台十条长示教，其余任务各二十条。每任务评测五个完整回合，回合含重复操作。单次捡起或放置成功，不等于整个回合成功。
+Source: https://arxiv.org/pdf/2407.01512v2; PDF page 3
+
+06 Read the stages in the results / 分阶段阅读结果
+H1 sorting reports ninety-two percent picking and eighty-eight percent placement success. GR-1 placement is sixty percent, despite its higher picking score. These are reported stage outcomes, not a universal whole-task success rate.
+H1分类中，捡起92%，放置88%。GR-1放置为60%，低于它的捡起分数。这些是阶段结果，不是通用整任务成功率。
+Source: https://arxiv.org/pdf/2407.01512v2; PDF page 7
+
+07 Seeing after grasping still matters / 抓起之后仍要看见
+A gripper can hide an object's color after a successful grasp. Short policy memory then makes the correct sorting decision harder to preserve. The paper does not establish millimeter accuracy for the headset's hand tracker.
+夹爪可能在抓取成功后遮住物体颜色。策略记忆较短，会难以保留正确分类依据。论文也没有验证头显手部跟踪的毫米级精度。
+Source: https://arxiv.org/pdf/2407.01512v2; PDF page 7
+
+08 The interface changes the data / 界面改变了示教质量
+The lesson is that observation quality shapes both human control and recorded demonstrations. Better viewing geometry can make a difficult contact easier to teach. Precision still depends on the robot, policy, calibration, and task-specific feedback.
+观察质量同时影响人工控制和示教记录。更好的观察几何能让困难接触更容易教。精细表现仍取决于机器人、策略、标定与反馈。
+Source: https://arxiv.org/pdf/2407.01512v2; original paper figure
+
+
+Sources
+https://arxiv.org/pdf/2407.01512v2
+https://robot-tv.github.io/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

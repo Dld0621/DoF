@@ -1,0 +1,279 @@
+﻿1
+00:00:00,300 --> 00:00:02,625
+A robot can copy a demonstration
+机器人可以模仿示范。
+
+2
+00:00:02,680 --> 00:00:05,325
+But how does it learn from its own mistakes
+但它怎样从自己的失误中学习？
+
+3
+00:00:05,380 --> 00:00:09,025
+That is the question behind π*0.6,
+这就是 π*0.6 想解决的问题。
+
+4
+00:00:09,080 --> 00:00:11,220
+and its training recipe, RECAP
+它采用的训练方法，叫 RECAP。
+
+5
+00:00:11,420 --> 00:00:15,740
+Let us follow the paper, from the architecture to the robot results
+从框架到机器人结果，一起看原论文。
+
+6
+00:00:16,550 --> 00:00:18,155
+Start with Figure 3.
+先看图 3。
+
+7
+00:00:18,210 --> 00:00:22,855
+Images, the task instruction, and joint states go into the model
+图像、任务指令和关节状态输入模型。
+
+8
+00:00:22,910 --> 00:00:25,475
+Gemma 3 predicts the next subtask.
+Gemma 3 预测下一步子任务。
+
+9
+00:00:25,530 --> 00:00:29,855
+The flow matching action expert then generates continuous action chunks
+流匹配动作专家生成连续动作块。
+
+10
+00:00:29,910 --> 00:00:33,295
+Those joint and gripper commands run at 50Hz.
+关节和夹爪指令以 50Hz 执行。
+
+11
+00:00:33,350 --> 00:00:36,555
+FAST adds a separate, discrete action training signal
+FAST 提供独立的离散动作训练信号。
+
+12
+00:00:36,610 --> 00:00:39,655
+A stop gradient keeps the continuous action loss
+停止梯度，让连续动作损失
+
+13
+00:00:39,710 --> 00:00:42,330
+from updating the shared vision language backbone
+不会更新共享的视觉语言主干。
+
+14
+00:00:43,120 --> 00:00:46,385
+Now watch this box assembly clip from their website
+看这段官网的装箱演示。
+
+15
+00:00:46,440 --> 00:00:48,545
+The robot starts on its own
+机器人先自主执行。
+
+16
+00:00:48,600 --> 00:00:51,265
+A person can take over and correct a mistake
+遇到失误时，人可以接管纠正。
+
+17
+00:00:51,320 --> 00:00:54,145
+The red and green borders show those two modes
+红绿边框标出这两种执行状态。
+
+18
+00:00:54,200 --> 00:00:58,020
+Corrections and task success labels feed the next training round
+纠错和成功标签进入下一轮训练。
+
+19
+00:00:58,730 --> 00:01:02,235
+Figure 4 shows how experience becomes a learning signal.
+图 4：经验怎样变成学习信号。
+
+20
+00:01:02,290 --> 00:01:05,995
+Each step has a time cost. Failure adds a penalty
+每一步有时间成本，失败还有惩罚。
+
+21
+00:01:06,050 --> 00:01:10,115
+The value model estimates the remaining cost of completing the task
+价值模型估计完成任务的剩余代价。
+
+22
+00:01:10,170 --> 00:01:13,995
+After a mistake, value drops. After recovery, it rises
+失误后价值下降，恢复后回升。
+
+23
+00:01:14,050 --> 00:01:17,275
+Rewards and value changes over the next few steps
+随后几步的奖励和价值变化
+
+24
+00:01:17,330 --> 00:01:18,950
+give us the action advantage
+共同构成动作优势。
+
+25
+00:01:19,780 --> 00:01:23,425
+Back to Figure 3. This small indicator is the key.
+回到图 3，关键是这个小标记。
+
+26
+00:01:23,480 --> 00:01:26,585
+It comes after the subtask, but before the actions
+它位于子任务之后、动作之前。
+
+27
+00:01:26,640 --> 00:01:28,825
+So it changes action prediction
+因此它影响的是动作预测。
+
+28
+00:01:28,880 --> 00:01:34,365
+For autonomous rollouts, advantages above the task specific threshold get a positive label
+自主轨迹中，超过任务阈值的优势标为正。
+
+29
+00:01:34,420 --> 00:01:37,185
+Other rollout samples get a negative label
+其余自主轨迹样本标为负。
+
+30
+00:01:37,240 --> 00:01:39,525
+Expert corrections are labeled positive
+专家纠错样本则标为正。
+
+31
+00:01:39,580 --> 00:01:41,825
+Training keeps both kinds of experience
+训练保留这两类经验。
+
+32
+00:01:41,880 --> 00:01:45,140
+At execution, we ask for the positive condition
+执行时，指定正优势条件。
+
+33
+00:01:45,870 --> 00:01:49,355
+Equation 4 connects that condition to action training.
+公式 4 把优势条件接入动作训练。
+
+34
+00:01:49,410 --> 00:01:51,855
+Discrete actions use cross entropy
+离散动作用交叉熵。
+
+35
+00:01:51,910 --> 00:01:54,875
+Continuous actions use the flow matching loss
+连续动作用流匹配损失。
+
+36
+00:01:54,930 --> 00:01:58,755
+This lets RECAP use the existing generative training recipe,
+RECAP 可以沿用生成动作训练方式，
+
+37
+00:01:58,810 --> 00:02:02,850
+without directly computing an exact continuous action likelihood
+绕开直接计算精确连续动作似然。
+
+38
+00:02:03,640 --> 00:02:08,405
+Figure 11: the same robot data for T-shirts and shorts.
+图 11：同一批恤衫和短裤机器人数据。
+
+39
+00:02:08,460 --> 00:02:12,125
+RECAP completes about 60 successful tasks per hour.
+RECAP 每小时成功完成约 60 次。
+
+40
+00:02:12,180 --> 00:02:14,545
+AWR completes about 30.
+AWR 约 30 次。
+
+41
+00:02:14,600 --> 00:02:17,265
+Their success rates, on the right, are fairly close
+右侧的成功率却比较接近。
+
+42
+00:02:17,320 --> 00:02:20,165
+The useful difference here is execution speed,
+这里有信息量的差异，是执行速度，
+
+43
+00:02:20,220 --> 00:02:22,500
+as well as whether the task succeeds
+它和任务能否成功，需要一起看。
+
+44
+00:02:23,330 --> 00:02:26,495
+Figure 7 gives us the task-level results.
+图 7 展示具体任务的结果。
+
+45
+00:02:26,550 --> 00:02:29,595
+Coffee throughput rises from 14.7
+咖啡吞吐量从 14.7 次/h，
+
+46
+00:02:29,650 --> 00:02:31,915
+to 28.8 successes per hour.
+提高到 28.8 次/h。
+
+47
+00:02:31,970 --> 00:02:34,975
+For the hardest button down shirt in diverse laundry,
+多样衣物中最难的纽扣衬衫，
+
+48
+00:02:35,030 --> 00:02:38,295
+it rises from 3.85 to 8.3 successes per hour.
+从 3.85 提高到 8.3 次/h。
+
+49
+00:02:38,350 --> 00:02:42,915
+Baseline: offline RL plus demonstration fine-tuning.
+对照是离线强化学习加示范微调。
+
+50
+00:02:42,970 --> 00:02:45,475
+The website clips show the motions
+官网片段帮助我们看动作过程。
+
+51
+00:02:45,530 --> 00:02:48,210
+These plots are the evidence for the improvement
+这些实验图，才是提升的定量证据。
+
+52
+00:02:49,020 --> 00:02:51,345
+Finally, look at the training loop
+最后看训练循环。
+
+53
+00:02:51,400 --> 00:02:56,585
+Collect experience, update the value model, then retrain the policy offline
+收集经验、更新价值模型、离线重训策略。
+
+54
+00:02:56,640 --> 00:03:01,525
+It still needs human success labels, corrections, and environment resets
+仍需人工成功标签、纠错和环境重置。
+
+55
+00:03:01,580 --> 00:03:05,405
+The contribution is a practical way to feed real task feedback
+它把真实任务反馈，
+
+56
+00:03:05,460 --> 00:03:09,540
+into VLA action training, and improve over successive rounds.
+接入 VLA 动作训练，逐轮改进。

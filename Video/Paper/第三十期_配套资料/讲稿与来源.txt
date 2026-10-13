@@ -1,0 +1,54 @@
+﻿DoF Paper EP.30 | UVTA | Learn the Contact Behind an Action
+UVTA：从人类触觉学习接触规律
+
+01 Turn exactly one page / 翻过去，还要只翻一页
+Turning a page requires more than moving a fingertip through the right trajectory. The robot must separate the paper and regulate contact without picking up several sheets.
+翻页不只是让指尖经过正确轨迹。机器人还要分离纸页，避免同时带起多页。
+Source: https://arxiv.org/pdf/2609.34182v2; Figure 1 | interaction representation, PDF p1
+
+02 Collect the missing signal / 把人类触觉一起录下来
+UVTA records synchronized images, tactile signals, wrist pose, and hand motion during human demonstrations. A tactile motion-capture apparatus makes the contact evidence available alongside the visible action.
+UVTA同步记录人类图像、触觉、腕姿和手部运动。触觉动捕装置让可见动作拥有对应接触证据。
+Source: https://arxiv.org/pdf/2609.34182v2; Figure 2 | synchronized tactile capture, PDF p3
+
+03 Align two embodiments / 对齐人手和机器人
+Human and robot sensing enter an aligned visual-tactile interaction representation. The purpose is to share useful interaction structure while retaining actions suitable for each embodiment.
+人类和机器人感知进入对齐的视触觉交互表征。目标是共享交互规律，同时保留各手型适用的动作。
+Source: https://arxiv.org/pdf/2609.34182v2; Figure 4 | joint prediction, PDF p4
+
+04 Predict action and touch / 联合预测动作与触觉
+The model jointly predicts future action trajectories and future tactile trajectories during training. This auxiliary tactile objective encourages the representation to encode what an action should feel like.
+训练时，模型联合预测未来动作轨迹和触觉轨迹。辅助触觉目标促使表征理解动作应产生怎样的接触。
+Source: https://arxiv.org/pdf/2609.34182v2; Figure 4 | joint prediction, PDF p4
+
+05 Training and deployment differ / 训练目标不等于控制输出
+Future tactile prediction helps train the model; it is not a separate deployed controller output. At execution, the robot carries out robot actions and receives new sensory observations.
+未来触觉预测用于训练，并非独立部署控制输出。执行时机器人输出动作，并接收新的感知观测。
+Source: https://arxiv.org/pdf/2609.34182v2; Figure 4 | joint prediction, PDF p4
+
+06 The experimental budget / 数据量与试验次数
+Each of five tasks uses one hundred fifty robot and one thousand human demonstrations. Each method is evaluated ten times per task on the physical robot.
+五项任务各150条机器人、1000条人类示范。每种方法每任务进行10次真机评测。
+Source: https://arxiv.org/pdf/2609.34182v2; Figure 2 | synchronized tactile capture, PDF p3
+
+07 Seventy percent of what? / 70%究竟是什么？
+The reported average is seventy percent, compared with twenty-nine for the retrained T-Rex baseline. Here, the metric awards partial credit for completed stages rather than counting only complete tasks.
+报告平均70%，对应重训T-Rex基线29%。这里按完成阶段给部分分数，并非只数完整成功。
+Source: https://arxiv.org/pdf/2609.34182v2; Table 1 | phase-weighted scoring, PDF p7
+
+08 Read the page-turning score / 用翻页看懂阶段计分
+Separating a page earns point three; flipping multiple pages earns point seven. Only correctly flipping a single page earns one, so an average score is not full success.
+分离纸页得0.3分，翻多页得0.7分。正确翻一页才得1分，平均得分不等于完整成功率。
+Source: https://arxiv.org/pdf/2609.34182v2; Evaluation scoring rules | PDF p6
+
+09 What human touch contributes / 人类触觉带来了什么
+Removing future tactile prediction reduces the average score to forty-two under this protocol. The evidence supports contact-aware representation learning, with small evaluation counts and explicitly partial-credit outcomes.
+移除未来触觉预测，同协议平均分降到42。证据支持接触表征学习，但试验少且需保留计分定义。
+Source: https://arxiv.org/pdf/2609.34182v2; Table 1 | phase-weighted scoring, PDF p7
+
+
+Sources
+https://arxiv.org/pdf/2609.34182v2
+https://uni-vta.github.io/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

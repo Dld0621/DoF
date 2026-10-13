@@ -1,0 +1,1303 @@
+{
+  "format": "DoF GitHub Pages static export v1",
+  "repo_base": "/DoF/",
+  "site_url": "https://dld0621.github.io/DoF/",
+  "media_origin": "https://dof-embodied-ai.steven12123.chatgpt.site",
+  "source_commit": "f8923e6e6a144809a243a0f4c6888d32e7f2327f",
+  "catalog_items": 41,
+  "video_references": 52,
+  "course_chapters": 6,
+  "method_profiles": 28,
+  "image_files_unchanged": 135,
+  "internal_targets_checked": 305,
+  "excluded": [],
+  "release_copy_edits": {
+    "Video/Paper/第三期_深度解读/查看深度解读.html": 1,
+    "Video/Paper/第六期_深度解读/查看深度解读.html": 1
+  },
+  "privacy_scan": "passed",
+  "root_url_check": "passed",
+  "source_media_not_copied": true,
+  "files": {
+    "DoF首页.html": {
+      "bytes": 11921,
+      "sha256": "f9e2af41083dda634b8d4efa4d9b80b9154455703aaeb5da980b899a2514dad8"
+    },
+    "Video/Infra/完整精修版/第一期_配套资料/中英字幕.srt": {
+      "bytes": 11198,
+      "sha256": "4547b3d84c373055abff4b5171a9541dc33ad6ab9211d76484f89264ba9ccc1f"
+    },
+    "Video/Infra/完整精修版/第一期_配套资料/发布文案.txt": {
+      "bytes": 827,
+      "sha256": "02deed0db551833ccac32433f0ea1fe3d0fdb0699595882aca449c3e20ae1430"
+    },
+    "Video/Infra/完整精修版/第一期_配套资料/完整讲稿.txt": {
+      "bytes": 8540,
+      "sha256": "00e0ca11480d6d50b6438621c48aac5db82435b6f825d24961f686f94c871867"
+    },
+    "Video/Infra/完整精修版/第一期_配套资料/资料来源.txt": {
+      "bytes": 3988,
+      "sha256": "4a3948f381567e0c3f468f6028d3dd3cab87fd13c1915613793d5b1eb6c2d1e4"
+    },
+    "Video/Infra/完整精修版/第三期_配套资料/中英字幕.srt": {
+      "bytes": 11016,
+      "sha256": "cda89f0918ea4c3625443c90c5bc9008d28ac611abe367ca5523a53b1410dbf9"
+    },
+    "Video/Infra/完整精修版/第三期_配套资料/发布文案.txt": {
+      "bytes": 886,
+      "sha256": "1e4f4bcfe83b4a7fc237c398d3d7788a89015a60fa16610c0855ae13f2032fe3"
+    },
+    "Video/Infra/完整精修版/第三期_配套资料/完整讲稿.txt": {
+      "bytes": 8197,
+      "sha256": "8c41f19f02861a8e5f18f21d2cfb38ba56bc3d671753d7e82154364fdc96842a"
+    },
+    "Video/Infra/完整精修版/第三期_配套资料/资料来源.txt": {
+      "bytes": 1622,
+      "sha256": "64f9d1eca85d117b644a83921bebe15c5dd660e788e7ed50bec4309547a8f7c2"
+    },
+    "Video/Infra/完整精修版/第二期_配套资料/中英字幕.srt": {
+      "bytes": 9072,
+      "sha256": "8be5928e168aaa821dfac7c472c1eb52a49e2465a6410e096cf2abde7c8e49c7"
+    },
+    "Video/Infra/完整精修版/第二期_配套资料/发布文案.txt": {
+      "bytes": 891,
+      "sha256": "0256e890ad9d7a7ecad3e658bba7a8cea378d13eec9a22815c063f8ffa443378"
+    },
+    "Video/Infra/完整精修版/第二期_配套资料/完整讲稿.txt": {
+      "bytes": 6460,
+      "sha256": "ac6e2f4ee456b21a3a66d48e3f2a03c3ceeaa869b9db6f013238f9f7c8a305f4"
+    },
+    "Video/Infra/完整精修版/第二期_配套资料/资料来源.txt": {
+      "bytes": 3520,
+      "sha256": "78681fdb0f4471465d2e9610a867900717a0e7d024b4ccb465c11f3a1a188ae9"
+    },
+    "Video/Infra/第五期_配套资料/第五期_中英字幕.srt": {
+      "bytes": 23824,
+      "sha256": "6aa54db259eaf2cfb7f1084156c4b2b473bc2b7d2a0faf58b1c168b8dbfe4354"
+    },
+    "Video/Infra/第五期_配套资料/第五期_发布文案.txt": {
+      "bytes": 917,
+      "sha256": "101ee983dbd15b311f7aca680ed8f416e48bf76c7c33feec8db77f74d21362f9"
+    },
+    "Video/Infra/第五期_配套资料/第五期_完整讲稿.txt": {
+      "bytes": 20469,
+      "sha256": "b9ddf9cde9897d2fda8bb6f665306a8cad941d752fccbf59246b3ec6721e644e"
+    },
+    "Video/Infra/第五期_配套资料/第五期_来源与边界.txt": {
+      "bytes": 5569,
+      "sha256": "141b0167f475151477e03d85964127b9997d81e8e3cf2a4b4d3cd6da03859837"
+    },
+    "Video/Infra/第四期_配套资料/第四期_中英字幕.srt": {
+      "bytes": 11682,
+      "sha256": "8378075ea4179aed276de5ec9ae526ce8514a443624caa35e8bcd40f20c761a5"
+    },
+    "Video/Infra/第四期_配套资料/第四期_人手重建流程说明.txt": {
+      "bytes": 3966,
+      "sha256": "03025457619f4f3f7afd1729a77bb9b0c97a066922ca00c12c848150fce98ccc"
+    },
+    "Video/Infra/第四期_配套资料/第四期_发布文案.txt": {
+      "bytes": 983,
+      "sha256": "18cdde9321a42c70b73fbb2157449c18ead76f214465bf7fa6fa1354622666f7"
+    },
+    "Video/Infra/第四期_配套资料/第四期_完整讲稿.txt": {
+      "bytes": 9499,
+      "sha256": "19ad22fe4c42f0bb5a93386e08fbd01ff887687863a0bda92f84b39aaf2bc6d9"
+    },
+    "Video/Infra/第四期_配套资料/第四期_素材来源.json": {
+      "bytes": 12934,
+      "sha256": "424144ad9d46624fc5ae1bf121136320f3f580db599b4c249e31bcde433df8aa"
+    },
+    "Video/Infra/第四期_配套资料/第四期_选型分析.txt": {
+      "bytes": 12550,
+      "sha256": "f39783fb4d29cf463577db92566e3cdc59e58ec47301a540bf146c2850404864"
+    },
+    "Video/Paper/第七期_配套资料/中英字幕.srt": {
+      "bytes": 4299,
+      "sha256": "eccd85ca2694346fba25d16354be6007ee1b1a41e4cb9299331f1d577ec8edc9"
+    },
+    "Video/Paper/第七期_配套资料/发布文案.txt": {
+      "bytes": 456,
+      "sha256": "8ac1c237eb5b5d8dab9507a41793b7d7a89a3c6e7c6bd467945d0c0b429fbb1e"
+    },
+    "Video/Paper/第七期_配套资料/讲稿与来源.txt": {
+      "bytes": 4772,
+      "sha256": "312b739926e8c16aacf00bc5bae1050babc5e1e4aad41d4b24ca5db82e7a0804"
+    },
+    "Video/Paper/第三十一期_配套资料/中英字幕.srt": {
+      "bytes": 3519,
+      "sha256": "25274942834ee7ee71d3495d991f457098da51945eb133384daa1c6c1a9db437"
+    },
+    "Video/Paper/第三十一期_配套资料/发布文案.txt": {
+      "bytes": 491,
+      "sha256": "49c6f0a2d9c8305bec32c04d0d11464404aa16cbb8ac2aa572422e516978f077"
+    },
+    "Video/Paper/第三十一期_配套资料/讲稿与来源.txt": {
+      "bytes": 4800,
+      "sha256": "6ad634b7b65f15f2c02cfdc1c150a0fbe075bebafc49102b44ff59f4bc32a9c7"
+    },
+    "Video/Paper/第三十三期_配套资料/中英字幕.srt": {
+      "bytes": 3661,
+      "sha256": "15f7c6f1aa72791e5205b28e8295f683810dd1aab8457c7a9e5ad9e232a28fd9"
+    },
+    "Video/Paper/第三十三期_配套资料/发布文案.txt": {
+      "bytes": 511,
+      "sha256": "c2df4e79a76e4ef7d845be99849a4212662da7233138ea3579f80510b732064e"
+    },
+    "Video/Paper/第三十三期_配套资料/讲稿与来源.txt": {
+      "bytes": 4565,
+      "sha256": "c1fb889e1a2ae8c28b30ee8e35915f22f0096adad8befe47de1f320fdb4bb566"
+    },
+    "Video/Paper/第三十二期_配套资料/中英字幕.srt": {
+      "bytes": 3469,
+      "sha256": "33d8468c2f9a3ac0ad087baf636fee10281f77d4f4e629e932be83932be664a1"
+    },
+    "Video/Paper/第三十二期_配套资料/发布文案.txt": {
+      "bytes": 463,
+      "sha256": "ff69175148dac5b392a9c0772daaaed435ba6d2f51858c03c8ebe5ab32ff0387"
+    },
+    "Video/Paper/第三十二期_配套资料/讲稿与来源.txt": {
+      "bytes": 4592,
+      "sha256": "76953bdb0c5a1dab3d3ce7bc8d562f97e0a38990bb5d9c74a6e77239c592f7e6"
+    },
+    "Video/Paper/第三十五期_配套资料/中英字幕.srt": {
+      "bytes": 4490,
+      "sha256": "02e92c1d3393569baf1d90b3c771871352faff2011c3b047d3329c8f8d4ba706"
+    },
+    "Video/Paper/第三十五期_配套资料/发布文案.txt": {
+      "bytes": 462,
+      "sha256": "a01c1282725baa4b34077ea5c47bb911a2c9bd7cfd214d86b7906f5caf23b36e"
+    },
+    "Video/Paper/第三十五期_配套资料/讲稿与来源.txt": {
+      "bytes": 5299,
+      "sha256": "96b8c83e65e460ba6a7ff4eb19e03f117fed22930b3fec3640eaf95797fafb3c"
+    },
+    "Video/Paper/第三十四期_配套资料/中英字幕.srt": {
+      "bytes": 3771,
+      "sha256": "34b25160ca50a41a50a74932e4e2b5e3b2dc603f3284dbde1600893fca8c7584"
+    },
+    "Video/Paper/第三十四期_配套资料/发布文案.txt": {
+      "bytes": 487,
+      "sha256": "3df3349a727bf1960cd39a002ce2737c716cbe41dd023cc2e49ff75821c9dadf"
+    },
+    "Video/Paper/第三十四期_配套资料/讲稿与来源.txt": {
+      "bytes": 4764,
+      "sha256": "319808ef8baf89fdda9874aefc0c698a5530988a7fcac5e63cf38aee817e0c1f"
+    },
+    "Video/Paper/第三十期_配套资料/中英字幕.srt": {
+      "bytes": 3422,
+      "sha256": "0b1499684b0feaae9645da8f1bb334013dc493b04906689746a4442b033d4f7d"
+    },
+    "Video/Paper/第三十期_配套资料/发布文案.txt": {
+      "bytes": 485,
+      "sha256": "e7ef826d2898acabb8c78c80405296a0620fa3be914cb2742934057f2b26c767"
+    },
+    "Video/Paper/第三十期_配套资料/讲稿与来源.txt": {
+      "bytes": 4378,
+      "sha256": "3bf49b48eb21b5b6067e9ab77344bfb9f74b93fd5a74d35fba72e9e403cd9c8d"
+    },
+    "Video/Paper/第三期_深度解读/01_上篇/cover.jpg": {
+      "bytes": 301310,
+      "sha256": "3a108ef4ca0cdf05bef0f56c80604b782f3cf09bc7a28f277a738a71db15ecf6"
+    },
+    "Video/Paper/第三期_深度解读/01_上篇/中英字幕.srt": {
+      "bytes": 16170,
+      "sha256": "5d43c072c21706ac679fca7b065cae696d4be8a03063eabb948588126deb33ff"
+    },
+    "Video/Paper/第三期_深度解读/01_上篇/发布文案.txt": {
+      "bytes": 684,
+      "sha256": "1dac9d1ac0647954de44be97a2eeca22de6a6ab7f48f9f9d45838af337f98f40"
+    },
+    "Video/Paper/第三期_深度解读/01_上篇/讲稿与来源.txt": {
+      "bytes": 16432,
+      "sha256": "10f240781ed9d36586e321a27986b641cdb622173e239f4f05566cd9e75875e8"
+    },
+    "Video/Paper/第三期_深度解读/02_中篇/cover.jpg": {
+      "bytes": 252833,
+      "sha256": "8eeb1bc1e0e7cae0af64e9d98fed96a6a40e6a9bd37b743e16f35869960e0dfa"
+    },
+    "Video/Paper/第三期_深度解读/02_中篇/中英字幕.srt": {
+      "bytes": 15281,
+      "sha256": "a0d5a0cd02fb07fe76fea98ad952263dc288cce42da4e1bd2c0ce660768d2ec9"
+    },
+    "Video/Paper/第三期_深度解读/02_中篇/发布文案.txt": {
+      "bytes": 682,
+      "sha256": "35c5d050199fccfa657a38c2929f32d9dc5b8d2ab4b640332e2990d009dc22dc"
+    },
+    "Video/Paper/第三期_深度解读/02_中篇/讲稿与来源.txt": {
+      "bytes": 15728,
+      "sha256": "d34553618b0e3b4e617e448aa1e018a35242e2985088ed31492641b386d46004"
+    },
+    "Video/Paper/第三期_深度解读/03_下篇/cover.jpg": {
+      "bytes": 307913,
+      "sha256": "69083a8c26d51b57bf864992178c88170a64f0b1f4afc64d45647d5ecbd90dad"
+    },
+    "Video/Paper/第三期_深度解读/03_下篇/中英字幕.srt": {
+      "bytes": 13697,
+      "sha256": "9619d6b18bae39d5d22492047b41f1f0ce50b8d30ec559b95904e75d1d03c337"
+    },
+    "Video/Paper/第三期_深度解读/03_下篇/发布文案.txt": {
+      "bytes": 646,
+      "sha256": "5a9de9151f0be0b1b80a77e38243a1bc27ab738354fcad1acae6e235a50dff39"
+    },
+    "Video/Paper/第三期_深度解读/03_下篇/讲稿与来源.txt": {
+      "bytes": 14272,
+      "sha256": "023dc09dfc3b649dd31df2723f980c7e54c32e3d47f5ed0e66f48b97d4c8bfa6"
+    },
+    "Video/Paper/第三期_深度解读/原论文_DexPilot_1910.03135v2.pdf": {
+      "bytes": 5763327,
+      "sha256": "d04e6f165fdfd64b02de0545d69feef99ae77351c3635f9190394594aad472d1"
+    },
+    "Video/Paper/第三期_深度解读/查看深度解读.html": {
+      "bytes": 9993,
+      "sha256": "3a4870a05cace969725699f13b282fafa5a2f59ce2df2daa92db3e29d70089ce"
+    },
+    "Video/Paper/第三期_深度解读/逐步理解DexPilot.html": {
+      "bytes": 1761861,
+      "sha256": "a02d621c7d8f4b364a896b0b9464b788c3b479aaa3d796b900b2ce5cce209c38"
+    },
+    "Video/Paper/第三期_深度解读/阅读素材/DoF.png": {
+      "bytes": 397025,
+      "sha256": "d7c04ce6afdc33489e8cbc84a99f7aaeb7878702593b49d1b47024ccccf59778"
+    },
+    "Video/Paper/第三期_配套资料/中英字幕.srt": {
+      "bytes": 4113,
+      "sha256": "65d7e4b078a3a3c35de5c77dd1ca476ed9d3cf9cdca75722bf34430e597b9db7"
+    },
+    "Video/Paper/第三期_配套资料/发布文案.txt": {
+      "bytes": 554,
+      "sha256": "6f842adb32eeb2cf8f23e9cac872a4c128f1a4dad4bcce82a5398cfaf81d14e0"
+    },
+    "Video/Paper/第三期_配套资料/讲稿与来源.txt": {
+      "bytes": 4762,
+      "sha256": "be62154b9cb689a25dcbf1d39a3963ca2e6e4c63eb99289128078a5134e49ac8"
+    },
+    "Video/Paper/第九期_配套资料/中英字幕.srt": {
+      "bytes": 4206,
+      "sha256": "01b059d045750f7f8256972abd5fc901af81bfb3c64208e78c5d4fb83da3eaaf"
+    },
+    "Video/Paper/第九期_配套资料/发布文案.txt": {
+      "bytes": 466,
+      "sha256": "9fc9fa33ee03876317985eb9af7e1dd1e09d09ab0a0f17d4c5ddd9ea8463f7b3"
+    },
+    "Video/Paper/第九期_配套资料/讲稿与来源.txt": {
+      "bytes": 4723,
+      "sha256": "486335bce5332e447fd62938bb5272424efa13c290eb6290b0b92ff109e32db6"
+    },
+    "Video/Paper/第二十一期_配套资料/中英字幕.srt": {
+      "bytes": 3806,
+      "sha256": "1a58a41b530f9ead5e322fad060fec361f2692c3f750a063528378c747034bc5"
+    },
+    "Video/Paper/第二十一期_配套资料/发布文案.txt": {
+      "bytes": 461,
+      "sha256": "d403015caaae71a8a4e3d95b261aface6cb56d5e3dcec7f2cc5093b07066d694"
+    },
+    "Video/Paper/第二十一期_配套资料/讲稿与来源.txt": {
+      "bytes": 4453,
+      "sha256": "8580b7ec4cb4f3776f8c360054f4b34118dbfe3cc01ac104402dd28469bb3da9"
+    },
+    "Video/Paper/第二十七期_配套资料/中英字幕.srt": {
+      "bytes": 3408,
+      "sha256": "0c9a959a1faaf133f8f92fee03e1327d1433444a05d60d21ec13d17bfde52d6e"
+    },
+    "Video/Paper/第二十七期_配套资料/发布文案.txt": {
+      "bytes": 481,
+      "sha256": "f0b5987e30104fec6a8e3937d7ae000c8f79f8d58678e303e4290face5b75751"
+    },
+    "Video/Paper/第二十七期_配套资料/讲稿与来源.txt": {
+      "bytes": 4540,
+      "sha256": "e63a5de88657c0d3981831caed8671e18d1cda31019ac0b0236b123e16164a15"
+    },
+    "Video/Paper/第二十三期_配套资料/中英字幕.srt": {
+      "bytes": 3962,
+      "sha256": "539bc3207c26fb61c2100785397aa8f546b1c2364834ef5d8064513e0dc41686"
+    },
+    "Video/Paper/第二十三期_配套资料/发布文案.txt": {
+      "bytes": 492,
+      "sha256": "b33794e85cb80ced44a5d48ab8e7996c7a2ba407db3657765d1c592333fc2a3b"
+    },
+    "Video/Paper/第二十三期_配套资料/讲稿与来源.txt": {
+      "bytes": 4711,
+      "sha256": "bad2759c5ca076ff4a8fda1a11527f4357379d6ed1f2c612d9b8b76a1bf6f947"
+    },
+    "Video/Paper/第二十九期_配套资料/中英字幕.srt": {
+      "bytes": 3635,
+      "sha256": "db19b44e938c54ade89670460ff27063c5de5adba8776db5e9c23732f00b3ef5"
+    },
+    "Video/Paper/第二十九期_配套资料/发布文案.txt": {
+      "bytes": 506,
+      "sha256": "5e19aaa8d0220fe39ec25bb21a726544e28fbbac0dfd5773b3fec0e7548f1d1d"
+    },
+    "Video/Paper/第二十九期_配套资料/讲稿与来源.txt": {
+      "bytes": 4554,
+      "sha256": "ec9feab940e3a3690b14df0e70972deaad21042a4f4b377a2dc7641f0686dec1"
+    },
+    "Video/Paper/第二十二期_配套资料/中英字幕.srt": {
+      "bytes": 3945,
+      "sha256": "0753c3ae3bb50ce6aff29d7a9dae35b323896adc049e600e2ba45c6b43c2e154"
+    },
+    "Video/Paper/第二十二期_配套资料/发布文案.txt": {
+      "bytes": 498,
+      "sha256": "e5fa2870685218ee8f017a672f81962bf92603a4511385057b19b96c5a7be938"
+    },
+    "Video/Paper/第二十二期_配套资料/讲稿与来源.txt": {
+      "bytes": 4620,
+      "sha256": "d2ea8837469f0fc4cd36d4472670449bcd8ae64d41de0668d156fd9fe5edd914"
+    },
+    "Video/Paper/第二十五期_配套资料/中英字幕.srt": {
+      "bytes": 3386,
+      "sha256": "ae3e36cf10021b9553ce86230ad0bf63c0ae72f9a0eacbcafb777b40aad0d3d5"
+    },
+    "Video/Paper/第二十五期_配套资料/发布文案.txt": {
+      "bytes": 503,
+      "sha256": "3ebc377371bb268803175eaae12bf457571c27e5ffe583495550784349d9e8fe"
+    },
+    "Video/Paper/第二十五期_配套资料/讲稿与来源.txt": {
+      "bytes": 4335,
+      "sha256": "8e92d3475a743947efa8cad7a7151f54bcdbe5c1bb2243356a59182c81bb0b22"
+    },
+    "Video/Paper/第二十八期_配套资料/中英字幕.srt": {
+      "bytes": 3479,
+      "sha256": "fb6be8322a5ba8181bfa4ed30e6402f783875a1f544f7461601188bebc84b0bc"
+    },
+    "Video/Paper/第二十八期_配套资料/发布文案.txt": {
+      "bytes": 479,
+      "sha256": "46f31cb062e5ece43e6fdb350d338a95496447b5840a52dbdae40399511b2a93"
+    },
+    "Video/Paper/第二十八期_配套资料/讲稿与来源.txt": {
+      "bytes": 4488,
+      "sha256": "7f67dc106d4b8e3371249faa2938dbf5886d819af12126aeca565005e65801ec"
+    },
+    "Video/Paper/第二十六期_配套资料/中英字幕.srt": {
+      "bytes": 3330,
+      "sha256": "b63a367a581fe855efd93a663518b249b18a5f2fa82a9da06802e8b40dc77abc"
+    },
+    "Video/Paper/第二十六期_配套资料/发布文案.txt": {
+      "bytes": 503,
+      "sha256": "8b8cc48ba993ec9f89c0eb38fb8fb589d7e8f1e2be7e2af20d57efe1eae03321"
+    },
+    "Video/Paper/第二十六期_配套资料/讲稿与来源.txt": {
+      "bytes": 4259,
+      "sha256": "2b87be4dda9bc2914ca8ea3519d6c07998c169d12d60bb87d75fb928cd9f90d0"
+    },
+    "Video/Paper/第二十四期_配套资料/中英字幕.srt": {
+      "bytes": 3323,
+      "sha256": "e4afcb58d7b7789e33abc8709c56f1882de563a1116ad1897598fbdf34b93988"
+    },
+    "Video/Paper/第二十四期_配套资料/发布文案.txt": {
+      "bytes": 473,
+      "sha256": "e4c920882e43868fa7b6a78d1c44b1eb6160ccee601bfd3c9a712a365ecdb460"
+    },
+    "Video/Paper/第二十四期_配套资料/讲稿与来源.txt": {
+      "bytes": 4099,
+      "sha256": "cd18d6c1b8fc29288c8c4a074d080d75ddcc374c41c70e6b67a76f4c6b4bd203"
+    },
+    "Video/Paper/第二十期_配套资料/中英字幕.srt": {
+      "bytes": 3922,
+      "sha256": "ce8d6ad465a61195d7c84f0f36be2b2a140dce77c8ec32089f7dbb05f38b313b"
+    },
+    "Video/Paper/第二十期_配套资料/发布文案.txt": {
+      "bytes": 457,
+      "sha256": "ac38700f34b20d3ae0bffdef9d72f88dce770f21ab755e00c5939a44f493ec38"
+    },
+    "Video/Paper/第二十期_配套资料/讲稿与来源.txt": {
+      "bytes": 4733,
+      "sha256": "9f0b0f66d2aa88fe58e3c7842194d828444d0b5d01d801edc6d9314cf27eb5cc"
+    },
+    "Video/Paper/第五期_配套资料/中英字幕.srt": {
+      "bytes": 4100,
+      "sha256": "565a9ef3645a22004e518c1149b150903d1333058f2026e1178db5ad64002f5f"
+    },
+    "Video/Paper/第五期_配套资料/发布文案.txt": {
+      "bytes": 463,
+      "sha256": "5659eef0b701b2f947844a23603a55583f416b9b23569a12a55755800900f451"
+    },
+    "Video/Paper/第五期_配套资料/讲稿与来源.txt": {
+      "bytes": 4571,
+      "sha256": "f2b5339d5809777dcb6e7240a9be56aaf64482a9bacf3b0bffb488d59f307199"
+    },
+    "Video/Paper/第八期_配套资料/中英字幕.srt": {
+      "bytes": 4328,
+      "sha256": "3a585f45c1230cbeb6b1dada56b97882130386edc9263f870fccd4b9e073cf2f"
+    },
+    "Video/Paper/第八期_配套资料/发布文案.txt": {
+      "bytes": 473,
+      "sha256": "c51a0a9a8b141ddb6b8575cadfd7d2f1b4cbefe1d59a95cd723fad023066bd55"
+    },
+    "Video/Paper/第八期_配套资料/讲稿与来源.txt": {
+      "bytes": 4857,
+      "sha256": "f29197ffa2964973b3c65c66177392b2c99684872120f575a45e7b75326d5f3f"
+    },
+    "Video/Paper/第六期_深度解读/01_上篇/cover.jpg": {
+      "bytes": 363109,
+      "sha256": "bb2b333c3df0e3df567453848d9b25074e72398687079849d66172b17cb27da2"
+    },
+    "Video/Paper/第六期_深度解读/01_上篇/中英字幕.srt": {
+      "bytes": 15409,
+      "sha256": "94c602dc9d7e525e08604644cf8bac04e18e8e833a2bfc22f20efdec34950e9a"
+    },
+    "Video/Paper/第六期_深度解读/01_上篇/发布文案.txt": {
+      "bytes": 439,
+      "sha256": "ab485316313716a789d43582874ec24fb74a3c598dec2de8850b5092993df2a5"
+    },
+    "Video/Paper/第六期_深度解读/01_上篇/讲稿与来源.txt": {
+      "bytes": 15298,
+      "sha256": "9454e33c73e98b2699a0140eef8e533c0e9c62dacc242550308fa20655cb2b86"
+    },
+    "Video/Paper/第六期_深度解读/02_中篇/cover.jpg": {
+      "bytes": 366144,
+      "sha256": "547766d5ca854b97664683d2966fcef7a482ae58c8aa1fa6278619dc2be974e8"
+    },
+    "Video/Paper/第六期_深度解读/02_中篇/中英字幕.srt": {
+      "bytes": 15161,
+      "sha256": "fe5c0ac5d35d1bff9552f3db92b6e5258af9e846d3ad2925c3e77fd7a45334eb"
+    },
+    "Video/Paper/第六期_深度解读/02_中篇/发布文案.txt": {
+      "bytes": 487,
+      "sha256": "217f34fe0dcb3bbdfaa36de9728e3d01efc21f77ce6916eae6f3fe6ea0fc7dd0"
+    },
+    "Video/Paper/第六期_深度解读/02_中篇/讲稿与来源.txt": {
+      "bytes": 15002,
+      "sha256": "d775bc16779b28668816cf6b1959a2268f46dc711ea04fceee6ff3044ccdf4eb"
+    },
+    "Video/Paper/第六期_深度解读/03_下篇/cover.jpg": {
+      "bytes": 363174,
+      "sha256": "063c8a9cfffee91526dd75f92f4bb00d98b7b94cb9bbb7f6eb808c965360d38e"
+    },
+    "Video/Paper/第六期_深度解读/03_下篇/中英字幕.srt": {
+      "bytes": 15635,
+      "sha256": "7b4e1277a10e9d019a7fa902eaa25c9d8b583650e253c4e11bc88feec740d650"
+    },
+    "Video/Paper/第六期_深度解读/03_下篇/发布文案.txt": {
+      "bytes": 506,
+      "sha256": "4074897f8650e428092fb4789af26aa2b7a0989dfec4fe39398e1fd55e9f3c51"
+    },
+    "Video/Paper/第六期_深度解读/03_下篇/讲稿与来源.txt": {
+      "bytes": 15641,
+      "sha256": "aaf070290de423be2d829a3d34b07ff85cc4b9edc853b861a9064710e3420dd6"
+    },
+    "Video/Paper/第六期_深度解读/查看深度解读.html": {
+      "bytes": 10454,
+      "sha256": "cc5e6eea9812de86d9f913572d1a129eabf4d25ff1fabc10cb90dc547fe724bf"
+    },
+    "Video/Paper/第六期_深度解读/逐步理解TeleDexter.html": {
+      "bytes": 61594,
+      "sha256": "f70bd5175fd566971a5ee913b5d96adb9b9c0a927202dba1a0d204298c482138"
+    },
+    "Video/Paper/第六期_深度解读/阅读素材/DoF.png": {
+      "bytes": 397025,
+      "sha256": "d7c04ce6afdc33489e8cbc84a99f7aaeb7878702593b49d1b47024ccccf59778"
+    },
+    "Video/Paper/第六期_深度解读/阅读素材/dof-metal-transparent.png": {
+      "bytes": 397025,
+      "sha256": "d7c04ce6afdc33489e8cbc84a99f7aaeb7878702593b49d1b47024ccccf59778"
+    },
+    "Video/Paper/第六期_深度解读/阅读素材/fig02_method_with_caption.png": {
+      "bytes": 624302,
+      "sha256": "bcdddc9539cff867cf565ee79f4b7287e057eed2c03caf81901035714331e03f"
+    },
+    "Video/Paper/第六期_深度解读/阅读素材/fig03d_screwdriver.png": {
+      "bytes": 185568,
+      "sha256": "c42926cc138820bdb8a021e3802368c2376311d181b86846be2617fbab76edf1"
+    },
+    "Video/Paper/第六期_深度解读/阅读素材/fig07_failures_with_caption.png": {
+      "bytes": 3536978,
+      "sha256": "a59b36f4fa3375e9e0add492fc160b0709f33559f89e3358014f06926b8ac859"
+    },
+    "Video/Paper/第六期_深度解读/阅读素材/fig08_mocap_with_caption.png": {
+      "bytes": 1124453,
+      "sha256": "dd83d551c9de9d21d7cec374239c5bab5bfeb69ab179f89c6cf8fb085f88b74b"
+    },
+    "Video/Paper/第六期_深度解读/阅读素材/tab07_observation.png": {
+      "bytes": 142533,
+      "sha256": "207ac5be3aad22235b59aa3bc2a7902a4dee266f4b0887c82effd65ba85aadf9"
+    },
+    "Video/Paper/第六期_深度解读/阅读素材/tab08_reward_parameters.png": {
+      "bytes": 167479,
+      "sha256": "c662c5fcc3a2733a54923263fadc063c62e5876317c2b52777d08edb42781729"
+    },
+    "Video/Paper/第六期_深度解读/阅读素材/tab09_domain_randomization.png": {
+      "bytes": 189534,
+      "sha256": "8a5472c878e05466245a0e1fc66af8abe1fb781dec7077cc28794c823059c9d3"
+    },
+    "Video/Paper/第六期_深度解读/阅读素材/tab10_sapg_hyperparameters.png": {
+      "bytes": 134881,
+      "sha256": "faa2abf2d78eac1dd1da80b2333d1e39d8239e4111f927cae77c3aacac42d51e"
+    },
+    "Video/Paper/第六期_配套资料/中英字幕.srt": {
+      "bytes": 4390,
+      "sha256": "8135c60315096f998491b6f76315c424375856f5f63bb8e140619968f77bcc60"
+    },
+    "Video/Paper/第六期_配套资料/发布文案.txt": {
+      "bytes": 461,
+      "sha256": "126ecbefc6b5bbf8fd53f11b42347794884484e319a26f6cb86c046c6389204f"
+    },
+    "Video/Paper/第六期_配套资料/讲稿与来源.txt": {
+      "bytes": 4920,
+      "sha256": "9cd9c0f77e897cac61a6c01af184ea97aebe15059e607992caf2d7dc314109df"
+    },
+    "Video/Paper/第十一期_配套资料/中英字幕.srt": {
+      "bytes": 4508,
+      "sha256": "1392af8bae7a056e1370a8150abfa31ff7201c5fd318fe078a9dee093bd4f312"
+    },
+    "Video/Paper/第十一期_配套资料/发布文案.txt": {
+      "bytes": 460,
+      "sha256": "bc536fe825568d2dbbeb09068d591aed61257b0e95d374b293b0528004ca84fd"
+    },
+    "Video/Paper/第十一期_配套资料/讲稿与来源.txt": {
+      "bytes": 4963,
+      "sha256": "cbc676015e78c1abba48bdc28a01b3d89a6dc0b6d4f9b3655d1d957bb57c4a20"
+    },
+    "Video/Paper/第十七期_配套资料/中英字幕.srt": {
+      "bytes": 3744,
+      "sha256": "049f6ce5d654225cc8d706c554c14714921ae4a81e12768a785f997bafbee0f9"
+    },
+    "Video/Paper/第十七期_配套资料/发布文案.txt": {
+      "bytes": 441,
+      "sha256": "8672860c7b73b80bd6c688b8240357cf3401c2af290e62c31e13a8a78c14f01c"
+    },
+    "Video/Paper/第十七期_配套资料/讲稿与来源.txt": {
+      "bytes": 4455,
+      "sha256": "e80dbe8f5e87370772d05b0c19b00b0446adf3e2e2f54c18f5ab263badf9c661"
+    },
+    "Video/Paper/第十三期_配套资料/中英字幕.srt": {
+      "bytes": 3552,
+      "sha256": "6c6cee80c702c627a69322590be8c0e01fbb3798c94b4640906c114a20e29e20"
+    },
+    "Video/Paper/第十三期_配套资料/发布文案.txt": {
+      "bytes": 436,
+      "sha256": "1d1478c8d5d66a030509c3b8dbae0aed46e0dcbadba1492d98c15bcebf8a81d3"
+    },
+    "Video/Paper/第十三期_配套资料/讲稿与来源.txt": {
+      "bytes": 4162,
+      "sha256": "443dd94a759143bbeae6c29cfa76e661a9337c0d70505b98a1399b46427b6588"
+    },
+    "Video/Paper/第十九期_配套资料/中英字幕.srt": {
+      "bytes": 3819,
+      "sha256": "0dec4a92d94231534adbe8ae59512752ad4f2cc4bfe379f24400ffecb98c46f3"
+    },
+    "Video/Paper/第十九期_配套资料/发布文案.txt": {
+      "bytes": 471,
+      "sha256": "b7b865849c1ae08e1bada350a779a1236fac41b227d2cf26079b46d3e83be288"
+    },
+    "Video/Paper/第十九期_配套资料/讲稿与来源.txt": {
+      "bytes": 4622,
+      "sha256": "6fb2df59462aad728058ce1b77ce5396f67f215279ea023789fc01ed7ce91950"
+    },
+    "Video/Paper/第十二期_配套资料/中英字幕.srt": {
+      "bytes": 4382,
+      "sha256": "dbbb33a79e73b13fe952c3df40a95be6737747efca27bac882deb54cf912783b"
+    },
+    "Video/Paper/第十二期_配套资料/发布文案.txt": {
+      "bytes": 459,
+      "sha256": "c145fadd8e0cc8ab12f29ae3a3a958fdbbeb76a0560b1f7a30eaaf8c2288a7c2"
+    },
+    "Video/Paper/第十二期_配套资料/讲稿与来源.txt": {
+      "bytes": 4897,
+      "sha256": "97f876b21715b01f274f015630b7a660c3d0b52e31dfcaf7ddf7d38581867216"
+    },
+    "Video/Paper/第十五期_配套资料/中英字幕.srt": {
+      "bytes": 3612,
+      "sha256": "b14c09b6c318c9e6dbaab3022157b9522665356d8b0a56bab01a4ed22f2c6389"
+    },
+    "Video/Paper/第十五期_配套资料/发布文案.txt": {
+      "bytes": 470,
+      "sha256": "7e15d7c133d5d142aa9f6f394c89435aabedd9e5177191217a8a783e43a12f8a"
+    },
+    "Video/Paper/第十五期_配套资料/讲稿与来源.txt": {
+      "bytes": 4248,
+      "sha256": "85f187366536fa33c0a280e907be951637bedec7a294643859c4972e6bdc8e1f"
+    },
+    "Video/Paper/第十八期_配套资料/中英字幕.srt": {
+      "bytes": 3776,
+      "sha256": "1fa1875d75337cd2a3d525c7d9d8ae89b6dc600a8aa91244a803905e2c17ae69"
+    },
+    "Video/Paper/第十八期_配套资料/发布文案.txt": {
+      "bytes": 463,
+      "sha256": "045ca5f9434839f324aec483f9d5578ae9d57447eeaa59451b3539232187c622"
+    },
+    "Video/Paper/第十八期_配套资料/讲稿与来源.txt": {
+      "bytes": 4420,
+      "sha256": "650861ffd734b63bcfc388d8410b79fa1b3e9938ae764ca9c3c4b139a7acf519"
+    },
+    "Video/Paper/第十六期_配套资料/中英字幕.srt": {
+      "bytes": 3652,
+      "sha256": "4fee0bd817a9b93ae53315120f83edf318c755d6b9d76f2af64237676b87df71"
+    },
+    "Video/Paper/第十六期_配套资料/发布文案.txt": {
+      "bytes": 430,
+      "sha256": "347986da221fdb77895c0854ded3a688bb7257ea99fbad708062759a2f781c4a"
+    },
+    "Video/Paper/第十六期_配套资料/讲稿与来源.txt": {
+      "bytes": 4307,
+      "sha256": "bc83f455cec7db1f28d032888e08d7db81a2ac409baaf808401eab7b0339b9cf"
+    },
+    "Video/Paper/第十四期_配套资料/中英字幕.srt": {
+      "bytes": 3512,
+      "sha256": "aed41a6e843b2d189a20fe9e16183b6f6148e6dfddb9c9ca59e2d50052061d6b"
+    },
+    "Video/Paper/第十四期_配套资料/发布文案.txt": {
+      "bytes": 438,
+      "sha256": "fdf2c1e75172a4760a9164cbf9641896554b4b79f131673fe1ba77d6c8cd2fa5"
+    },
+    "Video/Paper/第十四期_配套资料/讲稿与来源.txt": {
+      "bytes": 4119,
+      "sha256": "2bf5a9cded4223e8b2c5c30440d7b0116a84b1664cd3589f29057e2e389a6f0e"
+    },
+    "Video/Paper/第十期_配套资料/中英字幕.srt": {
+      "bytes": 4206,
+      "sha256": "79c1298b2ddbff1af42b5afca620abc486c4b59ec3fcadab90bd17d9aa4c5486"
+    },
+    "Video/Paper/第十期_配套资料/发布文案.txt": {
+      "bytes": 452,
+      "sha256": "634d65360ff1de19dd6a79a46e53577728211110d9ea2b2a5a41b77b5a0542df"
+    },
+    "Video/Paper/第十期_配套资料/讲稿与来源.txt": {
+      "bytes": 4858,
+      "sha256": "337775de5616ef6e19d6807c4e20bd249d607d0aa7ed095cbe3738eab7d6996f"
+    },
+    "Video/Paper/第四期_配套资料/中英字幕.srt": {
+      "bytes": 4316,
+      "sha256": "29fba154658774c743ce72e4d8bb369795ef60541b116d5580b4fe213ba63439"
+    },
+    "Video/Paper/第四期_配套资料/发布文案.txt": {
+      "bytes": 466,
+      "sha256": "9fc9c02235ee68c24f4d8c908cae6987f9f63d73238962852084b0970b61be2d"
+    },
+    "Video/Paper/第四期_配套资料/讲稿与来源.txt": {
+      "bytes": 4834,
+      "sha256": "d78243698e5e773e6c50cfe777228c1049f86594f0d6feae22e27b012dca6bd1"
+    },
+    "Video/Retargeting/01/sources.json": {
+      "bytes": 503,
+      "sha256": "359803111ab08d2236d4122a75eaba30b504aabcafe40161a38397a95f44eb68"
+    },
+    "Video/Retargeting/01/中英字幕.srt": {
+      "bytes": 16765,
+      "sha256": "f31f59be64d4dd5da5c41fae2cfe57ba5003bb924e2ab6be76908a0700a5eacd"
+    },
+    "Video/Retargeting/01/章节.txt": {
+      "bytes": 1304,
+      "sha256": "b206a7761e30609ff3cf07087039cef0cbcb1ac6f583c1ca5051071ac35b41a6"
+    },
+    "Video/Retargeting/01/讲稿与来源.txt": {
+      "bytes": 16261,
+      "sha256": "f6fa2beeed55645aa66ede3e7d869820bd75c3111ca58fc02e6c8581f3611168"
+    },
+    "Video/Retargeting/02/sources.json": {
+      "bytes": 1235,
+      "sha256": "150a3cf3791a19081b221d5dec8c739d760f229ca52841954a99cf2080f01010"
+    },
+    "Video/Retargeting/02/中英字幕.srt": {
+      "bytes": 19849,
+      "sha256": "6104bcb9723ccdd266fc712e501b2c9c03ee2da94368573264e621d18c159f4d"
+    },
+    "Video/Retargeting/02/章节.txt": {
+      "bytes": 1166,
+      "sha256": "ee81e6f1ac5e7f84681e3d5cdf818c00a65a7499989b87154ba11aabecb76fcc"
+    },
+    "Video/Retargeting/02/讲稿与来源.txt": {
+      "bytes": 19907,
+      "sha256": "1c563f6d95b9a9be9798f079484afe07af3d4bc093fa32952e185c33b34edd24"
+    },
+    "Video/Retargeting/03/sources.json": {
+      "bytes": 332,
+      "sha256": "f9f43c283aa3cb65f96dacaf41915d33b4c9ceb6b53046c667de06e09bfa59d3"
+    },
+    "Video/Retargeting/03/中英字幕.srt": {
+      "bytes": 17059,
+      "sha256": "d52f21b647451b3ee84006e8055386d4e96cf4c97028218b33c666452b3defd9"
+    },
+    "Video/Retargeting/03/章节.txt": {
+      "bytes": 1008,
+      "sha256": "f27cad4f44fb34eb5694eb191d44f4a6f694f9eb56bfb04b915781563dc0723e"
+    },
+    "Video/Retargeting/03/讲稿与来源.txt": {
+      "bytes": 16034,
+      "sha256": "ed85a74f7287afac1707f4509e5fa2329bc680c8af3bd85dac02882961cfca19"
+    },
+    "Video/Retargeting/04/sources.json": {
+      "bytes": 352,
+      "sha256": "7e8b5821b216877bb3fc219c6a8d0344ae19c33e632d95abf47d667decde93dc"
+    },
+    "Video/Retargeting/04/中英字幕.srt": {
+      "bytes": 18020,
+      "sha256": "670afa5d0badd94fe3f094057d367ce7c78843bd355ffa5027c04ccc969d0e12"
+    },
+    "Video/Retargeting/04/章节.txt": {
+      "bytes": 1108,
+      "sha256": "ec63a156cd872e348769355223aaac20c33ca5441e9ee7ed2a741bc1023fffa8"
+    },
+    "Video/Retargeting/04/讲稿与来源.txt": {
+      "bytes": 17344,
+      "sha256": "00cbc4bc32c1899240fc618d9669909bcd83cd8aaa55609d96f045a2dd5d217d"
+    },
+    "Video/Retargeting/05/sources.json": {
+      "bytes": 316,
+      "sha256": "63c8275efd34302a01d1d06ab992767d47ba83986c61a488e62609886b653b62"
+    },
+    "Video/Retargeting/05/中英字幕.srt": {
+      "bytes": 17062,
+      "sha256": "c3352c5889c6848f6388f63bf9c2ebe3c8abcc1de1e754c368d6b75e84238f72"
+    },
+    "Video/Retargeting/05/章节.txt": {
+      "bytes": 1054,
+      "sha256": "5fa47d9c957200d9c58b42f8bd735dc5613d91d18361d963fdfee235b63c9f90"
+    },
+    "Video/Retargeting/05/讲稿与来源.txt": {
+      "bytes": 16131,
+      "sha256": "719fc5fed70fd7658331ee07c59e7371a52c56fa7e8621a9c3579e82d00df9e6"
+    },
+    "Video/Retargeting/06/sources.json": {
+      "bytes": 1088,
+      "sha256": "a667cd21d885aa928462e593218b274c2e014e8ca62e8084e83e4dcd9ae61115"
+    },
+    "Video/Retargeting/06/中英字幕.srt": {
+      "bytes": 18612,
+      "sha256": "345ab4af6bc6c5dc782c0a9c439a2593ae894569f26f27e79e1e4bc28bcbbb95"
+    },
+    "Video/Retargeting/06/章节.txt": {
+      "bytes": 1091,
+      "sha256": "88c3bc13bdd03bc568bdcb034adabad1e5d43ef90bdf68354c8170af6cd6db55"
+    },
+    "Video/Retargeting/06/讲稿与来源.txt": {
+      "bytes": 18866,
+      "sha256": "97e9eebd2fe70672ae11b594b07be5bb39896c0414c1eebdb3c8e998fbcb7b37"
+    },
+    "app.js": {
+      "bytes": 15449,
+      "sha256": "39c3ce24e6b939fa9677507877848ca916064b78250d2bfcf90aa52ba0dbe329"
+    },
+    "assets/brand-poster.png": {
+      "bytes": 1918372,
+      "sha256": "acba8ca4ca52067381fd55526d4f039d5c457c7f47869653db6ab058551fe635"
+    },
+    "assets/covers/infra-01-main.png": {
+      "bytes": 165421,
+      "sha256": "3d720bf16ed1463eb11571b73374b22168f2653240536e1ebe0b738a382f37c1"
+    },
+    "assets/covers/infra-02-main.png": {
+      "bytes": 148880,
+      "sha256": "bccf5f40bf86a3c77434b623249aa392124983002e5dbd169b07397d9046c9ed"
+    },
+    "assets/covers/infra-03-main.png": {
+      "bytes": 156407,
+      "sha256": "b280cd259e371b3d00bc2504c162473c96be61e754d5d894ed12d74721e0488b"
+    },
+    "assets/covers/infra-04-main.jpg": {
+      "bytes": 172479,
+      "sha256": "28552473eaa7f75acd92ae2a6bc4f43d065823b82bcb2f5782dc10910024621c"
+    },
+    "assets/covers/infra-05-main.jpg": {
+      "bytes": 274267,
+      "sha256": "5d86ca334210c298a153733ccbe8349a88fe1ae49d9ded009bb727e630ded614"
+    },
+    "assets/covers/paper-01-main.jpg": {
+      "bytes": 715156,
+      "sha256": "7e094aecafd2cc27cb117b7a3418eb91e4c26bac09a408773d58bc6c9057ed71"
+    },
+    "assets/covers/paper-02-main.png": {
+      "bytes": 369791,
+      "sha256": "ae47cfe22a58577981f4be231aa8a05df1a6da3e33385f3decdfab5c6b42b5f2"
+    },
+    "assets/covers/paper-03-deep-1.jpg": {
+      "bytes": 301310,
+      "sha256": "3a108ef4ca0cdf05bef0f56c80604b782f3cf09bc7a28f277a738a71db15ecf6"
+    },
+    "assets/covers/paper-03-deep-2.jpg": {
+      "bytes": 252833,
+      "sha256": "8eeb1bc1e0e7cae0af64e9d98fed96a6a40e6a9bd37b743e16f35869960e0dfa"
+    },
+    "assets/covers/paper-03-deep-3.jpg": {
+      "bytes": 307913,
+      "sha256": "69083a8c26d51b57bf864992178c88170a64f0b1f4afc64d45647d5ecbd90dad"
+    },
+    "assets/covers/paper-03-short.jpg": {
+      "bytes": 278524,
+      "sha256": "4e488c87b0c56dd479255b23c406d5005c1b0cb1fb360f9d23abc58eb77d109b"
+    },
+    "assets/covers/paper-04-short.jpg": {
+      "bytes": 324455,
+      "sha256": "21dc91ca5bc6c77d7b868c106a9b27d750141ab2cad29bb6c0dce9920495d273"
+    },
+    "assets/covers/paper-05-short.jpg": {
+      "bytes": 317281,
+      "sha256": "a98e316740a5129333b2ddccbc3949cd5661956728b887d1f8c229c990f2b1e6"
+    },
+    "assets/covers/paper-06-deep-1.jpg": {
+      "bytes": 363109,
+      "sha256": "bb2b333c3df0e3df567453848d9b25074e72398687079849d66172b17cb27da2"
+    },
+    "assets/covers/paper-06-deep-2.jpg": {
+      "bytes": 366144,
+      "sha256": "547766d5ca854b97664683d2966fcef7a482ae58c8aa1fa6278619dc2be974e8"
+    },
+    "assets/covers/paper-06-deep-3.jpg": {
+      "bytes": 363174,
+      "sha256": "063c8a9cfffee91526dd75f92f4bb00d98b7b94cb9bbb7f6eb808c965360d38e"
+    },
+    "assets/covers/paper-06-short.jpg": {
+      "bytes": 410821,
+      "sha256": "efddec5a21d4ce6f019c71c7f12927b034f79d1dfd6a6673fd168c8851a8473b"
+    },
+    "assets/covers/paper-07-short.jpg": {
+      "bytes": 235353,
+      "sha256": "9c501755361fc636b03b6696fd006f8aa7378758d474d1252a75fa2d4781b4eb"
+    },
+    "assets/covers/paper-08-short.jpg": {
+      "bytes": 228973,
+      "sha256": "2941016979fd16eb7ade29539c3901e2854b82040f3dba83f6a9a7bbaff5ea08"
+    },
+    "assets/covers/paper-09-short.jpg": {
+      "bytes": 279842,
+      "sha256": "81850009d90e484921251c79829bfe142da70534bbbc92a3345dc68f3fdbfb9f"
+    },
+    "assets/covers/paper-10-short.jpg": {
+      "bytes": 306794,
+      "sha256": "f93d1a0c01b27f71e276d45ed836e5bc395a13990caba600ad75f99dcb9813c6"
+    },
+    "assets/covers/paper-11-short.jpg": {
+      "bytes": 210325,
+      "sha256": "99cd7313865e40ecc2c2a5e4909f29823496196a1ce4df51e85462568fac2c55"
+    },
+    "assets/covers/paper-12-short.jpg": {
+      "bytes": 298646,
+      "sha256": "89ba134d3d228a07c786b9c63d94afa85f9161298e25f4f4d6091863f3064e62"
+    },
+    "assets/covers/paper-13-short.jpg": {
+      "bytes": 191651,
+      "sha256": "4ad9a1508b5e8854063afd8b9c73f860f09ab581f2462e951e65dc5f8972f923"
+    },
+    "assets/covers/paper-14-short.jpg": {
+      "bytes": 206396,
+      "sha256": "9d48ee47a8281e32b53fd1b4c1c84d91d7adc6727bc5ffdeaecc405417957f7f"
+    },
+    "assets/covers/paper-15-short.jpg": {
+      "bytes": 231714,
+      "sha256": "371b1446904fa8fa838244b4e7f6bdbebb5d134c94110d0fd6d36a5618d80f1a"
+    },
+    "assets/covers/paper-16-short.jpg": {
+      "bytes": 232728,
+      "sha256": "2fc0f580ffed1eed49cdd4222a0ea9f75c1830a66fd75456a229326562d4276c"
+    },
+    "assets/covers/paper-17-short.jpg": {
+      "bytes": 353840,
+      "sha256": "e74a523aacab3d8de8590f06936f6d26e2b1bdb88779e1ebf0de59ee9fccc26b"
+    },
+    "assets/covers/paper-18-short.jpg": {
+      "bytes": 333713,
+      "sha256": "5c87267a36ddf23ec22ed0cb044c629411af0b4445b9d437cc41b38f585f68dc"
+    },
+    "assets/covers/paper-19-short.jpg": {
+      "bytes": 272038,
+      "sha256": "468302091b94e655499d409d2e5d586d1361f8ef7ef478ffeb3bde0162abb9a9"
+    },
+    "assets/covers/paper-20-short.jpg": {
+      "bytes": 282315,
+      "sha256": "419dfb0c2e3bbd265c7439c9d177833849ddf080e6ce5f21f215433d7892527b"
+    },
+    "assets/covers/paper-21-short.jpg": {
+      "bytes": 207491,
+      "sha256": "4646b62abf2aa341570d11d3824842dfd1094e81ff24968e4f3a8976832bd9e7"
+    },
+    "assets/covers/paper-22-short.jpg": {
+      "bytes": 201460,
+      "sha256": "e468db49d308f9934ca11f743c735be7b2525b279383cd1631ea78ad66947369"
+    },
+    "assets/covers/paper-23-short.jpg": {
+      "bytes": 195730,
+      "sha256": "da49aa10da51bbb07dc7b7dd4cc0b97efa87d11c86fe249037236de4c486ec7f"
+    },
+    "assets/covers/paper-24-short.jpg": {
+      "bytes": 261190,
+      "sha256": "1bf3c32c90f0f8031efe5a48d17655d83ce05dd14a9d6f2c6be81232246c2b62"
+    },
+    "assets/covers/paper-25-short.jpg": {
+      "bytes": 312755,
+      "sha256": "b809485a8bb0ed9bcbd72c9d50638c5e822004dd7847c26fc1e64c555c6fc48c"
+    },
+    "assets/covers/paper-26-short.jpg": {
+      "bytes": 210231,
+      "sha256": "9432a4ade909e3c021dd2a92afe6030a4096b036469387bee13da7f1d6ef3657"
+    },
+    "assets/covers/paper-27-short.jpg": {
+      "bytes": 338710,
+      "sha256": "a184b9c1eec4874e63982fc923a8592c81cea2a79829410c4a93c37984dd968b"
+    },
+    "assets/covers/paper-28-short.jpg": {
+      "bytes": 154503,
+      "sha256": "a5eb434695a77da70df8fd02c1065362efde00dc02c2f6666fd69484029a2e29"
+    },
+    "assets/covers/paper-29-short.jpg": {
+      "bytes": 282042,
+      "sha256": "5209d08498245ba3e5a91058d356593e486e94bbb2f4a84f00178942ef024a35"
+    },
+    "assets/covers/paper-30-short.jpg": {
+      "bytes": 259657,
+      "sha256": "23bf252a6236f4f626f7ca597d6ee6f1ad334454cce07a3eddc2b37c89194e32"
+    },
+    "assets/covers/paper-31-short.jpg": {
+      "bytes": 253389,
+      "sha256": "bd76c8f4004495457ee61a688dddfd5cffaec2a7b7624072b2a9a318bf9014bc"
+    },
+    "assets/covers/paper-32-short.jpg": {
+      "bytes": 205678,
+      "sha256": "7273987aebfa49936a368e1e45f7416629af26a71f8bda8c612072b1e56737b3"
+    },
+    "assets/covers/paper-33-short.jpg": {
+      "bytes": 350128,
+      "sha256": "75794ec57a15c250f8a612c9bd33f970ee6739afc81deaada8cd44e51b27b6dd"
+    },
+    "assets/covers/paper-34-short.jpg": {
+      "bytes": 258676,
+      "sha256": "1fc28fa5d3dd0679655747dfc65b90e4e49f08a275a80acac082402cbbbef26f"
+    },
+    "assets/covers/paper-35-short.jpg": {
+      "bytes": 242524,
+      "sha256": "6dea27a2450037553d5f94e18dadb0157c2a0e0b56067c1490a8330f349da41d"
+    },
+    "assets/covers/retarget-course-20261013-01.jpg": {
+      "bytes": 126102,
+      "sha256": "a581ff0709f1ddd0f7f363a07fd43347ba1d5114d595e0db247367069c8eb3f0"
+    },
+    "assets/covers/retarget-course-20261013-02.jpg": {
+      "bytes": 158593,
+      "sha256": "db3986c6924c6541490a1af793bdc09ca5f39e64285a557c9d48c83133075e72"
+    },
+    "assets/covers/retarget-course-20261013-03.jpg": {
+      "bytes": 154139,
+      "sha256": "8cfbe2da19875089fbf55751f6f7caa2cb0ab2e286b0165d20d028eb643a5726"
+    },
+    "assets/covers/retarget-course-20261013-04.jpg": {
+      "bytes": 129174,
+      "sha256": "3bd25d4a80e328caeafbdd2ef046a3e52f4595b7a4a942620e93e3be168b5e11"
+    },
+    "assets/covers/retarget-course-20261013-05.jpg": {
+      "bytes": 129147,
+      "sha256": "7b040ea97804d64845fc3f5ba90e8b4ef98c92c07881a62d5a9ac2067b752801"
+    },
+    "assets/covers/retarget-course-20261013-06.jpg": {
+      "bytes": 127175,
+      "sha256": "13d6b5930ffd8661bee6e108213eeb87f9392b4ab6371ebcc9ef6fde39142d30"
+    },
+    "assets/dexpilot-figure1.png": {
+      "bytes": 3287707,
+      "sha256": "1a51b6ce9c764c8df5dd4d048dfb87afb301c78d9ce2c09d8fe973c203e3788c"
+    },
+    "assets/logo.png": {
+      "bytes": 397025,
+      "sha256": "d7c04ce6afdc33489e8cbc84a99f7aaeb7878702593b49d1b47024ccccf59778"
+    },
+    "assets/qr.png": {
+      "bytes": 7348,
+      "sha256": "d2851ed21ae37b9ae444d151c9defe94251c8e97514328554ed60cf5aad8e168"
+    },
+    "assets/resources/paper-01-main-script.txt": {
+      "bytes": 7859,
+      "sha256": "8fedee06ae0bf01b10068981330c82cf51af18184f474f75f59faf4691e5a0f1"
+    },
+    "assets/resources/paper-01-main-subtitles.srt": {
+      "bytes": 6858,
+      "sha256": "2414ec599495b18a1ba6567932f341809bf96401fd227534b36834598134e935"
+    },
+    "assets/resources/paper-02-main-script.txt": {
+      "bytes": 6250,
+      "sha256": "a576812c9ab85912621d95bdbb003fcd8017e131f23dff4d53c4013f29823635"
+    },
+    "assets/resources/paper-02-main-subtitles.srt": {
+      "bytes": 7455,
+      "sha256": "e73fd64f68125c84ef38c959f07457a1080bd824e707c187314d257707f9201b"
+    },
+    "assets/teledexter-demo.jpg": {
+      "bytes": 20327,
+      "sha256": "153c76ea7cbe10045753824e3b3c6ce174f23ec0a5e92cf67b552206d98b08c7"
+    },
+    "catalog.js": {
+      "bytes": 137622,
+      "sha256": "4991c2bdccfd5b47302d7afb74d235cdc78f9eccc105e4210684a78e57b9db37"
+    },
+    "favicon.svg": {
+      "bytes": 712,
+      "sha256": "e6d2e59b7b5bbb0342e0fb496dfc262decbfe4426bbb7b047aec8d467d1dc6f7"
+    },
+    "file.svg": {
+      "bytes": 392,
+      "sha256": "1e0ae4d1a1ddfa36752988647b731e4abf150c414d069ec83c96fb0aaeff0307"
+    },
+    "globe.svg": {
+      "bytes": 1036,
+      "sha256": "d051a8c47936990a9085693d307bb7cea1bc1b6d7ed956bcbaacf674f4ec96b9"
+    },
+    "index.html": {
+      "bytes": 11921,
+      "sha256": "f9e2af41083dda634b8d4efa4d9b80b9154455703aaeb5da980b899a2514dad8"
+    },
+    "locale.js": {
+      "bytes": 9615,
+      "sha256": "a0a0a30aa158eead34a50db5ae73f9e4b842ced102bf452a9cdeca2596d20477"
+    },
+    "retargeting/app.js": {
+      "bytes": 28892,
+      "sha256": "c1772840609693305a298fe7d227f7337bf353583fb5067395426595d3ffa691"
+    },
+    "retargeting/assets/ako_fig1.webp": {
+      "bytes": 314878,
+      "sha256": "af8a8b448225057dc5ce44e87e7e1d3e0b0c5e986c2de86f4ff7eec590ffa79d"
+    },
+    "retargeting/assets/ako_fig2.webp": {
+      "bytes": 1005308,
+      "sha256": "0c603bbababfacc599fe538d18b142a84246c22f1faaff8ff85c7d67a5e6ff4b"
+    },
+    "retargeting/assets/ako_fig5.webp": {
+      "bytes": 142248,
+      "sha256": "ade6867536223c515873fed5110fb5bcb3148dcd6a4e70e3d2853db39f57c2b6"
+    },
+    "retargeting/assets/anydexrt-A3-F9.webp": {
+      "bytes": 209384,
+      "sha256": "4bcffd2a73b6e45e0fb7cf21480742ef379c8efa701ca1b7f0bdd18fbd000565"
+    },
+    "retargeting/assets/anydexrt-S3-F2.webp": {
+      "bytes": 261900,
+      "sha256": "c63886bdba0bb59f0df5187058623fe65504290e4d929de23e8890cce9846950"
+    },
+    "retargeting/assets/anydexrt-S3-F3.webp": {
+      "bytes": 404222,
+      "sha256": "13fb5169a7e38e1100efb64b1da42d658296955f0708ad484332a360c2d9ff60"
+    },
+    "retargeting/assets/c2dex-fig01.webp": {
+      "bytes": 489558,
+      "sha256": "a125a1789605a61c9e5c3fad280837e86a7620ae3f04a55676fb6a5690348f33"
+    },
+    "retargeting/assets/c2dex-fig03.webp": {
+      "bytes": 202818,
+      "sha256": "1768d0cca4a729e8dec24ae0b6acb3753a3222d11c1f907e49e6eea0a58923a2"
+    },
+    "retargeting/assets/course-01-cover.jpg": {
+      "bytes": 126102,
+      "sha256": "a581ff0709f1ddd0f7f363a07fd43347ba1d5114d595e0db247367069c8eb3f0"
+    },
+    "retargeting/assets/course-02-cover.jpg": {
+      "bytes": 158593,
+      "sha256": "db3986c6924c6541490a1af793bdc09ca5f39e64285a557c9d48c83133075e72"
+    },
+    "retargeting/assets/course-03-cover.jpg": {
+      "bytes": 154139,
+      "sha256": "8cfbe2da19875089fbf55751f6f7caa2cb0ab2e286b0165d20d028eb643a5726"
+    },
+    "retargeting/assets/course-04-cover.jpg": {
+      "bytes": 129174,
+      "sha256": "3bd25d4a80e328caeafbdd2ef046a3e52f4595b7a4a942620e93e3be168b5e11"
+    },
+    "retargeting/assets/course-05-cover.jpg": {
+      "bytes": 129147,
+      "sha256": "7b040ea97804d64845fc3f5ba90e8b4ef98c92c07881a62d5a9ac2067b752801"
+    },
+    "retargeting/assets/course-06-cover.jpg": {
+      "bytes": 127175,
+      "sha256": "13d6b5930ffd8661bee6e108213eeb87f9392b4ab6371ebcc9ef6fde39142d30"
+    },
+    "retargeting/assets/course-poster.svg": {
+      "bytes": 1299,
+      "sha256": "c73f23f892b81e6d99e65ce4bb10ec7d2ee931727a7cbe25ff31d12cf4feb026"
+    },
+    "retargeting/assets/dexflow-fig01.webp": {
+      "bytes": 256808,
+      "sha256": "39092a99307ebbf44082c6f4b383bfb2f66e47f65dc2bd91641f0d0738d281ad"
+    },
+    "retargeting/assets/dexflow-fig02.webp": {
+      "bytes": 98536,
+      "sha256": "18667ecb50bfa9cb899da064d6436e1b9c9d8e808979c39060658e54831a5081"
+    },
+    "retargeting/assets/dexh2r-S3-F2.webp": {
+      "bytes": 132002,
+      "sha256": "87e77a88c7efc7c5952eeeb6e78727e76bc7b21e37adc5cb2244d98beda63fb1"
+    },
+    "retargeting/assets/dexmv_fig3.webp": {
+      "bytes": 123820,
+      "sha256": "7f95c29b2edd32f30375c33d372a31f840e422cfc33079567f4549d1a1daf231"
+    },
+    "retargeting/assets/dexmv_fig4.webp": {
+      "bytes": 92920,
+      "sha256": "1382f3b38855018982ff95a56953fff935edceffa08c8a1b64978f91596da555"
+    },
+    "retargeting/assets/dexpilot_fig8.webp": {
+      "bytes": 172612,
+      "sha256": "7223d9754b95cb536a937323ad95daf2bdfc88e3577d78d9bcc28dab0db86156"
+    },
+    "retargeting/assets/dexvip-overview.webp": {
+      "bytes": 94772,
+      "sha256": "d01da45d3727cf8408efa64700b20231276b3bb6fd4dcf3ecd7f923c109d3922"
+    },
+    "retargeting/assets/fig07_pointcloud.webp": {
+      "bytes": 232196,
+      "sha256": "dadaf166e5f209396818c2bb2a902311a5c71364e20e1d12789fe29ef6df41bf"
+    },
+    "retargeting/assets/flashdexretarget-fig02.webp": {
+      "bytes": 162814,
+      "sha256": "b4b6c83e3808affa807a6002c2bfb58bdc6dbc6aed0f702e579092ae32d84b73"
+    },
+    "retargeting/assets/flashdexretarget-fig04.webp": {
+      "bytes": 75020,
+      "sha256": "a6ed9f3d0246f00bd7a184f7818dde758348b42cad45c36f1d61061d923e2586"
+    },
+    "retargeting/assets/geort-S1-F2.webp": {
+      "bytes": 170850,
+      "sha256": "84dce044f47925300f2f668f8f5272878b159ef44f6366e719fff457aad8100d"
+    },
+    "retargeting/assets/geort-S2-F4.webp": {
+      "bytes": 68614,
+      "sha256": "2aac01e88cad2fc21f16e091b085b8e1ec8be16dcb8eddc662cc2379d25a1c3c"
+    },
+    "retargeting/assets/geort-S2-F7.webp": {
+      "bytes": 229670,
+      "sha256": "9576b307a7d66bec4150c0d4ba469bead89a6cca5322e152b27550d4816d8f9b"
+    },
+    "retargeting/assets/kmr-S3-F2.jpg": {
+      "bytes": 418789,
+      "sha256": "ba09efe4ce6563fabf1b54462d931c421dd7e9946404b08af684b18e4f0253d1"
+    },
+    "retargeting/assets/kmr-S3-F5.jpg": {
+      "bytes": 299343,
+      "sha256": "79d7040544bf090f73c96d9a71e89541d0a755ddf0a334ebd83cd4ea885e7885"
+    },
+    "retargeting/assets/kmr-S6-F15.webp": {
+      "bytes": 857804,
+      "sha256": "bfa0f2f6f61c06ba666ebdef330869a563ccf932f92d3c6388d3d7b161ade29e"
+    },
+    "retargeting/assets/kmr-S7-F16.webp": {
+      "bytes": 769648,
+      "sha256": "8e226aac18b0620b3f75e1b050d4a7fbb164eba11bb69e075eb1f408aa7db3b2"
+    },
+    "retargeting/assets/logo.webp": {
+      "bytes": 225622,
+      "sha256": "f252636554eca03c289f5e09365ddbc9e4ac1343d48a3387d8f3f37c634c441b"
+    },
+    "retargeting/assets/maniptrans-S3-F2.webp": {
+      "bytes": 405224,
+      "sha256": "365128fe1a00dd59c5acd322ddef9be9fee282eedf55630db04f099b35143fbe"
+    },
+    "retargeting/assets/maniptrans-S4-F6.webp": {
+      "bytes": 754460,
+      "sha256": "8b7b16f88f58e3b6fe183d19dba2faa383d324b8d61f0ae597f3b00971a8c3c2"
+    },
+    "retargeting/assets/morphometric-fig01.webp": {
+      "bytes": 528194,
+      "sha256": "3eb76ffcb87bd6de13e9b6f25a94e1da513ec18e2bebdfccfc8b805cacd6b974"
+    },
+    "retargeting/assets/morphometric-fig03.webp": {
+      "bytes": 267144,
+      "sha256": "ba5edf3e3996955ad9164fb7dd56bc724c31df6f32538a7d2d52eb6a0e2c52c9"
+    },
+    "retargeting/assets/oat-fig02.webp": {
+      "bytes": 153658,
+      "sha256": "573629e3625c6a65df7c33dcfe599b80d28a3695e46c23aa79d80bd753e0ee9d"
+    },
+    "retargeting/assets/oat-fig06.webp": {
+      "bytes": 212196,
+      "sha256": "80b7c5c6e7657450c2df9740e995e9e38eb0bfadf27b21a7158ce9df8a97c57f"
+    },
+    "retargeting/assets/qr.webp": {
+      "bytes": 538,
+      "sha256": "fe852cd2e36ca96098f170d6508e68c10fc416f65297f90bc508f8f912f452e8"
+    },
+    "retargeting/assets/quasisim-v2-S3-F2.webp": {
+      "bytes": 150706,
+      "sha256": "78b8db8329498463f46f00e2acc8650ccbcda695468c2152f56cb369e58b0ff2"
+    },
+    "retargeting/assets/reforce-fig02.webp": {
+      "bytes": 165676,
+      "sha256": "59d0fdd954b58313ddb0d4ee8e9682aa96bdce3ccc08197c4596ff2eebcb7d95"
+    },
+    "retargeting/assets/reforce-fig03.webp": {
+      "bytes": 336612,
+      "sha256": "99ec447f750d95d1ddde6456a1d14d057d4bacb59c5fe85c5223cb9061755825"
+    },
+    "retargeting/assets/smooth_operator-fig02.webp": {
+      "bytes": 82094,
+      "sha256": "68e16feb46bfb636d1e047da07a8f406b07d98ddc4d73fedc8eb689b7355fc1c"
+    },
+    "retargeting/assets/smooth_operator-fig05.webp": {
+      "bytes": 33412,
+      "sha256": "89711a0f432f3953190a52644fc5cddbe7d1485e0dc39b1fc9df003bd6a6d91d"
+    },
+    "retargeting/assets/softact-fig01.webp": {
+      "bytes": 396216,
+      "sha256": "c531223c6945c44a39cb2032408b9d226e2ce16edf4962c11ac6f6a2bb40c6f3"
+    },
+    "retargeting/assets/softact-fig06.webp": {
+      "bytes": 169726,
+      "sha256": "098ceec8da87a13f377fff7232b033710ac47832c95567a762c91fc98296aad6"
+    },
+    "retargeting/assets/spider-S2-F2.webp": {
+      "bytes": 109542,
+      "sha256": "1fdd493b44a706713db27a79ddfa78bdb514f025b12d9ffc5a13ae94ddb8f034"
+    },
+    "retargeting/assets/spider-S3-F5.webp": {
+      "bytes": 242478,
+      "sha256": "8e258839e66bea9a7ca32ccb43a42380720e41d0201ae921594999c01a3aa84d"
+    },
+    "retargeting/assets/spider-S4-F9.webp": {
+      "bytes": 217432,
+      "sha256": "f5c7734a9279d043622f9ff40c43de38eb0ba4d325210f8f7679a5fee02edfdc"
+    },
+    "retargeting/assets/teledexter-S3-F2.webp": {
+      "bytes": 485570,
+      "sha256": "a41aa57a55c2cc1baa8e049a2da5c21e6c78b501a4d34732a67321551a769fcb"
+    },
+    "retargeting/assets/telekinesis-S2-F3.webp": {
+      "bytes": 235856,
+      "sha256": "9828573e4889ec11205dd4738bd868c38a731ab173f3bd45a69c84a560d4a64e"
+    },
+    "retargeting/assets/telekinesis-S3-F4.webp": {
+      "bytes": 215516,
+      "sha256": "ccfd0544542441be44e7da5b71c3646a85479b9a73bbdb76dae49f61dbc7bad1"
+    },
+    "retargeting/assets/telekinesis-S3-F6.webp": {
+      "bytes": 45516,
+      "sha256": "f6c8d5468a8f32f4a388a3fa331d3421cd37b848543fa19ccdbab779b58d022b"
+    },
+    "retargeting/assets/topo-S3-F2.webp": {
+      "bytes": 709824,
+      "sha256": "8f37ba4ad86485c337b0c7564896af7af993d3e179d601a21ce044290a52c9be"
+    },
+    "retargeting/assets/topo-S5-F3.webp": {
+      "bytes": 7582690,
+      "sha256": "e41e108c581bcdceca5da7cd0601909f6935034d88520205cc39d25cb1341e85"
+    },
+    "retargeting/assets/topo-S5-F4.webp": {
+      "bytes": 1445572,
+      "sha256": "82c2b6182dea51153a33277cb7e1ae9279c3d1860088ff65c6ab90575adaa835"
+    },
+    "retargeting/course-data.json": {
+      "bytes": 319392,
+      "sha256": "e9190ac52b94172f5d7abdd09a997fbc2bebb8263b679adb12da577eba836217"
+    },
+    "retargeting/index.html": {
+      "bytes": 14475,
+      "sha256": "5dc4c5a91c6e44c0c66cbc109d327690f20d8287e785047552fecaf4823b73f7"
+    },
+    "retargeting/style.css": {
+      "bytes": 18768,
+      "sha256": "27974b40003696db0c7a262e1372d7d0b675fe2a9bda42b65c8a2b431ef48d84"
+    },
+    "style.css": {
+      "bytes": 22720,
+      "sha256": "ffe1232cb8b5fb67906d0c7f3ded84b4c1b10afdf446e4bb86a953ce7f8975a7"
+    },
+    "window.svg": {
+      "bytes": 386,
+      "sha256": "decf1cf7bb22b5c99c4857cfcd5718ce5465c4454166317589c83fc73df74b66"
+    },
+    ".nojekyll": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "README.md": {
+      "bytes": 2376,
+      "sha256": "d5aef06756c63291fc438b701bd83ab821e612b9d8dbd08c077ec272bcb37125"
+    },
+    "scripts/build-pages.py": {
+      "bytes": 11003,
+      "sha256": "7881ab4a27f3140305a933805a7f15b1f8a9fac56943f6a8415d6a898803ff25"
+    }
+  }
+}

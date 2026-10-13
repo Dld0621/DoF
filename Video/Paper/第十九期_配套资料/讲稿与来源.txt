@@ -1,0 +1,54 @@
+﻿DoF Paper EP.19 | Teaching Robots to Screw in Simulation
+螺纹这么复杂，仿真怎么学装配？
+
+01 The thread changes everything / 螺纹让接触变复杂
+A nut must follow a bolt thread instead of simply moving straight down. Factory makes these detailed contact interactions fast enough for large-scale robot learning, while preserving the geometry that makes assembly difficult.
+螺母要沿螺纹前进，不能直接向下穿过去。Factory 保留复杂几何，同时让接触仿真足够快。
+Source: https://www.roboticsproceedings.org/rss18/p035.pdf#page=3
+
+02 Distance queries replace heavy geometry / 用距离查询处理几何
+Signed distance fields describe how far sampled points lie from the opposing surface. They support collision queries on complex parts, including threads, without reducing every object to a few simple convex shapes.
+有符号距离场描述采样点到对侧表面的距离。这样可检测复杂螺纹接触，减少简化几何的损失。
+Source: https://www.roboticsproceedings.org/rss18/p035.pdf#page=3
+
+03 Reduce redundant contacts / 删掉冗余接触
+The simulator reduces redundant contact constraints before solving the remaining interactions on the GPU. This combination matters because thousands of detailed contact points would otherwise make parallel training too expensive to run efficiently.
+求解前先缩减冗余接触约束，再交给 GPU。否则大量细节接触会拖慢并行训练。
+Source: https://www.roboticsproceedings.org/rss18/p035.pdf#page=3
+
+04 Build the learning environment / 搭建学习环境
+The release combines assembly assets, simulation environments, and several robot controllers. Policies learn from simulator states and geometric rewards, so this study does not need a dataset of human assembly demonstrations.
+工作提供装配资产、仿真环境和多种控制器。策略依靠仿真状态与几何奖励，不需要人工装配示教。
+Source: https://www.roboticsproceedings.org/rss18/p035.pdf#page=1
+
+05 Three skills, then a chain / 三个技能，再串联
+PPO separately learns to pick the nut, place it above the bolt, and screw it down. The resulting policies are then chained, exposing failures that are hidden when each individual skill is tested alone.
+PPO 分别学习拿起、放到螺栓上方和旋入。串联之后，才能看到独立子技能测试漏掉的失败。
+Source: https://www.roboticsproceedings.org/rss18/p035.pdf#page=8
+
+06 What the screw policy achieves / 旋入策略的结果
+The final screw policy succeeds in eighty-five point six percent of one thousand twenty-four simulated episodes. Success requires reaching within one thread pitch of the bolt base, rather than merely catching the thread.
+最终旋入策略在一千零二十四次仿真中成功八十五点六。要进入距螺栓底部一牙间距内，不能只挂牙。
+Source: https://www.roboticsproceedings.org/rss18/p035.pdf#page=10
+
+07 The complete chain is harder / 完整链路更难
+When picking, placing, and screwing are combined, reported simulated success falls to seventy-four point two percent. Those two numbers describe different evaluation settings, and neither is a measured success rate on a physical robot.
+拿取、放置、旋入串联后，仿真成功率七十四点二。两组评测条件不同，也都不是真机成功率。
+Source: https://www.roboticsproceedings.org/rss18/p035.pdf#page=8
+
+08 The simplified conditions / 需要看到的简化
+The strongest screw setup restricts actions and removes an end-joint limit to avoid regrasping. Thin geometry, realistic friction, and transferring the learned policies to hardware remain separate challenges beyond fast simulated contact.
+较强旋入设置限制动作维度，并放开关节限位。重抓、薄壁、摩擦和真机迁移仍需单独解决。
+Source: https://www.roboticsproceedings.org/rss18/p035.pdf#page=8
+
+09 A foundation, not the final robot / 基础设施的价值
+Factory contributes the training infrastructure that makes detailed assembly experiments practical at scale. To judge deployment readiness, follow the evidence onward to physical perception, calibration, compliant execution, and complete real-world task trials.
+Factory 的价值，是支撑规模化的细节装配实验。真正部署还要验证感知、标定、柔顺执行与完整任务。
+Source: https://www.roboticsproceedings.org/rss18/p035.pdf#page=1
+
+
+Sources
+https://arxiv.org/abs/2205.03532
+https://www.roboticsproceedings.org/rss18/p035.pdf
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

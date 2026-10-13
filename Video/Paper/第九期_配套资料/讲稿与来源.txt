@@ -1,0 +1,49 @@
+﻿DoF Paper EP.09 | DP3: Give the Policy Geometry Before More Data
+DP3：先给策略空间几何，再谈更多数据
+
+01 The same tool, a different position / 同一工具，换一个位置
+A drill moved across the table can look very different in an image. DP3 asks whether a compact three-dimensional observation makes that change easier to handle. It keeps diffusion action generation but changes what the policy sees.
+电钻换到桌面另一处，图像外观可能变化很大。DP3问，紧凑三维观测能否更好应对变化？它保留扩散动作生成，改变策略看到的表示。
+Source: https://arxiv.org/pdf/2403.03954v5; original paper figure
+
+02 Depth becomes a sparse point cloud / 深度变成稀疏点云
+A calibrated depth camera produces points that are cropped to the robot workspace. Sampling keeps a sparse set of coordinates rather than a dense colored reconstruction. The representation emphasizes geometry while reducing dependence on surface appearance.
+标定深度相机产生点，再裁剪到机器人工作空间。采样保留稀疏坐标，而非密集彩色重建。这种表示强调几何，减少对表面外观的依赖。
+Source: https://arxiv.org/pdf/2403.03954v5; PDF page 3
+
+03 Small encoder, generative controller / 轻量编码器，生成式控制器
+A lightweight point encoder compresses that geometry into features for the policy. Robot state joins those features to condition a diffusion model of future actions. Updated observations keep the action sequence connected to the changing scene.
+轻量点编码器把几何压缩成策略特征。机器人状态与特征共同作为未来动作扩散模型条件。更新观测让动作序列持续对应变化的场景。
+Source: https://arxiv.org/pdf/2403.03954v5; PDF page 3
+
+04 Three hand tasks and one gripper task / 三项灵巧手，一项夹爪
+Real experiments combine a Franka arm, an Allegro hand, and an L515 camera. Roll-up, dumpling making, and drilling use the hand; pouring uses a gripper. Each real task receives forty demonstrations, with ten evaluation trials per setting.
+真机实验使用Franka、Allegro和L515相机。卷起、包饺子和钻孔用手，倾倒使用夹爪。每项真机任务40条示教，每设置评测十次。
+Source: https://arxiv.org/pdf/2403.03954v5; PDF page 7
+
+05 What changes in the real comparison? / 真机对照改变了多少
+Across all four tasks, DP3 averages eighty-five percent success versus thirty-five for RGB diffusion. That is a fifty-percentage-point gain inside this particular experimental protocol. The table combines different end effectors, which matters when interpreting the average.
+四任务平均，DP3为85%，RGB扩散为35%。这是该实验协议内提升50个百分点。表格混合不同末端执行器，解释均值时要注意。
+Source: https://arxiv.org/pdf/2403.03954v5; PDF page 8
+
+06 Isolate the dexterous-hand evidence / 单独看灵巧手证据
+For the three hand tasks alone, the reported DP3 scores are ninety, seventy, and eighty. Their mean is eighty percent, computed from those three table entries. The gripper's perfect pouring result should not inflate a hand-only summary.
+三项手任务中，DP3分别为90%、70%、80%。三项均值为80%，由原表这三格计算。夹爪倾倒的满分不应抬高手任务的总结。
+Source: https://arxiv.org/pdf/2403.03954v5; PDF page 8
+
+07 Geometry does not remove missing observations / 几何并不能消除缺失观测
+A single depth view still misses surfaces hidden behind the object or hand. Calibration errors also move the points relative to the robot's working coordinates. Some generalization settings have very few trials, so reliability claims need restraint.
+单路深度仍看不到物体或手后方的表面。标定误差也会让点偏离机器人工作坐标。部分泛化设置试验很少，可靠性结论需要克制。
+Source: https://arxiv.org/pdf/2403.03954v5; PDF page 7
+
+08 A useful representation choice / 一种有用的表示选择
+DP3 demonstrates that useful geometric structure can improve learning from limited demonstrations. It does not establish a new hand-tracking accuracy record or provide tactile feedback. Use its results to choose observations, then test the contacts your task requires.
+DP3说明，有用几何结构能改善有限示教学习。它没有刷新手追踪精度，也没有提供触觉反馈。用结果指导观测选择，再测试目标任务所需接触。
+Source: https://arxiv.org/pdf/2403.03954v5; original paper figure
+
+
+Sources
+https://arxiv.org/pdf/2403.03954v5
+https://3d-diffusion-policy.github.io/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

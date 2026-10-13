@@ -1,0 +1,54 @@
+﻿DoF Paper EP.24 | DeCAL | Touch, Imagine, Act
+DeCAL：接触之后，VLA该如何思考？
+
+01 A hidden contact / 看不到的接触
+A robot can see a bottle cap without knowing whether its fingers grip securely. DeCAL asks how a vision-language-action model should use touch before choosing its next motion.
+看见瓶盖，不等于知道手指抓稳了。DeCAL研究VLA如何用触觉决定下一步。
+Source: https://arxiv.org/pdf/2609.09119v1; Figure 1 | overview, PDF p1
+
+02 Six physical tasks / 六项真机任务
+The paper tests wiping, assembly, twisting, pipetting, and screwing a light bulb. These tasks require coordinated arm movement and small finger adjustments under changing contact.
+论文测试擦拭、装配、拧盖、移液和拧灯泡。任务需要手臂与手指随接触变化协同调整。
+Source: https://arxiv.org/pdf/2609.09119v1; Table 1 | real tasks, PDF p7
+
+03 Gate the touch / 按接触调节信息
+First, fingertip deformation maps become tactile tokens describing local and global contact. A contact-aware gate changes their contribution, rather than mixing every sensory input equally.
+首先，把指尖形变编码为局部和全局触觉特征。接触门控调节触觉权重，不把各种信号等量混合。
+Source: https://arxiv.org/pdf/2609.09119v1; Figure 2 | architecture, PDF p4
+
+04 Imagine the consequence / 预测动作后的接触
+Second, a generation expert predicts future visual and tactile representations together. Learning what contact should become supplies the action model with information about physical change.
+第二，生成专家联合预测未来视觉与触觉表征。学习接触如何变化，为动作模型提供物理线索。
+Source: https://arxiv.org/pdf/2609.09119v1; Figure 2 | architecture, PDF p4
+
+05 Coordinate arm and fingers / 分别建模，协调执行
+Third, factorized flow matching models arm and hand actions with separate noise streams. The streams interact, preserving coordination while allowing fine finger motion to have distinct dynamics.
+第三，分解流匹配分别处理手臂和手指动作。两路共同交互，兼顾协同与手指精细动态。
+Source: https://arxiv.org/pdf/2609.09119v1; Figure 2 | architecture, PDF p4
+
+06 What was actually tested / 具体实验协议
+The platform uses two UR5 arms and two twenty-two-degree-of-freedom SharpaWave hands. Each task has one hundred demonstrations and twenty evaluation trials for each method.
+平台使用双UR5和两只22自由度SharpaWave手。每项任务100条示教，每种方法评测20次。
+Source: https://arxiv.org/pdf/2609.09119v1; Experimental protocol | PDF p6
+
+07 Read the complete success / 读懂完整成功率
+Across six tasks, complete success averages seventy point eight percent. DECO reaches fifty-five point eight percent under the same protocol: a fifteen-point difference.
+六项任务的完整成功率平均为70.8%。同协议DECO为55.8%，相差15个百分点。
+Source: https://arxiv.org/pdf/2609.09119v1; Table 1 | real tasks, PDF p7
+
+08 Progress is not completion / 阶段进展与任务完成
+The reported progress score also credits completed stages of unfinished attempts. Keep that separate from complete success; the light-bulb task still succeeds only forty percent.
+进度得分也会计入未完成尝试中的成功阶段。要与完整成功分开；拧灯泡仍只有40%成功。
+Source: https://arxiv.org/pdf/2609.09119v1; Table 1 | real tasks, PDF p7
+
+09 The useful lesson / 值得借鉴的设计
+DeCAL combines contact-dependent sensing, future physical representations, and coordinated action generation. Its evidence comes from this instrumented platform and small task suite, not arbitrary household robots.
+DeCAL结合接触门控、未来表征与协同动作生成。证据来自这套传感平台与任务集，泛化仍需检验。
+Source: https://arxiv.org/pdf/2609.09119v1; Figure 1 | overview, PDF p1
+
+
+Sources
+https://arxiv.org/pdf/2609.09119v1
+https://aureleopku.github.io/DeCAL/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

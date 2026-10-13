@@ -1,0 +1,119 @@
+﻿1
+00:00:00,850 --> 00:00:06,030
+Packing a box requires both hands to coordinate motion, shape, and contact.
+包装盒子，需要双手协调运动、形状和接触。
+
+2
+00:00:06,610 --> 00:00:11,470
+DexCap records people doing these tasks directly, without operating a robot first.
+DexCap直接记录人做任务，无需先操控机器人。
+
+3
+00:00:11,970 --> 00:00:16,230
+The harder question is turning that human motion into executable robot behavior.
+更难的是，把人的运动变成机器人可执行动作。
+
+4
+00:00:16,968 --> 00:00:23,088
+Gloves capture finger motion, wrist cameras track movement, and chest depth observes objects.
+手套记录手指，腕部跟踪运动，胸前深度看物体。
+
+5
+00:00:23,668 --> 00:00:27,628
+Calibration connects these streams so the observed scene and hands share coordinates.
+标定把这些数据流连接到共同坐标系。
+
+6
+00:00:28,308 --> 00:00:33,148
+The capture equipment is worn by the demonstrator, not required on autonomous robots.
+这些穿戴设备用于示教，不是自主机器人必需输入。
+
+7
+00:00:33,868 --> 00:00:39,148
+Fingertip inverse kinematics maps human motion into the robot hand's joint targets.
+指尖逆运动学把人手运动转成机器人关节目标。
+
+8
+00:00:39,568 --> 00:00:44,308
+Point clouds are transformed into robot coordinates and augmented with robot geometry.
+点云转到机器人坐标，并补入机器人几何。
+
+9
+00:00:44,728 --> 00:00:49,408
+This reduces the visual mismatch between human demonstrations and robot execution.
+这样减小了人类示教与机器人执行的视觉差异。
+
+10
+00:00:50,086 --> 00:00:55,686
+DexIL encodes the point cloud and predicts future actions with a diffusion policy.
+DexIL编码点云，用扩散策略预测未来动作。
+
+11
+00:00:56,526 --> 00:01:01,246
+The deployed policy reads scene observations and robot state to produce action chunks.
+部署策略读取场景和机器人状态，输出动作块。
+
+12
+00:01:02,006 --> 00:01:06,886
+Human capture trajectories supply supervision; they are not live object ground truth.
+人类轨迹提供训练监督，不是实时物体真值。
+
+13
+00:01:07,456 --> 00:01:12,436
+During difficult rollouts, an operator can add residual corrections or take control.
+困难执行中，人可以添加残差修正或接管。
+
+14
+00:01:12,896 --> 00:01:17,476
+Those corrections become additional training data, mixed with the original demonstrations.
+修正会变成新数据，与原示教混合训练。
+
+15
+00:01:18,036 --> 00:01:22,376
+Human intervention and the later autonomous evaluation must be reported separately.
+人工介入与之后的自主评测必须分开报告。
+
+16
+00:01:23,114 --> 00:01:29,274
+For packaging, complete success rises from forty-seven to fifty-seven percent after correction.
+包装完整成功率经修正从47%升到57%。
+
+17
+00:01:29,654 --> 00:01:34,094
+That is ten percentage points, while unseen-object results change much less.
+这是提升10个百分点，未见物体改善更小。
+
+18
+00:01:34,434 --> 00:01:39,774
+The tables use task-specific protocols, so demonstration counts should not be assumed equal.
+各表使用不同任务协议，不能假定示教量相同。
+
+19
+00:01:40,341 --> 00:01:46,781
+After thirty corrections, cutting reaches twenty percent complete success, while tea reaches twenty-five.
+30次修正后，剪切全成功20%，泡茶25%。
+
+20
+00:01:47,181 --> 00:01:51,281
+Their higher subtask scores do not mean the entire task was completed.
+更高的子任务分数不代表整项任务完成。
+
+21
+00:01:51,861 --> 00:01:55,932
+Accurate motion capture also omits the forces that made human contact succeed.
+准确动捕也没有记录人类接触成功所需的力。
+
+22
+00:01:56,382 --> 00:02:02,622
+DexCap makes collecting human dexterity practical, and correction data can improve execution.
+DexCap让灵巧示教更易采集，修正数据能改善执行。
+
+23
+00:02:02,962 --> 00:02:07,742
+But different hand shapes, limited battery life, and missing force remain constraints.
+但手型差异、续航与缺失力信息仍是限制。
+
+24
+00:02:08,262 --> 00:02:13,342
+The next challenge is preserving contact outcomes, not just reproducing visible motion.
+下一步要保留接触效果，而非只复制可见动作。

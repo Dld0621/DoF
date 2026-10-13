@@ -1,0 +1,55 @@
+﻿DoF Paper EP.22 | Seeing Contact Before It Happens
+指尖怎样在接触前后连续感知？
+
+01 A coin meets a fingertip / 硬币遇到指尖
+Standing a coin upright requires seeing a tiny edge before touching it and sensing contact afterward. FingerEye puts both observations near the fingertip, where wrist cameras can lose the most important local detail.
+把硬币立起来，要先看清细边，再感知接触。FingerEye 把观测放到指尖附近，补足腕部视角。
+Source: https://arxiv.org/pdf/2604.20689v4#page=7
+
+02 Two cameras inside the fingertip / 指尖里的双目相机
+Two small RGB cameras observe local object geometry through a transparent contact structure. When the compliant structure deforms, its internal visual features also reveal changes associated with contact, creating a continuous sensing interface.
+两枚 RGB 相机透过透明接触结构观察局部几何。柔顺结构变形时，内部视觉特征继续反映接触变化。
+Source: https://arxiv.org/pdf/2604.20689v4#page=3
+
+03 Before and after contact / 接触前后接起来
+Before contact, the useful signal is alignment with a rim, edge, or narrow opening. After contact, the same local views reveal deformation and changing contact geometry, helping the robot avoid relying only on distant appearance.
+接触前，需要对齐边缘、细边或狭窄开口。接触后，局部视图继续提供形变与几何变化。
+Source: https://arxiv.org/pdf/2604.20689v4#page=2
+
+04 Do not bury local information / 别淹没局部信息
+The policy first encodes observation groups separately, including each fingertip, wrist vision, and proprioception. Group-conditioned decoding then gives every group a direct influence on action prediction, reducing competition with easier global visual cues.
+策略先分别编码指尖、腕部视觉和本体信息。解码时各组直接影响动作，减少全局线索的压制。
+Source: https://arxiv.org/pdf/2604.20689v4#page=19
+
+05 What the learned policy reads / 学习策略实际读取什么
+The real setup uses an xArm7 and a LEAP hand with matched leader-follower demonstrations. The main learned policy reads images and robot state, not estimated contact wrench or plate-pose values directly.
+真机是 xArm7 与 LEAP 手，通过同构主从采示教。主策略读取图像与状态，不直接输入估计力或板位姿。
+Source: https://arxiv.org/pdf/2604.20689v4#page=5
+
+06 Four physical tasks / 四项真机任务
+Twenty trials per task test coin standing, chip grasping, envelope handling, and syringe operation. The four-task average is seventy-one point two five percent, compared with thirty-seven point five using wrist vision alone.
+四项真机任务各二十次，覆盖硬币、薯片、信件和注射器。平均成功率七十一点二五，腕部视觉为三十七点五。
+Source: https://arxiv.org/pdf/2604.20689v4#page=7
+
+07 What the comparison supports / 比较能支持什么
+That thirty-three point seven five percentage-point improvement comes from a matched sensing ablation. It supports the value of local continuous observations in this setup, not a universal ranking against every complete dexterous robot system.
+提高三十三点七五个百分点，来自同设置模态消融。支持局部连续观测的价值，不代表所有灵巧系统排名。
+Source: https://arxiv.org/pdf/2604.20689v4#page=7
+
+08 Separate the fragile-object demo / 单独看脆弱物体演示
+The striking fragile-object grasp demonstrations use predefined motion and object-specific stopping thresholds. They are separate from the learned-policy benchmark, and three additional simulated tasks must not be counted as physical experiments.
+脆弱物体演示采用预设轨迹和物体专用停止阈值。它不同于学习策略测试，另三项仿真也不能算真机。
+Source: https://arxiv.org/pdf/2604.20689v4#page=4
+
+09 Design sensing around the task / 围绕任务设计感知
+FingerEye illustrates why sensor placement can change what a policy is able to learn. For deployment, evaluate local visibility, calibration, sensor geometry, and training data together instead of assuming more cameras automatically produce better contact control.
+FingerEye 展示感知位置如何改变策略能学到什么。落地还要同时验证可见性、标定、几何和训练数据。
+Source: https://arxiv.org/pdf/2604.20689v4#page=2
+
+
+Sources
+https://arxiv.org/abs/2604.20689v4
+https://arxiv.org/pdf/2604.20689v4
+https://nus-lins-lab.github.io/FingerEyeWeb/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

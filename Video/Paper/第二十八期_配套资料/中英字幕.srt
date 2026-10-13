@@ -1,0 +1,94 @@
+﻿1
+00:00:00,850 --> 00:00:06,530
+A human video shows fingers moving around a cup, but never measures their contact forces.
+视频能看到手指绕杯运动，却没有测量接触力。
+
+2
+00:00:07,210 --> 00:00:13,050
+DEX-X uses simulated interaction to recover supervision that ordinary video cannot directly provide.
+DEX-X用仿真交互补充普通视频缺失的监督。
+
+3
+00:00:13,631 --> 00:00:18,871
+First, reconstruct the hand and object motion from a monocular human demonstration.
+首先，从单目人类示范重建手与物体运动。
+
+4
+00:00:19,431 --> 00:00:26,131
+Retargeted references guide a simulated robot, while physical contacts generate additional force information.
+重定向参考引导仿真机器人，接触产生额外力信息。
+
+5
+00:00:26,857 --> 00:00:33,697
+A reinforcement-learning teacher receives reference motion, object state, and tactile contact information.
+强化学习教师读取参考运动、物体状态和触觉。
+
+6
+00:00:34,317 --> 00:00:40,377
+This privileged input makes skill learning easier inside simulation, where otherwise hidden quantities are available.
+仿真提供现实中难直接观测的信息，帮助学习技能。
+
+7
+00:00:41,052 --> 00:00:46,572
+The teacher is distilled into a student using point clouds, touch, and proprioception.
+教师蒸馏为使用点云、触觉和本体状态的学生。
+
+8
+00:00:47,152 --> 00:00:53,372
+Deployment still uses the retargeted motion reference; the policy is not instruction-only general intelligence.
+部署仍用重定向运动参考，并非仅靠语言任意操作。
+
+9
+00:00:53,927 --> 00:00:56,952
+Real experiments use a Franka FR3 arm
+真机采用Franka FR3机械臂，
+
+10
+00:00:56,967 --> 00:00:59,647
+with a SharpaWave hand and fingertip force sensing.
+搭配SharpaWave手与指尖力感知。
+
+11
+00:01:00,187 --> 00:01:04,467
+The policy runs at thirty hertz without task-specific real-world fine-tuning.
+策略30赫兹运行，无需任务专用真机微调。
+
+12
+00:01:04,989 --> 00:01:10,849
+Thirty attempts per task yield twenty-eight successful cube picks and twenty-four successful pours.
+每任务30次，方块成功28次，倒水24次。
+
+13
+00:01:11,349 --> 00:01:16,609
+Lifting a cup succeeds twenty-two times; sustained scraping succeeds sixteen times.
+提杯成功22次，持续刮擦成功16次。
+
+14
+00:01:17,236 --> 00:01:22,676
+Removing tactile input reduces cube success from twenty-eight to eleven out of thirty.
+去掉触觉后，方块成功从28次降至11次。
+
+15
+00:01:23,176 --> 00:01:29,356
+That is evidence about one sensory component, not a head-to-head comparison against another complete algorithm.
+这是感知组件消融，并非与另一完整算法对决。
+
+16
+00:01:29,936 --> 00:01:34,336
+Square-cube and duck variants fall to seven or eight successes out of thirty.
+方形立方体与鸭子变体仅成功7或8次，共30次。
+
+17
+00:01:34,776 --> 00:01:39,236
+A thin-cube variant reaches twenty-three, so geometry transfer is uneven.
+薄立方体达到23次，说明几何迁移效果并不均衡。
+
+18
+00:01:39,902 --> 00:01:48,042
+The central contribution is the bridge: reconstruct motion, generate contact supervision, then distill a sensory policy.
+核心链路是重建运动、生成接触监督、蒸馏感知策略。
+
+19
+00:01:48,522 --> 00:01:52,862
+The remaining challenge is reliable geometry transfer and prolonged tool contact.
+难点仍是稳定的几何泛化和长期工具接触。

@@ -1,0 +1,51 @@
+﻿DoF Infra EP01 — Before a Robot Moves
+Premium visual edition · original verified English narration retained
+251.2 seconds · English + Chinese transparent captions
+
+0.20s | Which move would you trust?
+A robot needs to move this cup. The direct route is shorter. It also runs straight into an obstacle. Before committing, could it compare the consequences of going straight and going around? That question gets us to world models. Welcome to DoF Infra, episode one.
+机器人要移动这只杯子。 直线路径更短， 却会撞上障碍物。 真正行动之前，它能先比较后果吗： 直行，还是绕行？ 这个问题把我们带到世界模型。 欢迎来到 DoF Infra 第一期。
+
+17.02s | What does one frame leave out?
+Start with what the robot can observe: camera images, joint positions, and recent actions. A single picture may show where the cup is, but not whether it is sliding. History helps resolve that ambiguity. An encoder and a memory model turn that stream into an internal state. The state is learned, not a tiny photograph.
+先看机器人能够观测什么： 相机图像、关节位置，以及最近的动作。 单张图像能显示杯子的位置， 却未必能判断它是否在滑动。 历史信息有助于消除歧义。 编码器和记忆模型 将信息流变为内部状态。 它是学到的表示，不是缩小的照片。
+
+37.05s | Change the action. Change the future.
+Now hold the current state fixed and change the proposed action. Push forward, or move around the obstacle. A dynamics model predicts how the state could evolve under each choice. This action dependence is crucial for control. A policy answers, what should I do? A world model helps answer, what might happen if I do this?
+保持当前状态不变， 只改变候选动作。 向前推，或者绕过障碍物。 动力学模型预测： 不同选择下，状态可能怎样变化。 依赖动作，是服务控制的关键。 策略回答：我应该做什么？ 世界模型帮助回答： 如果这样做，可能发生什么？
+
+55.68s | Prediction still needs a decision rule.
+Two imagined futures are not yet a decision. We need a way to compare them: progress, reward, or distance to a goal. In this illustration, the longer route wins because the direct route collides. These scores explain the idea; they are not experiment results. Execute a short step, look again, and update the plan. A new observation can overturn an attractive prediction.
+想象出两个未来，还不能完成决策。 我们需要比较依据： 进度、奖励，或与目标的距离。 在这个示意图中，绕行胜出， 因为直线路径会碰撞。 这里的分数用于解释原理， 并非实验结果。 先执行一小步、再次观察，然后更新计划。 新观测可能推翻原本看好的预测。
+
+78.91s | Where does the model learn physics?
+But where do useful predictions come from? DayDreamer learns from real robot experience, including awkward early attempts. Its demonstrations include locomotion and moving objects between bins. Each behavior is learned through interaction, not simply supplied by a general pretrained policy.
+有用的预测从哪里来？ DayDreamer 从真实机器人经验中学习， 也包括笨拙的早期尝试。 演示包括行走， 以及在箱子之间搬运物体。 每种行为都通过交互学得， 并非直接来自通用预训练策略。
+
+96.61s | Learning to act inside imagination
+Follow the original figure from left to right. Real observations train the state model. Then imagined state sequences train an actor and a critic. The actor learns which actions tend to pay off. At execution time, it can choose an action without searching a fresh tree of futures. So imagination can improve a policy during learning. It does not always mean the robot is planning online before every move.
+沿论文原图从左向右看。 真实观测训练状态模型， 想象状态序列再训练策略与价值评估器。 策略学会哪些动作通常更有收益。 执行时，它可以直接选择动作， 无需重新搜索一棵未来分支树。 想象可以在训练阶段改进策略， 但这并不总意味着机器人 每次动作前都在在线规划。
+
+118.85s | Or search again before each move?
+TD-MPC2 takes the other route. It searches candidate action sequences in a learned latent space while the agent is acting. Here the arrows predict the next state. Reward estimates score the short rollout, and a value estimate represents what may come afterward. Only the first action is executed. The next observation starts another search. There is no requirement to render every imagined frame.
+TD-MPC2 采用另一条路线： 搜索候选动作序列， 在执行期间、在学到的潜在空间中搜索。 这些箭头预测下一状态。 奖励估计评价短期展开， 价值估计概括更远处可能得到的收益。 只执行第一个动作， 下一次观测再启动搜索。 不要求渲染每一帧想象画面。
+
+143.92s | A plan is corrected, not guaranteed.
+These TD-MPC2 clips are simulation benchmarks. They show manipulation and locomotion, not a physical robot deployment. Replanning limits how long we trust an old forecast. It cannot rescue a model that systematically gets contact wrong.
+这些 TD-MPC2 视频来自仿真基准。 它们展示操作和运动控制， 并非真实机器人部署。 重新规划缩短了依赖旧预测的时间， 却无法自动修复 一个始终把接触预测错的模型。
+
+159.71s | Does the future have to look like a video?
+The prediction can also live in feature space. V-JEPA 2 first learns from video, then its action-conditioned version learns from robot interactions. For planning, encode a goal image and compare it with predicted endpoint features. Search for actions that make those representations agree. The real robot examples use supplied goal images. The paper reports about sixteen seconds of planning per action on an RTX 4090.
+预测也可以发生在特征空间。 V-JEPA 2 先从视频学习， 动作条件版本再从机器人交互学习。 规划时，将目标图像编码， 与预测终点的特征比较， 搜索让两者接近的动作。 真实机器人案例使用给定的目标图像。 论文报告约十六秒的规划时间， 对应 RTX 4090 上的每个动作。
+
+185.94s | A convincing video is a different promise.
+RoboDreamer illustrates a different interface: language and visual conditions compose a desired video plan. Keep these two panels separate. One is a generated plan. The other is execution in the RLBench simulator. Neither is proof of physical success. A plausible movie, accurate action consequences, and a reliable controller are three different things to evaluate.
+RoboDreamer 展示另一种接口： 语言与视觉条件 组合出期望的视频计划。 要区分这两个画面。 一边是生成的计划， 另一边是在 RLBench 仿真中执行。 两者都不能证明真实世界任务成功。 看似合理的视频、准确的动作后果， 以及可靠的控制器， 需要分别评价。
+
+209.11s | What would falsify this prediction?
+Return to our cup. The model might miss friction, hide an obstacle, or underestimate how uncertainty grows over several steps. Test the action, the horizon, and the outcome that actually matter. For grasping, inspect contact. For recovery, inspect motion after a disturbance. More realistic pixels are useful only when they improve the task you care about. Measure that connection instead of assuming it.
+回到这只杯子。 模型可能漏掉摩擦、忽略障碍， 或者低估多步预测中累积的不确定性。 要测试真正相关的动作、预测时长， 以及实际结果。 抓取要看接触， 恢复能力要看扰动之后的运动。 更逼真的像素是否有用， 要看能否改善你关心的任务。 这个联系需要测量，不能靠假设。
+
+232.43s | Read a model by following the decision.
+When you open the next world-model paper, trace four things: its inputs, its predicted quantity, its decision rule, and its execution evidence. Our DoF research map links the original papers and demonstrations. Follow the arrows back to the robot, and ask what the prediction actually changed.
+下次打开世界模型论文， 追踪四件事：输入、预测对象， 决策方式，以及执行证据。 DoF 研究地图整理了 原论文和演示。 沿着箭头回到机器人， 追问：预测究竟改变了什么决策？

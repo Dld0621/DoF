@@ -1,0 +1,94 @@
+﻿1
+00:00:00,850 --> 00:00:06,030
+Two identical finger positions can produce very different forces against an object.
+相同手指位置，可能产生完全不同的接触力。
+
+2
+00:00:06,430 --> 00:00:12,090
+Contact-Grounded Policy addresses the gap between predicting a movement and actually realizing its contact.
+CGP研究如何让预测的动作真正形成预期接触。
+
+3
+00:00:12,630 --> 00:00:15,310
+The real system combines a Franka arm,
+真机采用Franka机械臂，
+
+4
+00:00:15,610 --> 00:00:18,790
+an Allegro hand, and four Digit360 sensors.
+Allegro手和4个Digit360。
+
+5
+00:00:19,290 --> 00:00:24,910
+Images show the scene; fingertip sensing supplies information about contact hidden from those images.
+图像提供场景，指尖传感补充不可见的接触。
+
+6
+00:00:25,590 --> 00:00:31,590
+A conditional diffusion model predicts future actual robot states and tactile feedback together.
+条件扩散模型联合预测未来实际状态和触觉。
+
+7
+00:00:32,090 --> 00:00:35,410
+This coupling represents how the hand should move and what it should feel.
+联合预测同时描述手怎样动、应该感受到什么。
+
+8
+00:00:35,960 --> 00:00:42,220
+A learned contact-consistency mapping converts these predictions into targets for a compliance controller.
+接触一致性映射把预测转成柔顺控制器目标。
+
+9
+00:00:42,800 --> 00:00:47,420
+The controller target need not equal the actual position when contact deforms the system.
+接触使系统发生形变时，目标位置并不等于实际位置。
+
+10
+00:00:47,949 --> 00:00:53,129
+At deployment, the robot executes part of the predicted sequence and then replans.
+部署时先执行预测序列的一部分，再重新规划。
+
+11
+00:00:53,389 --> 00:00:59,649
+New tactile observations close the loop, allowing subsequent commands to respond to evolving contact.
+新的触觉观测形成闭环，后续指令响应接触变化。
+
+12
+00:01:00,183 --> 00:01:04,943
+The physical evaluations cover jar opening and flipping a box within the hand.
+真机评测包括开罐和掌内翻盒。
+
+13
+00:01:05,263 --> 00:01:12,003
+Training uses forty-five and ninety demonstrations respectively, followed by fifteen evaluation attempts per task.
+分别使用45、90条示教，每任务评测15次。
+
+14
+00:01:12,526 --> 00:01:19,466
+Jar opening reaches ninety-three point three percent, versus seventy-three point three for visual Diffusion Policy.
+开罐成功率93.3%，视觉扩散策略为73.3%。
+
+15
+00:01:19,886 --> 00:01:23,606
+For box flipping, the comparison is eighty versus sixty percent.
+掌内翻盒的对照为80%和60%。
+
+16
+00:01:24,362 --> 00:01:30,102
+Egg grasping and dish wiping appear beside the real tasks, but are simulation experiments.
+鸡蛋抓取、擦盘出现在同表，但属于仿真实验。
+
+17
+00:01:30,522 --> 00:01:35,462
+Combining those columns into a five-task real-robot score would misrepresent the evidence.
+把这些列合成五项真机平均，会误读证据。
+
+18
+00:01:36,272 --> 00:01:40,832
+The mapping is learned for a particular sensor and compliance-controller setup.
+映射依赖特定触觉传感器与柔顺控制设置。
+
+19
+00:01:41,312 --> 00:01:47,732
+Changing either may require adaptation; the useful idea is grounding desired contact in executable control.
+更换硬件可能需要适配；核心是让接触目标可执行。

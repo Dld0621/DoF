@@ -1,0 +1,55 @@
+﻿DoF Paper EP.23 | Learning from Failed Dexterous Attempts
+失败之后，灵巧手怎样真正学会？
+
+01 A bottle is almost placed / 瓶子差一点放好
+The hand grasps a bottle correctly, then fails while turning it into the final placement. DexPIE asks how deployment experience can improve the policy without incorrectly blaming every earlier action for a later failure.
+手已经抓对瓶子，却在调姿放置时失败。DexPIE 利用经验改进策略，避免错怪前面的好动作。
+Source: Original paper Figure 6, Task A · PDF p. 6 · arXiv:2606.09615v3
+
+02 Collect corrections from real states / 从真实状态接管纠错
+A human operator first aligns with the current robot hand and wrist pose before taking over. This human-as-follower transition makes corrective actions smoother and collects recovery behavior near the states where the policy actually fails.
+操作者先对齐机器人当前手姿和腕姿，再接管。这样过渡更平滑，能在真正出错处收集恢复动作。
+Source: https://arxiv.org/pdf/2606.09615v3#page=4; Figure 3
+
+03 Start from later stages too / 也从后续阶段开始
+Staged data collection initializes some rollouts from intermediate task states, not only from the beginning. These later starts provide clearer evidence about what remains achievable, helping value estimates distinguish good early progress from downstream mistakes.
+采集也从中间状态开始，而不总从第一步开始。后段经验帮助价值模型区分前期进展与后续错误。
+Source: https://arxiv.org/pdf/2606.09615v3#page=4
+
+04 Keep execution consistent / 让训练与执行对齐
+Asynchronous inference computes the next action chunk while the current chunk is still executing. Remaining relative actions are transformed into the new observation frame before becoming a prefix, reducing inconsistency between demonstrations and deployment timing.
+当前动作执行时，异步计算下一段动作。剩余相对动作先换到新观测坐标系，再作为前缀。
+Source: https://arxiv.org/pdf/2606.09615v3#page=4
+
+05 Grade experience continuously / 连续评估经验好坏
+A distributional critic estimates value from the mixed dataset of successes, failures, and human corrections. Advantage estimates become a continuous optimality condition, allowing the diffusion policy to learn from different levels of action quality.
+价值分布网络学习成功、失败与人工纠正经验。优势估计变成连续最优性条件，指导扩散策略改进。
+Source: https://arxiv.org/pdf/2606.09615v3#page=4
+
+06 The physical evaluation / 真实机器人评测
+The experiments use a UR5 arm, an Inspire hand, and front and wrist cameras. Three tasks cover bottle placement, drawer-and-tissue handling, and lid-and-candy placement, with fifty evaluation trials per method and task.
+平台为 UR5、Inspire 手、前视和腕视相机。三任务覆盖瓶子、抽屉纸巾和开盖放糖，各五十次。
+Source: https://arxiv.org/pdf/2606.09615v3#page=5
+
+07 Compare with the strongest baseline / 和更强的基线比较
+Average full-task success reaches eighty-seven point three percent, versus eighty percent for RECAP. The larger improvement over behavior cloning is also useful, but the matched post-training comparison is seven point three percentage points.
+完整成功率平均八十七点三，RECAP 为八十。相对更强后训练基线，增益是七点三个百分点。
+Source: https://arxiv.org/pdf/2606.09615v3#page=6
+
+08 Experience still includes people / 经验仍然包含人工
+The post-training data includes human interventions and fifty-five point four minutes of robot interaction. These results do not establish fully autonomous self-improvement, transfer to arbitrary hand designs, or a universal ranking across dexterous tasks.
+后训练包含人工干预和五十五点四分钟交互。未证明完全自主学习，也不能外推任意手型和任务。
+Source: https://arxiv.org/pdf/2606.09615v3#page=4; Figure 3
+
+09 Better credit, better learning / 归因更准，学习才有效
+The central idea is to make the feedback itself more trustworthy before improving the policy. Broader stage coverage, consistent execution, and continuous advantage labels work together to turn real failures into more useful learning signals.
+改进策略之前，要先让反馈本身更可信。阶段覆盖、执行一致性和连续优势标签共同发挥作用。
+Source: https://arxiv.org/pdf/2606.09615v3#page=4
+
+
+Sources
+https://arxiv.org/abs/2606.09615v3
+https://arxiv.org/pdf/2606.09615v3
+https://siiuuuuuu.github.io/DexPIE/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

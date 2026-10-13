@@ -1,0 +1,55 @@
+﻿DoF Paper EP.14 | Grasping What You Cannot Fully See
+看不全的物体，怎样抓稳？
+
+01 A missing surface / 看不见的表面
+A depth camera sees the front of an object, while the back remains hidden. SpringGrasp plans a grasp that can tolerate this uncertain shape, rather than demanding perfectly placed fingertips.
+深度相机看得到正面，却看不到背面。SpringGrasp 让抓取容忍形状不确定性。
+Source: https://arxiv.org/pdf/2404.13532v2#page=1
+
+02 Keep uncertainty visible / 把不确定性留下来
+First, a Gaussian process implicit surface combines the observed points into a shape estimate. It also represents uncertainty, so the planner can distinguish supported geometry from poorly observed regions.
+先用高斯过程隐式表面整合观测点。同时保留不确定性，区分已知与缺失区域。
+Source: https://arxiv.org/pdf/2404.13532v2#page=4
+
+03 Fingers as springs / 把手指看成弹簧
+Next, each compliant finger behaves like a virtual spring attached to a target. When contact occurs earlier than expected, the finger yields instead of forcing the object along a rigid trajectory.
+接着，每根柔顺手指像连着目标的虚拟弹簧。比预期更早接触时，手指能够让步。
+Source: https://arxiv.org/pdf/2404.13532v2#page=1
+
+04 Optimize the whole grasp / 联合优化整个抓取
+The optimizer jointly selects the initial hand pose, fingertip targets, and stiffness gains. Its objective balances stable contact, surface uncertainty, collision avoidance, and the forces predicted by the spring model.
+优化器同时选择初始手姿、指尖目标和刚度。目标兼顾稳定、不确定性、避碰与模型力。
+Source: https://arxiv.org/pdf/2404.13532v2#page=4
+
+05 From plan to hardware / 从规划到真机
+The physical setup combines a KUKA arm, an Allegro hand, and depth observations. Finger impedance control executes the planned grasp; the method does not require a behavior-cloning demonstration dataset.
+真机使用 KUKA 机械臂、Allegro 手和深度观测。逐指阻抗执行规划，不需要行为克隆示范集。
+Source: https://arxiv.org/pdf/2404.13532v2#page=6
+
+06 What counts as success / 怎样给抓取计分
+Fourteen objects receive five trials each, with lifting and slipping assessed separately. A clean five-centimeter lift earns one point; a lift with slipping earns half a point, and failure earns zero.
+十四种物体各测试五次，同时考察举起和滑移。举起五厘米不滑得一分，滑移得半分。
+Source: https://arxiv.org/pdf/2404.13532v2#page=7
+
+07 Read the matched comparison / 读同协议比较
+The two-view setting scores eighty-nine percent, versus seventy-one for the heuristic baseline. With one view, modeling uncertainty raises the score from seventy-five to eighty-four percent in the reported comparison.
+双视角得分百分之八十九，启发式基线七十一。单视角加入不确定性后，从七十五升至八十四。
+Source: https://arxiv.org/pdf/2404.13532v2#page=8
+
+08 The remaining limits / 仍然存在的限制
+Planning takes seconds, and the model does not explicitly account for gravity. Heavy objects, thin walls, and slipping challenge its assumptions; these grasp-acquisition results do not establish continuous tool manipulation.
+规划耗时数秒，模型没有显式考虑重力。重物、薄壁和滑移困难，尚未证明连续工具操作。
+Source: https://arxiv.org/pdf/2404.13532v2#page=6
+
+09 A better question to ask / 更值得问的问题
+For an uncertain object, asking only where fingers should land leaves out an important decision. SpringGrasp also asks how much each finger should yield, making compliance part of the grasp plan itself.
+面对未知物体，光问手指落在哪里还不够。还要问各指该让多少，让柔顺性参与规划。
+Source: https://arxiv.org/pdf/2404.13532v2#page=1
+
+
+Sources
+https://arxiv.org/abs/2404.13532
+https://arxiv.org/pdf/2404.13532v2
+https://www.roboticsproceedings.org/rss20/p042.html
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

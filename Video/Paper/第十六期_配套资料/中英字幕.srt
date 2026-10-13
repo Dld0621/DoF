@@ -1,0 +1,89 @@
+﻿1
+00:00:00,850 --> 00:00:05,770
+Several objects sit on the table, but the instruction names only one of them.
+桌上有许多物体，指令却只指定其中一个。
+
+2
+00:00:05,850 --> 00:00:13,490
+OpenVLA connects language understanding with robot actions, using a shared model rather than a separate policy for every instruction.
+OpenVLA 把语言理解与机器人动作连接起来。
+
+3
+00:00:14,088 --> 00:00:18,988
+The original model takes one RGB image together with a language instruction.
+原版输入是一张 RGB 图像和语言指令。
+
+4
+00:00:19,548 --> 00:00:26,488
+DINOv2 and SigLIP extract complementary visual features, which a projector maps into the language model input space.
+两类视觉特征经投影后，进入语言模型。
+
+5
+00:00:27,010 --> 00:00:32,410
+The language backbone predicts action tokens instead of finishing an ordinary text answer.
+语言底座预测动作词元，而不是普通文本答案。
+
+6
+00:00:32,890 --> 00:00:39,150
+Each action dimension uses two hundred fifty-six bins, which are decoded into continuous commands for the robot.
+每个动作维度分成二百五十六档，再解码执行。
+
+7
+00:00:39,892 --> 00:00:45,392
+The seven output dimensions describe end-effector translation, rotation, and gripper control.
+七维输出描述末端平移、旋转和夹爪动作。
+
+8
+00:00:45,832 --> 00:00:52,532
+They are not direct commands for every finger joint, and token resolution alone does not prove measured positioning accuracy.
+并非逐指关节命令，离散分辨率也不等于精度。
+
+9
+00:00:53,390 --> 00:00:59,090
+Training uses roughly nine hundred seventy thousand robot trajectories from Open X-Embodiment.
+训练使用 Open-X 的约九十七万条机器人轨迹。
+
+10
+00:00:59,550 --> 00:01:06,690
+Robot action labels adapt a pretrained vision-language model, while parameter-efficient fine-tuning helps transfer it to a new setup.
+动作监督适配视觉语言底座，再微调到新平台。
+
+11
+00:01:07,333 --> 00:01:16,833
+Across twenty-nine WidowX and Google robot evaluations, OpenVLA exceeds RT-2-X by sixteen point five percentage points.
+二十九项评测中，比 RT-2-X 高十六点五个百分点。
+
+12
+00:01:17,113 --> 00:01:21,893
+That is a matched aggregate comparison, not a universal ranking of robot intelligence.
+这是该组协议的汇总差异，不是机器人通用排名。
+
+13
+00:01:22,618 --> 00:01:26,938
+The Franka experiments then ask how well the model adapts to new tasks.
+Franka 实验进一步考察对新任务的适配。
+
+14
+00:01:27,378 --> 00:01:34,498
+Language-heavy, multi-object settings benefit from the shared prior, while narrow precise tasks can still favor a specialized policy.
+多物体语言任务受益，精细单任务仍可能专模更强。
+
+15
+00:01:35,156 --> 00:01:40,636
+The original system has no fingertip tactile input and uses a single image.
+原版没有指尖触觉，且只看单张图像。
+
+16
+00:01:40,936 --> 00:01:49,456
+Its gripper results therefore cannot establish reliable control of a high-degree-of-freedom hand during slipping, regrasping, or precise contact.
+夹爪成绩无法证明多指滑移、重抓和接触可靠性。
+
+17
+00:01:50,052 --> 00:01:56,472
+OpenVLA provides an open route from broad visual-language knowledge to task-conditioned robot behavior.
+它提供从视觉语言知识到机器人行为的开放路线。
+
+18
+00:01:56,892 --> 00:02:05,932
+For fine manipulation, evaluate the action space, sensing, adaptation data, and contact requirements before choosing it as the control backbone.
+用于精细操作前，要检查动作、感知和接触需求。

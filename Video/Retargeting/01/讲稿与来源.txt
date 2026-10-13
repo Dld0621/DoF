@@ -1,0 +1,91 @@
+﻿灵巧手重定向 01｜换一只手，究竟保留什么？
+Dexterous Retargeting 01 · What Survives a Change of Body?
+
+Same intention. Different hands. / 同一个意图，不同的人手与机器人
+Close your thumb and index finger around a small object. A robot can copy the finger angles and still leave a gap. It can also match two fingertip positions while placing the remaining fingers through the object. Retargeting decides what should survive this change of body. This course follows the complete chain: measured human motion, robot geometry, contact, control, and evaluation. We will compare methods by what they preserve, what they require, and what their experiments actually establish.
+试着用拇指和食指捏住一个小物体。机器人即使复制了关节角，指尖之间仍然可能留着缝。它也可能对齐两个指尖，却让其余手指穿进物体。重定向要决定：换了身体以后，哪些关系必须保留下来。这套课程沿着人手测量、机器人几何、接触、控制和评估，讲清整条链路。比较方法时，我们看它保留什么、需要什么，以及实验究竟证明了什么。
+https://arxiv.org/abs/1910.03135
+https://arxiv.org/abs/2307.04577
+https://arxiv.org/abs/2606.16272
+
+Read the whole pipeline first / 先把整条遥操作链路拆开
+The camera provides images, not robot commands. A perception system estimates human landmarks, wrist pose, or a fitted hand model. Calibration expresses those estimates in the frames used by the robot. The retargeter produces robot joint targets or a reference trajectory. A controller then tries to realize that reference through motors and physical contact. Tracking failure, mapping failure, and control failure therefore need separate diagnoses. Calling the entire chain inverse kinematics hides the very distinctions needed to improve it.
+摄像头提供的是图像，不是机器人指令。感知系统估计人手关键点、手腕位姿，或者拟合一个人手模型。标定把这些估计变换到机器人使用的坐标系中。重定向器输出机器人的关节目标，或者一条参考轨迹。控制器再通过电机和真实接触，尝试执行这条参考。因此，跟踪失败、映射失败和控制失败，需要分别诊断。把整条链路都叫作逆运动学，会掩盖真正需要改进的环节。
+https://arxiv.org/abs/2307.04577
+
+What does a captured hand contain? / 点云、关键点和 Mesh，分别提供什么
+A point cloud samples visible surfaces, so the back of a finger may be missing. A mesh connects surface vertices and makes surface distance or collision queries possible. A skeleton is smaller: landmarks and a joint hierarchy describe articulation. A fitted model can fill occluded regions using prior assumptions, but completion is not direct measurement. The retargeter must know which quantities are observed, inferred, or unavailable. More surface vertices do not automatically make the final robot movement more accurate.
+点云采样可见表面，所以手指背面可能根本没有被观测到。Mesh 将表面顶点连接起来，便于计算表面距离或检测碰撞。骨架更紧凑：关键点和关节层级描述手指如何运动。拟合模型能借助先验补全遮挡部分，但补全并不等于直接测量。重定向器必须知道：哪些量来自观测，哪些来自推断，哪些没有信息。增加表面顶点数量，并不自动意味着机器人动作会更准确。
+https://arxiv.org/abs/1910.03135
+
+The robot has its own coordinates / 机器人的自由度，不等于人手关键点数
+A human tracker may output twenty-one landmarks, while a robot accepts a smaller set of joint commands. Those landmarks are not twenty-one independently actuated joints. Some robot joints are mechanically coupled, and some fingers have different lengths or missing motions. Let q denote the independent robot joint variables. A model expands those variables through the couplings before computing the link poses. Optimizing every displayed joint independently can produce a configuration the hardware cannot execute.
+人手跟踪器可能输出二十一个关键点，机器人却接受更少的关节指令。这些关键点并不是二十一个能够独立驱动的关节。有的机器人关节存在机械耦合，手指长度和运动能力也可能不同。用 q 表示机器人独立关节变量。模型先按照耦合关系展开这些变量，再计算各连杆的位姿。如果把画面中每个关节都独立优化，可能得到硬件根本执行不了的姿态。
+https://arxiv.org/abs/1910.03135
+https://github.com/dexsuite/dex-retargeting
+
+Forward kinematics is the measuring tool / 正运动学：从关节角计算几何关系
+Forward kinematics answers a direct question: where does a robot point go for a given q? Each joint contributes a transformation, and transformations compose along the chain. Changing a base joint moves every downstream link; changing a distal joint affects a smaller region. Write a fingertip position as f of q. An objective compares that computed position with a target or another geometric relationship. This is why the robot model, joint order, and units are part of the algorithm.
+正运动学回答一个直接的问题：给定 q，机器人上的某个点会到哪里？每个关节贡献一个变换，这些变换沿运动链逐级组合。改变根部关节会带动所有下游连杆，改变末端关节只影响较小范围。我们把指尖位置写成 f(q)。目标函数再把这个计算结果与目标位置，或另一种几何关系进行比较。所以，机器人模型、关节顺序和单位，本身就是算法的一部分。
+https://arxiv.org/abs/1910.03135
+https://arxiv.org/abs/2307.04577
+
+Inverse kinematics is a constrained search / 逆运动学：找一个尽量满足要求的解
+Inverse kinematics reverses the question: which q places the tip near the requested position? Several solutions may reach the same point, while some targets have no exact solution. A joint limit restricts the search to a permitted interval. Additional penalties can prefer a comfortable posture or a small change from the previous frame. The solver selects a compromise inside these constraints. A low final loss only means the selected mathematical objective was matched well. It does not certify a stable grasp or successful manipulation.
+逆运动学反过来问：哪个 q 能让指尖接近指定位置？多个解可能到达同一个点，也有些目标根本不存在精确解。关节限位把搜索限制在允许的区间内。附加惩罚可以偏好舒适姿态，或者偏好相邻帧之间较小的变化。求解器在这些约束内选择一个折中。最终损失较低，只说明选定的数学目标得到了较好的匹配。它不能保证抓取稳定，更不能保证操作任务成功。
+https://arxiv.org/abs/1910.03135
+https://arxiv.org/abs/2307.04577
+
+Frames can change the meaning of a vector / 坐标系错了，方向正确也会映射错
+Imagine the same pinch while the operator rotates the entire wrist. In the camera frame, fingertip coordinates change even though the local finger posture stays similar. Subtracting the wrist position removes translation, but it does not remove wrist rotation. To express points in the wrist frame, also apply the inverse wrist rotation. The same convention must be used on the robot side before comparing vectors. Check handedness, axis order, meters versus millimeters, and the direction of every transform.
+想象操作者保持捏合，同时转动整个手腕。在相机坐标系中，指尖坐标变化了，但手指的局部姿态可能基本不变。减去手腕位置可以消除平移，却不能消除手腕旋转。若要把点表示在手腕坐标系中，还必须应用手腕旋转的逆变换。比较向量以前，机器人一侧也必须使用一致的约定。要检查左右手约定、坐标轴顺序、米与毫米，以及每个变换的方向。
+https://arxiv.org/abs/1910.03135
+
+Wrist motion and finger shape are different jobs / 手腕负责位置，手指负责形状，但二者会耦合
+Finger retargeting and wrist retargeting need different references. The wrist determines the hand location and orientation relative to the object. The fingers determine the internal hand configuration. Mapping them separately makes debugging easier, but contact can couple their solutions. A slightly shifted wrist may allow a short robot thumb to reach a demonstrated contact. If a method optimizes that wrist freedom, compare it with baselines given the same freedom. Otherwise, the experiment changes both the method and the problem.
+手指重定向与手腕重定向，需要不同的参考。手腕决定位于物体附近的手掌位置和朝向。手指决定手内部的关节构型。分开映射更容易调试，但接触会把两部分的解耦合起来。略微移动手腕，可能让较短的机器人拇指到达人手示范的接触位置。如果一种方法优化了这种手腕自由度，对比基线也必须获得相同的自由度。否则，实验同时改变了方法和问题本身。
+https://arxiv.org/abs/2402.04820
+https://arxiv.org/abs/2606.16272
+
+What should remain invariant? / 到底要保留角度、位置，还是接触关系
+Direct joint mapping preserves selected angular relationships. Position matching preserves selected points in a chosen coordinate frame. Vector matching preserves relative directions and lengths between selected pairs of points. Distance matching preserves lengths alone, so orientation can remain ambiguous. Contact-aware matching instead asks which parts of the hand should meet which parts of the object. These are different definitions of similarity, and different definitions lead to different robot behavior.
+直接关节映射保留选定的角度关系。位置匹配保留指定坐标系中的若干点。向量匹配保留选定点对之间的相对方向和长度。距离匹配只保留长度，因此方向仍然可能存在歧义。接触感知匹配则关心：手的哪些部位应该与物体的哪些部位接触。这些是不同的相似性定义，不同定义会产生不同的机器人行为。
+https://arxiv.org/abs/1910.03135
+https://arxiv.org/abs/2506.09384
+https://arxiv.org/abs/2606.16272
+
+Scaling does not remove morphology / 缩放能对齐尺寸，却无法消除形态差异
+Suppose we multiply every human target vector by one scale factor. This may compensate for overall hand size. It cannot independently fix thumb placement, finger proportions, joint axes, and missing degrees of freedom. The pinching fingers may need a smaller separation while the other fingers preserve their spread. This motivates selective projection, different weights, learned maps, or object-relative constraints. Each option introduces an assumption that must be tested on its intended motions.
+假设我们用同一个缩放系数，乘上所有人手目标向量。这可能补偿整体手掌尺寸差异。它却无法分别修正拇指位置、手指比例、关节轴，以及缺少的自由度。参与捏取的手指可能需要更小的间距，其他手指却需要保留张开的程度。这正是选择性投影、差异权重、学习映射或物体相对约束的动机。每一种选择都会引入假设，都需要在目标动作上检验。
+https://arxiv.org/abs/1910.03135
+https://arxiv.org/abs/2503.07541
+
+Noise, delay, and missing observations / 精度、平滑和延迟，需要一起看
+A noisy fingertip estimate can make the robot target jump between neighboring frames. Temporal regularization can reduce those jumps, but strong smoothing may delay intentional motion. A faster retargeter does not recover a fingertip hidden from every camera. Measure capture, estimation, mapping, transport, and motor response separately. Then measure the complete end-to-end delay and its variation. For camera-only teleoperation, visibility and reliable wrist estimation may dominate before solver speed does.
+指尖估计中的噪声，会让机器人的目标在相邻帧之间跳动。时间正则可以减小跳动，但过强的平滑也可能延迟有意动作。更快的重定向器，也无法直接恢复所有相机都看不到的指尖。应分别测量采集、估计、映射、传输和电机响应。还要测量完整链路的端到端延迟及其波动。在纯摄像头遥操作中，可见性和可靠的手腕估计，可能比求解速度更早成为瓶颈。
+https://arxiv.org/abs/2307.04577
+https://arxiv.org/abs/2503.07541
+
+A reference is not an executed trajectory / 参考动作，还不是执行结果
+Now let the robot fingers reach the desired surface locations. The object can still slip when the hand accelerates. Geometry alone does not specify friction, normal force, actuator limits, or the object mass. A controller or a physics-aware method must address these additional requirements. Separate touching, lifting, carrying, placing, and releasing when examining a demonstration. A successful short lift is useful evidence, but it is not evidence of every later stage.
+现在，让机器人手指到达目标表面位置。当手加速时，物体仍然可能滑落。单靠几何关系，无法确定摩擦、法向力、驱动器限制和物体质量。控制器或物理感知方法，需要处理这些额外要求。观察演示时，要把接触、抬起、搬运、放置和松开分别检查。一次成功的短暂抬起有价值，但并不能证明后面的各个阶段也成功。
+https://arxiv.org/abs/2503.21860
+https://arxiv.org/abs/2511.09484
+
+Debug the smallest faithful motion first / 先对齐看得见的动作，再加入接触修正
+For a camera-only system, begin with visible, slow motions and a fixed coordinate convention. Check an open hand, isolated finger flexion, a pinch, and a wrist rotation. Plot the estimated human features beside the robot targets and the measured robot motion. If the target itself is wrong, contact corrections can hide the problem without fixing the mapping. Only after continuous motion is faithful should the test add objects, load, and task-specific corrections. Keep failed trials; they reveal where the chain breaks.
+对于纯摄像头系统，先从清晰可见的缓慢动作和固定坐标约定开始。检查张手、单指弯曲、捏合和手腕转动。把人手估计特征、机器人目标和机器人实测运动并排显示。如果目标本身就错了，接触修正可能掩盖问题，却没有修好映射。只有连续动作映射可靠以后，测试才逐步加入物体、负载和任务相关修正。保留失败试次，它们能说明链路在哪里断开。
+https://arxiv.org/abs/2307.04577
+https://arxiv.org/abs/1910.03135
+
+The map for the next five chapters / 接下来，逐层拆解方法与 Baseline
+The next chapter makes geometric baselines concrete, including the original DexPilot and modern implementations. Then we examine learned mappings: what is trained, what is supervised, and what runs online. Contact-aware methods add the object and preserve relationships across changing hand shapes. Physics-aware methods ask whether a reference can actually be executed. Finally, we build a fair comparison protocol with datasets, metrics, and meaningful task boundaries. Use the companion to change a constraint yourself and inspect the resulting compromise.
+下一章把几何基线讲具体，包括原版 DexPilot 和现代实现的区别。随后看学习映射：训练什么、监督信号是什么，以及在线运行什么。接触感知方法加入物体，在不同手形之间保留交互关系。物理感知方法进一步追问：这条参考能不能真正执行。最后建立公平的比较协议，把数据集、指标和任务边界放在一起。你也可以在伴读页面亲自改变约束，观察结果如何折中。
+https://arxiv.org/abs/1910.03135
+https://arxiv.org/abs/2503.07541
+https://arxiv.org/abs/2606.16272
+
+视频补充来源 / Additional video sources
+DexPilot 作者演示 · 原视频标注 4 倍速 / DexPilot author video · source marked 4×
+https://www.youtube.com/watch?v=fnIHH6NUces
+https://www.youtube.com/watch?v=DTVa2LLoDcY

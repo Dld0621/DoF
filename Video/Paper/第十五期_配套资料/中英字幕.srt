@@ -1,0 +1,89 @@
+﻿1
+00:00:00,850 --> 00:00:04,910
+Spinning a cube is easier than stopping it at a requested orientation.
+让方块一直转，比转到目标角度更容易。
+
+2
+00:00:05,370 --> 00:00:12,250
+ContactSDF learns a compact contact model, then uses that model to plan controlled rotation on an Allegro hand.
+ContactSDF 学习接触模型，规划掌上受控旋转。
+
+3
+00:00:12,790 --> 00:00:18,610
+The first signed distance function describes geometry: how close the bodies are to contact.
+第一个有符号距离函数描述物体离接触多近。
+
+4
+00:00:19,010 --> 00:00:25,410
+A second function works in a transformed velocity space, approximating how contact changes the next motion.
+第二个作用于变换后的速度空间，预测接触运动。
+
+5
+00:00:25,981 --> 00:00:32,501
+Together they replace expensive contact calculations with a smooth, differentiable prediction of the next state.
+两者形成平滑、可微的下一状态预测。
+
+6
+00:00:32,801 --> 00:00:38,961
+This makes the model useful inside an optimizer, rather than merely reconstructing the visible surface of an object.
+用途是支持控制优化，而不只是重建可见表面。
+
+7
+00:00:39,557 --> 00:00:46,157
+Model predictive control proposes finger movements, and the robot executes them through a low-level controller.
+MPC 提议手指动作，底层控制器负责执行。
+
+8
+00:00:46,477 --> 00:00:53,897
+Observed state transitions then update the contact model, closing a loop between prediction, action, and measured outcomes.
+观测到的状态转移再更新模型，形成闭环。
+
+9
+00:00:54,619 --> 00:01:00,119
+Hardware experiments use a fifty-six-millimeter marked cube and an Allegro V4 hand.
+实验使用五十六毫米带标记方块和 Allegro 手。
+
+10
+00:01:00,499 --> 00:01:07,759
+A depth camera, AprilTags, and TagSLAM provide object pose; this external tracking remains part of the deployed system.
+相机、AprilTag 和 TagSLAM 持续提供物体位姿。
+
+11
+00:01:08,347 --> 00:01:13,247
+The model adapts using about two thousand real hardware steps in under two minutes.
+模型用不到两分钟、约两千个真机步适应。
+
+12
+00:01:13,707 --> 00:01:20,907
+These are state-transition measurements for model fitting, not human action labels, and they assume usable geometry and pose estimates.
+监督来自状态转移，同时依赖几何和位姿估计。
+
+13
+00:01:21,538 --> 00:01:26,858
+For positive ninety-degree rotations, the mean final error is about six point three degrees.
+正向九十度旋转，平均角误差约六点三度。
+
+14
+00:01:27,358 --> 00:01:34,118
+The negative direction averages ten point nine degrees; each direction uses five trials, so uncertainty matters.
+反向约十点九度，各五次试验，波动也要看。
+
+15
+00:01:34,877 --> 00:01:40,937
+Those numbers measure the cube relative to its target orientation, not camera tracking accuracy.
+这些数字测方块相对目标的角误差。
+
+16
+00:01:41,457 --> 00:01:49,477
+They also do not establish millimeter assembly precision, arbitrary-object generalization, or performance without external pose tracking.
+并非相机精度，也未证明任意物体装配能力。
+
+17
+00:01:50,076 --> 00:01:55,936
+ContactSDF shows a useful middle ground between a fixed physics model and a large learned policy.
+它介于固定物理模型和大规模学习策略之间。
+
+18
+00:01:56,396 --> 00:02:03,236
+Learn a small contact model from interaction, but validate its approximations and sensing dependencies for each intended task.
+用交互学习小模型，同时验证近似与感知依赖。

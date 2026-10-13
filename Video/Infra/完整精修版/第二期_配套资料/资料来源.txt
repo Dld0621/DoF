@@ -1,0 +1,37 @@
+﻿DoF Embodied AI Infra EP.02 — From an instruction to a useful movement
+
+Primary papers
+1. OpenVLA: An Open-Source Vision-Language-Action Model
+   https://arxiv.org/abs/2406.09246
+   https://openvla.github.io/
+   Original Figure 2: fused DINOv2/SigLIP features, MLP projector, Llama 2, action tokenization. Section 3: seven robot-action dimensions; each dimension discretized into 256 bins. Evaluation separates direct evaluation on training robot platforms and Franka fine-tuning.
+2. π0: A Vision-Language-Action Flow Model for General Robot Control
+   https://arxiv.org/abs/2410.24164
+   https://www.physicalintelligence.company/blog/pi0
+   Original Figure 3 and Sections III–IV: images, language and proprioceptive state; continuous action expert; flow matching; H=50 action chunks in the reported experiments. π0 Figure 3 is not a diagram of OpenVLA.
+3. FAST: Efficient Action Tokenization for Vision-Language-Action Models
+   https://arxiv.org/abs/2501.09747
+   https://www.physicalintelligence.company/research/fast
+   Original Figure 4: continuous action-sequence compression and discrete tokenization. Used to clarify that discrete/continuous and single-step/chunked action are separate axes.
+
+Official physical-robot demonstration footage
+- OpenVLA: put blue cup on plate with reattempt; WidowX, direct evaluation, source playback 1.5×.
+- OpenVLA: stack blue cup on red cup; WidowX, direct evaluation, baked source label 1.5×.
+- OpenVLA: wipe table; Franka fine-tuned, baked source label 4×.
+All source footage was reused from the previously verified original project assets. Freeze frames may finish short source clips; no looping or fabricated robot actions are presented as experimental footage.
+
+DoF project and QR destination
+https://github.com/Dld0621/Embodied-AI-Paper-Analysis
+
+Presentation references
+https://www.youtube.com/watch?v=ECWC-YlAk1o
+https://www.douyin.com/video/7671849026974779749
+Used as narrative/visual guidance: problem first, persistent anchor, progressive diagram drawing and speech-linked emphasis. No reference-video footage, audio or copied artwork is included.
+
+Interpretation boundaries
+The blue tabletop cup, gripper, feature patches, token boxes, moving curves and arrows are DoF explanatory illustrations. They are not calibrated robot geometry, attention maps, logged control values or recovered internal model reasoning. The moving flow curves are not recorded joint trajectories. Real robot demos illustrate behavior only, not aggregate success or transfer to arbitrary unseen robot bodies. Deployment feedback does not imply online weight updates.
+
+Audio and branding
+English narration is AI-synthesized using the user-provided reference voice; transparent English/Chinese subtitles accompany it. Music uses the existing DoF locally generated background bed. User-supplied metallic DoF logo is integrated at top center; larger watermark remains at geometric center at reduced opacity behind the diagrams. Original paper figures and official videos remain source-labelled in-frame. No new footage-use license is asserted by this package.
+
+Premium full edition: same verified narration and primary sources. Approved warm-grey art direction with supplied metallic DoF mark. Alpha>=5 silhouette crop +2px; header130px; centred450px watermark at3.8%opacity. Original paper figure crops are labelled. Technical sketches are illustrative, not extracted telemetry. The approved33.7sec sample is reused at62.504854–96.183146sec. No reference-video footage is reused.

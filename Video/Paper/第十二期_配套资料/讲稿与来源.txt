@@ -1,0 +1,49 @@
+﻿DoF Paper EP.12 | DexTouch: Find and Move Objects Through Contact
+DexTouch：通过接触寻找并操作物体
+
+01 A camera cannot always see the target / 相机并非总能看见目标
+Reaching into a cluttered area can hide the target behind the robot's own hand. DexTouch explores grasping, door opening, and valve turning without camera input. Its policy searches through contact, while still receiving important task and region priors.
+伸向杂乱区域时，目标可能被机器人自己的手遮住。DexTouch探索不用相机的抓取、开门和转阀。策略通过接触搜索，但仍依赖任务和区域先验。
+Source: https://arxiv.org/pdf/2401.12496v2; original paper figure
+
+02 Sixteen simple contact sensors / 十六个简单触点
+Sixteen force-sensitive resistors cover parts of the fingers and palm. Filtering and thresholds turn their readings into binary signals indicating whether contact exists. The policy therefore sees contact events, not a dense three-dimensional shape reconstruction.
+十六个力敏电阻分布在手指与手掌上。经过滤波和阈值处理，读数变成二值接触信号。策略看到接触事件，而不是密集三维形状重建。
+Source: https://arxiv.org/pdf/2401.12496v2; PDF page 3
+
+03 Reward the complete interaction in simulation / 在仿真中奖励完整交互
+A reinforcement-learning critic and reward can use privileged object information during simulation training. The actor learns using inputs that will also be available on the robot. Separating these roles prevents training knowledge from being mistaken for deployed sensing.
+仿真训练中的评价器与奖励可用物体特权信息。执行策略只学习真机同样可获得的输入。分开这两者，才不会把训练知识当成部署感知。
+Source: https://arxiv.org/pdf/2401.12496v2; PDF page 3
+
+04 Deployment still has a map of the task / 部署仍知道任务的大致条件
+The robot receives joint and hand kinematics, contact bits, and a specified search region. The task and placement goal are known, even though the object is not seen. This is structured tactile exploration, not autonomous discovery of an entirely unknown environment.
+机器人读取关节运动学、触点和指定搜索区域。虽然看不见物体，但任务与放置目标已知。这是有结构的触觉探索，不是全未知环境自主发现。
+Source: https://arxiv.org/pdf/2401.12496v2; PDF page 7
+
+05 What transfers to the real robot? / 哪些能力迁移到了真机
+The real setup pairs a UR5e arm with an Allegro dexterous hand. Seen-object grasping averages sixty-four percent, while unseen-object grasping averages forty-seven percent. The gap shows that eliminating vision does not eliminate distribution shift.
+真机平台由UR5e机械臂与Allegro手组成。已见物体抓取平均64%，未见物体为47%。这个差距说明，不用视觉并未消除分布变化。
+Source: https://arxiv.org/pdf/2401.12496v2; PDF page 6
+
+06 More than grasping, but not perfect / 不仅能抓取，也并不完美
+Door opening averages sixty percent success, and valve turning reaches sixty-seven percent. Reported means and variation summarize policies trained with three different random seeds. These are task outcomes, not force accuracy or millimeter-level pose measurements.
+开门平均成功率60%，转阀为67%。报告的均值与离散程度来自三个训练随机种子。这些是任务结果，不是力精度或毫米位姿测量。
+Source: https://arxiv.org/pdf/2401.12496v2; PDF page 7
+
+07 The missing information still has a cost / 缺失的信息仍有代价
+A binary touch signal cannot fully describe surface direction, friction, or contact load. Heavy or slippery objects can fail even when the hand detects contact. Incorrect search-region assumptions can also prevent the first useful contact from happening.
+二值触觉不能完整描述表面方向、摩擦或负载。即使检测到接触，重物或滑物仍可能失败。搜索区域假设错误，还会阻止首次有效接触。
+Source: https://arxiv.org/pdf/2401.12496v2; PDF page 3
+
+08 A complement to visual sensing / 作为视觉感知的补充
+DexTouch shows that inexpensive contact coverage can support useful behavior where vision is unavailable. For reliable precision work, the remaining uncertainty must still be measured and managed. More sensors are not the only question; the policy must use the right information.
+DexTouch说明，廉价触点覆盖能支持无视觉操作。若要可靠精细操作，仍需测量和处理剩余不确定性。问题不只是更多传感器，还在于策略用对信息。
+Source: https://arxiv.org/pdf/2401.12496v2; original paper figure
+
+
+Sources
+https://arxiv.org/pdf/2401.12496v2
+https://lee-kangwon.github.io/dextouch/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

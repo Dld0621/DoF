@@ -1,0 +1,54 @@
+﻿DoF Paper EP.26 | TouchWorld | Predict Contact, Correct Motion
+TouchWorld：一边预判接触，一边快速纠错
+
+01 The plug moves / 插到一半，目标动了
+A plug approaches its socket, but a disturbance changes the contact just before insertion. TouchWorld separates deciding what to do from rapidly correcting how the hand is doing it.
+插头靠近插座，扰动却改变了接触状态。TouchWorld把任务决策和手部快速纠错分开。
+Source: Original paper Figure 4, Power Plug Insertion · PDF p. 9 · arXiv:2607.07287v2
+
+02 Four cooperating layers / 四层如何协作
+Read the architecture from planner to tactile world model, action policy, and refinement policy. Each component handles a different part of the problem, at a different time scale.
+沿架构依次看规划器、触觉世界模型、动作和修正策略。不同组件在不同时间尺度上解决不同问题。
+Source: https://arxiv.org/pdf/2607.07287v2; Figure 2 | layered policy, PDF p4
+
+03 Predict a contact goal / 先预测应该形成的接触
+The planner decomposes a longer instruction into an executable subtask. The tactile world model predicts the visual and tactile outcome that this subtask should achieve.
+规划器把长指令分解为可执行子任务。触觉世界模型预测子任务应达到的视觉和触觉结果。
+Source: https://arxiv.org/pdf/2607.07287v2; Figure 2 | layered policy, PDF p4
+
+04 Generate nominal motion / 生成基础动作
+A goal-conditioned policy reads current observations and these predicted subgoals. It generates an action chunk, providing the arm and hand with a short motion plan.
+目标条件策略读取当前观测与预测子目标。它生成动作块，为手臂和手提供短期运动计划。
+Source: https://arxiv.org/pdf/2607.07287v2; Figure 2 | layered policy, PDF p4
+
+05 Correct the residual / 快速修正偏差
+A faster refinement policy reads recent tactile history and the robot state. It predicts residual corrections when actual contact drifts, rather than waiting for full replanning.
+更快的修正策略读取近期触觉和机器人状态。实际接触偏离时，它给出残差修正。
+Source: https://arxiv.org/pdf/2607.07287v2; Figure 2 | layered policy, PDF p4
+
+06 What the videos show / 区分采集与自主执行
+The paper studies six real tasks, including plug insertion, cup insertion, and tissue pulling. The website also shows accelerated teleoperated collection clips; those are demonstrations, not autonomous results.
+论文研究插头、插杯、抽纸等六项真机任务。官网加速采集片段属于遥操作示教，并非自主结果。
+Source: https://arxiv.org/pdf/2607.07287v2; fixed PDF page 7. Original figure crop; no graphic content redrawn.
+
+07 Clean versus disturbed / 正常与扰动两种条件
+Reported average success is sixty-five percent in clean conditions and fifty-three point seven under perturbation. FTP-1 reaches forty-nine point three and thirty-five point two under the corresponding settings.
+正常条件平均65%，扰动条件为53.7%。对应FTP-1为49.3%和35.2%。
+Source: https://arxiv.org/pdf/2607.07287v2; Table 1 | clean and perturbed, PDF p10
+
+08 Read the missing detail / 还缺哪些实验细节
+The paper reports two hundred demonstrations and one hundred evaluations per task. The allocation across settings and detailed completion rules need clearer disclosure before cross-paper comparisons.
+论文报告每任务200条示教和100次评测。条件分配和完整成功判据仍需进一步明确。
+Source: https://arxiv.org/pdf/2607.07287v2; Table 1 | clean and perturbed, PDF p10
+
+09 A useful division of labor / 预判与反应各司其职
+The takeaway is a division of labor: contact prediction guides motion, and contact feedback corrects it. Component update rates alone do not establish the complete system delay.
+关键是分工：接触预测引导运动，反馈修正运动。组件更新频率本身不能证明系统端到端延迟。
+Source: https://arxiv.org/pdf/2607.07287v2; Figure 2 | layered policy, PDF p4
+
+
+Sources
+https://arxiv.org/pdf/2607.07287v2
+https://phanes-lab.github.io/TouchWorld-website/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

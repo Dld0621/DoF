@@ -1,0 +1,119 @@
+﻿1
+00:00:00,850 --> 00:00:05,510
+A robot can push around an obstacle from either side, but not through it.
+机器人可以从障碍两侧绕行，却不能穿过去。
+
+2
+00:00:05,910 --> 00:00:10,670
+Averaging those demonstrations can produce an action that belongs to neither valid strategy.
+将示教平均，可能得到不属于任何有效策略的动作。
+
+3
+00:00:11,270 --> 00:00:16,190
+Diffusion Policy learns a distribution of action sequences instead of one averaged answer.
+扩散策略学习动作序列分布，而非平均答案。
+
+4
+00:00:16,764 --> 00:00:21,684
+During training, noise is added to demonstrated action sequences at different levels.
+训练时，对示教动作序列加入不同程度噪声。
+
+5
+00:00:22,104 --> 00:00:26,364
+The network learns to predict that noise using the current observation as context.
+网络根据当前观测条件，学习预测所加噪声。
+
+6
+00:00:26,964 --> 00:00:31,604
+This trains a conditional action model, not an explicit contact-force estimator.
+这训练条件动作模型，不是显式接触力估计器。
+
+7
+00:00:32,122 --> 00:00:37,222
+At deployment, a random action block is repeatedly denoised into a plausible sequence.
+部署时，随机动作块经反复去噪成为可行序列。
+
+8
+00:00:37,682 --> 00:00:41,562
+The robot executes only a short part before observing and planning again.
+机器人只执行短段，然后重新观察和规划。
+
+9
+00:00:42,002 --> 00:00:46,702
+This rolling process combines coherent motion with opportunities to respond to changes.
+滚动过程兼顾运动连贯性和应对变化的机会。
+
+10
+00:00:47,391 --> 00:00:51,771
+The robot must align a T-shaped block and then move into an ending region.
+机器人要对齐T形物体，再进入结束区域。
+
+11
+00:00:52,211 --> 00:00:56,211
+That final motion matters because it signals that the manipulation is complete.
+最后这段运动很重要，它标记操作完成。
+
+12
+00:00:56,671 --> 00:01:01,811
+The real experiment uses one hundred thirty-six demonstrations rather than unlimited expert data.
+真机实验使用136条示教，并非无限专家数据。
+
+13
+00:01:02,364 --> 00:01:08,444
+The visual diffusion policy achieves point-eight-zero overlap and ninety-five percent success.
+视觉扩散策略交并比0.80，成功率95%。
+
+14
+00:01:09,064 --> 00:01:14,264
+The LSTM comparison reports twenty percent success under the same real-world protocol.
+同一真机协议下，LSTM对照成功率20%。
+
+15
+00:01:14,984 --> 00:01:19,864
+Twenty trials support this comparison; overlap is a dimensionless geometric score.
+该比较共20次试验，交并比是无量纲分数。
+
+16
+00:01:20,370 --> 00:01:25,690
+The author demonstrations include interruptions and perturbations during pushing and finishing.
+作者演示包含推动与结束阶段的干扰。
+
+17
+00:01:26,290 --> 00:01:30,150
+Repeated observations can change the next action chunk when the scene moves.
+场景变化后，新观测能改变下一动作块。
+
+18
+00:01:30,990 --> 00:01:35,770
+Selected successful recoveries do not guarantee recovery from every unseen contact state.
+展示成功恢复不等于所有未见接触都能恢复。
+
+19
+00:01:36,256 --> 00:01:43,576
+Multiple denoising steps consume computation, and behavior cloning remains limited by demonstrated coverage.
+多步去噪消耗计算，行为克隆仍受示教覆盖限制。
+
+20
+00:01:43,976 --> 00:01:49,096
+Visual and privileged-state results must stay separate when evaluating what the camera provides.
+评价相机能力时，视觉与特权状态结果必须分开。
+
+21
+00:01:49,596 --> 00:01:53,636
+The extended paper adds experiments beyond the original conference version.
+扩展论文还增加了原会议稿之外的实验。
+
+22
+00:01:54,264 --> 00:01:59,304
+The contribution is a better way to represent and update multimodal robot behavior.
+贡献在于更好表示和更新多模态机器人行为。
+
+23
+00:01:59,984 --> 00:02:04,804
+Its task gains cannot be converted into millimeter accuracy or reliable force control.
+任务收益不能换算成毫米精度或可靠力控制。
+
+24
+00:02:05,324 --> 00:02:11,004
+For delicate manipulation, pair action generation with the sensing the contact actually needs.
+精细操作还要给动作生成配上接触所需的感知。

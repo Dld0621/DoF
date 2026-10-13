@@ -1,0 +1,72 @@
+﻿实验能证明什么，边界在哪里
+
+Fifteen tasks, two trained pilots / 十五项任务，两名训练过的操作者
+Part three asks what DexPilot demonstrated in its twenty nineteen physical-robot study. The evaluation covers fifteen tasks performed by two trained human pilots. It tests grasping, releasing, pushing, sliding, and changing finger contacts during manipulation. The human supplies task judgment, decisions, and corrections throughout teleoperation. These are teleoperated results, without demonstrated autonomous task policies.
+下篇要问的是：DexPilot在2019年的研究中，究竟在真实机器人上证明了什么。评估包含15项任务，由两名训练过的操作者完成。它测试抓取、释放、推、滑，以及操作过程中切换手指接触。整个遥操作过程中，人持续判断任务进展，作出决策和修正。这些是人操控机器人的结果；论文没有展示完成这些任务的自主策略。
+Source: Handa et al. · DexPilot (2019), v2 · Abstract and contributions, PDF pp.1–2; Section VIII and Table II, PDF p.9; Section IX, PDF p.10
+
+What belongs to the test suite / 任务集具体包含什么
+Three pick-and-place tasks use a foam brick, a Pringles can, and a Spam box. Three stacking tasks use large, medium, and small blocks, each requiring a three-block tower. Other tasks include pouring beads, opening a jar, rotating a brick, and opening a container. They also include cup insertion, retrieving tea, sliding a card, extracting money, and flipping a box. These are fifteen distinct variants, not fifteen repetitions of one grasp.
+三项抓放任务分别使用泡沫砖、品客薯片罐和午餐肉盒。三项堆叠任务分别使用大、中、小方块，都要叠起三块。其余任务包括倒珠子、开罐、转动砖块和打开容器。还包括套杯、取茶包、滑卡片、取纸币和翻盒子。这15项来自不同任务变体，而不是同一种抓握重复15次。
+Source: Handa et al. · DexPilot (2019), v2 · Table II, PDF p.9
+
+Warm up, then five consecutive trials / 先热身，再连续测试五次
+Pilots warm up with three to five nonconsecutive attempts per task. Each then performs five consecutive trials, reducing selection of favorable attempts. An object falling outside the workspace counts as a failed trial. A dropped object can sometimes be recovered inside the workspace to complete the task. Success means completing this protocol, not executing every intermediate action without mistakes.
+正式测试每项任务前，操作者先做3到5次非连续热身尝试。之后每位操作者连续完成5次测试，以减少挑选有利试次的问题。物体掉出工作空间，记为失败。如果物体仍在工作空间内，有时可以重新捡起，最终完成任务。因此，成功表示按这一协议完成任务，并不意味着每个中间动作都毫无失误。
+Source: Handa et al. · DexPilot (2019), v2 · Section VIII and Table II caption, PDF p.9; Appendix XII-D, PDF p.16
+
+Read the reliability denominator before the bar / 先读成功率的分母，再看柱子
+For one pilot on one task, the denominator is only five attempts. One additional failure changes the reported success rate by twenty percentage points. Counting the complete table gives one hundred and forty-one successes in one hundred and fifty attempts. This pooled total is our calculation; combining tasks hides important difficulty differences. The comparison is between teleoperators, without a timed direct-human manipulation baseline.
+对某位操作者的某项任务，分母只有5次尝试。多一次失败，就会让报告成功率变化20个百分点。全表共150次尝试；根据记录的失败项重算，共141次成功。这个合计是我们计算的，而把不同任务混在一起会掩盖重要的难度差异。这里比较的是两名遥操作者；论文没有计时的真人直接操作基线。
+Source: Handa et al. · DexPilot (2019), v2 · Fig.15, PDF p.10; Appendix XII-D table, PDF p.17; pooled count derived from all30rows; baseline absence checked across v2
+
+Fast tasks still depend on the pilot / 较快的任务也受操作者影响
+For foam-brick pick and place, both pilots succeed in all five trials. The appendix reports mean completion times of sixteen and nineteen seconds. For card sliding, both again succeed five times, but the means are thirty-two and sixteen seconds. These are rounded task means, not reaction times or isolated controller timings. The measured system includes the person and their strategy.
+泡沫砖抓放中，两名操作者都5次全部成功。附录报告的平均完成时间分别为16秒和19秒。滑卡片任务中，两人也都成功5次，但均值分别为32秒和16秒。这些是按操作者统计并取整的任务均值，不是人的反应时间，也不是单独控制器耗时。这些差异说明，被测系统包括操作者本人及其策略。
+Source: Handa et al. · DexPilot (2019), v2 · Appendix XII-D table, PDF p.17; Section VIII, PDF p.9
+
+Small blocks reveal a difficult release problem / 小方块暴露了释放难题
+The block side lengths are six point three, three point eight, and two point three centimeters. For the smallest blocks, pilot one succeeds four times out of five, while pilot two succeeds five times. Their reported completion-time means are two hundred and ninety seconds and ninety-one seconds. The appendix confirms that the failed attempt is excluded from the first mean. Read successful-only times beside success counts, especially when performance varies this much.
+方块边长分别为6.3、3.8和2.3厘米。最小方块任务中，操作者一5次成功4次，操作者二5次全部成功。报告的平均完成时间分别为290秒和91秒。根据附录逐次数据可确认，操作者一的均值统计中排除了失败试次。因此，尤其当表现差异很大时，只对成功试次计算的时间必须和成功次数一起读。
+Source: Handa et al. · DexPilot (2019), v2 · Table II, PDF p.9; Appendix XII-D table, PDF p.17
+
+Long tasks combine several operations / 长任务把多个操作串起来
+The wallet task requires opening the wallet and pulling out paper money, while retaining useful contact. Both pilots complete all five trials, with reported means of one hundred and five and two hundred and twelve seconds. The container task requires opening a plastic container, extracting a cardboard box, and opening that box. Both pilots again succeed five times, with means of three hundred and fifty-eight and two hundred and twenty-eight seconds. These sequences establish feasible teleoperated solutions, alongside their long durations.
+钱包任务要求打开钱包，再抽出纸币，同时维持有效接触。两人都完成5次，报告均值分别为105秒和212秒。容器任务需要打开塑料容器，取出纸盒，再打开纸盒。两人同样5次全部成功，均值分别为358秒和228秒。这些序列证明了遥操作解的可行性，而较长耗时同样是结果的一部分。
+Source: Handa et al. · DexPilot (2019), v2 · Fig.11, PDF p.8; Table II and discussion, PDF p.9; appendix table, PDF p.17
+
+A rotation trace is not the reliability result / 一次旋转轨迹，不等于可靠性结果
+Brick gaiting asks the robot to rotate a grasped brick by one hundred and eighty degrees. Both pilots succeed in three of five trials, with successful-trial means of fifty-eight and thirty-six seconds. Figure sixteen separately illustrates seven middle-finger contacts over a forty-second rotation sequence. The thumb and ring finger remain pinched while the middle finger changes contact. The tactile trace explains one behavior; the table measures full-task reliability.
+砖块换指任务要求机器人把握住的砖块旋转180度。两人都是5次成功3次，成功试次均值分别为58秒和36秒。图16另外展示了一段40秒旋转序列，其中中指发生7次接触。拇指和无名指保持捏持，中指则切换接触。触觉曲线解释一次行为；五次试验的表格衡量完整任务成功得有多稳定。
+Source: Handa et al. · DexPilot (2019), v2 · Table II, PDF p.9; Fig.16, PDF p.11; appendix table, PDF p.17
+
+The pinch mechanism has a tradeoff / 捏合机制也有代价
+Projection helps compensate for uncertain fingertip geometry, but the paper reports interference with finger gaiting and small-object release. Figure eighteen shows the resulting difficulty of releasing small objects cleanly. The authors say projection can be turned off when desired. However, the task table does not document a controlled projection-on versus projection-off experiment. We can explain this tradeoff, but cannot quantify its causal contribution to success or failure.
+投影有助于补偿不确定的指尖几何，但论文报告它会干扰换指和小物体释放。图18展示了由此带来的小物体干净释放困难。作者表示，可以按需要关闭投影。不过，任务表没有记录受控的开启与关闭投影对照实验。我们可以解释机制与报告的权衡，却不能给它分配成功或失败的定量因果贡献。
+Source: Handa et al. · DexPilot (2019), v2 · Section X, PDF p.10; Fig.18, PDF p.12; Section VIII, PDF p.9
+
+Workspace, visibility, and feedback limit precision / 工作空间、视野和反馈限制精度
+The pilot observation volume measures eighty by fifty-five by thirty-eight centimeters. Hand self-occlusion and tracking robustness across different hand sizes and shapes remain concerns. The pilot sees the nearby robot but receives no tactile feedback from its fingertips. Recording tactile signals does not provide human sensation or automatic grasp-force regulation. Approximately one-second latency and motion-generator responsiveness also need improvement.
+操作者的观测空间为80乘55乘38厘米。手部自遮挡，以及不同手型和尺寸下的跟踪鲁棒性，仍然是问题。操作者可以观察附近的机器人，却收不到机器人指尖的触觉反馈。因此，记录了触觉信号，并不意味着人能感到接触，或控制器已经自动调节抓握力。论文还把约1秒延迟和运动生成器响应速度列为需要改进的限制。
+Source: Handa et al. · DexPilot (2019), v2 · Section II, PDF p.2; Section III, PDF p.2; Section IV, PDF p.3; Sections IX–X, PDF p.10
+
+Precision insertion is a boundary case / 精密插接暴露了能力边界
+The authors also attempt NIST-board peg insertion, outside the fifteen-task benchmark. Figure seventeen shows one successful insertion with a zero point one millimeter hole clearance. But the text describes these results as mostly unsatisfactory, with success rates typically within ten percent under specific initial placements. The trial count is unreported, preventing conversion into a precise success fraction. One demonstration supports possibility; low reliability limits the broader claim.
+作者还尝试了NIST任务板上的紧配合插接，它不属于15项基准任务表。图17展示了一次成功插入，孔隙间隙为0.1毫米。但正文称整体结果大多不理想，在特定初始摆放条件下，成功率通常不超过10%。论文没有提供对应试次总数，因此不能把它改写成精确分数。一次有说服力的演示支持可行性，而报告的低可靠性限制了更广泛的结论。
+Source: Handa et al. · DexPilot (2019), v2 · Section X, PDF p.10; Fig.17, PDF p.12
+
+Rich demonstrations enable a next step / 丰富示范为下一步创造条件
+DexPilot records robot-side signals including ninety-two tactile channels, joint states, and torque commands. These demonstrations contain actual robot interactions, because the robot performs the actions. Recoveries and changing contacts may provide useful learning material, as the authors propose. Training and evaluating autonomous policies from these data is explicitly future work. The contribution enables teleoperation and data collection, without demonstrated autonomous mastery.
+DexPilot记录机器人侧信号，包括92路触觉、关节状态和力矩指令。动作直接发生在机器人上，因此示范包含了机器人的真实物理交互。正如作者提出的，失败恢复与接触变化可能提供有用的学习素材。但在这里，用这些数据训练并评估自主任务策略，被明确列为未来工作。证据支持的贡献是遥操作与数据采集基础，而不是自主掌握整套任务。
+Source: Handa et al. · DexPilot (2019), v2 · Sections III and IX, PDF pp.2,10; Section VIII, PDF p.9; Fig.16, PDF p.11
+
+Place the result at the correct layer / 把结论放在正确的技术层级
+A useful conceptual contrast is TeleDexter, which learns a controller to follow both hand and object targets. DexPilot instead turns observed bare-hand motion into geometric finger commands and palm motion, with the pilot closing the task loop. Different hardware, tasks, and protocols prevent a direct numerical ranking from these papers. This twenty nineteen system demonstrates repeated physical teleoperation across diverse tasks, with documented limitations. Its enduring lesson is to preserve useful fingertip relationships, then evaluate the complete human-robot interaction rather than a convincing hand pose alone.
+一个有用的概念对照是TeleDexter，它学习同时跟踪手与物体目标的控制器。DexPilot则把观测到的裸手动作转为手指几何指令与手掌运动，由操作者闭合任务回路。硬件、任务与协议不同，不能从这两篇论文直接作数值排名。对这个2019年的系统，最有力的证据是多样任务中的重复实物遥操作，以及明确记录的限制。它留下的方法启示是：保留有用的指尖关系，再评估完整的人机交互，而不只看手型是否逼真。
+Source: Handa et al. · DexPilot (2019), v2 · DexPilot Sections VII–X, PDF pp.5–10; TeleDexter arXiv:2607.11481v1 Section3 problem formulation and Section3.1, local source/paper.txt
+
+https://arxiv.org/abs/1910.03135v2
+https://arxiv.org/pdf/1910.03135v2
+https://sites.google.com/view/dex-pilot
+https://creativecommons.org/licenses/by/4.0/
+https://arxiv.org/abs/2607.11481

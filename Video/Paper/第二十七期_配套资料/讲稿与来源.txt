@@ -1,0 +1,54 @@
+﻿DoF Paper EP.27 | DexNDM | Repair the Reality Gap Joint by Joint
+DexNDM：逐关节修正灵巧手的仿真差距
+
+01 A difficult rotation / 长物体怎样在掌中转？
+Rotating a long object within one hand demands continuous regrasping without dropping it. A policy that works in simulation can fail when real joints respond differently.
+长物体掌内旋转，需要不断换接触且避免掉落。仿真可行的策略，遇到真实关节响应就可能失效。
+Source: https://arxiv.org/pdf/2510.08556v1; Figure 1 | geometry and wrist poses, PDF p1
+
+02 Beyond the familiar cube / 不只是一枚方块
+DexNDM explores elongated objects, irregular shapes, several rotation axes, and different wrist orientations. These variations change the contacts and loads that individual finger joints must handle.
+DexNDM研究长条、不规则物体、多轴和多种腕姿。这些变化会改变各手指关节承受的接触和负载。
+Source: https://arxiv.org/pdf/2510.08556v1; Figure 1 | geometry and wrist poses, PDF p1
+
+03 Learn the simulated skill / 先在仿真学习基础技能
+The training pipeline first learns rotation policies across objects and distills the skill. This supplies a useful controller, but does not yet resolve the mismatch with physical hardware.
+流程先学习多物体旋转策略，再蒸馏技能。这样获得基础控制器，但真实硬件差距仍然存在。
+Source: https://arxiv.org/pdf/2510.08556v1; Figure 3 | sim-to-real pipeline, PDF p4
+
+04 Measure real responses / 采集真实关节响应
+Autonomous real-world interaction collects state and action data for dynamics learning. The method models each joint separately, compressing wider system influences into compact variables.
+自主真实交互为动力学学习采集状态与动作。方法逐关节建模，把系统整体影响压缩为紧凑变量。
+Source: https://arxiv.org/pdf/2510.08556v1; fixed PDF page 35. Original figure crop; no graphic content redrawn.
+
+05 Correct the action / 用动力学调整动作
+A residual policy adapts the simulated actions using the learned real-joint dynamics. During deployment, joint states and action history are central inputs; no universal object tracker is implied.
+残差策略借助学得的真实动力学调整仿真动作。部署核心输入为关节状态与动作历史。
+Source: https://arxiv.org/pdf/2510.08556v1; Figure 3 | sim-to-real pipeline, PDF p4
+
+06 Read the rotation metric / 先看清旋转指标
+For palm-down rotation about the z axis, the reported mean reaches thirteen point two radians. Direct transfer reaches seven point six four radians in the matched comparison.
+掌心向下绕z轴旋转，平均累计转角13.2弧度。对应直接迁移平均为7.64弧度。
+Source: https://arxiv.org/pdf/2510.08556v1; fixed PDF page 8. Complete original Tables 4 and 5 with captions; no graphic content redrawn.
+
+07 Longer before dropping / 掉落前维持更久
+The corresponding time before dropping rises from twenty point nine eight to twenty-nine point three three seconds. These table entries aggregate objects and three independent trials, rather than exhaustive reliability testing.
+掉落前时长从20.98秒增加到29.33秒。表项汇总物体和三次独立试验。
+Source: https://arxiv.org/pdf/2510.08556v1; fixed PDF page 8. Complete original Tables 4 and 5 with captions; no graphic content redrawn.
+
+08 Rotation is not pose accuracy / 持续旋转不等于精确停姿
+More accumulated rotation and longer survival measure sustained manipulation. They do not establish how accurately the robot stops at a requested orientation.
+更大累计转角、更长维持时间衡量持续操作。它们不能证明机器人能准确停在指定姿态。
+Source: https://arxiv.org/pdf/2510.08556v1; fixed PDF page 8. Complete original Tables 4 and 5 with captions; no graphic content redrawn.
+
+09 What transfers / 真正迁移的是什么
+DexNDM makes a strong case for learning compact hardware corrections instead of rebuilding the whole skill. Treat comparisons using different hands or estimated demonstration videos as contextual evidence, not a common leaderboard.
+DexNDM展示了用紧凑硬件修正适配已有技能。不同手型或视频估读比较，不能视作统一榜单。
+Source: https://arxiv.org/pdf/2510.08556v1; Figure 1 | geometry and wrist poses, PDF p1
+
+
+Sources
+https://arxiv.org/pdf/2510.08556v1
+https://meowuu7.github.io/DexNDM/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

@@ -1,0 +1,49 @@
+﻿DoF Paper EP.10 | HORA: Learn the Object Through the Hand
+HORA：通过手的反馈适应物体
+
+01 Keep turning without looking / 不看物体，也能持续转动
+A hand holding an unfamiliar object must adapt before it slips away. HORA studies continuous in-hand rotation using joint feedback and recent motor history. At deployment, it does not require a camera, tactile sensor, or object tracker.
+抓着陌生物体，手必须在滑落前及时适应。HORA用关节反馈与近期动作历史研究掌内旋转。部署时不需要相机、触觉传感器或物体跟踪器。
+Source: https://proceedings.mlr.press/v205/qi23a/qi23a.pdf; original paper figure
+
+02 The teacher sees more during training / 教师在训练时知道更多
+In simulation, a privileged encoder receives object properties such as mass and friction. It compresses those properties into a latent code used by the rotation policy. The policy learns through reinforcement learning across randomized objects and dynamics.
+仿真中，特权编码器读取质量、摩擦等物性。它把物性压缩成供旋转策略使用的隐变量。策略通过强化学习适应随机物体和动力学。
+Source: https://proceedings.mlr.press/v205/qi23a/qi23a.pdf; PDF page 3
+
+03 Replace privileged inputs with history / 用历史替代特权输入
+A second module learns to estimate that latent code from thirty recent steps. Those steps contain joint observations and actions, revealing how the object responds. The target is useful control information, not a perfect explicit physical measurement.
+第二个模块用最近30步历史估计隐变量。历史包括关节观测和动作，反映物体如何响应。目标是有用控制信息，而非完美显式物理测量。
+Source: https://proceedings.mlr.press/v205/qi23a/qi23a.pdf; PDF page 3
+
+04 Adaptation is inference, not retraining / 适应是推断，不是重新训练
+On the real hand, fresh history updates the latent before the next control decision. The network weights stay fixed during this rapid adaptation process. Calling it online learning should not imply gradient training on the physical robot.
+真机上，新历史先更新隐变量，再决定下一动作。这种快速适应中，网络权重保持不变。不能把它理解成在真机上做梯度训练。
+Source: https://proceedings.mlr.press/v205/qi23a/qi23a.pdf; PDF page 3
+
+05 Heavy objects show the benefit / 重物体体现了收益
+For heavy objects, the real experiment reports about twenty-four radians of net rotation. The domain-randomization comparison reaches roughly ten radians under the same setup. The study evaluates six objects and twenty initial grasps per category.
+重物体真机实验的净旋转量约24弧度。同设置下，域随机化对照约为10弧度。研究每类测试六个物体和二十个初始握姿。
+Source: https://proceedings.mlr.press/v205/qi23a/qi23a.pdf; PDF page 6
+
+06 Irregular objects reveal the remaining gap / 不规则物体揭示剩余差距
+Irregular shapes reach nineteen point two two radians, with more variable holding performance. Trials last at most thirty seconds, and failure time is reported in normalized form. A normalized value near one is not a one-second survival time.
+不规则形状达到19.22弧度，保持表现更不稳定。单次最多30秒，失效时间按归一化形式报告。接近一的归一化值，不是一秒存活时间。
+Source: https://proceedings.mlr.press/v205/qi23a/qi23a.pdf; PDF page 7
+
+07 Rotation amount is not orientation accuracy / 转了多少，不等于转得多准
+The task rewards continuing rotation around one axis from an already stable grasp. It does not measure stopping accurately at an arbitrary final three-dimensional orientation. Small objects and difficult shapes can fail because contact locations remain unobserved.
+任务从稳定握持开始，奖励绕单轴持续旋转。它不评测精准停到任意三维最终姿态。小物体和复杂形状仍会因接触位置未知而失败。
+Source: https://proceedings.mlr.press/v205/qi23a/qi23a.pdf; original paper figure
+
+08 Use history where it contains the answer / 让历史提供有用的信息
+HORA shows that motor history can substitute for some inaccessible object properties. That is useful for sustained contact, but it does not remove every sensing need. For a precise final pose, add evaluation and feedback matched to that objective.
+HORA说明，动作历史能替代部分不可测物性。这有助持续接触，却不能消除全部感知需求。若要精准最终姿态，还需相应评测与反馈。
+Source: https://proceedings.mlr.press/v205/qi23a/qi23a.pdf; PDF page 3
+
+
+Sources
+https://proceedings.mlr.press/v205/qi23a/qi23a.pdf
+https://haozhi.io/hora/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

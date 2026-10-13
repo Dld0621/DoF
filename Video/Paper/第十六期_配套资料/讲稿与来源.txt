@@ -1,0 +1,55 @@
+﻿DoF Paper EP.16 | From Language to Robot Motion
+一句话，怎样变成机器人动作？
+
+01 Choose the right object / 先找对要操作的物体
+Several objects sit on the table, but the instruction names only one of them. OpenVLA connects language understanding with robot actions, using a shared model rather than a separate policy for every instruction.
+桌上有许多物体，指令却只指定其中一个。OpenVLA 把语言理解与机器人动作连接起来。
+Source: https://arxiv.org/pdf/2406.09246v3#page=1
+
+02 Two views of one image / 一张图，两类视觉特征
+The original model takes one RGB image together with a language instruction. DINOv2 and SigLIP extract complementary visual features, which a projector maps into the language model input space.
+原版输入是一张 RGB 图像和语言指令。两类视觉特征经投影后，进入语言模型。
+Source: https://arxiv.org/pdf/2406.09246v3#page=4
+
+03 Actions become tokens / 把动作写成词元
+The language backbone predicts action tokens instead of finishing an ordinary text answer. Each action dimension uses two hundred fifty-six bins, which are decoded into continuous commands for the robot.
+语言底座预测动作词元，而不是普通文本答案。每个动作维度分成二百五十六档，再解码执行。
+Source: https://arxiv.org/pdf/2406.09246v3#page=4
+
+04 What those commands control / 这些指令控制什么
+The seven output dimensions describe end-effector translation, rotation, and gripper control. They are not direct commands for every finger joint, and token resolution alone does not prove measured positioning accuracy.
+七维输出描述末端平移、旋转和夹爪动作。并非逐指关节命令，离散分辨率也不等于精度。
+Source: https://arxiv.org/pdf/2406.09246v3#page=4
+
+05 Where the robot knowledge comes from / 机器人经验从哪里来
+Training uses roughly nine hundred seventy thousand robot trajectories from Open X-Embodiment. Robot action labels adapt a pretrained vision-language model, while parameter-efficient fine-tuning helps transfer it to a new setup.
+训练使用 Open-X 的约九十七万条机器人轨迹。动作监督适配视觉语言底座，再微调到新平台。
+Source: https://arxiv.org/pdf/2406.09246v3#page=1
+
+06 Read the original comparison / 读取原版实验比较
+Across twenty-nine WidowX and Google robot evaluations, OpenVLA exceeds RT-2-X by sixteen point five percentage points. That is a matched aggregate comparison, not a universal ranking of robot intelligence.
+二十九项评测中，比 RT-2-X 高十六点五个百分点。这是该组协议的汇总差异，不是机器人通用排名。
+Source: https://arxiv.org/pdf/2406.09246v3#page=7
+
+07 Adaptation changes the question / 适配后，问题也变了
+The Franka experiments then ask how well the model adapts to new tasks. Language-heavy, multi-object settings benefit from the shared prior, while narrow precise tasks can still favor a specialized policy.
+Franka 实验进一步考察对新任务的适配。多物体语言任务受益，精细单任务仍可能专模更强。
+Source: https://arxiv.org/pdf/2406.09246v3#page=9
+
+08 The dexterity boundary / 灵巧操作的边界
+The original system has no fingertip tactile input and uses a single image. Its gripper results therefore cannot establish reliable control of a high-degree-of-freedom hand during slipping, regrasping, or precise contact.
+原版没有指尖触觉，且只看单张图像。夹爪成绩无法证明多指滑移、重抓和接触可靠性。
+Source: https://arxiv.org/pdf/2406.09246v3#page=1
+
+09 Where OpenVLA fits / OpenVLA 适合放在哪里
+OpenVLA provides an open route from broad visual-language knowledge to task-conditioned robot behavior. For fine manipulation, evaluate the action space, sensing, adaptation data, and contact requirements before choosing it as the control backbone.
+它提供从视觉语言知识到机器人行为的开放路线。用于精细操作前，要检查动作、感知和接触需求。
+Source: https://arxiv.org/pdf/2406.09246v3#page=4
+
+
+Sources
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/pdf/2406.09246v3
+https://openvla.github.io/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

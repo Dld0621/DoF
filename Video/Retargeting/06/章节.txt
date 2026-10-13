@@ -1,0 +1,16 @@
+﻿00:00 什么结果才可信？ / Which result would you trust?
+00:29 两种实验，两种结论 / Two experiments, two claims
+01:01 建立分层 baseline / Build a baseline ladder
+01:33 GT 到底指什么？ / What does ground truth mean?
+02:06 接触标签不是力标签 / Contact labels are not force labels
+02:37 动作数据提供人体参考 / Motion datasets provide human references
+03:12 视觉标签也需要审计 / Vision labels need their own audit
+03:46 固定输入协议 / Freeze the input contract
+04:15 计算预算要算完整 / Account for every compute budget
+04:46 几何与任务指标一起看 / Read geometry and task metrics together
+05:20 接触需要不止一个分数 / Contact needs more than one score
+05:53 平滑与延迟要一起测 / Smoothness and latency are a pair
+06:27 定义完整物理事件 / Define the whole physical event
+07:02 失败必须留在分母里 / Keep the failures in the denominator
+07:37 人和扰动也会改变结果 / People and perturbations change results
+08:12 为无穿戴系统选型 / Choose for your camera-only system

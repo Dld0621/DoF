@@ -1,0 +1,54 @@
+﻿DoF Paper EP.25 | Contact-Grounded Policy | Make Touch Executable
+CGP：预测到接触，还要真正执行出来
+
+01 Why the grip slips / 手指到位，为什么仍会滑？
+Two identical finger positions can produce very different forces against an object. Contact-Grounded Policy addresses the gap between predicting a movement and actually realizing its contact.
+相同手指位置，可能产生完全不同的接触力。CGP研究如何让预测的动作真正形成预期接触。
+Source: https://arxiv.org/pdf/2603.05687v3; Figure 1 | simulation and real tasks, PDF p1
+
+02 Look at the physical system / 先看真实硬件
+The real system combines a Franka arm, an Allegro hand, and four Digit360 sensors. Images show the scene; fingertip sensing supplies information about contact hidden from those images.
+真机采用Franka机械臂，Allegro手和4个Digit360。图像提供场景，指尖传感补充不可见的接触。
+Source: https://arxiv.org/pdf/2603.05687v3; Figure 1 | simulation and real tasks, PDF p1
+
+03 A coupled prediction / 把状态和触觉一起预测
+A conditional diffusion model predicts future actual robot states and tactile feedback together. This coupling represents how the hand should move and what it should feel.
+条件扩散模型联合预测未来实际状态和触觉。联合预测同时描述手怎样动、应该感受到什么。
+Source: https://arxiv.org/pdf/2603.05687v3; Figure 3 | contact grounding, PDF p4
+
+04 From contact to command / 从接触目标到控制指令
+A learned contact-consistency mapping converts these predictions into targets for a compliance controller. The controller target need not equal the actual position when contact deforms the system.
+接触一致性映射把预测转成柔顺控制器目标。接触使系统发生形变时，目标位置并不等于实际位置。
+Source: https://arxiv.org/pdf/2603.05687v3; fixed PDF page 3. Original figure crop; no graphic content redrawn.
+
+05 Replan after feedback / 接收反馈，重新规划
+At deployment, the robot executes part of the predicted sequence and then replans. New tactile observations close the loop, allowing subsequent commands to respond to evolving contact.
+部署时先执行预测序列的一部分，再重新规划。新的触觉观测形成闭环，后续指令响应接触变化。
+Source: https://arxiv.org/pdf/2603.05687v3; Figure 3 | contact grounding, PDF p4
+
+06 Two real experiments / 两项真机实验
+The physical evaluations cover jar opening and flipping a box within the hand. Training uses forty-five and ninety demonstrations respectively, followed by fifteen evaluation attempts per task.
+真机评测包括开罐和掌内翻盒。分别使用45、90条示教，每任务评测15次。
+Source: https://arxiv.org/pdf/2603.05687v3; Table II | separate Sim and Real, PDF p6
+
+07 A matched comparison / 同协议下的对照
+Jar opening reaches ninety-three point three percent, versus seventy-three point three for visual Diffusion Policy. For box flipping, the comparison is eighty versus sixty percent.
+开罐成功率93.3%，视觉扩散策略为73.3%。掌内翻盒的对照为80%和60%。
+Source: https://arxiv.org/pdf/2603.05687v3; Table II | separate Sim and Real, PDF p6
+
+08 Do not merge sim and real / 仿真与真机分开读
+Egg grasping and dish wiping appear beside the real tasks, but are simulation experiments. Combining those columns into a five-task real-robot score would misrepresent the evidence.
+鸡蛋抓取、擦盘出现在同表，但属于仿真实验。把这些列合成五项真机平均，会误读证据。
+Source: https://arxiv.org/pdf/2603.05687v3; Table II | separate Sim and Real, PDF p6
+
+09 The controller matters / 控制器本身也是方法的一部分
+The mapping is learned for a particular sensor and compliance-controller setup. Changing either may require adaptation; the useful idea is grounding desired contact in executable control.
+映射依赖特定触觉传感器与柔顺控制设置。更换硬件可能需要适配；核心是让接触目标可执行。
+Source: https://arxiv.org/pdf/2603.05687v3; Figure 3 | contact grounding, PDF p4
+
+
+Sources
+https://arxiv.org/pdf/2603.05687v3
+https://contact-grounded-policy.github.io/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

@@ -1,0 +1,80 @@
+﻿01. Put the blue cup on the plate. Easy to say. But what should the robot do first?
+把蓝色杯子放到盘子上。说起来简单，机器人第一步该怎么动？
+
+02. Watch this OpenVLA example. The first grasp tips the cup. The robot tries again.
+看这段 OpenVLA 官方演示：第一次抓取碰倒杯子，机器人随后重试。
+
+03. That gap, between a sentence and a useful movement, is our subject today. DoF Infra, episode two.
+从一句话到有效动作，中间这段距离，就是 DoF 认知 Infra 第二期的主题。
+
+04. Keep that same cup and plate in mind. A camera gives us pixels. The instruction tells us which relationship to create.
+始终记住这只杯子和盘子。相机提供像素，指令指定我们希望建立的关系。
+
+05. Change the instruction to move the plate, and the image stays the same. The desired action changes.
+把指令改成移动盘子，图像没变，但需要执行的动作变了。
+
+06. A vision-language-action model learns this conditional mapping: given what I see and what I am asked, which action fits?
+视觉语言动作模型学习的就是这种条件映射：结合所见和任务要求，选择合适的动作。
+
+07. Here is the original OpenVLA architecture. Follow the image upward: DINOv2 and SigLIP extract complementary visual features.
+这是 OpenVLA 原论文架构。沿图像输入向上看，DINOv2 与 SigLIP 提取互补的视觉特征。
+
+08. A projector maps these features into the language model. Image features and instruction tokens now condition the same prediction.
+投影层把这些特征映射到语言模型中，图像特征与指令 token 共同约束预测。
+
+09. The important change is at the output. We need a robot command. We do not need an explanation of what a cup is.
+关键变化发生在输出端：我们需要机器人命令，而不是一段关于杯子的解释。
+
+10. So what is a command? In the original OpenVLA setup: three translation values, three rotation values, and one gripper value.
+命令具体是什么？原始 OpenVLA 使用三个平移量、三个旋转量，以及一个夹爪量。
+
+11. Those numbers only make sense with the right coordinate frame, scaling, and control interval. The controller turns them into motion.
+这些数字必须对应正确的坐标系、缩放和控制间隔，控制器才能把它们转成运动。
+
+12. OpenVLA divides each action dimension into 256 bins. A continuous value becomes a discrete token, predicted like a next word.
+OpenVLA 把每个动作维度划分为 256 个区间，将连续数值变成离散 token，像预测下一个词一样生成它。
+
+13. Decode the seven tokens and you recover one control action. That is a representation choice, not a language sentence sent to the motors.
+解码七个 token，就得到一次控制动作。这是一种动作表示，并非把自然语言句子发给电机。
+
+14. Now compare pi zero. The original figure still has a vision-language backbone, but adds a continuous action expert and robot state.
+再看 π0。原图仍然包含视觉语言骨干，但加入了连续动作专家和机器人状态。
+
+15. Instead of emitting only the next action, pi zero predicts a chunk of fifty future control steps in its reported setup.
+在论文设置中，π0 预测的是包含 50 个未来控制步的动作块，而不只是下一步。
+
+16. How? Start with noise. A learned flow repeatedly updates the entire chunk, conditioned on images, language, and the robot state.
+如何生成？从噪声开始，学习到的流以图像、语言和机器人状态为条件，反复更新整个动作块。
+
+17. These moving curves explain the idea. They are not logged joint trajectories. The paper figure shows where the action expert sits.
+这些动态曲线用于解释机制，不是真实记录的关节轨迹。原论文图标出了动作专家所在的位置。
+
+18. Do not confuse two separate choices: discrete versus continuous values, and one action versus an action chunk. Tokens can encode chunks too.
+这里有两个独立维度：离散值还是连续值，以及单步动作还是动作块。token 同样可以编码动作块。
+
+19. FAST is a useful counterexample: it compresses continuous action sequences into discrete tokens. The categories can cross.
+FAST 就是一个反例：它把连续动作序列压缩为离散 token。两种划分可以交叉组合。
+
+20. Back to our cup. After execution, take another observation. The cup may have moved. The next prediction must use the new situation.
+回到杯子。执行后重新观测：杯子可能已经移动，下一次预测必须依据新的场景。
+
+21. In this official reattempt, fresh visual input allows another try. The video shows behavior, not the model's hidden reasoning.
+在这段官方重试演示中，新的视觉输入支持再次尝试。视频展示的是行为，不是模型的内部推理过程。
+
+22. And new input does not mean new weights. Correcting a movement during inference is different from learning from that failure in training.
+新输入不等于新权重。推理过程中修正动作，与训练时从失败经验中学习，是两件不同的事。
+
+23. Training uses demonstrations to change model parameters. Deployment repeatedly queries those parameters with the latest observation.
+训练使用示范数据更新模型参数；部署则用最新观测，反复调用已经学到的参数。
+
+24. Now look beyond the nice demo. OpenVLA reports direct evaluation on its training robot platforms, and fine-tuning on Franka tasks.
+再看演示之外的条件：OpenVLA 在训练所用机器人平台上直接评测，也在 Franka 任务上进行微调。
+
+25. Ask what changed: the object, the instruction, the scene, or the robot body. A successful clip cannot answer every generalization question.
+应当追问：改变的是物体、指令、场景，还是机器人本体？单个成功片段无法回答所有泛化问题。
+
+26. When you meet another VLA, trace three things: what goes in, how actions are represented, and how execution returns new evidence.
+以后读到新的 VLA，沿三条线追踪：输入是什么，动作怎样表示，执行如何带回新的证据。
+
+27. That gives you a framework for reading the next paper. The source papers and our learning map are linked in the DoF project.
+有了这条线，再读下一篇论文就有了框架。原论文与学习路线收录在 DoF 项目中。

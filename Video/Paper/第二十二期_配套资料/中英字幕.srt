@@ -1,0 +1,89 @@
+﻿1
+00:00:00,850 --> 00:00:07,070
+Standing a coin upright requires seeing a tiny edge before touching it and sensing contact afterward.
+把硬币立起来，要先看清细边，再感知接触。
+
+2
+00:00:07,890 --> 00:00:13,890
+FingerEye puts both observations near the fingertip, where wrist cameras can lose the most important local detail.
+FingerEye 把观测放到指尖附近，补足腕部视角。
+
+3
+00:00:14,427 --> 00:00:20,487
+Two small RGB cameras observe local object geometry through a transparent contact structure.
+两枚 RGB 相机透过透明接触结构观察局部几何。
+
+4
+00:00:20,787 --> 00:00:29,367
+When the compliant structure deforms, its internal visual features also reveal changes associated with contact, creating a continuous sensing interface.
+柔顺结构变形时，内部视觉特征继续反映接触变化。
+
+5
+00:00:30,030 --> 00:00:35,450
+Before contact, the useful signal is alignment with a rim, edge, or narrow opening.
+接触前，需要对齐边缘、细边或狭窄开口。
+
+6
+00:00:36,110 --> 00:00:44,690
+After contact, the same local views reveal deformation and changing contact geometry, helping the robot avoid relying only on distant appearance.
+接触后，局部视图继续提供形变与几何变化。
+
+7
+00:00:45,363 --> 00:00:52,563
+The policy first encodes observation groups separately, including each fingertip, wrist vision, and proprioception.
+策略先分别编码指尖、腕部视觉和本体信息。
+
+8
+00:00:53,183 --> 00:01:00,983
+Group-conditioned decoding then gives every group a direct influence on action prediction, reducing competition with easier global visual cues.
+解码时各组直接影响动作，减少全局线索的压制。
+
+9
+00:01:01,638 --> 00:01:07,258
+The real setup uses an xArm7 and a LEAP hand with matched leader-follower demonstrations.
+真机是 xArm7 与 LEAP 手，通过同构主从采示教。
+
+10
+00:01:07,998 --> 00:01:14,458
+The main learned policy reads images and robot state, not estimated contact wrench or plate-pose values directly.
+主策略读取图像与状态，不直接输入估计力或板位姿。
+
+11
+00:01:15,134 --> 00:01:21,934
+Twenty trials per task test coin standing, chip grasping, envelope handling, and syringe operation.
+四项真机任务各二十次，覆盖硬币、薯片、信件和注射器。
+
+12
+00:01:22,314 --> 00:01:29,094
+The four-task average is seventy-one point two five percent, compared with thirty-seven point five using wrist vision alone.
+平均成功率七十一点二五，腕部视觉为三十七点五。
+
+13
+00:01:29,717 --> 00:01:35,557
+That thirty-three point seven five percentage-point improvement comes from a matched sensing ablation.
+提高三十三点七五个百分点，来自同设置模态消融。
+
+14
+00:01:36,017 --> 00:01:44,117
+It supports the value of local continuous observations in this setup, not a universal ranking against every complete dexterous robot system.
+支持局部连续观测的价值，不代表所有灵巧系统排名。
+
+15
+00:01:44,843 --> 00:01:52,023
+The striking fragile-object grasp demonstrations use predefined motion and object-specific stopping thresholds.
+脆弱物体演示采用预设轨迹和物体专用停止阈值。
+
+16
+00:01:52,623 --> 00:01:59,683
+They are separate from the learned-policy benchmark, and three additional simulated tasks must not be counted as physical experiments.
+它不同于学习策略测试，另三项仿真也不能算真机。
+
+17
+00:02:00,354 --> 00:02:05,474
+FingerEye illustrates why sensor placement can change what a policy is able to learn.
+FingerEye 展示感知位置如何改变策略能学到什么。
+
+18
+00:02:05,794 --> 00:02:16,194
+For deployment, evaluate local visibility, calibration, sensor geometry, and training data together instead of assuming more cameras automatically produce better contact control.
+落地还要同时验证可见性、标定、几何和训练数据。

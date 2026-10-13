@@ -1,0 +1,89 @@
+﻿1
+00:00:00,850 --> 00:00:05,130
+A nut must follow a bolt thread instead of simply moving straight down.
+螺母要沿螺纹前进，不能直接向下穿过去。
+
+2
+00:00:05,650 --> 00:00:13,910
+Factory makes these detailed contact interactions fast enough for large-scale robot learning, while preserving the geometry that makes assembly difficult.
+Factory 保留复杂几何，同时让接触仿真足够快。
+
+3
+00:00:14,489 --> 00:00:19,729
+Signed distance fields describe how far sampled points lie from the opposing surface.
+有符号距离场描述采样点到对侧表面的距离。
+
+4
+00:00:20,209 --> 00:00:27,409
+They support collision queries on complex parts, including threads, without reducing every object to a few simple convex shapes.
+这样可检测复杂螺纹接触，减少简化几何的损失。
+
+5
+00:00:27,986 --> 00:00:34,266
+The simulator reduces redundant contact constraints before solving the remaining interactions on the GPU.
+求解前先缩减冗余接触约束，再交给 GPU。
+
+6
+00:00:34,866 --> 00:00:41,906
+This combination matters because thousands of detailed contact points would otherwise make parallel training too expensive to run efficiently.
+否则大量细节接触会拖慢并行训练。
+
+7
+00:00:42,629 --> 00:00:48,829
+The release combines assembly assets, simulation environments, and several robot controllers.
+工作提供装配资产、仿真环境和多种控制器。
+
+8
+00:00:49,789 --> 00:00:56,529
+Policies learn from simulator states and geometric rewards, so this study does not need a dataset of human assembly demonstrations.
+策略依靠仿真状态与几何奖励，不需要人工装配示教。
+
+9
+00:00:57,459 --> 00:01:02,559
+PPO separately learns to pick the nut, place it above the bolt, and screw it down.
+PPO 分别学习拿起、放到螺栓上方和旋入。
+
+10
+00:01:03,019 --> 00:01:09,299
+The resulting policies are then chained, exposing failures that are hidden when each individual skill is tested alone.
+串联之后，才能看到独立子技能测试漏掉的失败。
+
+11
+00:01:09,850 --> 00:01:16,730
+The final screw policy succeeds in eighty-five point six percent of one thousand twenty-four simulated episodes.
+最终旋入策略在一千零二十四次仿真中成功八十五点六。
+
+12
+00:01:17,370 --> 00:01:22,884
+Success requires reaching within one thread pitch of the bolt base, rather than merely catching the thread.
+要进入距螺栓底部一牙间距内，不能只挂牙。
+
+13
+00:01:23,334 --> 00:01:30,254
+When picking, placing, and screwing are combined, reported simulated success falls to seventy-four point two percent.
+拿取、放置、旋入串联后，仿真成功率七十四点二。
+
+14
+00:01:30,714 --> 00:01:37,034
+Those two numbers describe different evaluation settings, and neither is a measured success rate on a physical robot.
+两组评测条件不同，也都不是真机成功率。
+
+15
+00:01:37,680 --> 00:01:43,820
+The strongest screw setup restricts actions and removes an end-joint limit to avoid regrasping.
+较强旋入设置限制动作维度，并放开关节限位。
+
+16
+00:01:44,040 --> 00:01:52,220
+Thin geometry, realistic friction, and transferring the learned policies to hardware remain separate challenges beyond fast simulated contact.
+重抓、薄壁、摩擦和真机迁移仍需单独解决。
+
+17
+00:01:52,813 --> 00:01:59,073
+Factory contributes the training infrastructure that makes detailed assembly experiments practical at scale.
+Factory 的价值，是支撑规模化的细节装配实验。
+
+18
+00:01:59,433 --> 00:02:08,913
+To judge deployment readiness, follow the evidence onward to physical perception, calibration, compliant execution, and complete real-world task trials.
+真正部署还要验证感知、标定、柔顺执行与完整任务。

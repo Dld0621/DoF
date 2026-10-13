@@ -1,0 +1,49 @@
+﻿DoF Paper EP.07 | ACT and ALOHA: Predict a Short Future Together
+ACT与ALOHA：把短暂未来一起预测
+
+01 Two arms, one delicate sequence / 双臂协作，一串精细动作
+Sliding a battery into a slot needs both arms to cooperate through contact. ALOHA makes those demonstrations easier to collect with paired low-cost robot arms. ACT then learns short action sequences instead of predicting one isolated command.
+电池插槽需要双臂在接触过程中协同。ALOHA用配对低成本机械臂方便采集示教。ACT学习短动作序列，而非孤立的单步指令。
+Source: https://arxiv.org/pdf/2304.13705v1; original paper figure
+
+02 Demonstrate through robot joints / 通过机器人关节示教
+A person moves leader arms while follower arms perform the actual manipulation. Four camera views and robot joint states accompany the recorded target actions. These are demonstrations on parallel grippers, not motion capture of human fingers.
+人移动主臂，从臂完成实际操作。四路画面与机器人关节状态伴随目标动作记录。这是平行夹爪示教，不是人类手指动捕。
+Source: https://arxiv.org/pdf/2304.13705v1; original paper figure
+
+03 Why predict a chunk? / 为什么预测动作块
+A one-step imitation policy must repeatedly choose actions as small errors accumulate. Predicting a short chunk gives the model a coherent local movement to learn. It shortens the effective decision horizon without pretending the entire task is solved.
+单步模仿需要不断选动作，小误差会累积。预测短动作块，让模型学习连贯局部运动。它缩短有效决策时域，不代表整项任务已解决。
+Source: https://arxiv.org/pdf/2304.13705v1; PDF page 4
+
+04 The training architecture / 训练架构怎样工作
+Images and joint positions condition a transformer that reconstructs demonstrated action chunks. A conditional variational autoencoder models variation in demonstrations through a latent variable. At inference, that latent is fixed; future expert actions are never supplied.
+图像和关节位置引导变换器重建示教动作块。条件变分自编码器用隐变量描述示教差异。推理时固定隐变量，不会输入未来专家动作。
+Source: https://arxiv.org/pdf/2304.13705v1; PDF page 4
+
+05 Blend predictions at the same time / 融合同一时刻的预测
+New observations produce overlapping action chunks, which propose commands for common future times. Temporal ensembling blends those overlapping predictions before sending the next robot command. This smooths execution while allowing fresh observations to influence the motion.
+新观测产生重叠动作块，预测共同未来时刻。时间集成先融合重叠预测，再下发机器人指令。这样平滑执行，同时让新观测影响运动。
+Source: https://arxiv.org/pdf/2304.13705v1; PDF page 4
+
+06 Strong results, uneven difficulty / 结果明显，但任务难度不均
+Real battery insertion reaches ninety-six percent at the final evaluated stage. Threading Velcro reaches only twenty percent, showing how much task difficulty matters. Each task receives twenty-five evaluation trials, with one trained seed in this study.
+真机电池插入的最终阶段结果为96%。穿魔术贴仅20%，说明任务难度影响很大。各任务评测25次，本研究使用一个训练种子。
+Source: https://arxiv.org/pdf/2304.13705v1; PDF page 8
+
+07 Data minutes need a denominator / 数据分钟数也需要口径
+Most tasks use fifty demonstrations, while threading Velcro uses one hundred. Effective motion lasts roughly ten to twenty minutes, excluding resets and failed collection. The full collection session takes longer, and teleoperation demos are not autonomous evaluations.
+大多任务50条示教，穿魔术贴使用100条。有效运动约10至20分钟，不含重置和采集失败。完整采集更久，遥操展示也不是自主评测。
+Source: https://arxiv.org/pdf/2304.13705v1; original paper figure
+
+08 What carries over to dexterous hands? / 哪些经验能迁移到灵巧手
+Action chunks and temporal ensembling are useful design ideas for many imitation systems. But these results do not establish the same reliability for high-dimensional finger control. Contact sensing, data coverage, and the robot's mechanics still determine what transfers.
+动作块和时间集成可供多种模仿系统借鉴。但这些结果不证明高维手指控制也有同样可靠性。接触感知、数据覆盖和机械结构仍决定迁移效果。
+Source: https://arxiv.org/pdf/2304.13705v1; PDF page 4
+
+
+Sources
+https://arxiv.org/pdf/2304.13705v1
+https://tonyzhaozh.github.io/aloha/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

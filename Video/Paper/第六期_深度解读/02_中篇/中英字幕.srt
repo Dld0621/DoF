@@ -1,0 +1,399 @@
+﻿1
+00:00:00,850 --> 00:00:05,550
+Our screwdriver is already grasped, but its shaft still points sideways.
+螺丝刀已经抓住，但刀杆仍然横着。
+
+2
+00:00:06,110 --> 00:00:10,550
+The operator requests a new orientation and a compatible arrangement of fingertips.
+操作者给出新的朝向，以及与之匹配的指尖排列。
+
+3
+00:00:11,250 --> 00:00:16,970
+Reinforcement learning trains the controller by trying actions in simulation and rewarding useful outcomes.
+强化学习通过仿真试动作，并奖励有用的结果。
+
+4
+00:00:17,590 --> 00:00:21,610
+The missing lesson is how to change contacts while keeping the tool supported.
+它要补上的，是换接触时怎样继续托住工具。
+
+5
+00:00:21,930 --> 00:00:25,910
+We can inspect that lesson through its inputs, actions, goals, and rewards.
+从输入、动作、目标和奖励，可以拆开这堂课。
+
+6
+00:00:26,578 --> 00:00:31,438
+Each control step starts with a numerical description of the hand and screwdriver.
+每个控制步，先用数值描述手和螺丝刀。
+
+7
+00:00:31,918 --> 00:00:37,798
+It includes joint positions, their sine and cosine encodings, object pose, and gravity direction.
+包括关节位置及正余弦、物体位姿和重力方向。
+
+8
+00:00:38,318 --> 00:00:42,138
+Targets, target errors, and the previous command complete the packet.
+再加入目标、目标误差和上一条命令。
+
+9
+00:00:42,458 --> 00:00:47,678
+That totals one hundred forty-two values for SharpaWave, or one hundred twelve for LeapHand.
+SharpaWave合计142维，LeapHand为112维。
+
+10
+00:00:47,758 --> 00:00:52,678
+Images, measured contact forces, and joint velocities are absent from this policy input.
+这个策略输入不包含图像、实测接触力或关节速度。
+
+11
+00:00:53,182 --> 00:00:58,562
+The policy produces one normalized action value for each controllable hand joint.
+策略为每个可控手关节输出一个归一化动作值。
+
+12
+00:00:59,022 --> 00:01:04,282
+These values adjust the previous position command rather than replacing it with copied human angles.
+这些值调整上一位置命令，并不直接照搬人手角度。
+
+13
+00:01:04,762 --> 00:01:09,582
+A deadzone makes outputs between minus point one and plus point one produce no change.
+死区使负0.1到正0.1之间的输出不产生变化。
+
+14
+00:01:10,002 --> 00:01:13,622
+Larger outputs produce scaled increments, clipped to the joint limits.
+更大的输出转成缩放增量，再裁到关节限位内。
+
+15
+00:01:13,902 --> 00:01:18,482
+Holding a useful contact therefore becomes an explicit option during screwdriver rotation.
+因此，转动螺丝刀时可以明确选择维持有用接触。
+
+16
+00:01:19,148 --> 00:01:25,548
+During training, a reference trajectory supplies destinations for both fingertips and object pose.
+训练时，参考轨迹同时提供指尖与物体的目标。
+
+17
+00:01:26,068 --> 00:01:30,928
+The active destination stays in place until the robot satisfies its arrival conditions.
+当前目标会保持，直到机器人满足到达条件。
+
+18
+00:01:31,528 --> 00:01:35,668
+This leaves time to lift a finger, roll the screwdriver, and rebuild support.
+这样才有时间抬指、滚动螺丝刀，再建立支撑。
+
+19
+00:01:35,968 --> 00:01:40,648
+The illustrated sequence is one possible strategy, not a prescribed motor script.
+动画是一种可能策略，并非预先规定的电机脚本。
+
+20
+00:01:40,888 --> 00:01:46,068
+The real operator later supplies live goals; deployment does not replay this training timetable.
+实机目标由操作者实时提供，并不重播训练时间表。
+
+21
+00:01:46,715 --> 00:01:51,195
+A rotated screwdriver alone does not complete the training subgoal.
+螺丝刀转到目标朝向，还不算完成训练子目标。
+
+22
+00:01:51,735 --> 00:01:57,255
+Its position error must be below one centimeter, and every fingertip error below three centimeters.
+物体位置误差须小于1厘米，每个指尖误差小于3厘米。
+
+23
+00:01:57,915 --> 00:02:01,215
+The object rotation error must also be below ten degrees.
+物体旋转误差还须小于10度。
+
+24
+00:02:01,655 --> 00:02:06,555
+All conditions must hold for a randomly selected five to fifteen consecutive frames.
+所有条件须连续保持随机选定的5到15帧。
+
+25
+00:02:07,215 --> 00:02:12,155
+These are arrival thresholds used for training, not a measurement of achieved hardware precision.
+这些是训练到达阈值，不是实机精度的测量结果。
+
+26
+00:02:12,824 --> 00:02:17,624
+After a hit, the usual next target comes from later in the same demonstration.
+到达后，下一目标通常来自同一示范的后续位置。
+
+27
+00:02:18,144 --> 00:02:21,264
+The allowed reference gap grows as training becomes harder.
+训练越深入，允许的参考间隔越大。
+
+28
+00:02:21,484 --> 00:02:27,224
+With ten percent probability, the system instead chooses another demonstration for the same object.
+但有10%的概率，改选同一物体的另一段示范。
+
+29
+00:02:27,504 --> 00:02:30,864
+It keeps the frame index while changing the target trajectory.
+此时保留帧索引，只更换目标所在轨迹。
+
+30
+00:02:31,304 --> 00:02:37,584
+The simulated screwdriver stays where it is, forcing the controller to connect different demonstrated configurations.
+仿真螺丝刀不会瞬移，控制器必须连接不同示范状态。
+
+31
+00:02:38,356 --> 00:02:42,696
+The main reward appears when that sustained arrival condition is met.
+主要奖励只在持续到达条件满足时出现。
+
+32
+00:02:42,996 --> 00:02:47,796
+Its score combines fingertip accuracy with object position and rotation accuracy.
+分数同时考虑指尖、物体位置和物体旋转精度。
+
+33
+00:02:48,276 --> 00:02:52,916
+An exponential curve turns each error into a score that increases as the error shrinks.
+指数函数把误差变成分数，误差越小，分数越高。
+
+34
+00:02:53,496 --> 00:02:59,416
+A larger reference jump receives a larger multiplier, reducing the appeal of trivially nearby goals.
+参考跨度越大，乘数越高，降低只追极近目标的吸引力。
+
+35
+00:02:59,656 --> 00:03:05,476
+For our screwdriver, moving fingers without delivering the required object pose cannot trigger this bonus.
+只移动手指，却没让螺丝刀达到目标，就不能触发该奖励。
+
+36
+00:03:06,144 --> 00:03:11,004
+An untrained hand may never reach the first screwdriver target without some guidance.
+未经训练的手可能连第一个螺丝刀目标都到不了。
+
+37
+00:03:11,424 --> 00:03:16,684
+A smaller dense reward therefore scores tracking at every step, including selected finger knuckles.
+所以每步还给较小的密集跟踪奖励，包含特定指节。
+
+38
+00:03:17,204 --> 00:03:21,504
+Its outer scale is point one, while each step also costs point one.
+它的外层权重是0.1，每一步另扣0.1。
+
+39
+00:03:21,784 --> 00:03:26,564
+The guide helps exploration, and the running cost discourages staying near a goal forever.
+引导项帮助探索，时间成本抑制永远停在目标附近。
+
+40
+00:03:27,104 --> 00:03:31,164
+Neither should be mistaken for a direct measurement of grip force or task success.
+这两者都不是抓握力或任务成功的直接测量。
+
+41
+00:03:31,924 --> 00:03:36,084
+The hand first learns with reduced weight and easier goal transitions.
+手先在较轻负载和较容易的目标变化下学习。
+
+42
+00:03:36,724 --> 00:03:42,504
+Gravity rises from zero to normal strength over thirty-two thousand frames per simulated environment.
+每个仿真环境经历32000帧，重力从零增至正常值。
+
+43
+00:03:43,044 --> 00:03:46,564
+The maximum reference gap grows from forty frames to about eighty.
+最大参考间隔从40帧增长到约80帧。
+
+44
+00:03:46,864 --> 00:03:52,364
+Allowed command freezes also become longer, and the dense object reward gradually gains weight.
+允许冻结命令的时长也变长，密集物体奖励逐渐增强。
+
+45
+00:03:52,804 --> 00:03:58,264
+These coordinated changes make maintaining and changing screwdriver contacts progressively more demanding.
+这些变化逐步提高了维持和切换螺丝刀接触的难度。
+
+46
+00:03:58,919 --> 00:04:02,999
+Changing the target leaves the current hand and object state intact.
+更换目标时，当前手和物体状态保持原样。
+
+47
+00:04:03,479 --> 00:04:08,819
+An episode reset is different: it restarts the simulated system from a reference configuration.
+回合重置则不同：仿真系统从一个参考配置重新开始。
+
+48
+00:04:09,459 --> 00:04:13,639
+The sampled starting frame comes from the first ninety percent of its assigned clip.
+起始帧从分配片段的前90%中随机选择。
+
+49
+00:04:13,999 --> 00:04:20,399
+Excessive object position error, unsafe velocities, or too many unsuccessful tracking frames trigger termination.
+物体位置误差过大、速度不安全或超差帧过多，都会终止回合。
+
+50
+00:04:20,979 --> 00:04:25,619
+This exposes learning to many screwdriver states instead of only repeating the opening grasp.
+这样能学习多种螺丝刀状态，而不只是反复练习初始握法。
+
+51
+00:04:26,234 --> 00:04:31,834
+Simulation often lets every motor follow a fresh command at exactly the expected moment.
+仿真里，所有电机往往能按预期时刻接收新命令。
+
+52
+00:04:32,394 --> 00:04:37,114
+Random action masking deliberately interrupts that convenient coordination during training.
+随机动作掩码在训练时，故意打断这种理想协调。
+
+53
+00:04:37,494 --> 00:04:41,834
+When no mask is active, each step has a fifteen percent chance of starting one.
+没有活跃掩码时，每步有15%的概率触发新掩码。
+
+54
+00:04:42,034 --> 00:04:46,074
+Three joint dimensions then keep their old commands for a sampled duration.
+随后，三个关节维度在随机时长内保持旧命令。
+
+55
+00:04:46,474 --> 00:04:51,274
+Other joints receive fresh commands, and the freeze limit eventually reaches ten control steps.
+其他关节接收新命令，冻结上限最终增至10个控制步。
+
+56
+00:04:51,851 --> 00:04:57,651
+Imagine one screwdriver-supporting joint receiving an older command while neighboring joints move.
+想象支撑螺丝刀的某个关节仍接收旧指令，而相邻关节继续运动。
+
+57
+00:04:58,231 --> 00:05:01,411
+The command can remain stale for several control steps.
+这条旧指令可能持续若干个控制步。
+
+58
+00:05:01,791 --> 00:05:08,011
+A strategy depending on perfectly simultaneous motor motion becomes unreliable under this stress test.
+依赖电机绝对同步的策略，在这种测试下就不可靠。
+
+59
+00:05:08,411 --> 00:05:13,151
+The policy must learn contact transitions that tolerate partially delayed responses.
+策略必须学会容忍部分响应延迟的接触切换。
+
+60
+00:05:13,711 --> 00:05:19,891
+The held command does not physically lock the joint; the object and fingers still obey simulated dynamics.
+保持命令并不会把关节机械锁死，物体与手指仍遵守仿真动力学。
+
+61
+00:05:20,536 --> 00:05:27,836
+Domain randomization changes simulated conditions so the policy cannot rely on one perfectly calibrated world.
+域随机化改变仿真条件，避免策略依赖一个完美标定的世界。
+
+62
+00:05:28,256 --> 00:05:33,156
+Object mass ranges from half to twice its nominal value, with friction and size varied too.
+物体质量从标称值的一半到两倍，摩擦与尺寸也会变化。
+
+63
+00:05:33,636 --> 00:05:38,956
+Position noise, orientation noise, delayed observations, and external forces add further uncertainty.
+位置噪声、朝向噪声、观测延迟与外力继续增加不确定性。
+
+64
+00:05:39,376 --> 00:05:44,936
+Our illustrated screwdriver becomes heavier, slipperier, or imperfectly observed across training episodes.
+教学示例中的螺丝刀会在不同训练回合变重、变滑或被观测得不准。
+
+65
+00:05:45,316 --> 00:05:50,156
+This broadens experience, but real tool impacts still expose a documented training gap.
+这扩大了经验范围，但真实工具冲击仍是论文记录的训练缺口。
+
+66
+00:05:50,644 --> 00:05:56,924
+The same screwdriver references can require rolling, finger gaiting, and larger changes of grasp.
+同一组螺丝刀参考可能需要滚动、换指和更大幅度的换握。
+
+67
+00:05:57,384 --> 00:06:01,424
+Learning only one convenient motion would leave much of that repertoire uncovered.
+只学会一种方便的动作，就覆盖不了这些变化。
+
+68
+00:06:01,784 --> 00:06:07,564
+The authors use SAPG, which combines gradients from multiple independently exploring policy blocks.
+作者使用SAPG，汇聚多个独立探索策略块的梯度。
+
+69
+00:06:07,984 --> 00:06:13,364
+Their configuration uses six blocks and a recurrent network with five hundred twelve memory units.
+配置采用六个策略块，以及512个记忆单元的循环网络。
+
+70
+00:06:13,664 --> 00:06:19,504
+That memory helps use recent context without adding measured velocity or tactile forces to the observations.
+这种记忆帮助利用近期上下文，而无需额外输入实测速度或触觉力。
+
+71
+00:06:20,339 --> 00:06:27,379
+Each controller trains for roughly ten billion simulated environment steps on four RTX fifty-ninety GPUs.
+每个控制器在四张RTX5090上训练约100亿个仿真环境步。
+
+72
+00:06:28,199 --> 00:06:33,599
+The authors report sixty-two thousand four hundred parallel environments and about one day of training.
+作者报告62400个并行环境，训练约一天。
+
+73
+00:06:34,019 --> 00:06:37,919
+One training run can learn several contact behaviors for its object.
+一次训练可以学会该物体的多种接触行为。
+
+74
+00:06:38,319 --> 00:06:42,839
+Single-stage does not mean one controller already handles every unfamiliar tool.
+单阶段并不意味着一个控制器已能处理所有陌生工具。
+
+75
+00:06:43,299 --> 00:06:48,579
+The published method still collects reference motions and trains a dedicated policy for a new object.
+公开方法处理新物体时，仍需采集参考动作并训练专门策略。
+
+76
+00:06:49,167 --> 00:06:55,167
+Understanding the mechanism does not require pretending that every reproduction detail is settled.
+理解机制，不等于所有复现细节都已经明确。
+
+77
+00:06:55,787 --> 00:07:01,167
+Capture is reported at thirty hertz, while one curriculum conversion assumes sixty-hertz references.
+采集写的是30赫兹，而一处课程换算用了60赫兹参考。
+
+78
+00:07:01,767 --> 00:07:06,127
+The main text mentions tightening tolerances without a complete appendix schedule.
+正文提到收紧容差，但附录没有完整调度。
+
+79
+00:07:06,527 --> 00:07:09,987
+The surface-attraction threshold also lacks a stated unit.
+表面吸引阈值也没有注明单位。
+
+80
+00:07:10,367 --> 00:07:17,327
+We retain those uncertainties, then ask the practical question: how reliably does this learned loop work on real hardware?
+保留这些不确定性后，再看实际问题：这个学习闭环在真机上究竟有多可靠？

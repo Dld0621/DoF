@@ -1,0 +1,464 @@
+﻿1
+00:00:00,200 --> 00:00:02,520
+A robot wants this cup.
+机器人想拿起杯子。
+
+2
+00:00:02,520 --> 00:00:03,900
+The handle looks clear.
+杯柄看起来是空的。
+
+3
+00:00:03,900 --> 00:00:05,360
+Will the fingers actually fit?
+手指真能穿过去吗？
+
+4
+00:00:05,360 --> 00:00:08,340
+DoF Infra, episode three.
+DoF Infra 第三期。
+
+5
+00:00:08,340 --> 00:00:11,060
+This one decision takes us through three dimensional vision.
+一个抓取决策，带我们理解三维视觉。
+
+6
+00:00:11,060 --> 00:00:12,780
+Keep this cup in view.
+一直看着这只杯子。
+
+7
+00:00:12,780 --> 00:00:15,460
+Change the question, and we may need a different representation.
+问题改变，需要的表示也可能改变。
+
+8
+00:00:16,023 --> 00:00:17,743
+The camera sees an image.
+相机得到一张图像。
+
+9
+00:00:17,743 --> 00:00:22,223
+With depth, each valid pixel also records the visible surface depth.
+加入深度，每个有效像素也记录可见表面的深度。
+
+10
+00:00:22,223 --> 00:00:24,743
+Calibration turns that pixel and depth
+标定把像素与深度
+
+11
+00:00:24,743 --> 00:00:26,403
+into an X, Y, Z position.
+转换成 X、Y、Z 坐标。
+
+12
+00:00:26,403 --> 00:00:29,403
+Repeat this for many pixels: a point cloud.
+对许多像素重复，就得到点云。
+
+13
+00:00:29,403 --> 00:00:31,143
+Now walk around the cup.
+现在绕到杯子后面。
+
+14
+00:00:31,143 --> 00:00:33,883
+Those missing points on the back were never measured.
+背面缺失的点从未被测量过。
+
+15
+00:00:33,883 --> 00:00:37,063
+Moving the display camera cannot reveal new evidence.
+旋转展示视角，不会产生新证据。
+
+16
+00:00:37,653 --> 00:00:41,533
+Points can carry color, normals, or confidence:
+点可以携带颜色、法向或置信度：
+
+17
+00:00:41,533 --> 00:00:44,333
+local orientation and how much to trust each sample.
+局部朝向，以及每个采样有多可信。
+
+18
+00:00:44,333 --> 00:00:48,233
+Depth maps keep samples arranged by camera pixels.
+深度图按相机像素组织采样。
+
+19
+00:00:48,233 --> 00:00:50,913
+Height fields store one height per ground location,
+高度场每个地面位置只存一个高度，
+
+20
+00:00:50,913 --> 00:00:52,893
+so overhangs need another representation.
+因此悬挑结构需要其他表示。
+
+21
+00:00:53,545 --> 00:00:57,005
+Give each point an oriented patch and you have surfels:
+给每个点加上有朝向的小面片，就得到 Surfel：
+
+22
+00:00:57,005 --> 00:00:58,525
+little pieces of surface,
+局部的表面片，
+
+23
+00:00:58,525 --> 00:01:00,325
+without a shared triangle network.
+不必共享三角连接。
+
+24
+00:01:00,325 --> 00:01:03,045
+A mesh makes connections explicit.
+Mesh 显式给出连接关系。
+
+25
+00:01:03,045 --> 00:01:05,285
+Vertices join through edges and faces.
+顶点通过边和面连接。
+
+26
+00:01:05,285 --> 00:01:07,445
+Watch what happens if we connect the wrong neighbors.
+看看连错邻居会怎样。
+
+27
+00:01:07,445 --> 00:01:09,825
+This triangle seals the handle.
+这个三角面封住了杯柄。
+
+28
+00:01:09,825 --> 00:01:13,265
+The surface looks complete, yet the opening has disappeared.
+表面看似完整，开口却消失了。
+
+29
+00:01:13,265 --> 00:01:15,945
+Reconstruction introduced an assumption, not a measurement.
+重建引入的是假设，不是测量。
+
+30
+00:01:16,485 --> 00:01:18,585
+Remove that bridge.
+去掉错误连接。
+
+31
+00:01:18,585 --> 00:01:21,205
+Now the same points support a different surface.
+同一批点，可以支持不同的表面。
+
+32
+00:01:21,205 --> 00:01:24,945
+More detail does not automatically mean more trustworthy geometry.
+细节更多，不意味着几何一定更可信。
+
+33
+00:01:24,945 --> 00:01:29,545
+ElasticFusion builds a dense surfel map from RGB and depth.
+ElasticFusion 从 RGB 与深度构建稠密 Surfel 地图。
+
+34
+00:01:29,545 --> 00:01:31,945
+Repeated observations update its surface estimate.
+连续观测更新表面估计。
+
+35
+00:01:32,458 --> 00:01:35,338
+The gripper needs a spatial query.
+夹爪需要查询空间。
+
+36
+00:01:35,338 --> 00:01:38,258
+Occupancy asks whether a location is occupied.
+占据表示回答：某个位置是否被占用？
+
+37
+00:01:38,258 --> 00:01:41,058
+Crucially, observed free space and unknown space are different.
+已观测空闲与未知空间，必须区分。
+
+38
+00:01:41,058 --> 00:01:44,858
+A depth ray supports free space before its first return.
+深度射线支持首个回波前的空闲空间判断。
+
+39
+00:01:44,858 --> 00:01:46,818
+Behind it, the map may know nothing.
+后方可能依然未知。
+
+40
+00:01:46,818 --> 00:01:49,558
+Voxels divide space into cells.
+体素把空间切成单元。
+
+41
+00:01:49,558 --> 00:01:52,958
+They can store occupancy, distance, or features.
+单元可存占据、距离或特征。
+
+42
+00:01:52,958 --> 00:01:56,978
+An octree subdivides selectively, saving resolution for useful detail.
+八叉树选择性细分，把分辨率留给需要的细节。
+
+43
+00:01:57,467 --> 00:02:00,287
+But free or occupied is not enough.
+但空闲或占用还不够。
+
+44
+00:02:00,287 --> 00:02:02,407
+How close is the finger to the wall?
+手指离杯壁多近？
+
+45
+00:02:02,407 --> 00:02:03,947
+A distance field answers that.
+距离场回答这个问题。
+
+46
+00:02:03,947 --> 00:02:07,107
+An SDF adds an inside or outside sign.
+SDF 额外区分内部与外部。
+
+47
+00:02:07,107 --> 00:02:09,187
+An unsigned distance field keeps distance
+无符号距离场只保留距离，
+
+48
+00:02:09,187 --> 00:02:11,107
+without requiring a global interior.
+不要求定义全局内部。
+
+49
+00:02:11,107 --> 00:02:14,927
+A truncated SDF fuses depth near surfaces.
+TSDF 在表面附近融合深度。
+
+50
+00:02:14,927 --> 00:02:18,927
+For planning, an E SDF estimates Euclidean clearance to mapped obstacles.
+规划使用的 ESDF，估计到已建图障碍物的欧氏间距。
+
+51
+00:02:19,490 --> 00:02:22,650
+Suppose we want to redesign the handle.
+如果要重新设计杯柄。
+
+52
+00:02:22,650 --> 00:02:25,590
+CAD keeps dimensions and constraints editable;
+CAD 保留可编辑的尺寸和约束；
+
+53
+00:02:25,590 --> 00:02:28,390
+NURBS describe smooth parametric curves and surfaces.
+NURBS 描述光滑的参数曲线与曲面。
+
+54
+00:02:28,390 --> 00:02:32,010
+Constructive solid geometry combines simple solids
+构造实体几何组合简单实体，
+
+55
+00:02:32,010 --> 00:02:34,970
+by union, intersection, or subtraction.
+通过并集、交集或差集。
+
+56
+00:02:34,970 --> 00:02:37,470
+Subtracting a shape can create the opening deliberately.
+减去一个形状，可以有意做出开口。
+
+57
+00:02:37,470 --> 00:02:41,990
+For deformation, a surface alone misses the material inside.
+要模拟形变，仅有表面还缺少内部材料。
+
+58
+00:02:41,990 --> 00:02:44,650
+Volume meshes divide that material into cells;
+体网格把材料切成单元，
+
+59
+00:02:44,650 --> 00:02:46,150
+physics supplies how they respond.
+物理模型决定它们如何响应。
+
+60
+00:02:46,639 --> 00:02:48,919
+Now change the question.
+现在换个问题。
+
+61
+00:02:48,919 --> 00:02:51,639
+We want a photograph from a new camera position.
+从新的相机位置生成一张照片。
+
+62
+00:02:51,639 --> 00:02:54,539
+Appearance becomes the target, rather than finger clearance.
+目标变成外观，而不是手指间距。
+
+63
+00:02:54,539 --> 00:02:58,219
+NeRF queries density and view dependent color along rays,
+NeRF 沿射线查询密度与视角相关颜色，
+
+64
+00:02:58,219 --> 00:03:00,339
+then integrates them into pixels.
+再积分得到像素。
+
+65
+00:03:00,339 --> 00:03:02,639
+The original figure shows that rendering process.
+原论文这张图展示了渲染过程。
+
+66
+00:03:02,639 --> 00:03:07,319
+3D Gaussian Splatting instead optimizes spatial Gaussian primitives,
+3D Gaussian Splatting 优化空间中的高斯基元，
+
+67
+00:03:07,319 --> 00:03:10,099
+projects them, and blends their contributions into an image.
+再投影并混合它们对图像的贡献。
+
+68
+00:03:10,570 --> 00:03:13,650
+2D Gaussian Splatting uses oriented disks
+2D Gaussian Splatting 使用有朝向的圆盘，
+
+69
+00:03:13,650 --> 00:03:16,030
+for stronger surface consistency.
+增强表面一致性。
+
+70
+00:03:16,030 --> 00:03:17,930
+Light fields describe rays.
+光场描述光线。
+
+71
+00:03:17,930 --> 00:03:19,990
+These choices organize appearance differently.
+它们以不同方式组织外观。
+
+72
+00:03:19,990 --> 00:03:23,730
+A convincing rendered view does not certify collision safety.
+渲染得逼真，不能证明碰撞安全。
+
+73
+00:03:23,730 --> 00:03:25,530
+The model must answer your actual question.
+模型必须回答实际的问题。
+
+74
+00:03:26,198 --> 00:03:29,318
+Once the hand moves, structure matters.
+手动起来后，结构也很重要。
+
+75
+00:03:29,318 --> 00:03:31,118
+Skeletons organize joints;
+骨架组织关节；
+
+76
+00:03:31,118 --> 00:03:34,818
+parametric models such as MANO connect pose and shape to a hand mesh.
+MANO 等参数模型，把姿态和形状连接到手部网格。
+
+77
+00:03:34,818 --> 00:03:37,338
+A scene graph can say the cup is on the table,
+场景图可以表达：杯子在桌上，
+
+78
+00:03:37,338 --> 00:03:39,298
+and the hand is approaching it.
+手正靠近杯子。
+
+79
+00:03:39,298 --> 00:03:41,238
+Relations complement metric geometry.
+关系信息补充度量几何。
+
+80
+00:03:41,238 --> 00:03:44,818
+Add time, and geometry or appearance can change.
+加入时间，几何或外观都可能变化。
+
+81
+00:03:44,818 --> 00:03:47,018
+Scene flow, tracked objects, and dynamic fields
+场景流、目标跟踪与动态场，
+
+82
+00:03:47,018 --> 00:03:48,478
+encode different kinds of motion.
+表达不同层面的运动。
+
+83
+00:03:49,058 --> 00:03:52,438
+So this is a toolbox, not a ladder.
+所以它是工具箱，不是一条升级阶梯。
+
+84
+00:03:52,438 --> 00:03:55,038
+Observe with samples, connect a surface,
+用采样观测，连接表面，
+
+85
+00:03:55,038 --> 00:03:57,558
+query space, render appearance, and track structure.
+查询空间、渲染外观、跟踪结构。
+
+86
+00:03:57,558 --> 00:04:00,758
+Explicit geometry stores elements.
+显式几何存储元素。
+
+87
+00:04:00,758 --> 00:04:02,798
+Implicit fields answer queries.
+隐式场回答查询。
+
+88
+00:04:02,798 --> 00:04:06,018
+Either can be learned; neural versus analytic is a separate choice.
+两者都可以学习；神经与解析是另一条划分维度。
+
+89
+00:04:06,546 --> 00:04:09,426
+For our cup, preserve what was measured,
+回到这只杯子：保留测量证据，
+
+90
+00:04:09,426 --> 00:04:10,666
+mark what is unknown,
+标清未知区域，
+
+91
+00:04:10,666 --> 00:04:13,226
+and test the gripper against the geometry that matters.
+用与任务相关的几何检验夹爪。
+
+92
+00:04:13,226 --> 00:04:16,806
+The papers and learning map are in our GitHub project.
+原论文与学习地图都在 GitHub 项目。
+
+93
+00:04:16,806 --> 00:04:18,926
+Start with the question your robot needs answered.
+从机器人真正需要回答的问题出发。

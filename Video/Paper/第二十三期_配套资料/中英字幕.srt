@@ -1,0 +1,89 @@
+﻿1
+00:00:00,850 --> 00:00:06,430
+The hand grasps a bottle correctly, then fails while turning it into the final placement.
+手已经抓对瓶子，却在调姿放置时失败。
+
+2
+00:00:06,930 --> 00:00:13,810
+DexPIE asks how deployment experience can improve the policy without incorrectly blaming every earlier action for a later failure.
+DexPIE 利用经验改进策略，避免错怪前面的好动作。
+
+3
+00:00:14,483 --> 00:00:20,023
+A human operator first aligns with the current robot hand and wrist pose before taking over.
+操作者先对齐机器人当前手姿和腕姿，再接管。
+
+4
+00:00:20,403 --> 00:00:28,003
+This human-as-follower transition makes corrective actions smoother and collects recovery behavior near the states where the policy actually fails.
+这样过渡更平滑，能在真正出错处收集恢复动作。
+
+5
+00:00:28,692 --> 00:00:35,172
+Staged data collection initializes some rollouts from intermediate task states, not only from the beginning.
+采集也从中间状态开始，而不总从第一步开始。
+
+6
+00:00:35,632 --> 00:00:44,052
+These later starts provide clearer evidence about what remains achievable, helping value estimates distinguish good early progress from downstream mistakes.
+后段经验帮助价值模型区分前期进展与后续错误。
+
+7
+00:00:44,677 --> 00:00:50,437
+Asynchronous inference computes the next action chunk while the current chunk is still executing.
+当前动作执行时，异步计算下一段动作。
+
+8
+00:00:50,917 --> 00:01:00,677
+Remaining relative actions are transformed into the new observation frame before becoming a prefix, reducing inconsistency between demonstrations and deployment timing.
+剩余相对动作先换到新观测坐标系，再作为前缀。
+
+9
+00:01:01,283 --> 00:01:08,003
+A distributional critic estimates value from the mixed dataset of successes, failures, and human corrections.
+价值分布网络学习成功、失败与人工纠正经验。
+
+10
+00:01:08,683 --> 00:01:16,443
+Advantage estimates become a continuous optimality condition, allowing the diffusion policy to learn from different levels of action quality.
+优势估计变成连续最优性条件，指导扩散策略改进。
+
+11
+00:01:16,935 --> 00:01:22,395
+The experiments use a UR5 arm, an Inspire hand, and front and wrist cameras.
+平台为 UR5、Inspire 手、前视和腕视相机。
+
+12
+00:01:22,815 --> 00:01:30,735
+Three tasks cover bottle placement, drawer-and-tissue handling, and lid-and-candy placement, with fifty evaluation trials per method and task.
+三任务覆盖瓶子、抽屉纸巾和开盖放糖，各五十次。
+
+13
+00:01:31,298 --> 00:01:37,298
+Average full-task success reaches eighty-seven point three percent, versus eighty percent for RECAP.
+完整成功率平均八十七点三，RECAP 为八十。
+
+14
+00:01:37,678 --> 00:01:45,338
+The larger improvement over behavior cloning is also useful, but the matched post-training comparison is seven point three percentage points.
+相对更强后训练基线，增益是七点三个百分点。
+
+15
+00:01:45,953 --> 00:01:52,073
+The post-training data includes human interventions and fifty-five point four minutes of robot interaction.
+后训练包含人工干预和五十五点四分钟交互。
+
+16
+00:01:52,493 --> 00:02:01,113
+These results do not establish fully autonomous self-improvement, transfer to arbitrary hand designs, or a universal ranking across dexterous tasks.
+未证明完全自主学习，也不能外推任意手型和任务。
+
+17
+00:02:01,684 --> 00:02:07,224
+The central idea is to make the feedback itself more trustworthy before improving the policy.
+改进策略之前，要先让反馈本身更可信。
+
+18
+00:02:07,704 --> 00:02:15,824
+Broader stage coverage, consistent execution, and continuous advantage labels work together to turn real failures into more useful learning signals.
+阶段覆盖、执行一致性和连续优势标签共同发挥作用。

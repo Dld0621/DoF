@@ -1,0 +1,434 @@
+﻿1
+00:00:00,850 --> 00:00:04,370
+Close your thumb and index finger around a small object.
+试着用拇指和食指捏住一个小物体。
+
+2
+00:00:04,890 --> 00:00:07,930
+A robot can copy the finger angles and still leave a gap.
+机器人即使复制了关节角，指尖之间仍然可能留着缝。
+
+3
+00:00:08,350 --> 00:00:13,450
+It can also match two fingertip positions while placing the remaining fingers through the object.
+它也可能对齐两个指尖，却让其余手指穿进物体。
+
+4
+00:00:13,950 --> 00:00:17,130
+Retargeting decides what should survive this change of body.
+重定向要决定：换了身体以后，哪些关系必须保留下来。
+
+5
+00:00:17,590 --> 00:00:24,710
+This course follows the complete chain: measured human motion, robot geometry, contact, control, and evaluation.
+这套课程沿着人手测量、机器人几何、接触、控制和评估，讲清整条链路。
+
+6
+00:00:25,470 --> 00:00:31,710
+We will compare methods by what they preserve, what they require, and what their experiments actually establish.
+比较方法时，我们看它保留什么、需要什么，以及实验究竟证明了什么。
+
+7
+00:00:32,319 --> 00:00:35,719
+The camera provides images, not robot commands.
+摄像头提供的是图像，不是机器人指令。
+
+8
+00:00:36,139 --> 00:00:40,919
+A perception system estimates human landmarks, wrist pose, or a fitted hand model.
+感知系统估计人手关键点、手腕位姿，或者拟合一个人手模型。
+
+9
+00:00:41,579 --> 00:00:45,359
+Calibration expresses those estimates in the frames used by the robot.
+标定把这些估计变换到机器人使用的坐标系中。
+
+10
+00:00:45,899 --> 00:00:49,879
+The retargeter produces robot joint targets or a reference trajectory.
+重定向器输出机器人的关节目标，或者一条参考轨迹。
+
+11
+00:00:50,399 --> 00:00:54,899
+A controller then tries to realize that reference through motors and physical contact.
+控制器再通过电机和真实接触，尝试执行这条参考。
+
+12
+00:00:55,519 --> 00:01:00,539
+Tracking failure, mapping failure, and control failure therefore need separate diagnoses.
+因此，跟踪失败、映射失败和控制失败，需要分别诊断。
+
+13
+00:01:00,879 --> 00:01:05,639
+Calling the entire chain inverse kinematics hides the very distinctions needed to improve it.
+把整条链路都叫作逆运动学，会掩盖真正需要改进的环节。
+
+14
+00:01:06,107 --> 00:01:11,347
+A point cloud samples visible surfaces, so the back of a finger may be missing.
+点云采样可见表面，所以手指背面可能根本没有被观测到。
+
+15
+00:01:11,787 --> 00:01:16,687
+A mesh connects surface vertices and makes surface distance or collision queries possible.
+Mesh 将表面顶点连接起来，便于计算表面距离或检测碰撞。
+
+16
+00:01:17,147 --> 00:01:21,967
+A skeleton is smaller: landmarks and a joint hierarchy describe articulation.
+骨架更紧凑：关键点和关节层级描述手指如何运动。
+
+17
+00:01:22,347 --> 00:01:28,327
+A fitted model can fill occluded regions using prior assumptions, but completion is not direct measurement.
+拟合模型能借助先验补全遮挡部分，但补全并不等于直接测量。
+
+18
+00:01:28,767 --> 00:01:32,832
+The retargeter must know which quantities are observed, inferred, or unavailable.
+重定向器必须知道：哪些量来自观测，哪些来自推断，哪些没有信息。
+
+19
+00:01:32,847 --> 00:01:38,127
+More surface vertices do not automatically make the final robot movement more accurate.
+增加表面顶点数量，并不自动意味着机器人动作会更准确。
+
+20
+00:01:38,714 --> 00:01:45,614
+A human tracker may output twenty-one landmarks, while a robot accepts a smaller set of joint commands.
+人手跟踪器可能输出二十一个关键点，机器人却接受更少的关节指令。
+
+21
+00:01:45,894 --> 00:01:49,714
+Those landmarks are not twenty-one independently actuated joints.
+这些关键点并不是二十一个能够独立驱动的关节。
+
+22
+00:01:50,174 --> 00:01:55,774
+Some robot joints are mechanically coupled, and some fingers have different lengths or missing motions.
+有的机器人关节存在机械耦合，手指长度和运动能力也可能不同。
+
+23
+00:01:56,134 --> 00:01:59,254
+Let q denote the independent robot joint variables.
+用 q 表示机器人独立关节变量。
+
+24
+00:01:59,634 --> 00:02:03,939
+A model expands those variables through the couplings before computing the link poses.
+模型先按照耦合关系展开这些变量，再计算各连杆的位姿。
+
+25
+00:02:03,954 --> 00:02:10,314
+Optimizing every displayed joint independently can produce a configuration the hardware cannot execute.
+如果把画面中每个关节都独立优化，可能得到硬件根本执行不了的姿态。
+
+26
+00:02:10,903 --> 00:02:16,943
+Forward kinematics answers a direct question: where does a robot point go for a given q?
+正运动学回答一个直接的问题：给定 q，机器人上的某个点会到哪里？
+
+27
+00:02:17,463 --> 00:02:22,763
+Each joint contributes a transformation, and transformations compose along the chain.
+每个关节贡献一个变换，这些变换沿运动链逐级组合。
+
+28
+00:02:23,303 --> 00:02:29,043
+Changing a base joint moves every downstream link; changing a distal joint affects a smaller region.
+改变根部关节会带动所有下游连杆，改变末端关节只影响较小范围。
+
+29
+00:02:29,543 --> 00:02:31,783
+Write a fingertip position as f of q.
+我们把指尖位置写成 f(q)。
+
+30
+00:02:32,063 --> 00:02:37,028
+An objective compares that computed position with a target or another geometric relationship.
+目标函数再把这个计算结果与目标位置，或另一种几何关系进行比较。
+
+31
+00:02:37,043 --> 00:02:41,803
+This is why the robot model, joint order, and units are part of the algorithm.
+所以，机器人模型、关节顺序和单位，本身就是算法的一部分。
+
+32
+00:02:42,391 --> 00:02:48,391
+Inverse kinematics reverses the question: which q places the tip near the requested position?
+逆运动学反过来问：哪个 q 能让指尖接近指定位置？
+
+33
+00:02:49,051 --> 00:02:53,811
+Several solutions may reach the same point, while some targets have no exact solution.
+多个解可能到达同一个点，也有些目标根本不存在精确解。
+
+34
+00:02:54,331 --> 00:02:57,271
+A joint limit restricts the search to a permitted interval.
+关节限位把搜索限制在允许的区间内。
+
+35
+00:02:57,831 --> 00:03:02,631
+Additional penalties can prefer a comfortable posture or a small change from the previous frame.
+附加惩罚可以偏好舒适姿态，或者偏好相邻帧之间较小的变化。
+
+36
+00:03:03,051 --> 00:03:06,071
+The solver selects a compromise inside these constraints.
+求解器在这些约束内选择一个折中。
+
+37
+00:03:06,651 --> 00:03:10,956
+A low final loss only means the selected mathematical objective was matched well.
+最终损失较低，只说明选定的数学目标得到了较好的匹配。
+
+38
+00:03:10,971 --> 00:03:14,951
+It does not certify a stable grasp or successful manipulation.
+它不能保证抓取稳定，更不能保证操作任务成功。
+
+39
+00:03:15,718 --> 00:03:20,058
+Imagine the same pinch while the operator rotates the entire wrist.
+想象操作者保持捏合，同时转动整个手腕。
+
+40
+00:03:20,438 --> 00:03:25,938
+In the camera frame, fingertip coordinates change even though the local finger posture stays similar.
+在相机坐标系中，指尖坐标变化了，但手指的局部姿态可能基本不变。
+
+41
+00:03:26,438 --> 00:03:31,478
+Subtracting the wrist position removes translation, but it does not remove wrist rotation.
+减去手腕位置可以消除平移，却不能消除手腕旋转。
+
+42
+00:03:31,838 --> 00:03:36,138
+To express points in the wrist frame, also apply the inverse wrist rotation.
+若要把点表示在手腕坐标系中，还必须应用手腕旋转的逆变换。
+
+43
+00:03:36,658 --> 00:03:40,623
+The same convention must be used on the robot side before comparing vectors.
+比较向量以前，机器人一侧也必须使用一致的约定。
+
+44
+00:03:40,638 --> 00:03:46,378
+Check handedness, axis order, meters versus millimeters, and the direction of every transform.
+要检查左右手约定、坐标轴顺序、米与毫米，以及每个变换的方向。
+
+45
+00:03:46,946 --> 00:03:50,866
+Finger retargeting and wrist retargeting need different references.
+手指重定向与手腕重定向，需要不同的参考。
+
+46
+00:03:51,406 --> 00:03:55,686
+The wrist determines the hand location and orientation relative to the object.
+手腕决定位于物体附近的手掌位置和朝向。
+
+47
+00:03:56,146 --> 00:03:58,866
+The fingers determine the internal hand configuration.
+手指决定手内部的关节构型。
+
+48
+00:03:59,466 --> 00:04:04,226
+Mapping them separately makes debugging easier, but contact can couple their solutions.
+分开映射更容易调试，但接触会把两部分的解耦合起来。
+
+49
+00:04:04,786 --> 00:04:09,686
+A slightly shifted wrist may allow a short robot thumb to reach a demonstrated contact.
+略微移动手腕，可能让较短的机器人拇指到达人手示范的接触位置。
+
+50
+00:04:10,086 --> 00:04:15,166
+If a method optimizes that wrist freedom, compare it with baselines given the same freedom.
+如果一种方法优化了这种手腕自由度，对比基线也必须获得相同的自由度。
+
+51
+00:04:15,446 --> 00:04:18,986
+Otherwise, the experiment changes both the method and the problem.
+否则，实验同时改变了方法和问题本身。
+
+52
+00:04:19,553 --> 00:04:23,633
+Direct joint mapping preserves selected angular relationships.
+直接关节映射保留选定的角度关系。
+
+53
+00:04:24,173 --> 00:04:28,013
+Position matching preserves selected points in a chosen coordinate frame.
+位置匹配保留指定坐标系中的若干点。
+
+54
+00:04:28,673 --> 00:04:33,193
+Vector matching preserves relative directions and lengths between selected pairs of points.
+向量匹配保留选定点对之间的相对方向和长度。
+
+55
+00:04:33,653 --> 00:04:38,553
+Distance matching preserves lengths alone, so orientation can remain ambiguous.
+距离匹配只保留长度，因此方向仍然可能存在歧义。
+
+56
+00:04:39,073 --> 00:04:43,758
+Contact-aware matching instead asks which parts of the hand should meet which parts of the object.
+接触感知匹配则关心：手的哪些部位应该与物体的哪些部位接触。
+
+57
+00:04:43,773 --> 00:04:49,613
+These are different definitions of similarity, and different definitions lead to different robot behavior.
+这些是不同的相似性定义，不同定义会产生不同的机器人行为。
+
+58
+00:04:50,382 --> 00:04:54,842
+Suppose we multiply every human target vector by one scale factor.
+假设我们用同一个缩放系数，乘上所有人手目标向量。
+
+59
+00:04:55,142 --> 00:04:57,642
+This may compensate for overall hand size.
+这可能补偿整体手掌尺寸差异。
+
+60
+00:04:57,922 --> 00:05:04,482
+It cannot independently fix thumb placement, finger proportions, joint axes, and missing degrees of freedom.
+它却无法分别修正拇指位置、手指比例、关节轴，以及缺少的自由度。
+
+61
+00:05:04,802 --> 00:05:09,402
+The pinching fingers may need a smaller separation while the other fingers preserve their spread.
+参与捏取的手指可能需要更小的间距，其他手指却需要保留张开的程度。
+
+62
+00:05:09,702 --> 00:05:15,462
+This motivates selective projection, different weights, learned maps, or object-relative constraints.
+这正是选择性投影、差异权重、学习映射或物体相对约束的动机。
+
+63
+00:05:16,022 --> 00:05:20,122
+Each option introduces an assumption that must be tested on its intended motions.
+每一种选择都会引入假设，都需要在目标动作上检验。
+
+64
+00:05:20,747 --> 00:05:26,187
+A noisy fingertip estimate can make the robot target jump between neighboring frames.
+指尖估计中的噪声，会让机器人的目标在相邻帧之间跳动。
+
+65
+00:05:26,827 --> 00:05:32,327
+Temporal regularization can reduce those jumps, but strong smoothing may delay intentional motion.
+时间正则可以减小跳动，但过强的平滑也可能延迟有意动作。
+
+66
+00:05:32,847 --> 00:05:37,047
+A faster retargeter does not recover a fingertip hidden from every camera.
+更快的重定向器，也无法直接恢复所有相机都看不到的指尖。
+
+67
+00:05:37,387 --> 00:05:42,427
+Measure capture, estimation, mapping, transport, and motor response separately.
+应分别测量采集、估计、映射、传输和电机响应。
+
+68
+00:05:42,827 --> 00:05:45,652
+Then measure the complete end-to-end delay and its variation.
+还要测量完整链路的端到端延迟及其波动。
+
+69
+00:05:45,667 --> 00:05:53,027
+For camera-only teleoperation, visibility and reliable wrist estimation may dominate before solver speed does.
+在纯摄像头遥操作中，可见性和可靠的手腕估计，可能比求解速度更早成为瓶颈。
+
+70
+00:05:53,595 --> 00:05:57,695
+Now let the robot fingers reach the desired surface locations.
+现在，让机器人手指到达目标表面位置。
+
+71
+00:05:58,235 --> 00:06:01,115
+The object can still slip when the hand accelerates.
+当手加速时，物体仍然可能滑落。
+
+72
+00:06:01,655 --> 00:06:07,455
+Geometry alone does not specify friction, normal force, actuator limits, or the object mass.
+单靠几何关系，无法确定摩擦、法向力、驱动器限制和物体质量。
+
+73
+00:06:07,875 --> 00:06:12,075
+A controller or a physics-aware method must address these additional requirements.
+控制器或物理感知方法，需要处理这些额外要求。
+
+74
+00:06:12,655 --> 00:06:17,595
+Separate touching, lifting, carrying, placing, and releasing when examining a demonstration.
+观察演示时，要把接触、抬起、搬运、放置和松开分别检查。
+
+75
+00:06:18,115 --> 00:06:23,015
+A successful short lift is useful evidence, but it is not evidence of every later stage.
+一次成功的短暂抬起有价值，但并不能证明后面的各个阶段也成功。
+
+76
+00:06:23,560 --> 00:06:29,660
+For a camera-only system, begin with visible, slow motions and a fixed coordinate convention.
+对于纯摄像头系统，先从清晰可见的缓慢动作和固定坐标约定开始。
+
+77
+00:06:30,340 --> 00:06:35,240
+Check an open hand, isolated finger flexion, a pinch, and a wrist rotation.
+检查张手、单指弯曲、捏合和手腕转动。
+
+78
+00:06:35,700 --> 00:06:40,460
+Plot the estimated human features beside the robot targets and the measured robot motion.
+把人手估计特征、机器人目标和机器人实测运动并排显示。
+
+79
+00:06:40,880 --> 00:06:46,080
+If the target itself is wrong, contact corrections can hide the problem without fixing the mapping.
+如果目标本身就错了，接触修正可能掩盖问题，却没有修好映射。
+
+80
+00:06:46,580 --> 00:06:52,185
+Only after continuous motion is faithful should the test add objects, load, and task-specific corrections.
+只有连续动作映射可靠以后，测试才逐步加入物体、负载和任务相关修正。
+
+81
+00:06:52,200 --> 00:06:55,640
+Keep failed trials; they reveal where the chain breaks.
+保留失败试次，它们能说明链路在哪里断开。
+
+82
+00:06:56,248 --> 00:07:03,568
+The next chapter makes geometric baselines concrete, including the original DexPilot and modern implementations.
+下一章把几何基线讲具体，包括原版 DexPilot 和现代实现的区别。
+
+83
+00:07:04,568 --> 00:07:09,488
+Then we examine learned mappings: what is trained, what is supervised, and what runs online.
+随后看学习映射：训练什么、监督信号是什么，以及在线运行什么。
+
+84
+00:07:10,128 --> 00:07:15,048
+Contact-aware methods add the object and preserve relationships across changing hand shapes.
+接触感知方法加入物体，在不同手形之间保留交互关系。
+
+85
+00:07:15,948 --> 00:07:19,308
+Physics-aware methods ask whether a reference can actually be executed.
+物理感知方法进一步追问：这条参考能不能真正执行。
+
+86
+00:07:19,868 --> 00:07:25,653
+Finally, we build a fair comparison protocol with datasets, metrics, and meaningful task boundaries.
+最后建立公平的比较协议，把数据集、指标和任务边界放在一起。
+
+87
+00:07:25,668 --> 00:07:30,388
+Use the companion to change a constraint yourself and inspect the resulting compromise.
+你也可以在伴读页面亲自改变约束，观察结果如何折中。

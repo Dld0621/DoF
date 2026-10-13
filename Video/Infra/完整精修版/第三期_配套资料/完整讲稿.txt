@@ -1,0 +1,93 @@
+﻿One cup. One decision.
+A robot wants this cup. The handle looks clear. Will the fingers actually fit?
+机器人想拿起杯子。杯柄看起来是空的，手指真能穿过吗？
+DoF Infra, episode three. This one decision takes us through three dimensional vision.
+DoF Infra 第三期。一个抓取决策，带我们理解三维视觉。
+Keep this cup in view. Change the question, and we may need a different representation.
+一直看着这只杯子。问题改变，需要的表示也可能改变。
+
+What did the camera actually measure?
+The camera sees an image. With depth, each valid pixel also records the visible surface depth.
+相机得到图像。加入深度后，每个有效像素也记录了可见表面的深度。
+Calibration turns that pixel and depth into an X, Y, Z position. Repeat this for many pixels: a point cloud.
+标定把像素与深度变成 X、Y、Z 坐标。对许多像素重复这个过程，就得到点云。
+Now walk around the cup. Those missing points on the back were never measured. Moving the display camera cannot reveal new evidence.
+现在绕到杯子后面。背面缺失的点从未被测量过，旋转展示视角不会产生新证据。
+
+What did the camera actually measure?
+Points can carry color, normals, or confidence: local orientation and how much to trust each sample.
+点可以携带颜色、法向或置信度：局部朝向，以及每个采样有多可信。
+Depth maps keep samples arranged by camera pixels. Height fields store one height per ground location, so overhangs need another representation.
+深度图按相机像素组织采样。高度场每个地面位置只存一个高度，因此悬挑结构需要其他表示。
+
+What connects the samples?
+Give each point an oriented patch and you have surfels: little pieces of surface, without a shared triangle network.
+给每个点加上有朝向的小面片，就得到 Surfel：局部表面片，不必共享三角连接。
+A mesh makes connections explicit. Vertices join through edges and faces. Watch what happens if we connect the wrong neighbors.
+Mesh 显式给出连接关系：顶点通过边和面连接。看看连错邻居会怎样。
+This triangle seals the handle. The surface looks complete, yet the opening has disappeared. Reconstruction introduced an assumption, not a measurement.
+这个三角面封住了杯柄。表面看似完整，开口却消失了。重建引入的是假设，不是测量。
+
+What connects the samples?
+Remove that bridge. Now the same points support a different surface. More detail does not automatically mean more trustworthy geometry.
+去掉错误连接，同一批点可以支持不同的表面。细节更多，不意味着几何一定更可信。
+ElasticFusion builds a dense surfel map from RGB and depth. Repeated observations update its surface estimate.
+ElasticFusion 从 RGB 与深度构建稠密 Surfel 地图，连续观测更新表面估计。
+
+Can the fingers pass through?
+The gripper needs a spatial query. Occupancy asks whether a location is occupied. Crucially, observed free space and unknown space are different.
+夹爪需要查询空间。占据表示回答某个位置是否被占用。已观测空闲与未知空间，必须区分。
+A depth ray supports free space before its first return. Behind it, the map may know nothing.
+深度射线支持首个回波前的空闲空间判断。后方可能依然未知。
+Voxels divide space into cells. They can store occupancy, distance, or features. An octree subdivides selectively, saving resolution for useful detail.
+体素把空间切成单元，可存占据、距离或特征。八叉树选择性细分，把分辨率留给需要的细节。
+
+Can the fingers pass through?
+But free or occupied is not enough. How close is the finger to the wall? A distance field answers that.
+但空闲或占用还不够。手指离杯壁多近？距离场回答这个问题。
+An SDF adds an inside or outside sign. An unsigned distance field keeps distance without requiring a global interior.
+SDF 额外区分内部与外部；无符号距离场只保留距离，不要求定义全局内部。
+A truncated SDF fuses depth near surfaces. For planning, an E SDF estimates Euclidean clearance to mapped obstacles.
+TSDF 在表面附近融合深度；规划使用的 ESDF 则估计到已建图障碍物的欧氏间距。
+
+What if the task is design or simulation?
+Suppose we want to redesign the handle. CAD keeps dimensions and constraints editable; NURBS describe smooth parametric curves and surfaces.
+如果要重新设计杯柄，CAD 保留可编辑的尺寸和约束；NURBS 描述光滑的参数曲线与曲面。
+Constructive solid geometry combines simple solids by union, intersection, or subtraction. Subtracting a shape can create the opening deliberately.
+构造实体几何通过并集、交集或差集组合简单实体。减去一个形状，可以有意做出开口。
+For deformation, a surface alone misses the material inside. Volume meshes divide that material into cells; physics supplies how they respond.
+要模拟形变，仅有表面还缺少内部材料。体网格把材料切成单元，物理模型决定它们如何响应。
+
+What if we only need a new view?
+Now change the question. We want a photograph from a new camera position. Appearance becomes the target, rather than finger clearance.
+现在换个问题：从新的相机位置生成照片。目标变成外观，而不是手指间距。
+NeRF queries density and view dependent color along rays, then integrates them into pixels. The original figure shows that rendering process.
+NeRF 沿射线查询密度与视角相关颜色，再积分得到像素。原论文这张图展示了渲染过程。
+3D Gaussian Splatting instead optimizes spatial Gaussian primitives, projects them, and blends their contributions into an image.
+3D Gaussian Splatting 优化空间中的高斯基元，再投影并混合它们对图像的贡献。
+
+What if we only need a new view?
+2D Gaussian Splatting uses oriented disks for stronger surface consistency. Light fields describe rays. These choices organize appearance differently.
+2D Gaussian Splatting 用有朝向的圆盘增强表面一致性；光场描述光线。它们以不同方式组织外观。
+A convincing rendered view does not certify collision safety. The model must answer your actual question.
+渲染得逼真，不能证明碰撞安全。模型必须回答实际的问题。
+
+Who moves, and what changes?
+Once the hand moves, structure matters. Skeletons organize joints; parametric models such as MANO connect pose and shape to a hand mesh.
+手动起来后，结构也很重要。骨架组织关节；MANO 等参数模型把姿态、形状连接到手部网格。
+A scene graph can say the cup is on the table, and the hand is approaching it. Relations complement metric geometry.
+场景图可以表达杯子在桌上，手正靠近杯子。关系信息补充了度量几何。
+Add time, and geometry or appearance can change. Scene flow, tracked objects, and dynamic fields encode different kinds of motion.
+加入时间，几何或外观都可能变化。场景流、目标跟踪与动态场表达不同层面的运动。
+
+Choose by the question.
+So this is a toolbox, not a ladder. Observe with samples, connect a surface, query space, render appearance, and track structure.
+所以它是工具箱，不是一条升级阶梯：用采样观测，连接表面，查询空间，渲染外观，跟踪结构。
+Explicit geometry stores elements. Implicit fields answer queries. Either can be learned; neural versus analytic is a separate choice.
+显式几何存储元素，隐式场回答查询。两者都可以学习；神经表示与解析表示是另一条划分维度。
+
+Choose by the question.
+For our cup, preserve what was measured, mark what is unknown, and test the gripper against the geometry that matters.
+回到这只杯子：保留测量证据，标清未知区域，并用与任务相关的几何检验夹爪。
+The papers and learning map are in our GitHub project. Start with the question your robot needs answered.
+原论文与学习地图都在 GitHub 项目。从机器人真正需要回答的问题出发。

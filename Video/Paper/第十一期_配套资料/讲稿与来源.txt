@@ -1,0 +1,49 @@
+﻿DoF Paper EP.11 | AnyRotate: Make Touch Useful Under Changing Gravity
+AnyRotate：让触觉适应不同重力方向
+
+01 Turn the palm downward / 把手掌翻向下方
+Rotating an object becomes harder when gravity pulls it away from the palm. AnyRotate adds continuous tactile information to control rotation across different hand orientations. It studies commanded rotation axes, rather than precise stopping at every possible final pose.
+重力把物体拉离手掌时，旋转更困难。AnyRotate加入连续触觉，适应不同手部朝向。它研究指定旋转轴，不是任意最终姿态精准停止。
+Source: https://arxiv.org/pdf/2405.07391v3; PDF page 18
+
+02 From tactile images to contact features / 从触觉图像到接触特征
+Optical fingertip sensors observe deformation as the fingers contact and load the object. A learned perception model estimates contact orientation and force-related information from those images. These features provide more detail than a simple contact-on or contact-off signal.
+光学指尖传感器观察接触与受载时的形变。感知模型从图像估计接触朝向和力相关信息。这些特征比简单的有接触、无接触更丰富。
+Source: https://arxiv.org/pdf/2405.07391v3; PDF page 18
+
+03 Perception still needs real calibration / 感知仍需要真实标定
+Robot motion supplies contact-pose labels, while a force-torque sensor supplies force labels. Each fingertip uses three thousand real images to train and test its perception model. Zero-shot policy transfer therefore does not mean the entire system uses no real data.
+机器人运动提供接触姿态标签，力矩传感器提供力标签。每个指尖用3000张实拍图训练与测试感知。所以策略零样本迁移不等于整个系统不用实拍数据。
+Source: https://arxiv.org/pdf/2405.07391v3; PDF page 17
+
+04 Distill a deployable rotation controller / 蒸馏出可部署旋转控制器
+A privileged teacher learns rotation in simulation with access to object and gravity information. A student learns from observable history, target axes, and continuous tactile features. The deployed policy does not receive the object's true pose as an input.
+特权教师在仿真中利用物体与重力信息学习旋转。学生从可观测历史、目标轴和连续触觉中学习。部署策略不把物体真实位姿作为输入。
+Source: https://arxiv.org/pdf/2405.07391v3; PDF page 4
+
+05 A fair comparison changes the touch signal / 公平对照改变触觉信号
+With the palm downward, dense touch reaches one point three three turns around x. Binary touch reaches point-eight-seven turns in the same reported comparison. The difference supports richer contact features within this platform and experimental protocol.
+掌朝下时，连续触觉绕x轴达到1.33圈。同一对照中，二值触觉达到0.87圈。差异支持该平台、该协议下更丰富的接触特征。
+Source: https://arxiv.org/pdf/2405.07391v3; PDF page 7
+
+06 Read time and turns separately / 圈数与时间分别看
+The study also tests six hand orientations and rotation around different commanded axes. Rotation is measured in turns, while time ends at dropping or stopping. Comparison requires matched objects, axes, and termination rules; target-pose error measures a different goal.
+研究还测试六种手朝向和不同指定旋转轴。旋转用圈数，时间到掉落或停转时终止。比较需要统一物体、旋转轴与终止规则；目标姿态误差衡量的是另一种目标。
+Source: https://arxiv.org/pdf/2405.07391v3; PDF page 7
+
+07 Where continuous touch still struggles / 连续触觉仍会遇到困难
+Sharp edges and multiple simultaneous contacts are difficult for the simplified contact representation. Some hand orientations also expose mechanical limits of the finger actuators. Better sensing cannot automatically overcome all of those hardware and modeling constraints.
+尖锐边缘与多点同时接触，难以被简化表示处理。某些朝向还会暴露手指驱动器的机械限制。更好感知也不能自动克服全部硬件与建模限制。
+Source: https://arxiv.org/pdf/2405.07391v3; PDF page 18
+
+08 Match touch to the control objective / 让触觉匹配控制目标
+AnyRotate demonstrates why contact direction and loading can matter beyond detecting contact alone. The strongest evidence is improved continuous rotation within matched tactile comparisons. Precise assembly or final orientation would still require their own objectives and tests.
+AnyRotate说明，接触方向与负载比仅知接触更有用。最强证据来自同协议触觉对照下的持续旋转改善。精密装配或最终姿态仍需要各自目标和测试。
+Source: https://arxiv.org/pdf/2405.07391v3; PDF page 4
+
+
+Sources
+https://arxiv.org/pdf/2405.07391v3
+https://maxyang27896.github.io/anyrotate/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

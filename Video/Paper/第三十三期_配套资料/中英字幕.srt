@@ -1,0 +1,104 @@
+﻿1
+00:00:00,850 --> 00:00:07,810
+Two impressive robot videos may use different hands, objects, starting states, and definitions of success.
+两段精彩机器人视频，可能使用完全不同的条件。
+
+2
+00:00:08,410 --> 00:00:13,790
+Bench2Dex builds a shared simulation protocol so policy comparisons become more meaningful.
+Bench2Dex建立共享仿真协议，让策略比较更有意义。
+
+3
+00:00:14,549 --> 00:00:21,210
+The benchmark contains twenty-six bimanual task-and-hand settings and supports twelve dexterous-hand embodiments.
+基准包含26个双手任务手型设置，支持12种手。
+
+4
+00:00:21,990 --> 00:00:25,390
+This does not mean every task is evaluated with all twelve hands.
+这不意味着每个任务都评测全部12种手。
+
+5
+00:00:25,912 --> 00:00:32,452
+A surface-aligned ray-casting pipeline maps local contact geometry into image-like tactile observations.
+表面对齐的射线投射把局部接触几何转成触觉图。
+
+6
+00:00:33,072 --> 00:00:37,532
+Different hand shapes can therefore share a consistent sensing format inside the simulator.
+不同手型由此在仿真中共享一致感知格式。
+
+7
+00:00:38,231 --> 00:00:45,571
+About thirteen hundred teleoperated demonstrations accompany synchronized visual, tactile, and robot-state data.
+约1300条遥操作示教提供同步视觉、触觉和状态。
+
+8
+00:00:46,051 --> 00:00:52,691
+Executable success checks specify the terminal outcome, while separate metrics describe progress through task stages.
+可执行成功检查约束最终结果，阶段进度另行统计。
+
+9
+00:00:53,434 --> 00:01:00,654
+The study evaluates four policies across four perturbation channels, with fifty attempts per setting and channel.
+四策略、四扰动通道，每设置每通道50次。
+
+10
+00:01:00,994 --> 00:01:06,554
+Together that is twenty thousand eight hundred simulation episodes under a common experimental design.
+统一设计共20800个仿真评测回合。
+
+11
+00:01:07,164 --> 00:01:13,309
+Across channels, GR00T N1.5 averages twenty-eight point three percent
+通道平均GR00T N1.5为28.3%，
+
+12
+00:01:13,324 --> 00:01:16,184
+and pi-zero-point-five twenty point three.
+π0.5为20.3%。
+
+13
+00:01:16,644 --> 00:01:18,489
+ACT reaches eighteen percent
+ACT为18%，
+
+14
+00:01:18,504 --> 00:01:20,986
+and Diffusion Policy seven point one.
+扩散策略为7.1%。
+
+15
+00:01:21,436 --> 00:01:27,856
+Under combined distribution changes, the leading two scores are nineteen point eight and nineteen point seven.
+组合分布变化下，前两名为19.8%和19.7%。
+
+16
+00:01:28,176 --> 00:01:33,276
+That difference amounts to only two successful episodes, not convincing broad superiority.
+只相差两次成功，不能据此声称明显优势。
+
+17
+00:01:34,059 --> 00:01:41,599
+The shared tactile interface represents contact geometry; it does not reproduce one particular physical sensor.
+共享触觉接口表示接触几何，并不复现特定真实传感器。
+
+18
+00:01:41,979 --> 00:01:48,219
+Real hardware still adds calibration, friction, sensor noise, and control delays that need separate validation.
+真机还需单独验证标定、摩擦、噪声和控制延迟。
+
+19
+00:01:48,872 --> 00:01:52,917
+Bench2Dex contributes the testing conditions, data, and metrics
+Bench2Dex贡献测试条件、数据与指标，
+
+20
+00:01:52,932 --> 00:01:55,492
+rather than a new winning manipulation policy.
+而非一套新的获胜操作策略。
+
+21
+00:01:55,972 --> 00:02:01,172
+Its strongest use is controlled comparison before committing to more expensive physical experiments.
+它适合先做受控比较，再进入成本更高的真机实验。

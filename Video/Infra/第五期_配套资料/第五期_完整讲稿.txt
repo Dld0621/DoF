@@ -1,0 +1,403 @@
+﻿DoF Infra EP05｜动捕的真值从哪来
+Ground Truth: How Motion Capture Builds Its Reference
+
+英文旁白 / 中英双语讲稿
+
+01 / 00:01  How do we know a hand tracker is accurate?
+
+Two hand trackers report tiny errors. Will they place a robot fingertip equally well?
+两个动捕系统误差都很小，机器人指尖就一样准吗？
+
+First, ask what each one measures, and where its reference comes from.
+先问清楚：测的是什么，参考答案又从哪来？
+
+Welcome to DoF Infra, episode five: how motion capture gets its ground truth.
+欢迎来到 DoF Infra 第五期：动捕的真值从哪来。
+
+We will build the measurement chain, then unpack the major tracking routes.
+这次先搭起测量链，再逐条拆解主要动捕路线。
+
+02 / 00:19  A reference is a measurement pipeline.
+
+A camera observes pixels. An inertial sensor observes rotation rate and specific force.
+相机观测像素；惯性传感器观测角速度和比力。
+
+Calibration and reconstruction turn those signals into positions, joint angles, or a mesh.
+经过标定与重建，信号才变成位置、关节角或网格。
+
+A dataset may call that fitted result ground truth, with its own uncertainty.
+数据集可能把拟合结果称为 GT，但它仍有不确定性。
+
+Robot contact adds another chain: coordinate transforms, retargeting, control, and physical interaction.
+机器人接触还要经过坐标变换、重定向、控制和物理交互。
+
+03 / 00:42  Optical markers: from bright spots to 3D.
+
+Start with optical motion capture. Several calibrated infrared cameras observe small reflective markers.
+先看光学动捕：多台标定后的红外相机观察反光标记。
+
+Matching the same marker across views lets the system triangulate its three-dimensional position.
+确认不同视角中的同一个标记，就能三角化它的三维位置。
+
+HOT3D uses nineteen markers per hand, specified as three-millimeter markers.
+HOT3D 每只手使用十九个标记，论文标注尺寸为三毫米。
+
+That number describes marker size. It is not a three-millimeter accuracy guarantee.
+三毫米说的是标记尺寸，并不是精度保证。
+
+04 / 01:05  One action. One coordinate frame.
+
+Intrinsics describe the camera projection and distortion. Extrinsics place cameras in a shared frame.
+内参描述成像与畸变；外参把相机放入同一坐标系。
+
+A calibrated object establishes scale. Headset and robot frames need their own transforms.
+标定物确定尺度；头显和机器人坐标也需要各自的变换。
+
+Check known distances across the actual workspace, including its edges.
+要在实际工作区复查已知距离，边缘区域也要检查。
+
+A small calibration residual alone does not validate accuracy on independent measurements.
+标定残差很小，还不能代替独立测量验证。
+
+05 / 01:28  A timing error becomes a position error.
+
+Now move the fingertip. Two cameras must observe the same physical instant.
+现在让指尖移动：两台相机需要观察同一个真实时刻。
+
+At one meter per second, ten milliseconds of mismatch means roughly ten millimeters.
+速度一米每秒时，错开十毫秒就约等于十毫米。
+
+This is a simple illustration, not a measurement of any product.
+这是简化示例，并非对某个产品的实测。
+
+Hardware triggering controls sampling; timestamps identify samples. Also check drift and dropped frames.
+硬件触发控制采样，时间戳标识样本，还要检查漂移与丢帧。
+
+06 / 01:48  Markers are attached to skin. Joints are inferred.
+
+Surface markers do not sit at the rotation centers hidden inside your fingers.
+表面标记并不位于手指内部的关节旋转中心。
+
+Scan or calibrate the person, then fit a skeleton and surface to the observations.
+先扫描或标定个体，再用观测拟合骨架与表面。
+
+In HOT3D, fitting a personalized hand model produces the reference motion.
+HOT3D 通过拟合个体化手模型，生成参考动作。
+
+The mesh follows that model. Each frame is not a new complete surface scan.
+网格随模型运动；每一帧并不是重新扫描了完整表面。
+
+07 / 02:08  Who checks the ground truth?
+
+Check marker identity, reprojection residuals, impossible joint motion, and missing observations.
+检查标记身份、重投影残差、异常关节运动和缺失观测。
+
+Keep confidence and validity masks. Interpolated motion should remain distinguishable from measured samples.
+保留置信度与有效性标记，区分插值动作和测量样本。
+
+An independent scanner, measurement rig, or manually checked subset can reveal systematic mistakes.
+独立扫描、测量装置或人工复核子集，可以揭示系统性错误。
+
+If both methods share the same assumptions, agreement may hide the same bias.
+若两套方法共享相同假设，结果一致也可能包含同样偏差。
+
+08 / 02:31  Markerless labels: geometry plus annotation.
+
+Markers are optional. InterHand uses synchronized views and human annotations to bootstrap hand detection.
+标记点并非必需：InterHand 用同步多视角和人工标注启动流程。
+
+Consistent two-dimensional keypoints are triangulated; unreliable views can be rejected.
+把一致的二维关键点三角化，并剔除不可靠视角。
+
+Automatic detections expand the three-dimensional labels. A later hand-model fit can add meshes.
+自动检测扩展三维标注；后续再拟合手模型，可以得到网格。
+
+These labels contain annotation and reconstruction error, especially for occluded anatomical landmarks.
+这些标签包含标注与重建误差，被遮挡的解剖点尤其如此。
+
+09 / 02:56  Bring the reference rig into the world.
+
+SHOW3D moves multi-view capture outdoors: two headset views and up to eight backpack views.
+SHOW3D 把多视角采集带到户外：两个头戴视角，最多八个背负视角。
+
+Its synchronized cameras support markerless hand and object annotation.
+同步相机支持无标记的手部与物体标注。
+
+A separate optical marker setup tracks the headset relative to the moving backpack rig.
+另一路光学标记跟踪头显相对移动背架的位置。
+
+So the hands are markerless, but the entire capture system is not.
+因此手上没有标记，并不代表整套采集系统完全无标记。
+
+The authors check hand labels against a camera dome and independent manual annotations.
+作者用相机穹顶和独立人工标注，检查手部标签质量。
+
+That validation matters: an automatically generated label needs evidence before becoming a trusted reference.
+这种验证很关键：自动生成的标签，需要证据才能成为可靠参考。
+
+10 / 03:26  RGB-D: observe a surface, fit a hand.
+
+A depth camera adds measured surface distance to color images.
+深度相机在彩色图像之外，增加表面距离观测。
+
+Back-project valid pixels, align the cameras, and fit hand and object models.
+反投影有效像素，对齐相机，再拟合人手与物体模型。
+
+HO-Cap combines multiple RGB-D cameras with segmentation and temporal optimization.
+HO-Cap 结合多台 RGB-D 相机、分割和时序优化。
+
+Occluded surfaces still need inference. Offline annotation can use future frames that live control cannot.
+遮挡表面仍需推断；离线标注还能利用实时控制拿不到的未来帧。
+
+11 / 03:48  Monocular reconstruction: infer missing depth.
+
+With one RGB camera, a learned prior resolves much of the missing depth.
+只有一个 RGB 相机时，模型先验承担了许多缺失深度的推断。
+
+WiLoR detects and reconstructs hands. HaWoR also addresses hand motion in world space.
+WiLoR 检测并重建人手；HaWoR 进一步处理世界空间中的手部运动。
+
+A plausible hand shape does not by itself establish its absolute scale or position.
+手形看起来合理，并不能单独确定绝对尺度与位置。
+
+Check camera motion, root placement, and whether the evaluation removes scale or translation.
+需要检查相机运动、手根位置，以及评测是否消除了尺度或平移。
+
+12 / 04:09  Inertial capture: motion without line of sight.
+
+Inertial sensors work through visual occlusion, but sparse sensors leave many joints unobserved.
+惯性传感器不怕视觉遮挡，但稀疏布置会留下大量未观测关节。
+
+A body model and learned motion prior fill in those degrees of freedom.
+人体模型和运动先验，用来补足这些自由度。
+
+DIP uses seventeen sensors to optimize reference poses, while sparse inference uses six.
+DIP 用十七个传感器优化参考姿态，稀疏推理只用六个。
+
+ProbIP models uncertainty in this body-tracking route. Its scores do not describe finger accuracy.
+ProbIP 在这条全身动捕路线中建模不确定性，成绩不能套到手指上。
+
+13 / 04:30  A glove is a form factor, not one sensor.
+
+Gloves can use bend sensors, inertial sensing, electromagnetic tracking, or mechanical joint measurements.
+手套可使用弯曲、惯性、电磁，或机械关节测量。
+
+DexCap combines electromagnetic finger sensing with visual tracking for the wrist and scene.
+DexCap 将手指电磁感知，与手腕及场景的视觉跟踪结合。
+
+Fit and calibration matter. Metal can distort electromagnetic fields; a glove can slip.
+贴合与标定很重要：金属会扰动电磁场，手套也可能滑移。
+
+DexUMI instead uses a wearable mechanism to reduce human-to-robot kinematic differences.
+DexUMI 则用可穿戴机构，减少人手与机器人之间的运动学差异。
+
+14 / 04:54  UmeTrack: two different pipelines.
+
+For virtual reality, let us trace UmeTrack from reference capture to runtime.
+VR 部分，用 UmeTrack 从参考采集一路拆到实时推理。
+
+Its dataset uses thirty-six external motion-capture cameras to track small markers on hands.
+它的数据集利用三十六台外部动捕相机，跟踪手上的小标记。
+
+A scanned hand profile and marker-based tracking provide the motion reference.
+扫描得到的手部参数，与基于标记的跟踪共同提供动作参考。
+
+The deployed visual tracker consumes headset images. The external rig belongs to reference collection.
+运行时视觉跟踪器接收头显图像；外部装置用于采集参考。
+
+15 / 05:16  1. Crop while preserving camera geometry.
+
+Headset cameras have wide fields of view, and the hand moves across distorted image regions.
+头显相机视野很广，人手会在不同畸变区域间移动。
+
+UmeTrack forms perspective hand crops using calibrated camera geometry.
+UmeTrack 利用标定的相机几何，生成手部透视裁剪。
+
+This normalizes the region while preserving how each camera looks at the hand.
+这一步规范输入区域，同时保留各相机观察人手的几何关系。
+
+At runtime, a previous pose can guide tracking crops; initialization remains a separate requirement.
+跟踪时可用上一帧姿态引导裁剪；初始化仍需要另外解决。
+
+16 / 05:37  2. Put views into a common feature frame.
+
+Each crop enters an image encoder. Camera geometry transforms the learned features into a common frame.
+各裁剪进入图像编码器，相机几何再把特征变换到公共坐标系。
+
+The fusion module combines available views, so one view can help with another view’s occlusion.
+融合模块结合可用视角，用一个视角补充另一个视角的遮挡。
+
+One-view and two-view tracking share the framework. Not every camera sees every hand.
+单视角和双视角共享框架，并非每台相机都能看见每只手。
+
+Its intermediate representation is learned features, rather than a measured depth point cloud.
+中间表示是学习到的特征，而非实测深度点云。
+
+17 / 06:00  3. Carry information across time.
+
+A temporal module carries information from preceding frames into the current estimate.
+时序模块把之前帧的信息，带入当前估计。
+
+That history helps when observations are noisy or temporarily ambiguous.
+历史信息可以帮助处理噪声和暂时的观测歧义。
+
+A motion prior can suggest a hidden finger, but cannot create a new observation.
+运动先验能够推测隐藏手指，却不能产生新的真实观测。
+
+After an occlusion, compare recovery and delay, not just how smooth the animation looks.
+遮挡结束后，要检查恢复与延迟，不能只看动画是否平滑。
+
+18 / 06:20  4. Predict pose, then articulate the surface.
+
+When a hand skeleton is known, its joint locations and axes condition pose prediction.
+手部骨架已知时，关节位置与旋转轴作为姿态预测的条件。
+
+It predicts twenty joint angles and a six-degree-of-freedom root transform.
+它预测二十个关节角，以及六自由度的手根变换。
+
+Forward kinematics places the joints. Skinning then moves the mesh with the bones.
+正向运动学定位关节，蒙皮再让网格随骨骼运动。
+
+Its unknown-skeleton calibration estimates overall scale; that is not a complete personalized surface scan.
+未知骨架标定估计整体尺度，并不等于完整个体表面扫描。
+
+19 / 06:42  Read the evaluation inputs before the score.
+
+The official repository corrects earlier metrics and improves unknown-skeleton calibration.
+官方仓库修正了早期指标，并改进未知骨架标定。
+
+For known skeletons, it reports nine point four millimeters for separate hands.
+已知骨架时，分离双手的平均关节误差为九点四毫米。
+
+But the released evaluation uses ground-truth poses to generate the tracking crops.
+但公开评测使用 GT 姿态生成跟踪裁剪区域。
+
+This score therefore does not validate the complete detection and lost-track recovery pipeline.
+因此这个成绩并未验证完整的检测与掉踪恢复流程。
+
+20 / 07:03  A controlled comparison: add the second view.
+
+HOT3D provides a more recent example of a controlled comparison using UmeTrack.
+HOT3D 提供了较新的 UmeTrack 受控比较实例。
+
+With joint training, the reported keypoint error drops from fifteen point four to ten point nine millimeters.
+联合训练条件下，报告的关键点误差从十五点四降到十点九毫米。
+
+The change is from one view to two, with ground-truth hand shape and boxes supplied.
+改变的是单视角到双视角，同时提供 GT 手形与边界框。
+
+Keep those conditions beside the numbers. They are not uncalibrated consumer-headset guarantees.
+这些条件必须和数字放在一起，不能当作未标定消费头显的保证。
+
+21 / 07:25  Small errors can answer different questions.
+
+World-space error includes where the hand is. Wrist-relative error removes global translation.
+世界空间误差包含手的位置；腕部相对误差去掉全局平移。
+
+Procrustes alignment can additionally remove rotation and scale before measuring shape agreement.
+Procrustes 对齐还能先去掉旋转与尺度，再比较形状一致性。
+
+A reconstruction can score well after alignment while placing the robot’s fingers incorrectly.
+重建在对齐后可能分数很好，机器人指尖落点却仍然错误。
+
+Report the target, coordinate frame, alignment, and error distribution beside every score.
+每个成绩旁边，都应写明目标量、坐标系、对齐方式与误差分布。
+
+22 / 07:48  The frontier is a map of tasks.
+
+For current research, separate reconstruction quality, tracking robustness, and reference-data generation.
+看前沿研究时，要分开重建质量、跟踪鲁棒性和参考数据生成。
+
+WiLoR and HaWoR address different visual outputs; SHOW3D advances capture in varied environments.
+WiLoR 与 HaWoR 面向不同视觉输出；SHOW3D 推进多环境采集。
+
+ProbIP studies sparse inertial uncertainty. DexCap and DexUMI optimize robot-data collection systems.
+ProbIP 研究稀疏惯性不确定性；DexCap、DexUMI 优化机器人数据采集系统。
+
+Call a method state of the art only for a named benchmark and matched protocol.
+只有明确基准、对齐协议，才能讨论某个方法的 SOTA。
+
+23 / 08:12  Look beyond the median.
+
+SHOW3D’s manual-reference hand-object evaluation reports a median error of six point three six millimeters.
+SHOW3D 对人工参考的手物交互评测，中位误差为六点三六毫米。
+
+Its ninetieth percentile is sixteen point four eight millimeters.
+但第九十百分位达到十六点四八毫米。
+
+Both describe the same evaluation. A single typical value hides the difficult tail.
+两者来自同一评测；只报典型值，会隐藏困难样本的尾部。
+
+These evaluate annotation quality, not a real-time robot controller or every frame’s maximum error.
+这些数字评价标注质量，并非实时控制器或每帧最大误差。
+
+24 / 08:35  Smooth does not always mean responsive.
+
+A filter can reduce jitter while delaying the motion you want to reproduce.
+滤波能减少抖动，也可能推迟需要复现的动作。
+
+Watch the peak: a smooth trajectory can still arrive too late.
+看峰值的位置：轨迹很平滑，也可能来得太晚。
+
+Processing frames per second is throughput. End-to-end latency includes capture, transfer, inference, and control.
+每秒处理帧数是吞吐率；端到端延迟还包括采集、传输、推理与控制。
+
+Measure delay, dropped tracking, and recovery separately from static precision.
+延迟、掉踪与恢复，要和静态精度分别测量。
+
+25 / 08:55  A good pose is only one part of teleoperation.
+
+The robot has different link lengths, joint limits, and reachable contacts.
+机器人的连杆长度、关节限位和可达接触，都与人手不同。
+
+Retargeting must map the intended motion into that robot’s feasible configuration.
+重定向需要把动作意图映射到机器人可执行的关节配置。
+
+Geometric proximity does not establish contact force; force needs a separate sensing reference.
+几何接近并不代表接触力；测力需要独立的传感参考。
+
+Validate motion capture first, then mapping and closed-loop grasping, without combining their scores.
+先验证动捕，再验证映射与闭环抓取，不把成绩混成一个数字。
+
+26 / 09:18  Design a test that can prove the claim.
+
+Use the same participants and motions, and synchronize each tracker with an independent reference.
+固定受试者和动作，让各跟踪器与独立参考同步记录。
+
+Include quick pinches, finger crossings, object occlusion, workspace edges, and repeated calibration.
+包括快速捏合、手指交叉、物体遮挡、工作区边缘与重复标定。
+
+Measure absolute wrist and fingertip error, relative pose, drift, dropout, and latency percentiles.
+测量绝对腕部与指尖误差、相对姿态、漂移、掉踪及延迟分位数。
+
+Publish missing-data coverage and evaluation inputs, including any ground-truth boxes or hand profiles.
+公开缺失覆盖情况与评测输入，包括任何 GT 框或手部参数。
+
+27 / 09:42  Choose the route for the missing information.
+
+For a laboratory reference, prioritize calibrated coverage, synchronization, and independent validation.
+实验室参考系统，优先保证标定覆盖、同步与独立验证。
+
+For unencumbered hand interaction, compare calibrated multi-view vision against simpler camera baselines.
+裸手交互，则把标定多视角视觉与更简单的相机基线比较。
+
+For mobile or occluded capture, consider headset tracking or wearables, with their specific limitations.
+移动或遮挡采集，可考虑头显跟踪或穿戴设备，并验证各自限制。
+
+Fusion helps when sensors contribute complementary evidence; it also adds calibration work.
+传感器提供互补证据时，融合才有帮助，同时也增加标定工作。
+
+28 / 10:07  Trace the signal. Audit the reference.
+
+Ground truth is a documented reference with a known construction process and measured limitations.
+GT 是有来源、有构建过程，也有经过评估的局限性的参考。
+
+Ask what was directly observed, what was fitted, and what independent evidence checks it.
+追问哪些直接观测，哪些通过拟合，以及用什么独立证据验证。
+
+Then compare methods under the same task and protocol, all the way to real contact.
+再在相同任务与协议下比较方法，一路验证到真实接触。
+
+Find the papers and learning map in DoF. Build the reference before trusting the score.
+在 DoF 查看论文与学习地图：先建立参考，再相信分数。
+

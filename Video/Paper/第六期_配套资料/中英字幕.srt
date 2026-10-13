@@ -1,0 +1,119 @@
+﻿1
+00:00:00,850 --> 00:00:05,730
+Copying a person's finger motion can fail when robot contacts behave differently.
+机器人接触不同，照抄人手运动也可能失败。
+
+2
+00:00:06,130 --> 00:00:11,070
+TeleDexter tracks both hand targets and the object's desired movement during teleoperation.
+TeleDexter在遥操中同时跟踪手和物体目标。
+
+3
+00:00:11,530 --> 00:00:15,655
+A learned controller decides how to maintain useful contact while following them.
+学习控制器决定如何边跟踪边保持有效接触。
+
+4
+00:00:16,105 --> 00:00:22,805
+Motion capture provides hand-object trajectories, but raw references may contain incompatible geometry.
+动捕提供手物轨迹，原始参考可能几何不相容。
+
+5
+00:00:23,285 --> 00:00:30,325
+Reference optimization adjusts contact, penetration, self-collision, and temporal smoothness before policy training.
+参考优化先修正接触、穿透、自碰撞与平滑性。
+
+6
+00:00:30,725 --> 00:00:34,225
+The output is a sequence of fingertip and object-pose subgoals.
+输出是一串指尖与物体位姿子目标。
+
+7
+00:00:34,741 --> 00:00:41,381
+A simulation-trained controller learns contact transitions rather than rigidly copying every reference frame.
+仿真控制器学习接触切换，而非逐帧僵硬照搬。
+
+8
+00:00:42,001 --> 00:00:46,201
+Randomization and action masking help transfer that behavior to the physical hand.
+随机化和动作遮蔽帮助迁移到真实手。
+
+9
+00:00:46,581 --> 00:00:50,801
+This adds dynamics-aware control beyond a purely geometric fingertip mapping.
+这在纯几何指尖映射之外加入动力学控制。
+
+10
+00:00:51,424 --> 00:00:56,424
+The real system uses NOKOV tracking for human motion and marked object poses.
+真机用NOKOV追踪人手与带标记物体姿态。
+
+11
+00:00:56,864 --> 00:01:01,644
+The operator switches from geometric pre-grasp mapping to the learned contact controller.
+操作者从预抓几何映射切换到学习接触控制器。
+
+12
+00:01:02,044 --> 00:01:06,464
+Neither the object-pose input nor this human switching should disappear from the explanation.
+物体位姿输入和人工切换都不能从解释中省略。
+
+13
+00:01:07,245 --> 00:01:12,105
+Training uses one hundred fifty twenty-second reference clips for each object.
+每个物体使用150段、每段20秒参考。
+
+14
+00:01:12,545 --> 00:01:18,145
+Controllers also require extensive simulated interaction and task-specific object information.
+控制器还需要大量仿真交互与物体信息。
+
+15
+00:01:18,585 --> 00:01:24,065
+Supporting two robot hands demonstrates adaptation of the workflow, not universal shared weights.
+支持两种手证明流程可适配，不是通用同一权重。
+
+16
+00:01:24,629 --> 00:01:30,729
+Across seven SharpaWave tasks, complete success averages seventy-five point two percent.
+七项SharpaWave任务完整成功率平均75.2%。
+
+17
+00:01:31,349 --> 00:01:36,849
+Task progress averages eighty-seven point one percent because partial completion also receives credit.
+阶段进度平均87.1%，因为部分完成也计分。
+
+18
+00:01:37,249 --> 00:01:41,409
+Each method receives fifteen trials per task under the same reported protocol.
+每个方法按同协议，每任务测试15次。
+
+19
+00:01:42,095 --> 00:01:48,235
+A separate diffusion policy is trained from newly collected demonstrations for three autonomous tasks.
+另采示教训练扩散策略，测试三项自主任务。
+
+20
+00:01:48,495 --> 00:01:53,055
+Those results must not be merged with the stronger human-in-the-loop teleoperation score.
+这些结果不能混入更高的人在环遥操分数。
+
+21
+00:01:53,395 --> 00:01:57,575
+New objects still require dedicated references and additional controller training.
+新物体仍需专门参考和额外控制器训练。
+
+22
+00:01:58,160 --> 00:02:03,900
+TeleDexter makes contact dynamics part of the mapping from human intention to robot action.
+TeleDexter把接触动力学纳入人意图到机器人动作的映射。
+
+23
+00:02:04,420 --> 00:02:08,860
+Its gain comes with external tracking and substantial object-specific preparation.
+收益伴随外部跟踪和大量物体专用准备。
+
+24
+00:02:09,480 --> 00:02:14,580
+Choose it for controlled contact-rich teleoperation, without assuming cheap markerless deployment.
+它适合受控接触遥操，不能假定低成本无标记部署。

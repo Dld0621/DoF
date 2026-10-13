@@ -1,0 +1,79 @@
+﻿深度上篇：从人手动作到机器人目标
+
+The hard part happens inside the hand / 真正困难的动作，发生在手掌里面
+Watch the hammer change from a striking grip to a pulling grip. The arm can stay nearby, while the fingers must redistribute contact without dropping the tool. This is the problem behind TeleDexter: making a robot realize a human operator's hand and object targets. We will follow one tool through data capture, geometric retargeting, learned control, and real experiments. This is a deep expansion of DoF Paper episode six, in three parts.
+看锤子如何从敲击的握法，切换成拔钉的握法。手臂不必移动很远，手指却要重新分配接触，还不能让工具掉落。TeleDexter解决的就是：让机器人真正实现操作者给出的手和物体目标。我们用一个工具贯穿动捕、几何重定向、学习控制与真实实验。这是DoF Paper第六期的深度扩展，共分三部分。
+Source: Author project demonstration · original encoded speed retained · bigai-dex.github.io
+
+Three different problems, three different outputs / 先把三个问题与各自输出分开
+Tracking estimates where the human hand and object are. Retargeting translates that geometry into targets a robot hand can represent. Control chooses commands that make the physical robot approach those targets. A perfect tracker can still feed a poor retargeter, and a perfect geometric target can still fail under friction or gravity. TeleDexter mainly contributes a learned controller and the reference construction used to train it.
+跟踪负责估计人手和物体在哪里。重定向把这些几何信息，转为机器人手能够表达的目标。控制则选择指令，让真实机器人接近目标。跟踪准确，重定向仍可能不好；几何目标合理，也可能在摩擦和重力下失败。TeleDexter的主要贡献，是学习控制器及其训练参考的构造方法。
+Source: DoF explanatory schematic · Sections 3.1–3.3
+
+Why copying finger angles is insufficient / 为什么照抄手指角度不够
+Human and robot fingers differ in length, joint layout, stiffness, and surface friction. Matching their visible poses does not guarantee matching the contact forces that hold an object. Imagine lifting the index finger to move it around a handle. The remaining fingers must support the tool before that finger lets go. Our animated arrows explain this physical requirement; the paper does not measure these arrows as force labels.
+人手和机器人手的长度、关节结构、刚度与表面摩擦都不同。可见姿态相似，不代表托住物体的接触力也相同。想象把食指抬起，换到手柄的另一侧。食指松开前，其他手指必须先托住工具。这里的力箭头用于解释物理要求，并非论文测得的力标注。
+Source: DoF explanatory schematic · Sections 1–2; illustrative contact forces
+
+A goal specifies an outcome, not every motor / 目标描述要实现什么，不逐个规定电机怎么动
+The co-tracking goal contains target fingertip positions and a target object pose. A pose means three-dimensional position plus orientation: where the object is and which way it faces. The hand target describes the intended grasp geometry; the object target makes the intended object movement explicit. The controller must satisfy both, while choosing its own joint commands and contact transitions. An object target alone would leave the grasp ambiguous; a hand target alone can miss the actual task outcome.
+共同跟踪目标同时包含指尖目标位置和物体目标位姿。位姿包括三维位置与朝向，也就是物体在哪里、朝哪边。手的目标表达预期抓握几何；物体目标明确表达希望物体怎样运动。控制器要兼顾两者，同时自己选择关节指令与接触切换。只有物体目标，握法不明确；只有手目标，又可能偏离实际操作结果。
+Source: DoF explanatory schematic · Section 3
+
+What the authors actually capture / 作者实际采集了什么
+For offline data collection, the operator wears a glove covered with reflective markers. Infrared cameras in a calibrated capture volume track those markers. The system outputs twenty-four hand joint positions, twenty-one joint pose matrices, the wrist pose, and the object pose. The object also carries a rigid marker cluster. This is instrumented optical motion capture, not the camera-only, markerless hand reconstruction we discussed in Infra.
+离线采集时，操作者佩戴布有反光标记点的手套。标定过的动捕空间中，红外相机跟踪这些标记点。系统输出24个人手关节位置、21个关节位姿矩阵、腕部位姿与物体位姿。物体上同样安装了刚性标记点组。这是带标记的光学动捕，并非Infra里讨论的普通相机无标记人手重建。
+Source: TeleDexter · Fig.8 · PDF p.19 · arXiv:2607.11481v1
+
+The reference set teaches a repertoire / 参考数据覆盖多种接触变化
+For each object, the authors record one hundred and fifty clips of twenty seconds each. That gives about fifty minutes of interaction, captured at thirty hertz. The clips include translation inside the hand, rotation, and free play with grasp changes and finger gaiting. Finger gaiting means moving fingers to new contacts in sequence while other fingers retain useful support. These references provide reachable-looking goals and interaction diversity; they are not successful robot rollouts.
+每个物体采集150段动作，每段20秒。合计约50分钟交互，采集频率为30赫兹。动作包括手内平移、旋转，以及换握、换指等自由交互。换指接触，就是手指依次移动到新接触位置，同时由其他手指维持支撑。参考提供几何目标与交互多样性，它们本身并不是成功的机器人执行轨迹。
+Source: TeleDexter · Fig.9 · PDF p.24 · arXiv:2607.11481v1
+
+Why everything is expressed at the wrist / 为什么要把坐标移到手腕上
+The same grasp can occur anywhere in the room. Representing the object relative to the wrist removes irrelevant whole-arm translation from the in-hand problem. Conceptually, subtract the wrist position and rotate into the wrist coordinate frame. But turning the wrist upside down changes gravity relative to the fingers. The policy therefore also receives gravity expressed in that frame, so the same local geometry need not imply the same command.
+同一种抓握可以出现在房间的不同位置。用物体相对于手腕的位姿表示，就能把整条手臂的平移与手内操作分开。直观上，先减去腕部位置，再旋转到腕部坐标系。但手腕翻转后，重力相对于手指的方向会改变。所以策略还输入腕部坐标系下的重力方向；局部几何相同，控制指令未必相同。
+Source: DoF explanatory schematic · Section 3; Table 7
+
+Stage one: preserve the hand geometry / 第一阶段：先对齐手的几何结构
+Retargeting first searches for robot joint angles whose hand vectors match the human reference. A vector records a direction and distance between selected hand landmarks. This is more useful than assigning one human joint angle to one robot joint with different anatomy. The paper optimizes the trajectory with a vector-based loss, using six thousand Adam iterations. The result is a good geometric starting point, but it has not yet checked where the object surface lies.
+重定向先搜索机器人关节角，让机器人手的向量关系接近人手参考。向量表达选定手部关键点之间的方向与距离。相比逐个照搬关节角，它更适合结构不同的人手与机器人手。论文用基于向量的损失优化轨迹，运行6000次Adam迭代。结果是一个不错的几何起点，但此时还没有检查物体表面在哪里。
+Source: DoF explanatory schematic · Section 3.2; Appendix C.5
+
+Stage two: put the object back into the problem / 第二阶段：把物体表面纳入约束
+Now insert the object mesh: a surface built from connected triangles. The method samples surface points on robot hand links and queries their signed distance to this mesh. Positive means outside, zero means on the surface, and negative means inside the object. Near-contact points outside are attracted toward the surface; penetrating points are pushed back out by another penalty. The point samples and mesh serve geometric optimization here; neither is a measured tactile contact signal.
+现在加入物体网格，也就是由相连三角形构成的表面。方法在机器人手的连杆表面采样点，查询它们到物体网格的有符号距离。正值表示在外部，零表示在表面，负值表示进入物体内部。靠近接触面的外部点被拉向表面；穿入内部的点受到另一项惩罚。这里的点采样和网格服务于几何优化，二者都不是测得的触觉接触信号。
+Source: DoF explanatory schematic · Equation 4; Appendix C.5
+
+Five losses, five different jobs / 五个目标项，各自解决一个问题
+The total objective balances vector alignment, surface attraction, penetration, finger self-collision, and temporal smoothness. Surface attraction should not drag every finger onto the object; it acts on a selected near-contact set. Collision spheres discourage overlap between different fingers. Smoothness penalizes abrupt changes in joint motion across frames. These are competing soft penalties, not a mathematical guarantee that the resulting grasp is dynamically stable.
+总目标兼顾向量对齐、表面吸引、穿透、自碰撞与时间平滑。表面吸引并非把所有手指拉到物体上，而是作用于选定的近接触点集。碰撞球用于抑制不同手指相互重叠。平滑项惩罚跨帧关节运动的突然变化。这些相互权衡的软惩罚，并不能从数学上保证抓握在动力学上稳定。
+Source: DoF explanatory schematic · Equation 4; Appendix C.5
+
+What leaves retargeting and enters learning / 重定向到底输出什么给学习器
+After optimization, we have robot joint configurations paired with the recorded object poses. Forward kinematics converts those joint configurations into robot fingertip positions. Together, the fingertips and object poses become reference co-tracking goals. The object trajectory is recorded; the optimization adjusts the robot hand configuration around it. Crucially, reinforcement learning still has to discover commands that move between these goals under simulated physics.
+优化后得到机器人关节配置，并与记录的物体位姿逐帧配对。正向运动学把关节配置转成机器人指尖位置。指尖位置与物体位姿组合起来，成为共同跟踪参考目标。物体轨迹来自记录，优化主要调整围绕物体的机器人手配置。关键是：强化学习仍要在仿真物理中，学会用什么指令连接这些目标。
+Source: DoF explanatory schematic · Section 3.2
+
+One worked example: change a screwdriver grip / 贯穿示例：给螺丝刀换一个握法
+Consider an illustrative screwdriver transition, not an additional experiment from the paper. First, record the current object orientation and fingertip arrangement. Next, choose a reference target with the shaft rotated and the fingers arranged for the next useful grip. The controller may roll the handle, briefly release a finger, or re-establish contact. We specify the joint hand-object destination; we do not prescribe a universal finger sequence that works for every tool.
+考虑一个解释用的螺丝刀换握示例，它不是论文额外报告的实验。先记录当前物体朝向与指尖排列。再选择一个参考目标：刀杆已经旋转，手指处于下一种有用的握法。控制器可能滚动手柄、短暂松开一根手指，再重新建立接触。我们指定手与物体的共同终点，并不规定适用于所有工具的固定换指顺序。
+Source: DoF explanatory schematic · Sections 3.1–3.2; illustrative transition
+
+Online deployment has two parallel paths / 上线后，手臂与灵巧手走两条控制路径
+At deployment, a smaller marker glove tracks the wrist and fingertips, while object markers provide object pose. The arm follows the operator's wrist through inverse kinematics. In parallel, the learned hand policy reads the robot state and the incoming co-tracking target. It sends joint-position commands to the hand; the evaluated teleoperation loop runs at thirty hertz. Thirty hertz is a loop rate, not a reported end-to-end latency or a guarantee of instantaneous contact response.
+部署时，较精简的标记手套跟踪腕部和指尖，物体标记提供物体位姿。手臂通过逆运动学跟随操作者手腕。与此同时，学习到的手部策略读取机器人状态与实时共同跟踪目标。策略向灵巧手发送关节位置指令，测试中的遥操作回路以30赫兹运行。30赫兹是回路频率，并非端到端延迟测量，也不代表接触响应没有延迟。
+Source: Author project demonstration · original encoded speed retained · bigai-dex.github.io
+
+The controller does not handle the entire trial alone / 一次操作，并非从头到尾只靠这个控制器
+The policy is trained on in-hand interactions, not on approaching an object from a distance. Kinematic retargeting handles the approach and initial grasp. Once an approximate grasp is established, the operator switches to learned co-tracking for reorientation, regrasping, and finger gaiting. The human remains in the loop and provides the changing targets. Calling this an autonomous, vision-only robot would therefore combine capabilities that this teleoperation experiment does not establish.
+这个策略学习的是手内交互，而不是从远处接近物体。接近与初始抓取由运动学重定向负责。形成初步抓握后，操作者切换到学习共同跟踪，执行旋转、换握与换指。人在回路中持续提供变化的目标。因此，不能把这一遥操作实验直接说成完全自主、只靠普通视觉的机器人。
+Source: DoF explanatory schematic · Appendix B.3.2
+
+Checkpoint: explain the system without its name / 理解检查：不提名字，也能说清它在做什么
+You should now be able to separate three outputs: measured human geometry, robot-compatible reference goals, and physical joint commands. You should also explain why the object belongs in the target, and why geometry alone cannot guarantee stable motion. The next part opens the controller: when does a goal count as reached, what earns reward, and how does training tolerate imperfect motors? Keep the screwdriver example in mind; we will trace it through that loop.
+现在应能分清三类输出：测得的人体几何、适配机器人的参考目标，以及真实关节指令。也应能解释为什么目标必须包括物体，以及为什么仅有几何还不能保证稳定运动。下一部分拆开控制器：怎样才算到达目标、什么行为获得奖励，以及如何适应不完美的电机。记住螺丝刀示例，我们会带着它走一遍控制回路。
+Source: DoF explanatory schematic · Sections 3.1–3.3
+
+https://arxiv.org/pdf/2607.11481v1
+https://bigai-dex.github.io/blog/teledexter/

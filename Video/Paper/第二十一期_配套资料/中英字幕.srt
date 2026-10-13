@@ -1,0 +1,89 @@
+﻿1
+00:00:00,850 --> 00:00:05,650
+A peg touches the rim because the estimated hole position is slightly wrong.
+估计孔位稍有偏差，插销就会碰到边缘。
+
+2
+00:00:06,130 --> 00:00:13,530
+FORGE teaches a robot to use contact force while searching, rather than repeatedly pushing toward the same inaccurate visual target.
+FORGE 学习利用接触力搜索，不只是继续朝目标推。
+
+3
+00:00:14,123 --> 00:00:20,823
+The recurrent policy receives robot motion state, estimated contact force, and a force threshold.
+循环策略读取运动状态、估计接触力和力阈值。
+
+4
+00:00:21,363 --> 00:00:28,403
+It predicts relative motion targets for impedance control, along with a signal estimating whether the assembly step has succeeded.
+输出阻抗运动目标，并预测装配步骤是否成功。
+
+5
+00:00:29,024 --> 00:00:34,544
+During training, contact force above the chosen threshold incurs an additional penalty.
+训练中，超过阈值的接触力会带来额外惩罚。
+
+6
+00:00:34,964 --> 00:00:43,384
+The threshold also conditions the policy, allowing different behaviors for gentle searching and tasks that genuinely require stronger insertion forces.
+阈值也作为策略输入，区分轻柔搜索与高力插入。
+
+7
+00:00:44,055 --> 00:00:50,655
+Dynamics and controller gains vary in simulation, preparing the policy for uncertain hardware behavior.
+仿真随机化动力学和控制增益，覆盖执行不确定性。
+
+8
+00:00:51,155 --> 00:00:57,175
+This is distinct from merely adding noise to a camera image: the training must cover how actions produce forces.
+不只给图像加噪，还要覆盖动作怎样产生力。
+
+9
+00:00:57,865 --> 00:01:05,005
+The Franka setup estimates end-effector force from joint torques, without requiring an external force-torque sensor.
+Franka 用关节力矩估计末端力，无需外置力传感器。
+
+10
+00:01:05,525 --> 00:01:13,185
+Most evaluations start from calibrated fixtures and inject position errors, so their disturbance protocol is deliberately controlled.
+多数测试预先标定工件，再人为加入位置误差。
+
+11
+00:01:13,765 --> 00:01:19,645
+Across forty-five trials per task, FORGE reaches ninety-eight percent on medium-gear meshing.
+每任务四十五次，中型齿轮啮合成功率九十八。
+
+12
+00:01:20,025 --> 00:01:28,745
+The matched IndustReal baseline reaches eighty-seven percent; peg insertion and nut threading show different gains, so one average would hide useful detail.
+同表基线八十七；插销和螺母任务增益各不相同。
+
+13
+00:01:29,340 --> 00:01:34,680
+Nut threading reaches sixty-nine percent, compared with thirty-six for the matched baseline.
+螺母任务六十九，匹配基线三十六。
+
+14
+00:01:35,260 --> 00:01:40,600
+Here success means engaging roughly a quarter of one thread, not tightening the nut all the way to the base.
+成功只要求约四分之一牙接合，并非拧到底。
+
+15
+00:01:41,217 --> 00:01:46,997
+The five-millimeter number describes injected input error, not final positioning precision.
+五毫米指人为输入误差，不是最终定位精度。
+
+16
+00:01:47,457 --> 00:01:55,497
+A soft force penalty also cannot guarantee a hard force limit; excessive uncertainty or a threshold set too low can still prevent completion.
+软惩罚不保证力硬上限；误差或阈值仍会导致失败。
+
+17
+00:01:56,186 --> 00:02:01,426
+FORGE makes contact a useful source of information during assembly under uncertainty.
+FORGE 让装配中的接触成为有用信息。
+
+18
+00:02:02,066 --> 00:02:10,906
+Its practical value depends on the task, sensing calibration, force settings, and success criterion, which must stay visible when comparing methods.
+评估时应同时保留任务、标定、力设置和成功定义。

@@ -1,0 +1,119 @@
+﻿1
+00:00:00,850 --> 00:00:06,150
+When two hands overlap in a headset image, several fingers can disappear at once.
+头显里双手重叠时，多根手指会同时消失。
+
+2
+00:00:06,430 --> 00:00:11,870
+UmeTrack combines camera geometry, multiple views, and temporal memory to estimate hand motion.
+UmeTrack结合相机几何、多视角与时序估计人手。
+
+3
+00:00:12,190 --> 00:00:16,570
+It is a perception foundation for interaction, not a robot manipulation policy.
+它是交互的感知基础，不是机器人操作策略。
+
+4
+00:00:17,201 --> 00:00:23,061
+Wide-angle headset images are resampled into perspective hand crops with known camera transforms.
+广角头显画面按已知变换重采样成人手透视裁剪。
+
+5
+00:00:23,741 --> 00:00:28,821
+This gives the network a consistent view while retaining the geometric relationship between cameras.
+这样让输入视角一致，并保留相机间几何关系。
+
+6
+00:00:29,381 --> 00:00:32,641
+Cropping is a distinct step from finding a lost hand in the full image.
+裁剪与在完整画面重新找回丢失的人手是两步。
+
+7
+00:00:33,182 --> 00:00:38,142
+Each crop becomes learned features that are transformed into a common coordinate frame.
+每个裁剪先编码，再变换到共同坐标系。
+
+8
+00:00:38,662 --> 00:00:42,982
+Features from available views are fused before the temporal module updates its state.
+可用视角的特征先融合，再更新时序模块状态。
+
+9
+00:00:43,402 --> 00:00:46,502
+These transformed features are not a measured depth point cloud.
+这些变换后的特征不是实测深度点云。
+
+10
+00:00:47,070 --> 00:00:52,610
+The known-skeleton branch predicts twenty joint angles plus a six-dimensional root pose.
+已知骨架分支预测20个关节角与六维根姿态。
+
+11
+00:00:52,950 --> 00:00:57,790
+Forward kinematics places the joints, and skinning produces the corresponding hand surface.
+正运动学放置关节，蒙皮生成对应人手表面。
+
+12
+00:00:58,250 --> 00:01:03,150
+The unknown-skeleton route estimates scale rather than a complete personalized surface scan.
+未知骨架路线估计尺度，并非完整个体表面扫描。
+
+13
+00:01:03,732 --> 00:01:09,112
+Real training labels come from a separate thirty-six-camera optical motion-capture setup.
+真实训练标签来自另一套36相机光学动捕系统。
+
+14
+00:01:09,772 --> 00:01:13,612
+Surface markers and scanned hand models are fitted to recover the labeled motion.
+表面标记与扫描手模型经过拟合，恢复标注运动。
+
+15
+00:01:13,972 --> 00:01:18,472
+The headset does not generate those reference poses independently from its own predictions.
+头显并不是独立用自身预测生成这些参考姿态。
+
+16
+00:01:19,256 --> 00:01:24,236
+Recent observations help maintain a plausible hand when part of it becomes hidden.
+部分人手被遮挡时，近期观测帮助维持合理姿态。
+
+17
+00:01:24,616 --> 00:01:28,396
+But memory cannot directly observe a new motion that every camera misses.
+但所有相机都没看到的新动作，记忆无法直接观测。
+
+18
+00:01:29,116 --> 00:01:33,616
+Smooth output must therefore be considered alongside position error and tracking failures.
+因此，平滑输出应与位置误差和追踪失败一起看。
+
+19
+00:01:34,392 --> 00:01:39,892
+The official corrected table reports nine point four millimeters for known, separate hands.
+官方修正表中，已知手型分离双手误差9.4毫米。
+
+20
+00:01:40,372 --> 00:01:46,732
+Public evaluation also provides ground-truth-guided crops, which simplifies the input localization problem.
+公开评测还使用真值引导裁剪，简化了定位问题。
+
+21
+00:01:47,172 --> 00:01:51,952
+That score is not end-to-end detection, recovery, or robot fingertip accuracy.
+这个分数不是完整检测、重捕获或机器人指尖精度。
+
+22
+00:01:52,714 --> 00:01:59,214
+UmeTrack offers a clear example of geometry-aware visual tracking and model-based hand representation.
+UmeTrack展示了结合几何的视觉追踪与模型人手表示。
+
+23
+00:01:59,694 --> 00:02:06,274
+For teleoperation, calibration, robot retargeting, contact, and latency remain additional engineering problems.
+遥操作还要解决标定、重定向、接触与延迟。
+
+24
+00:02:06,654 --> 00:02:11,834
+Use it to understand the pipeline, without calling a historical tracker today's universal winner.
+用它理解链路，不把历史方法称作今天的通用冠军。

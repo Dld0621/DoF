@@ -1,0 +1,43 @@
+﻿# DoF Infra EP.01 — World Models / narrative upgrade
+
+Core question: before moving a cup past an obstacle, how can a prediction change the robot's decision?
+The persistent cup/robot/obstacle diagram is an original explanatory illustration. Candidate paths, reward scores and uncertainty rings are illustrative, not measured experiments. It is not footage of a reproduced system.
+
+Primary sources (already retrieved in the project; source figures inspected for this revision):
+
+1. DayDreamer: World Models for Physical Robot Learning. Wu et al., CoRL 2022 / PMLR 205 (2023).
+Paper: https://proceedings.mlr.press/v205/wu23c.html
+PDF: https://proceedings.mlr.press/v205/wu23c/wu23c.pdf
+Project: https://danijar.com/project/daydreamer/
+Figure 3: real sequences train the latent model; imagined rollouts train actor/critic. Distinguish imagination during training from online action-sequence planning.
+Official clips: quadruped early learning and authors' robot-platform overview. These are physical robots; behaviors are learned separately through interaction. No claim of a general pretrained controller or fully unattended deployment.
+
+2. TD-MPC2: Scalable, Robust World Models for Continuous Control. Hansen et al., ICLR 2024.
+Paper: https://arxiv.org/abs/2310.16828
+Project: https://www.tdmpc2.com/
+Figure 3: control-centric latent dynamics, predicted rewards and terminal values; online action-sequence optimization, execute first action and replan. Reconstruction of future frames is not required.
+Official clips: Stack Cube and Humanoid Run are SIMULATION benchmarks, clearly labelled on screen.
+https://www.tdmpc2.com/videos/tdmpc2-stack-cube.mp4
+https://www.tdmpc2.com/videos/tdmpc2-humanoid-run.mp4
+
+3. V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning. Assran et al., 2025.
+Paper: https://arxiv.org/abs/2506.09985
+Code: https://github.com/facebookresearch/vjepa2
+Official demonstration: https://ai.meta.com/blog/v-jepa-2-world-model-benchmarks/
+Figures 2 and 7: video pretraining then robot action post-training; action-conditioned endpoint prediction compared against goal-image features. The physical clip is the actual execution excerpt at source 24–29s, not the preceding explanatory animation. Source paper reports ~16s/action planning on RTX 4090; edited video speed is not presented as planner speed. Supplied goal images are explicitly stated.
+
+4. RoboDreamer: Learning Compositional World Models for Robot Imagination. Zhou et al., ICML 2024.
+Paper: https://arxiv.org/abs/2404.12377
+Project: https://umass-embodied-agi.github.io/robodreamer/
+Figure 3: language composition and visual conditions generate a desired video plan. Paired stack-blocks clips retain GENERATED PLAN and RLBench SIMULATION labels. They are not evidence of successful physical deployment.
+https://umass-embodied-agi.github.io/robodreamer/result/rlbench_results/rlbench_demo/0/stack_blocks_syn.mp4
+https://umass-embodied-agi.github.io/robodreamer/result/rlbench_results/rlbench_demo/0/output.mp4
+
+DoF learning map / QR destination:
+https://github.com/Dld0621/Embodied-AI-Paper-Analysis
+
+Production: English narration uses the user-selected reference voice through the established local synthesis pipeline. Low-volume original procedural ambient music, transparent English/Chinese captions, centered embedded DoF logo and centered subtle watermark. Figures and demonstration excerpts remain credited. Source material remains author-owned; this episode is original educational commentary and makes no claim of local reproduction.
+
+
+Premium edition production notes
+Original English audio and scientific claims retained. Causal cup/obstacle/trajectory animations are conceptual, not measurements. Paper figures are original crops. Sources and simulation/physical distinctions appear on screen. DoF logo comes from the supplied poster (transparent extraction), cropped using alpha >= 5 bounds plus a 2 px margin. No reference-video pixels or audio are included.

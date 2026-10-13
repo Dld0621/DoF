@@ -1,0 +1,54 @@
+﻿DoF Paper EP.20 | From Simulated Contact to Real Assembly
+仿真里会插，真机为什么会卡？
+
+01 The real part can jam / 真零件会卡住
+A policy that inserts a peg in simulation may jam when the real robot moves slightly differently. IndustReal tackles both sides of that gap: what the simulator teaches and how hardware executes the learned actions.
+仿真会插的策略，到真机可能因细小偏差卡住。IndustReal 同时处理训练环境和动作执行的差距。
+Source: https://www.roboticsproceedings.org/rss19/p039.pdf#page=3
+
+02 Do not reward impossible contact / 别奖励不可能的接触
+Some simulated states let parts penetrate each other in ways that cannot happen physically. Simulation-aware policy updates filter or down-weight those experiences, reducing the incentive to exploit numerical artifacts during training.
+仿真有时让零件发生现实中不可能的穿透。训练时过滤或降低这类经验权重，减少投机。
+Source: https://www.roboticsproceedings.org/rss19/p039.pdf#page=4
+
+03 Make the goal easier to learn / 让目标更容易学到
+A signed-distance-based reward provides geometric guidance toward the assembled configuration. A sampling curriculum changes initial difficulty as learning progresses, helping the policy discover contact-rich insertion instead of relying only on rare terminal rewards.
+基于距离场的奖励，引导零件靠近装配目标。再通过初始难度课程，帮助策略发现正确插入动作。
+Source: https://www.roboticsproceedings.org/rss19/p039.pdf#page=3
+
+04 Correct execution bias / 修正执行偏差
+On hardware, small tracking errors can stop repeated relative actions from reaching their intended target. Policy-level action integration accumulates commands before impedance control, helping reduce steady-state bias without retraining the policy on real demonstrations.
+真机跟踪偏差，会让相对动作始终到不了目标。策略层累积动作，再用阻抗控制减少稳态偏差。
+Source: https://www.roboticsproceedings.org/rss19/p039.pdf#page=8
+
+05 What zero-shot transfer still needs / 零样本迁移仍需要什么
+The setup uses a Franka arm, a wrist depth camera, known CAD geometry, and calibration. The policy does not consume force-torque observations; compliant control alone should not be described as an explicit force-sensing policy.
+系统仍需 Franka、腕部深度相机、CAD 和标定。策略不读取力矩观测，柔顺控制不等于力感知策略。
+Source: https://www.roboticsproceedings.org/rss19/p039.pdf#page=1
+
+06 Insertion versus engagement / 插到底与接合的区别
+Independent insertion completes one hundred of one hundred twenty physical trials. One hundred ten trials achieve engagement, a looser condition that can leave the part short of its fully seated target.
+独立插入一百二十次真机试验，完整完成一百次。接合有一百一十次，但接合不一定完全到位。
+Source: https://www.roboticsproceedings.org/rss19/p039.pdf#page=9
+
+07 Test the complete pipeline / 检验完整链路
+The full pick-place-insert pipeline completes one hundred seven of one hundred twenty trials. Its initialization and grasp conditions differ from the isolated insertion experiment, so the higher percentage does not show that longer tasks are easier.
+拿取、放置、插入全流程，一百二十次完成一百零七次。初态和抓持条件不同，不能说长任务反而更容易。
+Source: https://www.roboticsproceedings.org/rss19/p039.pdf#page=9
+
+08 Clearance is not tracking accuracy / 间隙不等于定位精度
+Reported submillimeter clearances describe how tightly the parts fit, not measured camera or end-effector error. Gripper slip, wedging, and dependence on fixtures remain important limitations when moving beyond the tested assembly conditions.
+亚毫米间隙描述零件配合，不是相机或末端误差。夹爪滑移、楔紧和工装依赖，仍限制外推。
+Source: https://www.roboticsproceedings.org/rss19/p039.pdf#page=3
+
+09 Treat transfer as a system / 把迁移看成系统问题
+IndustReal shows that sim-to-real assembly needs more than increasing the number of training episodes. Geometric rewards, physically plausible experience, and bias-aware execution work together; evaluate each contribution under the same hardware protocol.
+仿真迁移并非只要增加训练次数。几何奖励、可信经验和执行修正，需要配套验证。
+Source: https://www.roboticsproceedings.org/rss19/p039.pdf#page=1
+
+
+Sources
+https://arxiv.org/abs/2305.17110
+https://www.roboticsproceedings.org/rss19/p039.pdf
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

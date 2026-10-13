@@ -1,0 +1,399 @@
+﻿1
+00:00:00,850 --> 00:00:07,090
+Seventy-five point two percent sounds impressive, but first identify exactly what was tested.
+75.2%很亮眼，但先确认测的是什么。
+
+2
+00:00:07,510 --> 00:00:12,770
+This averages seven complete teleoperation tasks using the five-finger SharpaWave hand.
+这是五指SharpaWave完成七项遥操作任务的平均值。
+
+3
+00:00:13,010 --> 00:00:16,750
+A human still supplies the intended motion throughout these experiments.
+这些实验始终由人提供运动意图。
+
+4
+00:00:17,170 --> 00:00:23,030
+Each task has fifteen trials, so one success changes its score by almost seven percentage points.
+每项15次试验，一次成功就改变近7个百分点。
+
+5
+00:00:23,430 --> 00:00:29,030
+These results demonstrate useful control under this protocol, rather than general autonomous manipulation.
+这些结果说明该协议下控制有效，不能推出通用自主操作。
+
+6
+00:00:29,777 --> 00:00:35,157
+Consider a hammer trial that completes five stages, then fails before the final two.
+假设一次锤子试验完成五步，最后两步失败。
+
+7
+00:00:35,397 --> 00:00:40,057
+Its success contribution is zero, because the entire sequence was not completed.
+它对成功率的贡献为零，因为流程没有全部完成。
+
+8
+00:00:40,557 --> 00:00:45,657
+Its task progress contribution is five sevenths, because earlier stages still count.
+任务进度贡献是七分之五，已完成步骤仍计分。
+
+9
+00:00:45,977 --> 00:00:50,257
+Average these quantities across all fifteen trials to obtain the reported metrics.
+将这两个量分别对15次试验取平均，就得到表中指标。
+
+10
+00:00:50,757 --> 00:00:56,497
+Progress rewards partial completion; it does not measure speed, throughput, or precise tracking error.
+进度计入部分完成，不代表速度、吞吐量或精确跟踪误差。
+
+11
+00:00:56,987 --> 00:01:03,547
+The three reorientation tasks require picking up, rotating, and placing an object back down.
+三项重定向任务都要求拿起、转向，再放回物体。
+
+12
+00:01:03,967 --> 00:01:08,067
+The tool tasks add interaction with the environment and further changes of grip.
+工具任务还加入环境交互，以及后续的换握。
+
+13
+00:01:08,207 --> 00:01:12,207
+Hammering, for example, continues through pulling nails and returning the hammer.
+例如锤子任务还要拔钉，并把锤子放回。
+
+14
+00:01:12,627 --> 00:01:16,847
+A convincing middle step therefore cannot stand in for complete task success.
+因此，中途某一步很漂亮，不等于整个任务成功。
+
+15
+00:01:17,307 --> 00:01:22,307
+Also notice the bandage tape: these experimental objects receive added surface friction.
+还要注意绷带胶带：实验对物体表面摩擦做了增强。
+
+16
+00:01:22,875 --> 00:01:28,455
+Figure six follows how many of the original fifteen trials reach each successive stage.
+Figure 6记录最初15次试验中，有多少到达后续各阶段。
+
+17
+00:01:28,895 --> 00:01:32,595
+Read its horizontal axis as task stages, not elapsed time.
+横轴是任务阶段，不是经过的时间。
+
+18
+00:01:33,035 --> 00:01:38,955
+For bulb replacement, all fifteen reach the fourth stage, while thirteen finish the complete sequence.
+灯泡任务15次都到达第四步，最后13次完成全流程。
+
+19
+00:01:39,615 --> 00:01:44,535
+The drop appears during the final return phase, after the bulb has been unscrewed.
+下降出现在旋出灯泡之后的最后放回流程中。
+
+20
+00:01:44,775 --> 00:01:48,915
+That localizes a bottleneck more clearly than a single headline percentage.
+这比单独一个总成功率，更能定位薄弱环节。
+
+21
+00:01:49,640 --> 00:01:55,400
+Before ranking methods, inspect which tasks and implementations actually enter the comparison.
+排名之前，先看比较实际包含了哪些任务和实现。
+
+22
+00:01:56,120 --> 00:02:01,640
+SimToolReal is evaluated on three tool tasks, so its average covers a different task set.
+SimToolReal只测三项工具任务，其平均值覆盖范围不同。
+
+23
+00:02:02,200 --> 00:02:07,500
+The authors also reimplement DexGen and replace one rollout component with their own controller.
+作者还重新实现DexGen，并用自己的控制器替换一处轨迹生成模块。
+
+24
+00:02:08,040 --> 00:02:11,840
+These choices matter when interpreting the size of the reported advantage.
+理解性能优势有多大时，这些选择都很重要。
+
+25
+00:02:12,300 --> 00:02:17,800
+The table supports a comparison under this setup, not a universal ranking across robotics.
+表格支持的是此设置下的比较，不能变成整个机器人的通用排名。
+
+26
+00:02:18,473 --> 00:02:24,773
+The second robot hand provides a useful test of the overall pipeline across different morphologies.
+第二种机器人手检验了这套流程能否适配不同形态。
+
+27
+00:02:25,433 --> 00:02:28,753
+LeapHand has four fingers, compared with five on SharpaWave.
+LeapHand是四指，而SharpaWave是五指。
+
+28
+00:02:29,113 --> 00:02:34,693
+The same human references are reused, but retargeting and controller training remain hand specific.
+两者复用人类参考动作，但重定向和控制器训练仍分别进行。
+
+29
+00:02:35,313 --> 00:02:41,413
+LeapHand completes sixty percent of cylinder trials and seventy-three point three percent of cuboid trials.
+LeapHand圆柱任务成功率60%，长方体为73.3%。
+
+30
+00:02:42,013 --> 00:02:47,253
+These are two evaluated tasks, not the complete seven-task benchmark transferred unchanged.
+这里只评测了两项任务，并非原封不动迁移整套七任务基准。
+
+31
+00:02:48,103 --> 00:02:55,443
+The any-to-any experiment asks whether a grasp can transition between targets sampled from recorded reference frames.
+Any-to-any检验抓握能否在已记录参考帧采样的目标之间转换。
+
+32
+00:02:56,283 --> 00:03:01,323
+Success requires object position within two centimeters and orientation within twenty degrees.
+成功要求物体位置误差小于2厘米，朝向误差小于20度。
+
+33
+00:03:01,963 --> 00:03:06,483
+Each active target receives up to twenty seconds before the trial terminates.
+当前目标最多尝试20秒，超时就结束试验。
+
+34
+00:03:06,983 --> 00:03:13,223
+Cylinder trials average forty-one point one consecutive targets; cuboid trials average twelve point one.
+圆柱平均连续完成41.1个目标，长方体为12.1个。
+
+35
+00:03:13,423 --> 00:03:18,903
+That tests new transitions within reference coverage, not arbitrary unseen objects or poses.
+它检验参考覆盖范围内的新转换，不代表任意未知物体或姿态。
+
+36
+00:03:19,492 --> 00:03:26,872
+Table four compares sparse-goal training with dense tracking, then evaluates both controllers in two different ways.
+Table 4比较稀疏目标与密集跟踪训练，再用两种方式评估。
+
+37
+00:03:27,192 --> 00:03:31,232
+In dense evaluation, a new reference arrives every control step.
+密集评估在每个控制步更新参考。
+
+38
+00:03:31,752 --> 00:03:36,552
+In sparse evaluation, the next target arrives only after the current target is reached.
+稀疏评估只有达到当前目标，才给出下一个目标。
+
+39
+00:03:36,872 --> 00:03:42,592
+For the hammer, sparse training reaches one hundred eighty-six point six goals, versus two point seven.
+锤子稀疏评估中，稀疏训练完成186.6个目标，对照为2.7个。
+
+40
+00:03:42,812 --> 00:03:47,612
+Compare matching columns: episode length and completed goals are different quantities.
+应在同一列比较：回合长度和完成目标数不是同一量。
+
+41
+00:03:48,160 --> 00:03:53,900
+Action masking occasionally holds selected joint commands at their previous values during training.
+动作屏蔽会在训练时，偶尔让部分关节命令保持上一值。
+
+42
+00:03:54,340 --> 00:03:58,840
+It encourages the controller to cope when the commanded motion is not fully executed.
+它鼓励控制器适应指令运动未完全执行的情况。
+
+43
+00:03:59,200 --> 00:04:05,780
+For the screwdriver, removing this mechanism reduces complete success from seventy-three point three percent to zero.
+螺丝刀任务去掉该机制，完整成功率从73.3%降到零。
+
+44
+00:04:06,340 --> 00:04:09,900
+Hammer and cuboid performance also decline in the reported ablation.
+论文的消融中，锤子和长方体性能也下降。
+
+45
+00:04:10,360 --> 00:04:16,059
+This supports its benefit here, without isolating which physical actuator defect it compensates for.
+这支持它在此处有效，但没有单独确定补偿了哪种执行器缺陷。
+
+46
+00:04:16,509 --> 00:04:22,869
+Figure five separates the full training recipe from versions without the curriculum or without SAPG.
+Figure 5对比完整训练方案、去掉课程，以及去掉SAPG。
+
+47
+00:04:23,029 --> 00:04:28,149
+Follow the curves across environment steps, rather than comparing a single attractive endpoint.
+应沿环境步数观察曲线，而非只挑一个漂亮终点。
+
+48
+00:04:28,589 --> 00:04:33,609
+The full recipe achieves higher reward and more consecutive successes in this hammer experiment.
+在这项锤子实验中，完整方案获得更高奖励和更多连续成功。
+
+49
+00:04:34,069 --> 00:04:39,209
+However, the plot does not show error bands or variation across independent training seeds.
+但图中没有误差带，也没有独立训练种子间的波动。
+
+50
+00:04:39,409 --> 00:04:43,429
+Treat the ordering as evidence from the reported runs, not a universal guarantee.
+因此，排序是已报告运行的证据，不是普遍保证。
+
+51
+00:04:44,155 --> 00:04:51,055
+The autonomous results come from a separate learning stage using demonstrations collected through teleoperation.
+自主结果来自另一个学习阶段，数据通过遥操作收集。
+
+52
+00:04:51,655 --> 00:04:57,935
+Each task receives fifty expert robot demonstrations, followed by fifteen evaluation trials.
+每项任务收集50条专家机器人示范，再做15次评测。
+
+53
+00:04:58,315 --> 00:05:04,195
+A diffusion policy uses third-person and wrist RGB observations with frozen visual encoders.
+扩散策略使用第三视角和腕部RGB观测，以及冻结的视觉编码器。
+
+54
+00:05:04,595 --> 00:05:08,140
+Two observation frames condition a prediction of sixteen actions.
+两帧观测用于预测16个动作。
+
+55
+00:05:08,155 --> 00:05:15,235
+This is task-specific imitation learning, not the original teleoperation controller suddenly operating without a person.
+这是针对任务的模仿学习，并非原遥操作控制器直接去掉人。
+
+56
+00:05:15,866 --> 00:05:21,506
+In the autonomy table, each stage reports survivors relative to the previous stage.
+自主结果表中，每一阶段的分母是上一阶段存活数。
+
+57
+00:05:21,826 --> 00:05:27,946
+For bulb installation, fifteen attempts shrink to thirteen, then twelve, then eight, and finally seven.
+灯泡安装从15次，依次剩下13、12、8，最后7次。
+
+58
+00:05:28,346 --> 00:05:33,446
+Seven out of eight at the last stage therefore does not mean eighty-seven percent overall success.
+最后一步的八分之七，并不代表整体成功率87%。
+
+59
+00:05:34,006 --> 00:05:38,566
+Overall success remains seven out of fifteen, or forty-six point seven percent.
+整体仍是十五分之七，即46.7%。
+
+60
+00:05:38,986 --> 00:05:44,086
+The largest intermediate loss occurs at alignment, giving us a concrete target for improvement.
+中间损失最多的是对准阶段，这给出了具体改进方向。
+
+61
+00:05:44,836 --> 00:05:50,896
+Do not compare the autonomous hammer score directly against the complete teleoperation hammer score.
+不能直接拿自主锤子分数，对比完整遥操作锤子分数。
+
+62
+00:05:51,516 --> 00:05:57,116
+The autonomous version uses larger nails and foam, and omits pulling nails and returning the tool.
+自主版使用更大钉子和泡沫，并省去拔钉、放回工具。
+
+63
+00:05:57,776 --> 00:06:01,576
+Bulb installation omits unscrewing and the final return sequence.
+灯泡安装省去了旋出和最后放回流程。
+
+64
+00:06:01,936 --> 00:06:04,876
+Brushing also becomes a shorter forward-sweeping task.
+刷扫也变为较短的向前扫任务。
+
+65
+00:06:05,476 --> 00:06:12,256
+These experiments establish a demonstration-learning pathway, while leaving harder autonomous sequences for further validation.
+这些实验建立了示范学习路径，更难的自主长流程仍待验证。
+
+66
+00:06:12,962 --> 00:06:21,282
+The failure examples separate external disturbances, jammed contact transitions, and tracking that stalls without dropping the object.
+失败案例分为外部扰动、换接触卡住，以及不掉物却停滞。
+
+67
+00:06:21,902 --> 00:06:26,212
+A hammer impact can push the hand-object state outside familiar training conditions.
+锤击可能把手和物体推离熟悉的训练状态。
+
+68
+00:06:27,202 --> 00:06:30,382
+A finger that fails to lift can obstruct the next grasp.
+未成功抬离的手指，可能阻碍下一次换握。
+
+69
+00:06:30,882 --> 00:06:35,287
+Missing tactile feedback may also leave sliding and pressing difficult to distinguish.
+缺少触觉反馈，也可能难以区分滑动和按压。
+
+70
+00:06:35,302 --> 00:06:43,519
+These are representative mechanisms and author interpretations, not measured failure frequencies or proof that touch alone solves them.
+这是代表性机制和作者解释，并非频率统计或触觉单独解决问题的证明。
+
+71
+00:06:43,969 --> 00:06:51,609
+For each object, the dataset contains one hundred fifty twenty-second trajectories, or fifty minutes of human motion.
+每个物体有150条、每条20秒的轨迹，合计50分钟人类动作。
+
+72
+00:06:52,049 --> 00:06:58,989
+Each controller then requires its own training, reported at roughly one day on four RTX fifty-ninety GPUs.
+每个控制器还要分别训练，论文报告约需4张RTX 5090训练一天。
+
+73
+00:06:59,489 --> 00:07:04,849
+Deployment retains optical markers, object tracking, calibration, and the human operator.
+部署仍保留光学标记、物体跟踪、标定和操作者。
+
+74
+00:07:05,349 --> 00:07:09,954
+These requirements are part of the system, rather than incidental laboratory decoration.
+这些要求属于系统本身，不是无关的实验室布置。
+
+75
+00:07:09,969 --> 00:07:14,589
+A new object therefore adds both data collection and policy-training work.
+因此，新物体仍需要增加采集数据和训练策略的工作。
+
+76
+00:07:15,048 --> 00:07:22,028
+Start reproduction with one object and the original stage definitions, then log every trial through completion or failure.
+复现先选一个物体，沿用原阶段定义，逐次记录成功或失败。
+
+77
+00:07:22,268 --> 00:07:27,408
+Match friction, sensing, target tolerances, and control timing before changing the method.
+修改方法之前，先对齐摩擦、感知、目标容差和控制节拍。
+
+78
+00:07:27,648 --> 00:07:32,888
+Clarify the appendix discrepancy between thirty-hertz capture and sixty-hertz reference timing.
+附录30赫兹采集与60赫兹参考节拍的差异，需要先澄清。
+
+79
+00:07:33,088 --> 00:07:38,373
+Also request the unspecified tolerance-curriculum schedule before claiming an exact replication.
+宣称精确复现前，还应确认未明确列出的容差课程日程。
+
+80
+00:07:38,388 --> 00:07:44,988
+The strongest takeaway is a practical bridge from human targets to contact-rich control, with clearly bounded evidence.
+最有力的结论，是把人类目标接到复杂接触控制上的实用路径。

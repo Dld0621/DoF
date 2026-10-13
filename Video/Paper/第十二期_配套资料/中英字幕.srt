@@ -1,0 +1,119 @@
+﻿1
+00:00:00,850 --> 00:00:05,530
+Reaching into a cluttered area can hide the target behind the robot's own hand.
+伸向杂乱区域时，目标可能被机器人自己的手遮住。
+
+2
+00:00:05,870 --> 00:00:10,390
+DexTouch explores grasping, door opening, and valve turning without camera input.
+DexTouch探索不用相机的抓取、开门和转阀。
+
+3
+00:00:10,650 --> 00:00:15,890
+Its policy searches through contact, while still receiving important task and region priors.
+策略通过接触搜索，但仍依赖任务和区域先验。
+
+4
+00:00:16,427 --> 00:00:20,727
+Sixteen force-sensitive resistors cover parts of the fingers and palm.
+十六个力敏电阻分布在手指与手掌上。
+
+5
+00:00:21,107 --> 00:00:26,267
+Filtering and thresholds turn their readings into binary signals indicating whether contact exists.
+经过滤波和阈值处理，读数变成二值接触信号。
+
+6
+00:00:26,707 --> 00:00:31,747
+The policy therefore sees contact events, not a dense three-dimensional shape reconstruction.
+策略看到接触事件，而不是密集三维形状重建。
+
+7
+00:00:32,560 --> 00:00:38,980
+A reinforcement-learning critic and reward can use privileged object information during simulation training.
+仿真训练中的评价器与奖励可用物体特权信息。
+
+8
+00:00:39,460 --> 00:00:43,120
+The actor learns using inputs that will also be available on the robot.
+执行策略只学习真机同样可获得的输入。
+
+9
+00:00:43,480 --> 00:00:47,920
+Separating these roles prevents training knowledge from being mistaken for deployed sensing.
+分开这两者，才不会把训练知识当成部署感知。
+
+10
+00:00:48,540 --> 00:00:54,820
+The robot receives joint and hand kinematics, contact bits, and a specified search region.
+机器人读取关节运动学、触点和指定搜索区域。
+
+11
+00:00:55,160 --> 00:00:59,220
+The task and placement goal are known, even though the object is not seen.
+虽然看不见物体，但任务与放置目标已知。
+
+12
+00:00:59,580 --> 00:01:05,160
+This is structured tactile exploration, not autonomous discovery of an entirely unknown environment.
+这是有结构的触觉探索，不是全未知环境自主发现。
+
+13
+00:01:05,927 --> 00:01:10,587
+The real setup pairs a UR5e arm with an Allegro dexterous hand.
+真机平台由UR5e机械臂与Allegro手组成。
+
+14
+00:01:11,047 --> 00:01:17,407
+Seen-object grasping averages sixty-four percent, while unseen-object grasping averages forty-seven percent.
+已见物体抓取平均64%，未见物体为47%。
+
+15
+00:01:17,867 --> 00:01:21,747
+The gap shows that eliminating vision does not eliminate distribution shift.
+这个差距说明，不用视觉并未消除分布变化。
+
+16
+00:01:22,306 --> 00:01:28,366
+Door opening averages sixty percent success, and valve turning reaches sixty-seven percent.
+开门平均成功率60%，转阀为67%。
+
+17
+00:01:28,726 --> 00:01:33,446
+Reported means and variation summarize policies trained with three different random seeds.
+报告的均值与离散程度来自三个训练随机种子。
+
+18
+00:01:33,886 --> 00:01:38,426
+These are task outcomes, not force accuracy or millimeter-level pose measurements.
+这些是任务结果，不是力精度或毫米位姿测量。
+
+19
+00:01:39,060 --> 00:01:45,100
+A binary touch signal cannot fully describe surface direction, friction, or contact load.
+二值触觉不能完整描述表面方向、摩擦或负载。
+
+20
+00:01:45,640 --> 00:01:49,400
+Heavy or slippery objects can fail even when the hand detects contact.
+即使检测到接触，重物或滑物仍可能失败。
+
+21
+00:01:49,840 --> 00:01:54,840
+Incorrect search-region assumptions can also prevent the first useful contact from happening.
+搜索区域假设错误，还会阻止首次有效接触。
+
+22
+00:01:55,353 --> 00:02:01,593
+DexTouch shows that inexpensive contact coverage can support useful behavior where vision is unavailable.
+DexTouch说明，廉价触点覆盖能支持无视觉操作。
+
+23
+00:02:02,193 --> 00:02:07,093
+For reliable precision work, the remaining uncertainty must still be measured and managed.
+若要可靠精细操作，仍需测量和处理剩余不确定性。
+
+24
+00:02:07,493 --> 00:02:11,733
+More sensors are not the only question; the policy must use the right information.
+问题不只是更多传感器，还在于策略用对信息。

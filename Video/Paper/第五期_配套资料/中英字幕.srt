@@ -1,0 +1,119 @@
+﻿1
+00:00:00,850 --> 00:00:05,030
+An insertion can fail because the operator cannot see the gap clearly.
+插入可能失败，只因操作者看不清间隙。
+
+2
+00:00:05,390 --> 00:00:09,810
+Open-TeleVision lets the robot's stereo camera follow the operator's head movement.
+Open-TeleVision让机器人双目相机跟随人转头。
+
+3
+00:00:10,110 --> 00:00:14,850
+The central innovation is active visual feedback inside an immersive teleoperation loop.
+核心创新是沉浸遥操作中的主动视觉反馈。
+
+4
+00:00:15,338 --> 00:00:19,458
+The headset sends hand, wrist, and head poses toward the robot.
+头显向机器人发送手、腕和头部姿态。
+
+5
+00:00:19,818 --> 00:00:24,458
+Retargeting and inverse kinematics convert those poses into feasible joint commands.
+重定向与逆运动学将姿态转成可行关节指令。
+
+6
+00:00:25,058 --> 00:00:29,098
+Stereo video travels back, allowing the person to adjust the next action.
+双目视频回传，让人调整下一步动作。
+
+7
+00:00:29,611 --> 00:00:35,431
+The experiments use an H1 platform with six-degree-of-freedom hands and a GR-1 platform.
+实验包括配6自由度手的H1，以及GR-1。
+
+8
+00:00:35,951 --> 00:00:40,171
+The latter uses simple grippers, so their dexterity should not be conflated.
+后者使用简单夹爪，不能混同两者的灵巧性。
+
+9
+00:00:40,611 --> 00:00:45,011
+Moving the camera helps visibility, but does not directly measure contact force.
+移动相机改善可见性，却不能直接测接触力。
+
+10
+00:00:45,602 --> 00:00:52,482
+Robot observations and commands recorded during teleoperation train an autonomous action-chunking policy.
+遥操记录的观测和指令训练自主动作分块策略。
+
+11
+00:00:52,942 --> 00:00:57,042
+Stereo image features and robot state condition the future action sequence.
+双目图像特征和机器人状态作为动作序列条件。
+
+12
+00:00:57,462 --> 00:01:01,426
+At this stage, the operator is removed from the autonomous execution loop.
+在这一阶段，操作者退出自主执行闭环。
+
+13
+00:01:01,876 --> 00:01:07,776
+Sorting uses ten long demonstrations per platform; the other tasks use twenty each.
+分类每平台十条长示教，其余任务各二十条。
+
+14
+00:01:08,196 --> 00:01:13,096
+Each task is evaluated across five complete episodes containing repeated operations.
+每任务评测五个完整回合，回合含重复操作。
+
+15
+00:01:13,596 --> 00:01:17,796
+An individual pick or placement is not automatically a successful full episode.
+单次捡起或放置成功，不等于整个回合成功。
+
+16
+00:01:18,335 --> 00:01:23,875
+H1 sorting reports ninety-two percent picking and eighty-eight percent placement success.
+H1分类中，捡起92%，放置88%。
+
+17
+00:01:24,615 --> 00:01:28,615
+GR-1 placement is sixty percent, despite its higher picking score.
+GR-1放置为60%，低于它的捡起分数。
+
+18
+00:01:29,135 --> 00:01:33,455
+These are reported stage outcomes, not a universal whole-task success rate.
+这些是阶段结果，不是通用整任务成功率。
+
+19
+00:01:33,923 --> 00:01:37,963
+A gripper can hide an object's color after a successful grasp.
+夹爪可能在抓取成功后遮住物体颜色。
+
+20
+00:01:38,483 --> 00:01:42,463
+Short policy memory then makes the correct sorting decision harder to preserve.
+策略记忆较短，会难以保留正确分类依据。
+
+21
+00:01:42,843 --> 00:01:46,943
+The paper does not establish millimeter accuracy for the headset's hand tracker.
+论文也没有验证头显手部跟踪的毫米级精度。
+
+22
+00:01:47,508 --> 00:01:53,167
+The lesson is that observation quality shapes both human control and recorded demonstrations.
+观察质量同时影响人工控制和示教记录。
+
+23
+00:01:53,967 --> 00:01:57,727
+Better viewing geometry can make a difficult contact easier to teach.
+更好的观察几何能让困难接触更容易教。
+
+24
+00:01:58,527 --> 00:02:03,148
+Precision still depends on the robot, policy, calibration, and task-specific feedback.
+精细表现仍取决于机器人、策略、标定与反馈。

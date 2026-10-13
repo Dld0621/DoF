@@ -1,0 +1,81 @@
+﻿学会映射：Robotic Telekinesis、GeoRT 与 AnyDexRT
+Learning the Mapping: Robotic Telekinesis, GeoRT and AnyDexRT
+
+What does a mapper learn? / 网络到底学什么？
+Move your index finger sideways, then try the same movement near your palm. The robot should respond predictably, without suddenly becoming stiff or oversensitive. A learned retargeter therefore needs more than one convincing hand pose. It needs a useful mapping across the motions you actually perform. In this chapter, we follow three approaches to learning that mapping. The key questions are where supervision comes from, and what remains outside the network.
+先横向移动食指，再在靠近掌心的位置重复这个动作。机器人应响应可预测，不该突然迟钝或过度敏感。因此，学习式重定向需要的不只是一张看起来相似的手势。它要在你实际会做的动作范围内，建立有效映射。这一章，我们沿着三种方法，拆开这个映射如何被学会。关键是监督信号从哪里来，以及哪些问题仍在网络之外。
+https://arxiv.org/html/2202.10448v2
+https://arxiv.org/html/2503.07541v1
+https://arxiv.org/html/2607.08341v1
+
+Optimize now, or learn earlier / 逐帧求解，还是提前学习
+An online optimizer starts with a human pose and searches for suitable robot joints. A neural retargeter performs most of that computational work during training instead. At deployment, its learned weights turn a new input into an immediate prediction. This is amortization: earlier computation is shared across many later queries. The optimization objective still matters, because it defines what the network learns to prefer. Fast predictions can still violate constraints that training only softly encourages.
+在线优化器拿到人手姿态后，现场搜索合适的机器人关节角。神经网络重定向则把大量计算工作，提前放到了训练阶段。部署时，已经学好的参数把新输入变成一次直接预测。这叫摊销：前期计算被后面大量查询共同分担。优化目标仍然重要，因为它决定网络会偏好什么样的解。快速预测也可能违反那些只在训练中被软性鼓励的约束。
+https://arxiv.org/html/2202.10448v2
+
+From camera to joint targets / 从摄像头到关节目标
+Robotic Telekinesis starts with a single color camera looking at the operator. In the original figure, the upper branch estimates the human hand and retargets its pose. The lower branch separately estimates body motion to position the robot arm. The hand network receives estimated hand parameters and produces sixteen Allegro joint angles. Those angles are targets, followed by filtering, limits, and the robot control stack. The camera, pose estimator, retargeter, and physical controller therefore have different jobs.
+Robotic Telekinesis 从一台朝向操作者的彩色摄像头开始。原图上方分支先估计人手，再把姿态映射给机器人手。下方分支单独估计人体运动，用来确定机械臂位置。手部网络输入估计的人手参数，输出 Allegro 的十六个关节角。这些角度是目标，之后还有滤波、限幅和机器人的控制系统。所以，摄像头、姿态估计、重定向和物理控制器各有不同职责。
+https://arxiv.org/html/2202.10448v2
+
+Supervision without paired robots / 没有配对机器人标签，怎么训练
+The training images provide human poses, but not a unique matching robot pose. Robotic Telekinesis uses a geometric energy to judge each predicted configuration. Relative landmark vectors should agree after accounting for different hand proportions. Differentiable forward kinematics connects robot joints to those geometric relationships. Gradients then tell the network how to reduce the energy on its next update. No paired robot labels does not mean no supervision; the objective supplies the supervision.
+训练图像提供人手姿态，却没有唯一对应的机器人姿态。Robotic Telekinesis 用几何能量评价每个预测出的构型。考虑两种手的尺寸差异后，关键点之间的相对向量应尽量一致。可微正向运动学把机器人关节角连接到这些几何关系。梯度再告诉网络，下一次更新怎样降低这个能量。没有配对机器人标签，不等于没有监督；监督来自设计好的目标。
+https://arxiv.org/html/2202.10448v2
+
+Learning a collision penalty / 碰撞损失从哪里来
+Look at the blue forward arrows in this original training diagram. The retargeter predicts joints; a separate classifier estimates self-collision probability. That classifier was trained using robot configurations labeled by a collision checker. During retargeter training, it stays fixed while the red gradient arrows update the mapper. This makes collision avoidance differentiable enough to influence the training process. The classifier is not needed for each deployment prediction. It remains a learned penalty, so hardware still needs its own safety checks.
+看原论文训练图里，蓝色箭头表示的前向计算。重定向网络预测关节角，另一个分类器估计自碰撞概率。这个分类器先用机器人构型训练，标签由碰撞检测器生成。训练重定向网络时，分类器保持固定，红色梯度箭头更新映射网络。这样，碰撞规避便能通过可微信号影响训练。每次部署推理时不需要这个分类器。但这仍是学习得到的惩罚项，真机仍需要自己的安全检查。
+https://arxiv.org/html/2202.10448v2
+
+GeoRT: match useful spaces / GeoRT：匹配可用的运动空间
+GeoRT asks whether matching individual task vectors is enough to make control intuitive. The original figure shows the positions a human fingertip and an Allegro fingertip can reach. These clouds describe fingertip workspaces, not point clouds scanned from the surface of a hand. Their shapes differ, so shifting and scaling alone cannot align every region well. GeoRT learns a nonlinear mapping using several geometric criteria instead. The goal is predictable motion throughout the workspace, not just a visually similar still frame.
+GeoRT 问的是：逐个匹配任务向量，是否足以让控制直观？原图展示了人手指尖与 Allegro 指尖各自能到达的位置集合。这些点集表示指尖工作空间，不是扫描手表面得到的点云。两者形状不同，因此平移和缩放无法让所有区域都很好地对齐。GeoRT 因而使用多种几何准则，学习一个非线性映射。目标是在整个工作空间里响应可预测，而不只是某一帧看着相似。
+https://arxiv.org/html/2503.07541v1
+
+The network and the robot model / 网络与机器人模型怎么连接
+For each finger, a small neural network maps human fingertip coordinates to robot joint positions. During training, forward kinematics turns those joints back into robot fingertip coordinates. The geometric losses are measured there, in positions and relationships we can compare. Their gradients travel backward through the robot model to adjust the network weights. At inference, the mapper predicts joints directly, without repeating the training loop. A new target hand needs its model and suitable training, not just renamed output joints.
+对每根手指，一个小型神经网络把人体指尖坐标映射成机器人关节位置。训练时，正向运动学再把这些关节角变回机器人指尖坐标。几何损失就在这些可比较的位置和相互关系上计算。损失的梯度穿过机器人模型，反向调整网络权重。推理时，映射器直接预测关节角，不再重复整个训练循环。新的目标手需要相应模型和训练，而不只是给输出关节改名。
+https://arxiv.org/html/2503.07541v1
+https://github.com/facebookresearch/GeoRT
+
+Direction and coverage / 方向保持与空间覆盖
+Two GeoRT objectives answer different questions, as this original illustration makes clear. Motion preservation asks whether small human movements produce consistent robot directions. Coverage asks how much of the robot fingertip workspace the mapping actually uses. A mapper can preserve direction while compressing every gesture into a tiny region. Conversely, widely distributed outputs can cover space while responding unpredictably. Optimizing both exposes this tradeoff rather than assuming that visual similarity already solves it.
+这张原论文示意图，把 GeoRT 的两个目标分得很清楚。运动保持关心：人体的小幅移动，是否让机器人沿一致方向移动。空间覆盖关心：映射实际利用了多少机器人指尖工作空间。一个映射可能保持方向，却把所有手势都压缩在很小的区域里。反过来，输出分布很广、覆盖充分，也可能让响应难以预测。同时优化这两个目标，才能显式处理这种权衡，而不是认为看起来相似就足够。
+https://arxiv.org/html/2503.07541v1
+
+Flatness means consistent sensitivity / Flatness：控制灵敏度要一致
+Imagine moving your fingertip five millimeters in two different starting poses. If one produces almost nothing and the other produces a sudden jump, control feels inconsistent. GeoRT calls for a flatter mapping, meaning that local sensitivity changes less across the space. Its loss discourages rapid changes in that response, using nearby perturbed inputs during training. This is a property of the spatial mapping, not simply smoothing successive video frames. Our response curve is a teaching illustration; it is not a measured robot benchmark.
+设想从两个不同的起始手势出发，都把指尖移动五毫米。如果一次几乎没反应，另一次却突然跳动，控制就会显得不一致。GeoRT 希望映射更平坦，也就是局部灵敏度在不同位置变化更小。训练时，它用附近扰动的输入，惩罚响应灵敏度的剧烈变化。这是空间映射的性质，不只是把连续视频帧滤得更平滑。这里的响应曲线是教学示意，不是实测机器人性能数据。
+https://arxiv.org/html/2503.07541v1
+
+Pinching and avoiding collisions / 捏合与避免自碰撞
+Pinching adds a relationship between fingers that separate motion directions cannot fully express. When human fingertips approach, the robot fingertips should support a similar pinch. The original comparison shows missing pinch capability when the workspace is poorly used. GeoRT combines pinch correspondence with its other geometric goals and a self-collision penalty. None of these inputs directly describes the cup's friction, weight, or required holding force. So matching a pinch gesture and successfully lifting a cup remain different tests.
+捏合引入了手指之间的关系，单独约束移动方向无法充分表达它。当人体指尖靠近时，机器人指尖也应能形成类似捏合。原论文对比图显示：工作空间利用不足时，一些捏合能力会缺失。GeoRT 把捏合对应、其他几何目标以及自碰撞惩罚结合起来。但这些输入都没有直接描述杯子的摩擦、重量或所需保持力。因此，匹配捏合手势，与真正把杯子提起来，仍然是两种测试。
+https://arxiv.org/html/2503.07541v1
+
+AnyDexRT: do not force every region / AnyDexRT：不必强行覆盖全部空间
+AnyDexRT questions whether the human should control every region the robot can mechanically reach. In the original figure, the robot space contains redundant regions that distort the correspondence. Partial Chamfer matching encourages valid targets without covering all robot-only regions. Distance preservation reduces distortion; local motion consistency compares local directions. These choices change what a good mapping means, rather than merely making the same optimizer faster. The figure should be read from missing constraints toward the combined objective.
+AnyDexRT 进一步问：人是否必须控制机器人机械上能到达的每个区域？原图中，机器人空间包含一些会扭曲对应关系的冗余区域。部分 Chamfer 匹配鼓励目标有效，却不强求覆盖全部机器人特有区域。距离保持减少形变；局部运动一致性比较局部方向。这些选择改变的是“什么叫好映射”，而不只是把同一个优化器加速。阅读这张图时，应从缺失约束的情况，逐步看到组合后的目标。
+https://arxiv.org/html/2607.08341v1
+
+Few-shot guidance resolves ambiguity / 少量人工引导消除歧义
+Several mappings satisfy those rules while placing gestures in different robot regions. AnyDexRT uses a small set of paired human and robot anchors to select a useful correspondence. The original figure shows lateral rotation and bending as two example anchor families. The operator imitates reference gestures, and interpolation expands the collected anchor set. Calibration-free does not mean data-free, training-free, or free of human involvement. The anchors express preferred control correspondence, not unique ground truth for every task.
+多个映射可能都满足规则，却把手势放进不同的机器人区域。AnyDexRT 用少量配对的人体与机器人锚点，选择有用的对应关系。原论文图用横向转动与弯曲，展示两类锚点动作。操作者模仿参考手势，再通过插值扩充采集到的锚点集合。免标定不等于不需要数据、不需要训练，或没有人工参与。锚点表达的是偏好的控制对应关系，不是所有任务中唯一的真值。
+https://arxiv.org/html/2607.08341v1
+
+Contact intent is not contact force / 接触意图不是接触力
+AnyDexRT addresses sensor errors: a real pinch may still appear separated in measurements. A learned classifier estimates pinch intent from the thumb and another fingertip. That prediction refines the mapped targets before they are converted into joint commands. The diagram separates the fingertip mapper, contact refinement, and final inverse mapping. This classifier is not a tactile sensor measuring whether the robot is gripping the actual object. Its demonstrated benefits still depend on the tracking inputs and hardware used in the study.
+AnyDexRT 处理传感器误差：真实捏合在测量里可能仍然分开。学习得到的分类器，利用拇指和另一根手指的指尖位置估计捏合意图。这个预测会先修正映射目标，再把它们转换为关节指令。图中把指尖映射、接触修正和最终逆映射清楚地分开了。这个分类器不是触觉传感器，不会直接测量机器人是否真正握住了物体。它展示的收益，仍然依赖研究中采用的追踪输入与硬件条件。
+https://arxiv.org/html/2607.08341v1
+
+Choose by the failure you observe / 根据失败类型选择方法
+For a fair comparison, hold the hand model, tracking input, and control stack fixed. Separate mapping and camera latency, then check direction, coverage, pinching, and collisions. GeoRT reports kilohertz mapping; AnyDexRT measures speeds within its own protocol. Those numbers should not be combined into a universal speed ranking. If mapping is intuitive but the object slips, first investigate sensing, contact, and control. Changing the neural mapper cannot supply physical feedback missing elsewhere in the system.
+公平比较时，要固定手模型、追踪输入和控制系统。把映射延迟与摄像头延迟分开，再检查方向、覆盖、捏合和碰撞。GeoRT 报告千赫兹映射；AnyDexRT 则在自己的协议里测量速度。这些数字不能混合成一个通用速度排行榜。如果映射已经直观，但物体仍会滑落，应先检查感知、接触与控制。更换神经映射器，不能补上系统其他部分缺失的物理反馈。
+https://arxiv.org/html/2503.07541v1
+https://arxiv.org/html/2607.08341v1
+
+视频补充来源 / Additional video sources
+GeoRT · 手套输入 · 作者演示 / GeoRT · glove input · author footage
+https://zhaohengyin.github.io/geort/video/ours_demo.mp4
+https://zhaohengyin.github.io/geort/

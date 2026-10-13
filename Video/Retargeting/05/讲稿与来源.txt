@@ -1,0 +1,83 @@
+﻿从参考动作到物理执行
+From a Reference to Physical Execution
+
+The pose is right. Why does it drop? / 姿态对了，为什么还会掉？
+The fingers reach the cup correctly, yet the cup falls as soon as the wrist moves. That failure does not necessarily mean the geometric mapping was wrong. The required grip must also withstand gravity, acceleration, and changing contact conditions. A reference trajectory tells us where the robot should go, not how forces will get it there. This chapter follows methods that add physical execution to human motion transfer. We will separate simulated feasibility, learned feedback, and demonstrated real robot success.
+手指准确到达杯子，手腕一动，杯子却掉了。这种失败，并不一定说明几何映射本身错了。实际抓握还要承受重力、加速度，以及不断变化的接触条件。参考轨迹告诉我们机器人应到哪里，却没解决力如何让它到达。这一章，我们来看如何把物理执行加入人体动作迁移。我们会区分仿真可行、学习到的反馈，以及已展示的真机成功。
+https://arxiv.org/html/2404.07988v2
+https://arxiv.org/html/2503.21860v1
+https://arxiv.org/html/2511.09484v3
+
+A target is not a force / 目标角度不是力
+Suppose a retargeter outputs a desired joint angle, which we call the reference. A low-level controller compares that reference with the measured angle and generates motor effort. The resulting motion depends on inertia, friction, contact geometry, and the controller itself. Directly placing a simulated hand into the reference pose skips much of this process. So a clean animation is not automatically a dynamically feasible rollout. Our diagrams distinguish the target, the applied action, and the motion actually achieved.
+假设重定向器输出一个期望关节角，我们把它称为参考。低层控制器比较参考与测量角度，再产生电机驱动力。最终运动取决于惯量、摩擦、接触几何，以及控制器本身。直接把仿真手摆进参考姿态，会跳过其中大量过程。所以，一段干净的动画，并不自动等于动力学可行的执行。这里的示意图会分开显示目标、施加的动作，以及实际产生的运动。
+https://arxiv.org/html/2503.21860v1
+https://arxiv.org/html/2511.09484v3
+
+QuasiSim changes the optimization world / QuasiSim：改变优化所处的物理环境
+QuasiSim starts from a difficult problem: optimizing through contact is often unstable. A tiny change can make a finger touch, miss, or collide with an object. In the original figure, the hand is temporarily relaxed into a parameterized point-set model. Adjustable spring and damping behavior makes early contact optimization easier. A residual physics component models effects that the analytical simulator does not capture well. These changes concern the physics model used for optimization, not just a fingertip distance loss.
+QuasiSim 从一个困难出发：经过接触过程的优化常常不稳定。一个微小变化，就可能让手指接触、错过，或撞上物体。原论文图中，手暂时被放松为一个参数化点集模型。可调节的弹簧与阻尼行为，让初期接触优化更容易。残差物理模块用来补偿解析模拟器难以准确描述的效应。这些变化针对的是优化所用的物理模型，而不只是一个指尖距离损失。
+https://arxiv.org/html/2404.07988v2
+
+Tighten constraints, then verify / 收紧约束，再验证执行
+Read the lower row of that figure from left to right. Optimization first benefits from relaxed constraints, then restores stricter dynamics. The final trajectory must work after those earlier simplifications are removed. This is an offline trajectory-generation strategy, not an instant camera-to-hand mapping. Its baselines include a modified DGrasp tracking method, whose task differs from original DGrasp. Preserve that modification and the sequence-dependent cost when presenting the comparison.
+沿着原图下方，从左向右看这个过程。优化先借助放松的约束，再恢复更严格的动力学条件。移除这些前期简化后，最终轨迹仍必须能够执行。这是一种离线轨迹生成策略，不是即时的摄像头到机器人手映射。其基线包含改造后的 DGrasp 跟踪方法，任务设定与原始 DGrasp 不同。展示比较时，要保留这个改造说明，以及随序列变化的计算成本。
+https://arxiv.org/html/2404.07988v2
+
+ManipTrans first learns hand motion / ManipTrans：先学会跟随手部运动
+ManipTrans takes another route: first train a reusable policy to imitate human hand motion. In this original diagram, the upper model is the hand imitator. It observes the reference motion and the simulated robot's state, then produces coarse actions. Training rewards wrist tracking, finger tracking, and smooth motion before adding objects. This stage can use hand-only motion data, which is easier to collect than complete interactions. The pretrained policy becomes a starting point for many later manipulation transfers.
+ManipTrans 走另一条路线：先训练可复用策略，模仿人体手部运动。在原论文图中，上方模型就是手部模仿器。它观察参考运动与仿真机器人的状态，再输出粗略动作。加入物体前，训练奖励手腕跟踪、手指跟踪与平滑运动。这一阶段能使用单独的手部运动数据，其采集比完整交互更容易。这个预训练策略，随后成为多次操作迁移的起点。
+https://arxiv.org/html/2503.21860v1
+
+A residual handles interaction / 残差负责交互修正
+Now follow the lower branch, where object trajectories and interaction information enter. A second policy adds a corrective action to the hand imitator's proposed action. It observes object state and shape, hand-object relationships, and simulated contact forces. The action space includes joint position targets and a floating wrist force in simulation. This is a physical control problem, rather than simply refining an inverse-kinematics pose. A good reference reduces the search burden, while feedback can compensate for imperfect interaction.
+再看下方分支，物体轨迹与交互信息从这里进入。第二个策略，把修正动作加在手部模仿器提出的动作上。它观察物体状态与形状、手物关系，以及仿真接触力。动作空间包含关节位置目标，以及仿真中浮动手腕所施加的力。这是物理控制问题，而不只是进一步修正一个逆运动学姿态。好的参考减少探索负担，而反馈可以补偿不完美的交互。
+https://arxiv.org/html/2503.21860v1
+
+Read the baselines before the score / 先看基线，再读分数
+ManipTrans compares retargeting only, reinforcement learning only, and retargeting with residuals. Its full method adds the reusable hand imitator. The third baseline matters because it already includes learned physical correction. Comparing against it tests the benefit of the reusable hand imitator. The study uses selected OakInk sequences, with success defined by several tracking thresholds. Tracking errors cover successful rollouts only, so inspect success rate alongside error. Otherwise, a method that solves only easy cases can look deceptively accurate.
+ManipTrans 比较仅重定向、仅强化学习，以及重定向加残差。完整方法则加入可复用的手部模仿器。第三个基线尤其重要，因为它本身已经包含学习得到的物理修正。与它比较，才能检验可复用手部模仿器带来的收益。研究使用筛选后的 OakInk 序列，成功由多个跟踪阈值共同定义。跟踪误差只统计成功执行，因此要把成功率与误差一起看。否则，一个只完成简单样例的方法，也可能显得异常准确。
+https://arxiv.org/html/2503.21860v1
+
+Account for all computation / 把所有计算成本算进去
+The mouse-rotation example adapts quickly once the pretrained hand imitator is available. That short adaptation time does not include the original general-purpose pretraining. The appendix reports roughly one and a half days for that reusable stage. Keep one-time preparation, per-sequence training, and online policy inference in separate columns. Also check embodiment details: simulated joints may have more freedom than the physical mechanism. ManipTrans fits simulated Inspire motion to the more constrained hardware before real execution.
+在已有预训练手部模仿器后，转动鼠标的样例可以较快适配。这段较短的适配时间，不包含最初的通用预训练。附录报告，这个可复用阶段大约需要一天半。请把一次性准备、逐序列训练和在线策略推理放在不同列里。还要检查构型细节：仿真关节可能比真实机构拥有更多自由度。ManipTrans 在真实执行前，会把仿真 Inspire 运动拟合到约束更多的硬件。
+https://arxiv.org/html/2503.21860v1
+
+SPIDER searches control sequences / SPIDER：搜索控制序列
+SPIDER avoids training a new policy for every trajectory in its core retargeting solver. The original pipeline first extracts hand motion, object geometry, and object motion. A kinematic robot reference then guides parallel simulations of candidate action sequences. It scores those rollouts and gradually focuses its search around promising candidates. Its output is a physically simulated control trajectory, not a universal learned hand mapper. Robustification and later policy learning are additional stages with their own purposes and costs.
+SPIDER 的核心重定向求解器，避免为每条轨迹训练一个新策略。原论文管线先提取手部运动、物体几何与物体运动。机器人运动学参考随后引导多个候选动作序列的并行仿真。它给这些执行评分，再逐渐把搜索集中到更有希望的候选附近。它输出的是经过物理仿真的控制轨迹，而不是通用的学习式手部映射器。鲁棒化与后续策略学习属于额外阶段，各有自己的目的和成本。
+https://arxiv.org/html/2511.09484v3
+
+Physical does not always mean intended / 物理可行，不一定符合原意
+Two grasps can move an object along similar paths while using different contact regions. In this figure, SPIDER illustrates why unconstrained sampling may choose the unintended grasp. Contact guidance temporarily adds virtual constraints around the desired interaction. This makes the preferred contact mode easier to discover during optimization. The assistance is gradually relaxed, and noisy, unstable contact annotations can be filtered. Inspect the final unassisted rollout before claiming that contact is physically feasible.
+两种抓法可能让物体走相似路径，却使用不同的接触区域。这张图解释了为什么不加引导的采样，可能选到不符合原意的抓法。接触引导在期望交互关系附近，暂时加入虚拟约束。这样，优化过程更容易发现期望的接触模式。这些辅助会逐渐减弱，带噪或不稳定的接触标注也可以被过滤。宣称接触物理可行之前，要检查最终的无辅助执行。
+https://arxiv.org/html/2511.09484v3
+
+Throughput is not playback speed / 生成吞吐，不是播放帧率
+SPIDER version three compares methods with matched simulators, datasets, and hand models. Its object tracking metric is ADD-AUC, integrating accuracy across a range of distance thresholds. It is not the same quantity as a single task success percentage. Reported frames per second measure generated frames divided by total generation time. They do not mean the system can process a live camera at that rate. Read variance, failures, and guidance cost before choosing a generator for your dataset.
+SPIDER 第三版在对齐的模拟器、数据集与手模型下比较方法。其物体跟踪指标是 ADD-AUC，把一段距离阈值范围内的准确度积分。它与某个单一任务的成功百分比，不是同一个量。报告的每秒帧数，是生成帧数除以全部生成时间。它们不代表系统能以这个速率实时处理摄像头。为数据集选择生成器前，要查看方差、失败情况与引导成本。
+https://arxiv.org/html/2511.09484v3
+
+DexH2R: task-conditioned correction / DexH2R：按任务修正动作
+DexH2R starts with kinematic primitive actions, then learns corrections using task information. In its original figure, the primitive and residual branches meet before the final robot action. The policy observes robot and object state, binary contact, and future reference goals. Its primitive uses joint-angle changes, so check action conventions before combining modules. This is the task-oriented DexH2R paper, not the similarly named human-to-robot handover dataset. Its goal is completing manipulation, beyond preserving the appearance of human finger motion.
+DexH2R 从运动学基础动作开始，再利用任务信息学习修正。原图中，基础动作与残差分支在最终机器人动作之前汇合。策略观察机器人与物体状态、二值接触，以及未来参考目标。它的基础动作使用关节角变化量，因此组合模块前要核对动作定义。这里讲的是面向任务的 DexH2R，而不是同名的人机物体交接数据集。它的目标是完成操作，已经超出了保持人体手指动作外观。
+https://arxiv.org/html/2411.04428v2
+
+TeleDexter: command subgoals / TeleDexter：给子目标，让控制器执行
+TeleDexter separates offline reference preparation from its live teleoperation controller. The original overview links human hand-object references to a learned co-tracking policy. The operator supplies fingertip and object goals; the policy handles contact execution. Consecutive subgoals allow some freedom in how the robot reaches each useful interaction state. The paper uses marked gloves and optical motion capture, with a separate pregrasp control phase. Replacing that input with bare-camera tracking requires fresh validation of the complete system.
+TeleDexter 把离线参考准备，与实时遥操作控制器分开。原论文总览把人体手物参考，连接到学习得到的共同跟踪策略。操作者给出指尖与物体目标，策略负责接触执行。连续子目标允许机器人保留一定自由度，选择怎样到达每个有效交互状态。论文使用带标记的手套和光学动捕，并单独设置了抓取前的控制阶段。把这些输入换成无穿戴摄像头追踪，需要重新验证完整系统。
+https://arxiv.org/html/2607.11481v1
+
+Choose the output you actually need / 先选清楚需要什么产物
+Choose a kinematic mapper when you need responsive joint references for an operator. Choose offline physical transfer when you need executable demonstrations from recorded human motion. Choose a feedback controller when the robot must correct interaction errors as the task unfolds. Then evaluate the entire sequence: approach, establish contact, lift, transport, and release. Keep the reference error, contact quality, task success, and real-world evidence separate. This reveals which component failed, and which comparison can actually answer your question.
+需要给操作者提供响应及时的关节参考时，先选择运动学映射器。需要把记录的人体运动变成可执行示范时，再考虑离线物理迁移。如果机器人要在任务进行中修正交互误差，就需要反馈控制器。随后评价完整序列：靠近、建立接触、提起、搬运与释放。把参考误差、接触质量、任务成功，以及真机证据分别记录。这样才能知道哪个组件失败，以及哪种比较真正回答了你的问题。
+https://arxiv.org/html/2404.07988v2
+https://arxiv.org/html/2503.21860v1
+https://arxiv.org/html/2511.09484v3
+https://arxiv.org/html/2411.04428v2
+https://arxiv.org/html/2607.11481v1
+
+视频补充来源 / Additional video sources
+TeleDexter · 原作者遥操作演示 / TeleDexter · selected author demonstration
+https://bigai-dex.github.io/assets/videos/teledexter/teleop_demo/tele_bulb-1.mp4

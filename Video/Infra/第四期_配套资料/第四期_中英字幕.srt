@@ -1,0 +1,414 @@
+﻿1
+00:00:01,000 --> 00:00:04,755
+Your fingers close around a cup. The robot almost does.
+你的手捏住杯子，机器人却差了一点。
+
+2
+00:00:04,780 --> 00:00:07,035
+For camera-only teleoperation,
+只用摄像头进行遥操作，
+
+3
+00:00:07,060 --> 00:00:10,535
+which three-dimensional tracking method is actually more accurate?
+哪种三维手部动捕更准？
+
+4
+00:00:10,560 --> 00:00:13,395
+Welcome to DoF Infra, episode four.
+欢迎来到 DoF Infra 第四期。
+
+5
+00:00:13,420 --> 00:00:17,148
+We will follow one pinch, from pixels to physical contact.
+这次跟着一次捏合，从像素走到真实接触。
+
+6
+00:00:17,498 --> 00:00:19,793
+For precision, I would start with
+精度优先，我会先选择
+
+7
+00:00:19,818 --> 00:00:22,733
+synchronized, calibrated cameras from different angles.
+同步、标定的多视角相机。
+
+8
+00:00:22,758 --> 00:00:26,793
+Use depth where it is reliable, then fit a consistent hand model.
+深度可靠时加入深度，再拟合连续的手模型。
+
+9
+00:00:26,818 --> 00:00:30,373
+That is an engineering starting point, not a universal winner.
+这是工程起点，不是通用精度冠军。
+
+10
+00:00:30,398 --> 00:00:34,638
+The object, viewing angles, and control delay can change the answer.
+物体、观察角度和控制延迟都会改变结果。
+
+11
+00:00:35,082 --> 00:00:36,697
+Start with a depth frame.
+从一帧深度图开始。
+
+12
+00:00:36,722 --> 00:00:39,297
+Isolate the hand from the object and background.
+先将人手与物体、背景分离。
+
+13
+00:00:39,322 --> 00:00:43,097
+Each valid depth pixel, together with camera intrinsics,
+每个有效深度像素，结合相机内参，
+
+14
+00:00:43,122 --> 00:00:45,377
+maps to a three-dimensional surface point.
+就能还原为三维表面点。
+
+15
+00:00:45,402 --> 00:00:49,677
+Together, these points sample the visible surface, not the hidden side.
+这些点采样可见表面，并不包含被挡住的背面。
+
+16
+00:00:49,702 --> 00:00:54,302
+Calibrated views can contribute more observed surfaces in one coordinate frame.
+标定后的视角可以在同一坐标系补充可见表面。
+
+17
+00:00:54,771 --> 00:00:59,766
+A point cloud records surfaces. Joint centers usually sit inside the hand.
+点云记录表面；关节中心通常位于手内部。
+
+18
+00:00:59,791 --> 00:01:01,646
+A model estimates a skeleton
+模型估计出人手骨架，
+
+19
+00:01:01,671 --> 00:01:04,586
+from image or depth evidence and anatomical constraints.
+依据图像或深度证据，以及人体结构约束。
+
+20
+00:01:04,611 --> 00:01:08,326
+Separate global wrist motion from local finger articulation.
+把手腕整体运动与手指局部弯曲分开。
+
+21
+00:01:08,351 --> 00:01:11,091
+The same pinch can move anywhere in space.
+同一捏合姿态可以发生在不同空间位置。
+
+22
+00:01:11,573 --> 00:01:16,088
+An articulated mesh represents the hand with vertices and connected faces.
+关节驱动的 Mesh 用顶点和相连的面来表示人手。
+
+23
+00:01:16,113 --> 00:01:19,128
+In MANO, shape describes hand proportions;
+在 MANO 中，形状描述手的比例；
+
+24
+00:01:19,153 --> 00:01:21,508
+pose describes joint rotations.
+姿态描述关节旋转。
+
+25
+00:01:21,533 --> 00:01:23,648
+Skinning moves the surface with the joints.
+蒙皮让手表面随关节变形。
+
+26
+00:01:23,673 --> 00:01:27,828
+Fit the model to observed landmarks or surfaces, with anatomical priors.
+用观测到的关键点或表面，加上人体结构先验来拟合模型。
+
+27
+00:01:27,853 --> 00:01:31,293
+A plausible hidden finger is still inferred, not measured.
+看似合理的隐藏手指，仍然是推断而非测量。
+
+28
+00:01:31,643 --> 00:01:34,298
+Reconstructing one frame gives a pose.
+重建一帧，得到一个姿态。
+
+29
+00:01:34,323 --> 00:01:37,658
+Motion capture tracks how that pose changes over time.
+动捕跟踪姿态随时间的变化。
+
+30
+00:01:37,683 --> 00:01:42,558
+Keep finger identities consistent, and track wrist motion and articulation together.
+保持手指身份一致，同时跟踪手腕运动和关节变化。
+
+31
+00:01:42,583 --> 00:01:46,078
+A fixed template gives vertices consistent identities;
+固定模板让顶点编号保持一致；
+
+32
+00:01:46,103 --> 00:01:49,278
+their positions still have to be estimated in every frame.
+每一帧的顶点位置仍需重新估计。
+
+33
+00:01:49,303 --> 00:01:51,658
+Temporal constraints reduce jitter,
+时序约束能抑制抖动，
+
+34
+00:01:51,683 --> 00:01:55,123
+but predicted motion during occlusion still carries uncertainty.
+但遮挡期间预测的运动仍有不确定性。
+
+35
+00:01:55,684 --> 00:01:59,059
+There is no compulsory point-cloud-to-mesh pipeline.
+点云到网格，并不是所有方法都必须走的流程。
+
+36
+00:01:59,084 --> 00:02:03,519
+HaMeR predicts a parametric hand mesh directly from an RGB image.
+HaMeR 直接从 RGB 图像预测参数化手模型。
+
+37
+00:02:03,544 --> 00:02:09,019
+DexPilot combines depth observations, estimated joints, and articulated model tracking.
+DexPilot 结合深度观测、关节估计与关节模型跟踪。
+
+38
+00:02:09,044 --> 00:02:12,519
+For teleoperation, extract wrist and fingertip targets,
+遥操作还要提取手腕与指尖目标，
+
+39
+00:02:12,544 --> 00:02:14,364
+then retarget them to the robot.
+再将这些目标映射到机器人。
+
+40
+00:02:14,949 --> 00:02:18,724
+A single RGB camera is a convenient first prototype.
+单目 RGB 很适合快速搭建原型。
+
+41
+00:02:18,749 --> 00:02:22,484
+But different three-dimensional hands can project to similar images.
+不同的三维手势，可能投影成相似图像。
+
+42
+00:02:22,509 --> 00:02:27,184
+HaMeR reports six millimeters on FreiHAND after Procrustes alignment.
+HaMeR 的对齐后关节误差为六毫米。
+
+43
+00:02:27,209 --> 00:02:31,384
+That alignment removes translation, rotation, and scale differences.
+这种对齐会消除平移、旋转和尺度差异。
+
+44
+00:02:31,409 --> 00:02:35,589
+It does not promise six-millimeter accuracy in your robot coordinates.
+它不保证机器人坐标下也有六毫米精度。
+
+45
+00:02:36,132 --> 00:02:40,447
+A second view helps when it reveals what the first camera cannot see.
+第二视角的价值，在于看见第一台的盲区。
+
+46
+00:02:40,472 --> 00:02:44,567
+Calibrate every camera into the same frame and synchronize exposures.
+所有相机要统一坐标，并同步曝光时间。
+
+47
+00:02:44,592 --> 00:02:49,027
+Otherwise, a moving fingertip is fused from different places or times.
+否则，运动指尖会被跨位置、跨时间地融合。
+
+48
+00:02:49,052 --> 00:02:52,367
+HO-Cap illustrates calibrated multi-view reconstruction.
+HO-Cap 展示了标定的多视角重建。
+
+49
+00:02:52,392 --> 00:02:55,586
+Its annotation pipeline is not live control.
+它的标注流程，不等于实时控制。
+
+50
+00:02:55,936 --> 00:02:59,771
+AnyTeleop offers a useful comparison inside one system.
+AnyTeleop 给出了同一系统内的对比。
+
+51
+00:02:59,796 --> 00:03:04,991
+In its simulated piano task, wrong-key rates fell from twenty-eight point one percent,
+仿真钢琴任务中，误按率从百分之二十八点一，
+
+52
+00:03:05,016 --> 00:03:08,051
+to twenty-one point eight, then twelve point five,
+降至二十一点八，再到十二点五，
+
+53
+00:03:08,076 --> 00:03:11,691
+using RGB, RGB-D, and two RGB-D cameras.
+分别对应 RGB、RGB-D 和双 RGB-D。
+
+54
+00:03:11,716 --> 00:03:14,371
+One trained operator, ten trials per setup.
+同一熟练操作者，每组十次试验。
+
+55
+00:03:14,396 --> 00:03:17,536
+Task evidence, not sensor error in millimeters.
+这是任务表现，不是毫米级传感器误差。
+
+56
+00:03:18,160 --> 00:03:21,095
+Now turn the hand sideways and hold the cup.
+现在把手转向侧面，再握住杯子。
+
+57
+00:03:21,120 --> 00:03:24,855
+A model can predict hidden joints from anatomy and recent motion.
+模型能用手部结构与近期运动推断隐藏关节。
+
+58
+00:03:24,880 --> 00:03:28,235
+Prediction is useful, but it is not a new observation.
+预测很有用，但并不等于新的观测。
+
+59
+00:03:28,260 --> 00:03:32,735
+When confidence drops, reduce motion, hold, or stop according to the task.
+置信度下降时，应按任务减速、保持或停止。
+
+60
+00:03:32,760 --> 00:03:37,120
+Recovery should be gradual, rather than snapping the robot to a new pose.
+恢复跟踪要渐进，避免机器人突然跳姿态。
+
+61
+00:03:37,587 --> 00:03:42,322
+Tracking is only the first half. Human and robot hands have different geometry.
+动捕只完成一半，人手与机器人的结构不同。
+
+62
+00:03:42,347 --> 00:03:45,642
+Copying joint angles can leave the robot pinch open.
+直接复制关节角，机器人可能捏不拢。
+
+63
+00:03:45,667 --> 00:03:51,022
+Retarget fingertip relationships, thumb opposition, and wrist pose, within robot limits.
+应在关节限制内映射指尖关系、拇指对掌与腕姿。
+
+64
+00:03:51,047 --> 00:03:54,102
+Then verify actual robot motion and contact.
+再验证实际机器人的运动与接触。
+
+65
+00:03:54,127 --> 00:03:56,947
+A virtual touch is not a measured grip force.
+虚拟触碰，不是实测握力。
+
+66
+00:03:57,450 --> 00:03:59,725
+Measure delay across the whole chain:
+延迟需要测整条链路：
+
+67
+00:03:59,750 --> 00:04:03,625
+exposure, estimation, communication, and robot response.
+曝光、估计、通信，再到机器人响应。
+
+68
+00:04:03,650 --> 00:04:06,685
+A high frame rate alone does not tell you that delay.
+帧率高，不代表整条链路延迟低。
+
+69
+00:04:06,710 --> 00:04:10,405
+Smoothing can reduce jitter while making fast pinches arrive late.
+平滑能抑制抖动，也可能让快速捏合滞后。
+
+70
+00:04:10,430 --> 00:04:15,250
+Report both typical delay and the slowest tail, such as the ninety-fifth percentile.
+既要报典型延迟，也要看第九十五百分位。
+
+71
+00:04:15,796 --> 00:04:20,151
+Before choosing cameras, repeat the same grasp under the same controller.
+选相机前，用同一控制器重复相同抓取。
+
+72
+00:04:20,176 --> 00:04:25,011
+Test open fingers, precise pinches, side views, occlusion, and reappearance.
+测试张手、精细捏合、侧视、遮挡与重新出现。
+
+73
+00:04:25,036 --> 00:04:27,311
+Check absolute wrist and fingertip error
+检查腕部和指尖的绝对误差，
+
+74
+00:04:27,336 --> 00:04:29,451
+against an independent reference where visible.
+以可见时的独立参考为依据。
+
+75
+00:04:29,476 --> 00:04:31,711
+Keep missing reference frames explicit.
+明确标出参考缺失的帧。
+
+76
+00:04:31,736 --> 00:04:35,236
+Count tracking loss, delay, failed grasps, and drops.
+再统计掉踪、延迟、抓取失败与掉物。
+
+77
+00:04:35,676 --> 00:04:37,591
+My camera-only recommendation:
+纯视觉方案，我的建议是：
+
+78
+00:04:37,616 --> 00:04:41,711
+RGB for a quick prototype, RGB-D for a fixed workspace,
+RGB 快速验证，RGB-D 从固定工作区起步，
+
+79
+00:04:41,736 --> 00:04:46,231
+and calibrated multi-view capture when precision and occlusion justify the setup.
+精度与遮挡要求更高时，升级标定的多视角。
+
+80
+00:04:46,256 --> 00:04:48,371
+Start with two complementary views;
+先从两个互补视角开始，
+
+81
+00:04:48,396 --> 00:04:51,291
+add more only when measured failures justify them.
+再根据实测失败决定是否补充相机。
+
+82
+00:04:51,316 --> 00:04:55,311
+The goal is a repeatable grasp, not just a convincing digital hand.
+目标是可重复的抓取，而不只是好看的数字手。
+
+83
+00:04:55,336 --> 00:04:57,949
+Explore the sources in the DoF research map.
+在 DoF 研究地图里继续查看原始论文。

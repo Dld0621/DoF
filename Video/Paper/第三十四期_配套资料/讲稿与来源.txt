@@ -1,0 +1,54 @@
+﻿DoF Paper EP.34 | TactiDex | Transfer Contact, Not Just Hand Motion
+TactiDex：让机器人学到接触，而不只是手形
+
+01 The motion looks convincing / 动作像，接触未必对
+A robot can imitate a hand trajectory while missing the contact that actually makes the task work. TactiDex records human touch alongside motion, and TactiSkill uses that information to guide transfer.
+机器人能模仿手轨迹，却错过真正起作用的接触。TactiDex同步采集触觉与运动，TactiSkill用这些信息指导迁移。
+Source: https://arxiv.org/pdf/2607.09190v1; Figure 1 | human motion and touch capture, PDF p3
+
+02 Synchronize human interaction / 同步记录人类交互
+The dataset aligns whole-hand tactile measurements with hand motion and object states. Post-optimization and sensor-to-simulation mapping turn these recordings into physically aligned references for training.
+数据集对齐全手触觉、手部运动与物体状态。后优化和传感器到仿真的映射生成物理对齐参考。
+Source: https://arxiv.org/pdf/2607.09190v1; Figure 1 | human motion and touch capture, PDF p3
+
+03 Reward one: establish contact / 第一步：建立该有的接触
+The transfer framework trains a residual tracking policy with three complementary tactile reward components. The first encourages the robot to establish contact where the human demonstration indicates it matters.
+迁移框架用三种互补触觉奖励训练残差跟踪策略。第一项引导机器人在示范的重要区域建立接触。
+Source: https://arxiv.org/pdf/2607.09190v1; Figure 2 | tactile transfer pipeline, PDF p5
+
+04 Reward two: align interaction / 第二步：对齐接触模式
+A human-like alignment term encourages the transferred interaction to follow the recorded contact and force pattern. Matching visible joint motion alone would leave this part of the physical behavior unconstrained.
+类人对齐项使迁移交互遵循记录的接触和力模式。只匹配可见关节运动，无法约束这部分物理行为。
+Source: https://arxiv.org/pdf/2607.09190v1; Figure 2 | tactile transfer pipeline, PDF p5
+
+05 Reward three: constrain force / 第三步：约束接触力
+A contact-constraint term limits problematic forces while the policy adjusts the retargeted action. The intended result is a motion that preserves useful interaction, rather than merely resembling a pose sequence.
+接触约束项限制不合理力，策略则调整重定向动作。目标是保留有效交互，而不只是姿态序列相似。
+Source: https://arxiv.org/pdf/2607.09190v1; Figure 2 | tactile transfer pipeline, PDF p5
+
+06 The main quantitative setting / 主要定量结果来自哪里
+The main comparison uses seventy-three reference sequences evaluated in simulation. The tactile-fidelity criterion measures whether the transferred contact matches the reference under its specified rules.
+主要比较使用73条参考序列，在仿真中评测。触觉保真判据衡量迁移接触是否满足参考匹配规则。
+Source: https://arxiv.org/pdf/2607.09190v1; Table 2 | simulation fidelity, PDF p7
+
+07 Read the fidelity result / 读懂触觉保真结果
+Tactile-fidelity success reaches sixty-four point six four percent, versus thirty-nine point three five for kinematic transfer. Contact F-one rises from point five five six nine to point seven three eight four.
+触觉保真64.64%，运动学迁移为39.35%。Contact F1由0.5569升到0.7384。
+Source: https://arxiv.org/pdf/2607.09190v1; Table 2 | simulation fidelity, PDF p7
+
+08 The real robot is open loop / 真机没有在线触觉闭环
+The appendix states that physical deployment does not feed tactile signals back into the policy online. The robot performs open-loop execution, so these demonstrations cannot establish autonomous tactile-feedback reliability.
+附录明确：真机执行不把触觉在线反馈给策略。真机采用开环执行，不能证明自主触觉反馈可靠性。
+Source: https://arxiv.org/pdf/2607.09190v1; Appendix C.3 | real execution is open loop, PDF p14
+
+09 A contact-supervision resource / 一套接触监督资源
+TactiDex contributes measured human interaction; TactiSkill demonstrates how that contact can shape a transfer objective. Keep simulation fidelity, kinematic matching, and complete real-world task success as separate questions.
+TactiDex提供人类交互测量，TactiSkill展示接触如何塑造迁移目标。仿真保真、运动匹配、真机完整成功应分别评价。
+Source: https://arxiv.org/pdf/2607.09190v1; Figure 1 | human motion and touch capture, PDF p3
+
+
+Sources
+https://arxiv.org/pdf/2607.09190v1
+https://tactidex.github.io/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

@@ -1,0 +1,54 @@
+﻿DoF Paper EP.33 | Bench2Dex | Compare Dexterity Under the Same Rules
+Bench2Dex：怎样公平比较灵巧操作策略？
+
+01 A leaderboard needs shared rules / 排名之前，先统一规则
+Two impressive robot videos may use different hands, objects, starting states, and definitions of success. Bench2Dex builds a shared simulation protocol so policy comparisons become more meaningful.
+两段精彩机器人视频，可能使用完全不同的条件。Bench2Dex建立共享仿真协议，让策略比较更有意义。
+Source: https://arxiv.org/pdf/2609.15726v1; Figure 1 | simulation benchmark, PDF p1
+
+02 Tasks and embodiments / 任务与机器人手型
+The benchmark contains twenty-six bimanual task-and-hand settings and supports twelve dexterous-hand embodiments. This does not mean every task is evaluated with all twelve hands.
+基准包含26个双手任务手型设置，支持12种手。这不意味着每个任务都评测全部12种手。
+Source: https://arxiv.org/pdf/2609.15726v1; Figure 1 | simulation benchmark, PDF p1
+
+03 A common tactile interface / 统一触觉观测格式
+A surface-aligned ray-casting pipeline maps local contact geometry into image-like tactile observations. Different hand shapes can therefore share a consistent sensing format inside the simulator.
+表面对齐的射线投射把局部接触几何转成触觉图。不同手型由此在仿真中共享一致感知格式。
+Source: https://arxiv.org/pdf/2609.15726v1; Figure 2 | shared tactile interface, PDF p6
+
+04 Demonstrations and metrics / 示教、数据和成功检查
+About thirteen hundred teleoperated demonstrations accompany synchronized visual, tactile, and robot-state data. Executable success checks specify the terminal outcome, while separate metrics describe progress through task stages.
+约1300条遥操作示教提供同步视觉、触觉和状态。可执行成功检查约束最终结果，阶段进度另行统计。
+Source: https://arxiv.org/pdf/2609.15726v1; fixed PDF page 37. Original figure crop; no graphic content redrawn.
+
+05 Perturb the conditions / 系统地改变测试条件
+The study evaluates four policies across four perturbation channels, with fifty attempts per setting and channel. Together that is twenty thousand eight hundred simulation episodes under a common experimental design.
+四策略、四扰动通道，每设置每通道50次。统一设计共20800个仿真评测回合。
+Source: https://arxiv.org/pdf/2609.15726v1; Table 2 | controlled simulation protocol, PDF p9
+
+06 Read the aggregate / 四个通道的平均结果
+Across channels, GR00T N1.5 averages twenty-eight point three percent and pi-zero-point-five twenty point three. ACT reaches eighteen percent and Diffusion Policy seven point one.
+通道平均GR00T N1.5为28.3%，π0.5为20.3%。ACT为18%，扩散策略为7.1%。
+Source: https://arxiv.org/pdf/2609.15726v1 · Table 2 excerpt: 26 task rows omitted.
+
+07 A small gap can disappear / 困难条件下差距很小
+Under combined distribution changes, the leading two scores are nineteen point eight and nineteen point seven. That difference amounts to only two successful episodes, not convincing broad superiority.
+组合分布变化下，前两名为19.8%和19.7%。只相差两次成功，不能据此声称明显优势。
+Source: https://arxiv.org/pdf/2609.15726v1 · Table 2 excerpt: 26 task rows omitted.
+
+08 Simulation touch has limits / 仿真触觉的边界
+The shared tactile interface represents contact geometry; it does not reproduce one particular physical sensor. Real hardware still adds calibration, friction, sensor noise, and control delays that need separate validation.
+共享触觉接口表示接触几何，并不复现特定真实传感器。真机还需单独验证标定、摩擦、噪声和控制延迟。
+Source: https://arxiv.org/pdf/2609.15726v1; Figure 2 | shared tactile interface, PDF p6
+
+09 A benchmark, not a winner / 基准提供比较条件
+Bench2Dex contributes the testing conditions, data, and metrics rather than a new winning manipulation policy. Its strongest use is controlled comparison before committing to more expensive physical experiments.
+Bench2Dex贡献测试条件、数据与指标，而非一套新的获胜操作策略。它适合先做受控比较，再进入成本更高的真机实验。
+Source: https://arxiv.org/pdf/2609.15726v1; Figure 1 | simulation benchmark, PDF p1
+
+
+Sources
+https://arxiv.org/pdf/2609.15726v1
+https://bench2dex.github.io/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

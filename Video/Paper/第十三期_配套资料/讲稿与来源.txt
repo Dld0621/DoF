@@ -1,0 +1,55 @@
+﻿DoF Paper EP.13 | Planning Through Contact
+多指接触，能不能实时规划？
+
+01 Many contacts, one motion / 多处接触，一个动作
+Turning an object inside a robot hand changes several contacts at once. This paper asks whether a compact physics model can plan those changes quickly, without learning a policy.
+物体在手里转动时，多处接触同时变化。这篇用紧凑物理模型快速规划，不先训练策略。
+Source: https://arxiv.org/pdf/2408.07855v4#page=11
+
+02 Why contact is expensive / 接触为什么难算
+A contact can push an object, but cannot pull it through an empty gap. Encoding these switching conditions directly makes trajectory optimization difficult as the number of possible contacts grows.
+接触可以推物体，隔着空隙却不能拉。直接编码这些切换条件，会让多接触优化很难。
+Source: https://arxiv.org/pdf/2408.07855v4#page=5
+
+03 A closed-form correction / 闭式接触修正
+Look at the green displacement: that is where external forces would move the object. The model adds a contact correction, then smooths the calculation so an optimizer can use derivatives.
+绿色位移表示物体在外力下原本怎样动。再加入接触修正并平滑计算，供优化器求导。
+Source: https://arxiv.org/pdf/2408.07855v4#page=5
+
+04 Plan, move, observe / 规划、执行、重观测
+Model predictive control searches for short sequences of finger displacements toward the target. It executes the next command, reads the updated state, and replans instead of trusting one long prediction.
+模型预测控制搜索趋向目标的短时指尖动作。执行下一步、读取状态，再重新规划。
+Source: https://arxiv.org/pdf/2408.07855v4#page=5
+
+05 What the controller knows / 控制器已知什么
+The experiments use seventeen object shapes with both TriFinger and Allegro in MuJoCo. Known geometry and simulator states supply contact distances and Jacobians; no real camera tracking system is evaluated.
+在仿真中，两种手分别测试十七种形状。几何与状态已知，没有评测真实相机追踪。
+Source: https://arxiv.org/pdf/2408.07855v4#page=11
+
+06 Read the success rule / 先读成功规则
+TriFinger success allows twenty millimeters of position error and roughly twenty-three degrees of orientation error. The conditions must hold for twenty consecutive rollout steps, rather than one lucky instant.
+成功允许二十毫米位置和约二十三度角误差。还要连续满足二十步，不能只瞬间接近。
+Source: https://arxiv.org/pdf/2408.07855v4#page=12
+
+07 The measured result / 测出来的结果
+The reported TriFinger success rate is ninety-seven percent under that simulation protocol. Its mean final position error is six point seven millimeters, while mean orientation error is about twelve degrees.
+在该仿真协议下，成功率为百分之九十七。平均终态位置误差六点七毫米，角误差约十二度。
+Source: https://arxiv.org/pdf/2408.07855v4#page=12
+
+08 Where the model breaks / 模型的边界
+Local contact geometry can miss the global consequences of an asymmetric shape. Some self-collision constraints are also incomplete; fast optimization does not establish reliable operation on an unseen physical object.
+局部接触几何可能漏掉非对称形状的全局影响。自碰撞约束也不完整，真机泛化仍需验证。
+Source: https://arxiv.org/pdf/2408.07855v4#page=11
+
+09 A useful design lesson / 值得借鉴的设计
+The practical contribution is making contact-aware planning computationally manageable with a compact differentiable model. For deployment, the remaining work includes state estimation, geometry uncertainty, and validating the chosen success tolerances on hardware.
+贡献是用紧凑可微模型，让接触规划算得动。落地还需状态估计、几何不确定性和真机验证。
+Source: https://arxiv.org/pdf/2408.07855v4#page=13
+
+
+Sources
+https://arxiv.org/abs/2408.07855
+https://arxiv.org/pdf/2408.07855v4
+https://www.roboticsproceedings.org/rss21/p111.html
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

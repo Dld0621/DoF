@@ -1,0 +1,89 @@
+﻿1
+00:00:00,850 --> 00:00:05,370
+A depth camera sees the front of an object, while the back remains hidden.
+深度相机看得到正面，却看不到背面。
+
+2
+00:00:06,070 --> 00:00:12,350
+SpringGrasp plans a grasp that can tolerate this uncertain shape, rather than demanding perfectly placed fingertips.
+SpringGrasp 让抓取容忍形状不确定性。
+
+3
+00:00:13,107 --> 00:00:19,067
+First, a Gaussian process implicit surface combines the observed points into a shape estimate.
+先用高斯过程隐式表面整合观测点。
+
+4
+00:00:19,487 --> 00:00:25,927
+It also represents uncertainty, so the planner can distinguish supported geometry from poorly observed regions.
+同时保留不确定性，区分已知与缺失区域。
+
+5
+00:00:26,611 --> 00:00:31,251
+Next, each compliant finger behaves like a virtual spring attached to a target.
+接着，每根柔顺手指像连着目标的虚拟弹簧。
+
+6
+00:00:31,571 --> 00:00:37,891
+When contact occurs earlier than expected, the finger yields instead of forcing the object along a rigid trajectory.
+比预期更早接触时，手指能够让步。
+
+7
+00:00:38,680 --> 00:00:44,460
+The optimizer jointly selects the initial hand pose, fingertip targets, and stiffness gains.
+优化器同时选择初始手姿、指尖目标和刚度。
+
+8
+00:00:44,980 --> 00:00:52,420
+Its objective balances stable contact, surface uncertainty, collision avoidance, and the forces predicted by the spring model.
+目标兼顾稳定、不确定性、避碰与模型力。
+
+9
+00:00:52,964 --> 00:00:58,444
+The physical setup combines a KUKA arm, an Allegro hand, and depth observations.
+真机使用 KUKA 机械臂、Allegro 手和深度观测。
+
+10
+00:00:59,124 --> 00:01:06,004
+Finger impedance control executes the planned grasp; the method does not require a behavior-cloning demonstration dataset.
+逐指阻抗执行规划，不需要行为克隆示范集。
+
+11
+00:01:06,707 --> 00:01:12,127
+Fourteen objects receive five trials each, with lifting and slipping assessed separately.
+十四种物体各测试五次，同时考察举起和滑移。
+
+12
+00:01:12,647 --> 00:01:19,107
+A clean five-centimeter lift earns one point; a lift with slipping earns half a point, and failure earns zero.
+举起五厘米不滑得一分，滑移得半分。
+
+13
+00:01:19,724 --> 00:01:25,344
+The two-view setting scores eighty-nine percent, versus seventy-one for the heuristic baseline.
+双视角得分百分之八十九，启发式基线七十一。
+
+14
+00:01:25,804 --> 00:01:32,164
+With one view, modeling uncertainty raises the score from seventy-five to eighty-four percent in the reported comparison.
+单视角加入不确定性后，从七十五升至八十四。
+
+15
+00:01:32,900 --> 00:01:37,760
+Planning takes seconds, and the model does not explicitly account for gravity.
+规划耗时数秒，模型没有显式考虑重力。
+
+16
+00:01:38,280 --> 00:01:47,020
+Heavy objects, thin walls, and slipping challenge its assumptions; these grasp-acquisition results do not establish continuous tool manipulation.
+重物、薄壁和滑移困难，尚未证明连续工具操作。
+
+17
+00:01:47,857 --> 00:01:53,317
+For an uncertain object, asking only where fingers should land leaves out an important decision.
+面对未知物体，光问手指落在哪里还不够。
+
+18
+00:01:53,937 --> 00:01:59,537
+SpringGrasp also asks how much each finger should yield, making compliance part of the grasp plan itself.
+还要问各指该让多少，让柔顺性参与规划。

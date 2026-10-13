@@ -1,0 +1,119 @@
+﻿1
+00:00:00,850 --> 00:00:05,470
+Sliding a battery into a slot needs both arms to cooperate through contact.
+电池插槽需要双臂在接触过程中协同。
+
+2
+00:00:05,890 --> 00:00:10,350
+ALOHA makes those demonstrations easier to collect with paired low-cost robot arms.
+ALOHA用配对低成本机械臂方便采集示教。
+
+3
+00:00:10,750 --> 00:00:14,950
+ACT then learns short action sequences instead of predicting one isolated command.
+ACT学习短动作序列，而非孤立的单步指令。
+
+4
+00:00:15,516 --> 00:00:20,356
+A person moves leader arms while follower arms perform the actual manipulation.
+人移动主臂，从臂完成实际操作。
+
+5
+00:00:20,896 --> 00:00:25,216
+Four camera views and robot joint states accompany the recorded target actions.
+四路画面与机器人关节状态伴随目标动作记录。
+
+6
+00:00:25,596 --> 00:00:30,196
+These are demonstrations on parallel grippers, not motion capture of human fingers.
+这是平行夹爪示教，不是人类手指动捕。
+
+7
+00:00:30,727 --> 00:00:36,247
+A one-step imitation policy must repeatedly choose actions as small errors accumulate.
+单步模仿需要不断选动作，小误差会累积。
+
+8
+00:00:36,807 --> 00:00:40,407
+Predicting a short chunk gives the model a coherent local movement to learn.
+预测短动作块，让模型学习连贯局部运动。
+
+9
+00:00:40,787 --> 00:00:45,447
+It shortens the effective decision horizon without pretending the entire task is solved.
+它缩短有效决策时域，不代表整项任务已解决。
+
+10
+00:00:45,997 --> 00:00:51,777
+Images and joint positions condition a transformer that reconstructs demonstrated action chunks.
+图像和关节位置引导变换器重建示教动作块。
+
+11
+00:00:52,217 --> 00:00:57,877
+A conditional variational autoencoder models variation in demonstrations through a latent variable.
+条件变分自编码器用隐变量描述示教差异。
+
+12
+00:00:58,297 --> 00:01:02,837
+At inference, that latent is fixed; future expert actions are never supplied.
+推理时固定隐变量，不会输入未来专家动作。
+
+13
+00:01:03,382 --> 00:01:09,822
+New observations produce overlapping action chunks, which propose commands for common future times.
+新观测产生重叠动作块，预测共同未来时刻。
+
+14
+00:01:10,322 --> 00:01:15,382
+Temporal ensembling blends those overlapping predictions before sending the next robot command.
+时间集成先融合重叠预测，再下发机器人指令。
+
+15
+00:01:15,842 --> 00:01:20,138
+This smooths execution while allowing fresh observations to influence the motion.
+这样平滑执行，同时让新观测影响运动。
+
+16
+00:01:20,588 --> 00:01:25,708
+Real battery insertion reaches ninety-six percent at the final evaluated stage.
+真机电池插入的最终阶段结果为96%。
+
+17
+00:01:26,188 --> 00:01:31,128
+Threading Velcro reaches only twenty percent, showing how much task difficulty matters.
+穿魔术贴仅20%，说明任务难度影响很大。
+
+18
+00:01:31,488 --> 00:01:36,428
+Each task receives twenty-five evaluation trials, with one trained seed in this study.
+各任务评测25次，本研究使用一个训练种子。
+
+19
+00:01:36,962 --> 00:01:42,382
+Most tasks use fifty demonstrations, while threading Velcro uses one hundred.
+大多任务50条示教，穿魔术贴使用100条。
+
+20
+00:01:43,202 --> 00:01:48,082
+Effective motion lasts roughly ten to twenty minutes, excluding resets and failed collection.
+有效运动约10至20分钟，不含重置和采集失败。
+
+21
+00:01:48,522 --> 00:01:54,182
+The full collection session takes longer, and teleoperation demos are not autonomous evaluations.
+完整采集更久，遥操展示也不是自主评测。
+
+22
+00:01:55,038 --> 00:02:00,678
+Action chunks and temporal ensembling are useful design ideas for many imitation systems.
+动作块和时间集成可供多种模仿系统借鉴。
+
+23
+00:02:01,138 --> 00:02:06,258
+But these results do not establish the same reliability for high-dimensional finger control.
+但这些结果不证明高维手指控制也有同样可靠性。
+
+24
+00:02:07,138 --> 00:02:11,678
+Contact sensing, data coverage, and the robot's mechanics still determine what transfers.
+接触感知、数据覆盖和机械结构仍决定迁移效果。

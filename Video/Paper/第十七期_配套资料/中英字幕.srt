@@ -1,0 +1,89 @@
+﻿1
+00:00:00,850 --> 00:00:05,210
+A robot enters a new home and must put dishes away or collect laundry.
+机器人进入陌生家庭，要收拾碗碟或衣物。
+
+2
+00:00:05,710 --> 00:00:13,650
+Pi zero point five studies this environmental generalization problem, where objects, layouts, and intermediate steps change together.
+π0.5 研究物体、布局与步骤同时变化的泛化。
+
+3
+00:00:14,266 --> 00:00:20,586
+A high-level prediction identifies the next semantic subtask from the current observations and instruction.
+高层根据当前观测和指令，选择下一语义子任务。
+
+4
+00:00:21,046 --> 00:00:25,886
+For example, the robot may need to open a drawer before placing the object inside it.
+例如放入物体之前，要先把抽屉打开。
+
+5
+00:00:26,336 --> 00:00:31,976
+A continuous action expert then generates the movements needed to execute that subtask.
+连续动作专家生成执行该子任务的运动。
+
+6
+00:00:32,376 --> 00:00:39,016
+Flow matching supplies action sequences for the mobile base, two arms, and grippers, conditioned on current robot observations.
+流匹配根据观测，为底盘、双臂和夹爪生成动作。
+
+7
+00:00:39,765 --> 00:00:46,445
+The training recipe mixes robot actions, semantic task annotations, and visual-language supervision.
+训练混合机器人动作、语义标注与视觉语言任务。
+
+8
+00:00:47,025 --> 00:00:56,145
+Discrete action training and continuous control share useful representations, connecting web-scale understanding with the physical behaviors learned from robot demonstrations.
+离散动作训练与连续控制共享表示，连接理解和行为。
+
+9
+00:00:56,905 --> 00:01:02,525
+At deployment, the policy uses camera views, robot proprioception, and language.
+部署使用相机、本体状态和语言。
+
+10
+00:01:02,945 --> 00:01:10,685
+The human high-level oracle is a comparison condition, not an extra operator silently choosing every subtask for the autonomous policy.
+人工高层指令是对照条件，不是自主策略的隐藏输入。
+
+11
+00:01:11,237 --> 00:01:16,657
+The main real-home plots report task progress across previously unseen environments.
+真实家庭主图统计未见环境中的任务进度。
+
+12
+00:01:17,117 --> 00:01:25,157
+Each task and environment receives ten trials, but the vertical axis counts completed stages rather than only entirely successful episodes.
+每任务每环境十次，纵轴按完成阶段计分。
+
+13
+00:01:25,886 --> 00:01:30,586
+For four dishes, picking each one up and placing it down can earn separate points.
+四件碗碟的拿起和放下，可以分别得分。
+
+14
+00:01:31,026 --> 00:01:37,966
+A high progress score can therefore include unfinished episodes; it should not be presented as the full-task success probability.
+高进度也可能包含未完成试验，不能替换成成功率。
+
+15
+00:01:38,677 --> 00:01:44,897
+Unfamiliar handles, difficult doors, arm occlusion, and repetitive behaviors still cause failures.
+陌生把手、难开的门、遮挡与重复动作仍会失败。
+
+16
+00:01:45,497 --> 00:01:53,597
+These mobile-gripper demonstrations also do not measure fingertip slip control, multi-finger coordination, or tight-tolerance assembly accuracy.
+移动夹爪实验未测多指滑移控制或紧公差装配。
+
+17
+00:01:54,311 --> 00:01:59,631
+Pi zero point five expands where a robot can attempt useful, extended tasks.
+π0.5 扩展了机器人尝试长任务的环境范围。
+
+18
+00:01:59,951 --> 00:02:09,151
+For dexterous manipulation, environmental generalization and precise contact control must still be tested separately before claiming dependable everyday operation.
+环境泛化和精密接触仍需分别验证可靠性。

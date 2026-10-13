@@ -1,0 +1,49 @@
+﻿DoF Paper EP.08 | Diffusion Policy: Generate Actions Without Averaging Away the Skill
+Diffusion Policy：生成动作，而不把技能平均掉
+
+01 Two valid paths can have a bad average / 两条好路径，平均后可能变坏
+A robot can push around an obstacle from either side, but not through it. Averaging those demonstrations can produce an action that belongs to neither valid strategy. Diffusion Policy learns a distribution of action sequences instead of one averaged answer.
+机器人可以从障碍两侧绕行，却不能穿过去。将示教平均，可能得到不属于任何有效策略的动作。扩散策略学习动作序列分布，而非平均答案。
+Source: https://arxiv.org/pdf/2303.04137v5; original paper figure
+
+02 Start noisy, then refine / 从噪声开始，逐步修正
+During training, noise is added to demonstrated action sequences at different levels. The network learns to predict that noise using the current observation as context. This trains a conditional action model, not an explicit contact-force estimator.
+训练时，对示教动作序列加入不同程度噪声。网络根据当前观测条件，学习预测所加噪声。这训练条件动作模型，不是显式接触力估计器。
+Source: https://arxiv.org/pdf/2303.04137v5; PDF page 3
+
+03 Generate a coherent local plan / 生成连贯的局部计划
+At deployment, a random action block is repeatedly denoised into a plausible sequence. The robot executes only a short part before observing and planning again. This rolling process combines coherent motion with opportunities to respond to changes.
+部署时，随机动作块经反复去噪成为可行序列。机器人只执行短段，然后重新观察和规划。滚动过程兼顾运动连贯性和应对变化的机会。
+Source: https://arxiv.org/pdf/2303.04137v5; PDF page 3
+
+04 Look at the real Push-T task / 看真实Push-T任务
+The robot must align a T-shaped block and then move into an ending region. That final motion matters because it signals that the manipulation is complete. The real experiment uses one hundred thirty-six demonstrations rather than unlimited expert data.
+机器人要对齐T形物体，再进入结束区域。最后这段运动很重要，它标记操作完成。真机实验使用136条示教，并非无限专家数据。
+Source: https://arxiv.org/pdf/2303.04137v5; PDF page 10
+
+05 Read both columns of the table / 结果表要看两列
+The visual diffusion policy achieves point-eight-zero overlap and ninety-five percent success. The LSTM comparison reports twenty percent success under the same real-world protocol. Twenty trials support this comparison; overlap is a dimensionless geometric score.
+视觉扩散策略交并比0.80，成功率95%。同一真机协议下，LSTM对照成功率20%。该比较共20次试验，交并比是无量纲分数。
+Source: https://arxiv.org/pdf/2303.04137v5; PDF page 9
+
+06 Recovery is visible, not universal / 能看到恢复，但不能无限推广
+The author demonstrations include interruptions and perturbations during pushing and finishing. Repeated observations can change the next action chunk when the scene moves. Selected successful recoveries do not guarantee recovery from every unseen contact state.
+作者演示包含推动与结束阶段的干扰。场景变化后，新观测能改变下一动作块。展示成功恢复不等于所有未见接触都能恢复。
+Source: https://arxiv.org/pdf/2303.04137v5; PDF page 10
+
+07 Computation and coverage still matter / 计算与覆盖仍是限制
+Multiple denoising steps consume computation, and behavior cloning remains limited by demonstrated coverage. Visual and privileged-state results must stay separate when evaluating what the camera provides. The extended paper adds experiments beyond the original conference version.
+多步去噪消耗计算，行为克隆仍受示教覆盖限制。评价相机能力时，视觉与特权状态结果必须分开。扩展论文还增加了原会议稿之外的实验。
+Source: https://arxiv.org/pdf/2303.04137v5; PDF page 3
+
+08 A policy model, not a precision certificate / 策略模型不是精度证书
+The contribution is a better way to represent and update multimodal robot behavior. Its task gains cannot be converted into millimeter accuracy or reliable force control. For delicate manipulation, pair action generation with the sensing the contact actually needs.
+贡献在于更好表示和更新多模态机器人行为。任务收益不能换算成毫米精度或可靠力控制。精细操作还要给动作生成配上接触所需的感知。
+Source: https://arxiv.org/pdf/2303.04137v5; original paper figure
+
+
+Sources
+https://arxiv.org/pdf/2303.04137v5
+https://diffusion-policy.cs.columbia.edu/
+BGM: Ash – Melody (Original Mix)
+https://soundcloud.com/ash_musicc/ash-melody-original-mix

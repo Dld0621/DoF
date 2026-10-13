@@ -1,0 +1,99 @@
+﻿1
+00:00:00,850 --> 00:00:06,650
+A robot can imitate a hand trajectory while missing the contact that actually makes the task work.
+机器人能模仿手轨迹，却错过真正起作用的接触。
+
+2
+00:00:07,270 --> 00:00:09,950
+TactiDex records human touch alongside motion,
+TactiDex同步采集触觉与运动，
+
+3
+00:00:10,170 --> 00:00:13,310
+and TactiSkill uses that information to guide transfer.
+TactiSkill用这些信息指导迁移。
+
+4
+00:00:13,875 --> 00:00:19,235
+The dataset aligns whole-hand tactile measurements with hand motion and object states.
+数据集对齐全手触觉、手部运动与物体状态。
+
+5
+00:00:19,775 --> 00:00:26,475
+Post-optimization and sensor-to-simulation mapping turn these recordings into physically aligned references for training.
+后优化和传感器到仿真的映射生成物理对齐参考。
+
+6
+00:00:27,062 --> 00:00:33,682
+The transfer framework trains a residual tracking policy with three complementary tactile reward components.
+迁移框架用三种互补触觉奖励训练残差跟踪策略。
+
+7
+00:00:34,202 --> 00:00:39,482
+The first encourages the robot to establish contact where the human demonstration indicates it matters.
+第一项引导机器人在示范的重要区域建立接触。
+
+8
+00:00:40,103 --> 00:00:46,903
+A human-like alignment term encourages the transferred interaction to follow the recorded contact and force pattern.
+类人对齐项使迁移交互遵循记录的接触和力模式。
+
+9
+00:00:47,443 --> 00:00:52,263
+Matching visible joint motion alone would leave this part of the physical behavior unconstrained.
+只匹配可见关节运动，无法约束这部分物理行为。
+
+10
+00:00:52,759 --> 00:00:58,699
+A contact-constraint term limits problematic forces while the policy adjusts the retargeted action.
+接触约束项限制不合理力，策略则调整重定向动作。
+
+11
+00:00:59,119 --> 00:01:05,099
+The intended result is a motion that preserves useful interaction, rather than merely resembling a pose sequence.
+目标是保留有效交互，而不只是姿态序列相似。
+
+12
+00:01:05,852 --> 00:01:11,272
+The main comparison uses seventy-three reference sequences evaluated in simulation.
+主要比较使用73条参考序列，在仿真中评测。
+
+13
+00:01:11,912 --> 00:01:18,452
+The tactile-fidelity criterion measures whether the transferred contact matches the reference under its specified rules.
+触觉保真判据衡量迁移接触是否满足参考匹配规则。
+
+14
+00:01:19,181 --> 00:01:27,041
+Tactile-fidelity success reaches sixty-four point six four percent, versus thirty-nine point three five for kinematic transfer.
+触觉保真64.64%，运动学迁移为39.35%。
+
+15
+00:01:27,581 --> 00:01:31,886
+Contact F-one rises from point five five six nine to point seven three eight four.
+Contact F1由0.5569升到0.7384。
+
+16
+00:01:32,336 --> 00:01:38,656
+The appendix states that physical deployment does not feed tactile signals back into the policy online.
+附录明确：真机执行不把触觉在线反馈给策略。
+
+17
+00:01:39,356 --> 00:01:46,696
+The robot performs open-loop execution, so these demonstrations cannot establish autonomous tactile-feedback reliability.
+真机采用开环执行，不能证明自主触觉反馈可靠性。
+
+18
+00:01:47,522 --> 00:01:50,802
+TactiDex contributes measured human interaction;
+TactiDex提供人类交互测量，
+
+19
+00:01:51,322 --> 00:01:55,102
+TactiSkill demonstrates how that contact can shape a transfer objective.
+TactiSkill展示接触如何塑造迁移目标。
+
+20
+00:01:55,402 --> 00:02:01,462
+Keep simulation fidelity, kinematic matching, and complete real-world task success as separate questions.
+仿真保真、运动匹配、真机完整成功应分别评价。

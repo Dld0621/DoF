@@ -1,0 +1,499 @@
+﻿1
+00:00:00,200 --> 00:00:02,690
+A robot needs to move this cup.
+机器人要移动这只杯子。
+
+2
+00:00:02,900 --> 00:00:04,250
+The direct route is shorter.
+直线路径更短，
+
+3
+00:00:04,540 --> 00:00:06,650
+It also runs straight into an obstacle.
+却会撞上障碍物。
+
+4
+00:00:06,880 --> 00:00:09,400
+Before committing, could it compare the consequences
+真正行动之前，它能先比较后果吗：
+
+5
+00:00:09,420 --> 00:00:11,410
+of going straight and going around?
+直行，还是绕行？
+
+6
+00:00:11,760 --> 00:00:13,990
+That question gets us to world models.
+这个问题把我们带到世界模型。
+
+7
+00:00:14,340 --> 00:00:16,952
+Welcome to DoF Infra, episode one.
+欢迎来到 DoF Infra 第一期。
+
+8
+00:00:17,022 --> 00:00:19,592
+Start with what the robot can observe:
+先看机器人能够观测什么：
+
+9
+00:00:19,942 --> 00:00:23,132
+camera images, joint positions, and recent actions.
+相机图像、关节位置，以及最近的动作。
+
+10
+00:00:23,562 --> 00:00:25,752
+A single picture may show where the cup is,
+单张图像能显示杯子的位置，
+
+11
+00:00:25,822 --> 00:00:27,392
+but not whether it is sliding.
+却未必能判断它是否在滑动。
+
+12
+00:00:28,042 --> 00:00:30,032
+History helps resolve that ambiguity.
+历史信息有助于消除歧义。
+
+13
+00:00:30,382 --> 00:00:31,962
+An encoder and a memory model
+编码器和记忆模型
+
+14
+00:00:31,982 --> 00:00:34,172
+turn that stream into an internal state.
+将信息流变为内部状态。
+
+15
+00:00:34,562 --> 00:00:36,732
+The state is learned, not a tiny photograph.
+它是学到的表示，不是缩小的照片。
+
+16
+00:00:37,048 --> 00:00:38,868
+Now hold the current state fixed
+保持当前状态不变，
+
+17
+00:00:38,888 --> 00:00:40,618
+and change the proposed action.
+只改变候选动作。
+
+18
+00:00:40,848 --> 00:00:42,938
+Push forward, or move around the obstacle.
+向前推，或者绕过障碍物。
+
+19
+00:00:43,248 --> 00:00:44,508
+A dynamics model predicts
+动力学模型预测：
+
+20
+00:00:44,528 --> 00:00:46,698
+how the state could evolve under each choice.
+不同选择下，状态可能怎样变化。
+
+21
+00:00:47,048 --> 00:00:49,418
+This action dependence is crucial for control.
+依赖动作，是服务控制的关键。
+
+22
+00:00:49,688 --> 00:00:51,838
+A policy answers, what should I do?
+策略回答：我应该做什么？
+
+23
+00:00:51,968 --> 00:00:53,578
+A world model helps answer,
+世界模型帮助回答：
+
+24
+00:00:53,728 --> 00:00:55,358
+what might happen if I do this?
+如果这样做，可能发生什么？
+
+25
+00:00:55,680 --> 00:00:58,510
+Two imagined futures are not yet a decision.
+想象出两个未来，还不能完成决策。
+
+26
+00:00:59,000 --> 00:01:00,710
+We need a way to compare them:
+我们需要比较依据：
+
+27
+00:01:00,820 --> 00:01:03,090
+progress, reward, or distance to a goal.
+进度、奖励，或与目标的距离。
+
+28
+00:01:03,340 --> 00:01:05,700
+In this illustration, the longer route wins
+在这个示意图中，绕行胜出，
+
+29
+00:01:05,720 --> 00:01:07,690
+because the direct route collides.
+因为直线路径会碰撞。
+
+30
+00:01:07,980 --> 00:01:09,730
+These scores explain the idea;
+这里的分数用于解释原理，
+
+31
+00:01:09,960 --> 00:01:11,730
+they are not experiment results.
+并非实验结果。
+
+32
+00:01:11,920 --> 00:01:15,290
+Execute a short step, look again, and update the plan.
+先执行一小步、再次观察，然后更新计划。
+
+33
+00:01:15,580 --> 00:01:18,510
+A new observation can overturn an attractive prediction.
+新观测可能推翻原本看好的预测。
+
+34
+00:01:18,910 --> 00:01:21,680
+But where do useful predictions come from?
+有用的预测从哪里来？
+
+35
+00:01:22,010 --> 00:01:24,420
+DayDreamer learns from real robot experience,
+DayDreamer 从真实机器人经验中学习，
+
+36
+00:01:24,610 --> 00:01:26,420
+including awkward early attempts.
+也包括笨拙的早期尝试。
+
+37
+00:01:26,810 --> 00:01:28,790
+Its demonstrations include locomotion
+演示包括行走，
+
+38
+00:01:28,810 --> 00:01:30,660
+and moving objects between bins.
+以及在箱子之间搬运物体。
+
+39
+00:01:31,010 --> 00:01:33,160
+Each behavior is learned through interaction,
+每种行为都通过交互学得，
+
+40
+00:01:33,370 --> 00:01:36,220
+not simply supplied by a general pretrained policy.
+并非直接来自通用预训练策略。
+
+41
+00:01:36,605 --> 00:01:39,455
+Follow the original figure from left to right.
+沿论文原图从左向右看。
+
+42
+00:01:39,685 --> 00:01:41,875
+Real observations train the state model.
+真实观测训练状态模型，
+
+43
+00:01:42,125 --> 00:01:44,935
+Then imagined state sequences train an actor and a critic.
+想象状态序列再训练策略与价值评估器。
+
+44
+00:01:45,105 --> 00:01:47,205
+The actor learns which actions tend to pay off.
+策略学会哪些动作通常更有收益。
+
+45
+00:01:47,225 --> 00:01:49,705
+At execution time, it can choose an action
+执行时，它可以直接选择动作，
+
+46
+00:01:49,725 --> 00:01:51,755
+without searching a fresh tree of futures.
+无需重新搜索一棵未来分支树。
+
+47
+00:01:51,845 --> 00:01:54,715
+So imagination can improve a policy during learning.
+想象可以在训练阶段改进策略，
+
+48
+00:01:54,925 --> 00:01:56,485
+It does not always mean the robot
+但这并不总意味着机器人
+
+49
+00:01:56,505 --> 00:01:58,555
+is planning online before every move.
+每次动作前都在在线规划。
+
+50
+00:01:58,846 --> 00:02:01,596
+TD-MPC2 takes the other route.
+TD-MPC2 采用另一条路线：
+
+51
+00:02:01,886 --> 00:02:03,926
+It searches candidate action sequences
+搜索候选动作序列，
+
+52
+00:02:03,946 --> 00:02:06,896
+in a learned latent space while the agent is acting.
+在执行期间、在学到的潜在空间中搜索。
+
+53
+00:02:07,286 --> 00:02:09,336
+Here the arrows predict the next state.
+这些箭头预测下一状态。
+
+54
+00:02:09,846 --> 00:02:11,856
+Reward estimates score the short rollout,
+奖励估计评价短期展开，
+
+55
+00:02:11,986 --> 00:02:14,996
+and a value estimate represents what may come afterward.
+价值估计概括更远处可能得到的收益。
+
+56
+00:02:15,406 --> 00:02:17,316
+Only the first action is executed.
+只执行第一个动作，
+
+57
+00:02:17,846 --> 00:02:20,236
+The next observation starts another search.
+下一次观测再启动搜索。
+
+58
+00:02:20,666 --> 00:02:23,576
+There is no requirement to render every imagined frame.
+不要求渲染每一帧想象画面。
+
+59
+00:02:23,923 --> 00:02:27,593
+These TD-MPC2 clips are simulation benchmarks.
+这些 TD-MPC2 视频来自仿真基准。
+
+60
+00:02:28,083 --> 00:02:30,213
+They show manipulation and locomotion,
+它们展示操作和运动控制，
+
+61
+00:02:30,403 --> 00:02:32,293
+not a physical robot deployment.
+并非真实机器人部署。
+
+62
+00:02:32,723 --> 00:02:35,433
+Replanning limits how long we trust an old forecast.
+重新规划缩短了依赖旧预测的时间，
+
+63
+00:02:35,823 --> 00:02:37,063
+It cannot rescue a model
+却无法自动修复
+
+64
+00:02:37,083 --> 00:02:39,373
+that systematically gets contact wrong.
+一个始终把接触预测错的模型。
+
+65
+00:02:39,710 --> 00:02:42,510
+The prediction can also live in feature space.
+预测也可以发生在特征空间。
+
+66
+00:02:42,530 --> 00:02:45,340
+V-JEPA 2 first learns from video,
+V-JEPA 2 先从视频学习，
+
+67
+00:02:45,490 --> 00:02:48,820
+then its action-conditioned version learns from robot interactions.
+动作条件版本再从机器人交互学习。
+
+68
+00:02:49,270 --> 00:02:51,130
+For planning, encode a goal image
+规划时，将目标图像编码，
+
+69
+00:02:51,150 --> 00:02:53,640
+and compare it with predicted endpoint features.
+与预测终点的特征比较，
+
+70
+00:02:53,850 --> 00:02:56,700
+Search for actions that make those representations agree.
+搜索让两者接近的动作。
+
+71
+00:02:56,910 --> 00:02:59,740
+The real robot examples use supplied goal images.
+真实机器人案例使用给定的目标图像。
+
+72
+00:03:00,070 --> 00:03:02,730
+The paper reports about sixteen seconds of planning
+论文报告约十六秒的规划时间，
+
+73
+00:03:02,750 --> 00:03:05,340
+per action on an RTX 4090.
+对应 RTX 4090 上的每个动作。
+
+74
+00:03:05,939 --> 00:03:08,989
+RoboDreamer illustrates a different interface:
+RoboDreamer 展示另一种接口：
+
+75
+00:03:09,379 --> 00:03:10,759
+language and visual conditions
+语言与视觉条件
+
+76
+00:03:10,779 --> 00:03:12,909
+compose a desired video plan.
+组合出期望的视频计划。
+
+77
+00:03:13,139 --> 00:03:14,829
+Keep these two panels separate.
+要区分这两个画面。
+
+78
+00:03:15,039 --> 00:03:16,489
+One is a generated plan.
+一边是生成的计划，
+
+79
+00:03:16,659 --> 00:03:19,429
+The other is execution in the RLBench simulator.
+另一边是在 RLBench 仿真中执行。
+
+80
+00:03:19,799 --> 00:03:21,749
+Neither is proof of physical success.
+两者都不能证明真实世界任务成功。
+
+81
+00:03:21,999 --> 00:03:25,069
+A plausible movie, accurate action consequences,
+看似合理的视频、准确的动作后果，
+
+82
+00:03:25,399 --> 00:03:26,599
+and a reliable controller
+以及可靠的控制器，
+
+83
+00:03:26,619 --> 00:03:28,589
+are three different things to evaluate.
+需要分别评价。
+
+84
+00:03:29,113 --> 00:03:30,623
+Return to our cup.
+回到这只杯子。
+
+85
+00:03:31,013 --> 00:03:33,333
+The model might miss friction, hide an obstacle,
+模型可能漏掉摩擦、忽略障碍，
+
+86
+00:03:33,353 --> 00:03:36,823
+or underestimate how uncertainty grows over several steps.
+或者低估多步预测中累积的不确定性。
+
+87
+00:03:37,213 --> 00:03:38,693
+Test the action, the horizon,
+要测试真正相关的动作、预测时长，
+
+88
+00:03:38,713 --> 00:03:40,703
+and the outcome that actually matter.
+以及实际结果。
+
+89
+00:03:40,933 --> 00:03:42,783
+For grasping, inspect contact.
+抓取要看接触，
+
+90
+00:03:42,933 --> 00:03:45,463
+For recovery, inspect motion after a disturbance.
+恢复能力要看扰动之后的运动。
+
+91
+00:03:45,913 --> 00:03:47,453
+More realistic pixels are useful
+更逼真的像素是否有用，
+
+92
+00:03:47,473 --> 00:03:49,843
+only when they improve the task you care about.
+要看能否改善你关心的任务。
+
+93
+00:03:50,053 --> 00:03:52,243
+Measure that connection instead of assuming it.
+这个联系需要测量，不能靠假设。
+
+94
+00:03:52,428 --> 00:03:55,118
+When you open the next world-model paper,
+下次打开世界模型论文，
+
+95
+00:03:55,288 --> 00:03:58,678
+trace four things: its inputs, its predicted quantity,
+追踪四件事：输入、预测对象，
+
+96
+00:03:59,028 --> 00:04:01,918
+its decision rule, and its execution evidence.
+决策方式，以及执行证据。
+
+97
+00:04:02,308 --> 00:04:03,608
+Our DoF research map links
+DoF 研究地图整理了
+
+98
+00:04:03,628 --> 00:04:05,678
+the original papers and demonstrations.
+原论文和演示。
+
+99
+00:04:06,028 --> 00:04:07,918
+Follow the arrows back to the robot,
+沿着箭头回到机器人，
+
+100
+00:04:08,108 --> 00:04:10,218
+and ask what the prediction actually changed.
+追问：预测究竟改变了什么决策？

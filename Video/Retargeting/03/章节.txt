@@ -1,0 +1,14 @@
+﻿00:00 网络到底学什么？ / What does a mapper learn?
+00:29 逐帧求解，还是提前学习 / Optimize now, or learn earlier
+01:00 从摄像头到关节目标 / From camera to joint targets
+01:33 没有配对机器人标签，怎么训练 / Supervision without paired robots
+02:05 碰撞损失从哪里来 / Learning a collision penalty
+02:40 GeoRT：匹配可用的运动空间 / GeoRT: match useful spaces
+03:14 网络与机器人模型怎么连接 / The network and the robot model
+03:48 方向保持与空间覆盖 / Direction and coverage
+04:22 Flatness：控制灵敏度要一致 / Flatness means consistent sensitivity
+04:56 捏合与避免自碰撞 / Pinching and avoiding collisions
+05:29 AnyDexRT：不必强行覆盖全部空间 / AnyDexRT: do not force every region
+06:03 少量人工引导消除歧义 / Few-shot guidance resolves ambiguity
+06:36 接触意图不是接触力 / Contact intent is not contact force
+07:09 根据失败类型选择方法 / Choose by the failure you observe
