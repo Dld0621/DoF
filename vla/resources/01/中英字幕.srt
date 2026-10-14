@@ -1,0 +1,419 @@
+﻿1
+00:00:00,850 --> 00:00:04,270
+Ask a robot to place the red cup in the left tray.
+请机器人把红杯子放进左边的托盘。
+
+2
+00:00:04,630 --> 00:00:08,390
+It sees the scene, begins reaching, and somebody moves the cup.
+它看见场景，开始伸手，这时有人挪动了杯子。
+
+3
+00:00:08,770 --> 00:00:12,950
+A remembered trajectory now points toward empty space instead of the object.
+原来的动作轨迹，现在指向空处，而不是杯子。
+
+4
+00:00:13,390 --> 00:00:17,170
+The interesting question is what information can change the next command.
+真正值得追问的是：什么信息能够改变下一条指令？
+
+5
+00:00:17,670 --> 00:00:21,890
+This course follows that command from camera pixels to physical consequences.
+这套课程将跟随这条指令，从相机像素走到真实的物理结果。
+
+6
+00:00:22,430 --> 00:00:27,590
+We separate understanding the request, generating motion, and correcting it during execution.
+我们会区分理解任务、生成动作，以及执行期间纠正动作这三件事。
+
+7
+00:00:28,257 --> 00:00:34,317
+VLA stands for vision, language, and action: three connected parts of a robot policy.
+VLA 是视觉、语言和动作：机器人策略中相互连接的三部分。
+
+8
+00:00:34,757 --> 00:00:38,937
+Visual observations tell the policy what is currently visible around the robot.
+视觉观测告诉策略，机器人周围目前能够看见什么。
+
+9
+00:00:39,757 --> 00:00:44,437
+Language specifies the intended task, such as choosing the red cup rather than the blue one.
+语言指定目标任务，例如选择红杯子，而不是蓝杯子。
+
+10
+00:00:44,777 --> 00:00:49,677
+The output must eventually specify actions in a robot's executable control interface.
+输出最终必须落到机器人能够执行的控制接口中。
+
+11
+00:00:50,117 --> 00:00:53,742
+A model that only describes the photograph has not completed this mapping.
+仅仅描述照片的模型，还没有完成这种映射。
+
+12
+00:00:53,757 --> 00:00:58,797
+Different papers implement this connection with different architectures and action representations.
+不同论文会用不同的结构和动作表示，来建立这种连接。
+
+13
+00:00:59,584 --> 00:01:05,624
+Write the policy as a distribution over actions, conditioned on observations and the instruction.
+把策略写成一个分布：根据观测和指令，给出可能的动作。
+
+14
+00:01:06,224 --> 00:01:11,744
+The observation may contain several images, recent history, and the robot's measured joint state.
+观测可以包含多路图像、近期历史，以及机器人的实测关节状态。
+
+15
+00:01:12,184 --> 00:01:16,044
+The action may be one command or an entire short sequence of commands.
+动作可以是一条指令，也可以是一小段连续指令。
+
+16
+00:01:16,424 --> 00:01:21,004
+Conditioning means the same scene can produce different behavior when the instruction changes.
+条件化意味着：同一个场景，换一句指令，就应该产生不同的行为。
+
+17
+00:01:21,444 --> 00:01:25,649
+A distribution also allows several sensible ways of reaching around an obstacle.
+使用分布，也允许机器人以几种不同但合理的方式绕过障碍。
+
+18
+00:01:25,664 --> 00:01:30,664
+It does not automatically certify that every sampled movement will be safe or successful.
+不过，这并不自动保证每个采样动作都安全，也不保证任务成功。
+
+19
+00:01:31,306 --> 00:01:36,926
+The outside camera shows the cup and tray, while a wrist camera shows the grasp region.
+外部相机显示杯子与托盘，腕部相机显示抓取区域。
+
+20
+00:01:37,586 --> 00:01:42,306
+Joint encoders report the robot's configuration, even when an arm is partly hidden.
+即使机械臂部分被遮挡，关节编码器仍能报告机器人的构型。
+
+21
+00:01:42,906 --> 00:01:47,706
+These measurements complement each other; they do not contain exactly the same information.
+这些测量互相补充，并不是完全等价的信息副本。
+
+22
+00:01:48,226 --> 00:01:53,366
+A single image cannot reveal every relevant velocity, contact force, or occluded surface.
+单幅图像不能揭示所有相关速度、接触力和被遮挡表面。
+
+23
+00:01:54,006 --> 00:01:59,551
+History can help infer motion, but it also increases computation and must remain temporally aligned.
+历史可以帮助推断运动，但也会增加计算量，而且必须保证时间对齐。
+
+24
+00:01:59,566 --> 00:02:04,466
+Camera-only human observation does not mean discarding the robot's own sensors.
+因此，仅用摄像头观察人类，并不意味着机器人应丢掉自己的传感器。
+
+25
+00:02:05,114 --> 00:02:10,994
+In OpenVLA, image encoders produce visual features that are projected into the language model.
+在 OpenVLA 中，图像编码器产生视觉特征，再投影到语言模型的输入空间。
+
+26
+00:02:11,314 --> 00:02:16,214
+Instruction tokens and image features then influence predictions of robot action tokens.
+指令 token 和图像特征共同影响机器人动作 token 的预测。
+
+27
+00:02:16,734 --> 00:02:21,694
+The architecture figure shows this interface: images enter, numerical actions leave.
+原论文结构图把这个接口画得很清楚：图像进入，数值动作输出。
+
+28
+00:02:22,034 --> 00:02:27,234
+Those internal features need not be an explicit point cloud, mesh, or calibrated object map.
+这些内部特征，不一定是显式点云、网格，或者经过标定的物体地图。
+
+29
+00:02:27,454 --> 00:02:32,659
+A useful representation can support control without exposing a complete geometric reconstruction.
+即使没有输出完整几何重建，有用的表示仍然可以支持控制。
+
+30
+00:02:32,674 --> 00:02:37,994
+Whether that representation remains reliable under occlusion is an experimental question.
+但这种表示在遮挡下是否依然可靠，需要用实验回答。
+
+31
+00:02:38,671 --> 00:02:45,311
+Suppose a robot receives three translation changes, three rotation changes, and a gripper value.
+假设教学机器人接收三维平移变化、三维旋转变化，以及一个夹爪数值。
+
+32
+00:02:45,751 --> 00:02:49,631
+Seven numbers alone do not tell us what those commands actually mean.
+单看这七个数字，我们还不知道指令到底是什么意思。
+
+33
+00:02:50,511 --> 00:02:54,891
+Translation could use meters or millimeters, in a frame following the wrist or fixed to the base.
+平移可以使用米或毫米，坐标系可以跟随机器人手腕，也可以固定在基座。
+
+34
+00:02:55,451 --> 00:03:00,571
+Rotation uses an axis convention; gripper values might mean position or an open command.
+旋转可能采用特定的轴约定；夹爪值可能表示位置，也可能表示打开指令。
+
+35
+00:03:00,891 --> 00:03:05,376
+An adapter must preserve all these meanings when converting the model output for execution.
+把模型输出转换为执行指令时，适配层必须保留这些含义。
+
+36
+00:03:05,391 --> 00:03:08,791
+Shape compatibility is only the first interface check.
+张量形状兼容，只是接口检查的第一步。
+
+37
+00:03:09,276 --> 00:03:13,976
+Here is a numerical teaching example, not a published robot benchmark.
+下面是数值教学例子，不是某篇论文的机器人实验结果。
+
+38
+00:03:14,336 --> 00:03:18,516
+The policy requests a horizontal change of two centimeters in the base frame.
+策略要求在基座坐标系中，水平移动两厘米。
+
+39
+00:03:18,876 --> 00:03:22,916
+That displacement is zero point zero two meters, or twenty millimeters.
+这个位移就是零点零二米，也就是二十毫米。
+
+40
+00:03:23,376 --> 00:03:28,756
+If an adapter interprets the meter value as millimeters, the commanded motion becomes negligible.
+如果适配层把以米表示的数值当成毫米，执行位移就会非常小。
+
+41
+00:03:29,076 --> 00:03:33,881
+If the reference frame is rotated, even a correctly scaled value can point the wrong way.
+如果参考坐标系发生旋转，即使比例正确，运动方向也可能错误。
+
+42
+00:03:33,896 --> 00:03:39,376
+These failures can resemble poor intelligence while originating in a deterministic conversion.
+这些失败看起来像模型不够聪明，实际却可能来自确定性的转换错误。
+
+43
+00:03:40,105 --> 00:03:46,245
+After action decoding, a controller still has to move real joints toward the requested reference.
+动作解码以后，控制器仍然要驱动真实关节，追踪给定参考。
+
+44
+00:03:46,665 --> 00:03:51,765
+It may handle interpolation, inverse kinematics, joint limits, and hardware feedback.
+这个控制器可能处理插值、逆运动学、关节限位，以及硬件反馈。
+
+45
+00:03:52,285 --> 00:03:57,605
+The division depends on whether the policy outputs joint targets, end-effector motion, or torque.
+具体分工取决于策略输出的是关节目标、末端运动，还是力矩。
+
+46
+00:03:58,085 --> 00:04:03,465
+A policy update and a low-level servo update therefore need not happen at the same frequency.
+所以，策略更新与底层伺服更新，不必发生在同一个频率。
+
+47
+00:04:03,945 --> 00:04:09,070
+Calling a model end-to-end does not remove physical actuators or every interface around it.
+把模型称为端到端，并不会让物理执行器和周围所有接口消失。
+
+48
+00:04:09,085 --> 00:04:12,985
+Evaluate the complete deployed system when judging practical behavior.
+判断实际表现时，应当评估完整部署系统。
+
+49
+00:04:13,829 --> 00:04:19,029
+Many policies predict a chunk containing several future commands from one observation.
+许多策略会根据一次观测，预测包含若干未来指令的动作块。
+
+50
+00:04:19,629 --> 00:04:24,709
+The prediction horizon counts proposed commands; the execution horizon counts those applied.
+预测时域表示提出多少条指令；执行时域表示实际执行其中多少条。
+
+51
+00:04:25,189 --> 00:04:30,529
+For illustration, predict ten steps, execute only two, then observe the scene again.
+举个例子：预测十步，只执行两步，然后重新观察场景。
+
+52
+00:04:31,029 --> 00:04:35,589
+The remaining eight predictions can be replaced using newer evidence about the moved cup.
+剩余八步预测，可以根据杯子移动后的新证据进行替换。
+
+53
+00:04:35,909 --> 00:04:41,154
+This is receding-horizon execution, and it helps connect coherent short motions with feedback.
+这就是滚动时域执行，它将连贯的短动作与反馈连接起来。
+
+54
+00:04:41,169 --> 00:04:46,429
+The numbers here define our example, not the default configuration of every VLA.
+这里的数字只是教学设定，并不是所有 VLA 的默认配置。
+
+55
+00:04:47,076 --> 00:04:50,576
+Return to the cup that moved after the first observation.
+回到第一帧之后被挪动的杯子。
+
+56
+00:04:50,996 --> 00:04:55,176
+A closed-loop policy can observe the new location and adjust a later command.
+闭环策略可以观察新位置，并调整后续指令。
+
+57
+00:04:55,516 --> 00:05:00,156
+But the robot cannot revise commands that have already been executed in the physical world.
+不过，机器人无法改写已经在物理世界中执行的指令。
+
+58
+00:05:00,816 --> 00:05:05,376
+Camera delay, model inference, and queued actions all postpone when correction takes effect.
+相机延迟、模型推理，以及排队动作，都会推迟纠正真正生效的时刻。
+
+59
+00:05:05,816 --> 00:05:10,936
+Consequently, a camera running frequently does not guarantee equally frequent behavioral correction.
+因此，相机频繁采集，并不保证行为也能以同样频率得到纠正。
+
+60
+00:05:11,416 --> 00:05:15,836
+Later we will draw the full timing diagram instead of treating frame rate as responsiveness.
+后面的章节会画出完整时间图，而不是把帧率直接当成反应速度。
+
+61
+00:05:16,644 --> 00:05:21,504
+To test language grounding, keep the scene fixed and change only the instruction.
+检验语言落地时，可以固定场景，只改变指令。
+
+62
+00:05:22,064 --> 00:05:25,144
+Ask for the red cup in one trial and the blue cup in another.
+一次要求拿红杯子，另一次要求拿蓝杯子。
+
+63
+00:05:25,584 --> 00:05:31,164
+If the robot always chooses the nearest object, apparent success may hide ignored language.
+如果机器人总是选择最近的物体，表面成功可能掩盖它忽略语言的问题。
+
+64
+00:05:31,444 --> 00:05:37,124
+Also keep reset conditions comparable, so a different starting pose does not explain the difference.
+还要保持重置条件可比，避免用不同初始位姿来解释结果差异。
+
+65
+00:05:37,504 --> 00:05:42,949
+A convincing demonstration shows the instruction changing the relevant choice, not just narration.
+有说服力的展示，应证明指令改变了相关选择，而不仅仅是配了一段解说。
+
+66
+00:05:42,964 --> 00:05:47,884
+This simple intervention turns an attractive video into a more informative diagnostic.
+这种简单干预，会让漂亮的视频变成更有信息量的诊断。
+
+67
+00:05:48,501 --> 00:05:55,161
+Recognizing a new cup, handling a slippery cup, and operating a new robot are different tests.
+识别新杯子、处理打滑杯子，以及操作新机器人，是不同的测试。
+
+68
+00:05:55,541 --> 00:06:01,221
+The first emphasizes appearance; the second changes interaction; the third changes embodiment.
+第一种可能侧重外观，第二种改变物理交互，第三种改变机器人身体。
+
+69
+00:06:01,681 --> 00:06:07,461
+A new room can change lighting, camera geometry, object arrangement, and movement space together.
+陌生房间可能同时改变光照、相机几何、物体布局，以及可运动空间。
+
+70
+00:06:07,961 --> 00:06:12,761
+Zero-shot only has meaning relative to the training and adaptation preceding evaluation.
+论文中的零样本，必须结合测试前的训练和适配过程理解。
+
+71
+00:06:13,401 --> 00:06:17,441
+We will record what was withheld and what was still familiar for each comparison.
+比较每种方法时，我们都会记录哪些因素被留出，哪些因素仍然熟悉。
+
+72
+00:06:17,721 --> 00:06:20,821
+There is no single number that substitutes for this specification.
+不存在一个能够替代这些说明的单一数字。
+
+73
+00:06:21,632 --> 00:06:27,992
+Action Chunking with Transformers and Diffusion Policy are important robot policy baselines.
+动作分块 Transformer 和 Diffusion Policy，都是重要的机器人策略基线。
+
+74
+00:06:28,472 --> 00:06:33,812
+These algorithms do not automatically become VLAs merely by outputting actions from images.
+仅仅因为它们根据图像输出动作，其核心算法并不会自动成为 VLA。
+
+75
+00:06:34,492 --> 00:06:38,952
+A language-conditioned version needs language input and training connecting it to behavior.
+带语言条件的版本，需要明确语言输入，以及把语言连接到行为的训练。
+
+76
+00:06:39,592 --> 00:06:44,592
+A generalist language-conditioned policy need not be built around a giant language model.
+反过来，带语言条件的通用策略，也不一定围绕一个巨大语言模型构建。
+
+77
+00:06:45,032 --> 00:06:50,317
+Octo shows why flexible policy interfaces matter alongside the large-VLM research route.
+Octo 展示了另一条重要路线：除了大型 VLM，也应重视灵活的策略接口。
+
+78
+00:06:50,332 --> 00:06:55,232
+We will compare concrete implementations rather than decide capabilities from names.
+我们会比较具体实现，而不是根据名字推断能力。
+
+79
+00:06:55,836 --> 00:07:01,256
+Before judging a new VLA, reconstruct its complete path from input to execution.
+判断一个新 VLA 之前，先重建它从输入到执行的完整路径。
+
+80
+00:07:01,676 --> 00:07:07,436
+Identify which observations and instructions reach the policy, and what action interface leaves it.
+确认哪些观测和指令进入策略，以及输出采用什么动作接口。
+
+81
+00:07:07,656 --> 00:07:12,676
+Then locate the training supervision, the feedback schedule, and the conditions of evaluation.
+接着定位训练监督、反馈时序，以及评估条件。
+
+82
+00:07:13,156 --> 00:07:17,096
+For our moved cup, ask when the new image can first affect a physical command.
+对于被挪动的杯子，要问新图像最早何时能够影响物理指令。
+
+83
+00:07:17,256 --> 00:07:22,301
+This links semantic understanding to robot behavior without assuming either alone is sufficient.
+这个问题把语义理解与真实行为连接起来，同时不预设任何一方单独就够用。
+
+84
+00:07:22,316 --> 00:07:29,316
+Next, we inspect action representations: numbers, tokens, trajectories, and generative decoders.
+下一章，我们直接拆解动作表示：数值、token、轨迹，以及生成式解码器。

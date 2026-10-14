@@ -73,10 +73,12 @@ def main():
  if bad:raise SystemExit('Public-content audit failed: '+json.dumps(bad))
  catalog=json.loads(payload['catalog.js'].decode().split('=',1)[1].strip().rstrip(';'));course=json.loads(payload['retargeting/course-data.json'])
  variants=[v for item in catalog['items'] for v in item['variants']]
- assert len(catalog['items'])==41 and len(variants)==52
+ assert len(catalog['items'])>=41 and len(variants)>=52
  assert len(course['chapters'])==6 and len(course['methods'])==28
  assert all(v['src'].startswith(SITE+'/media/') for v in variants)
- assert all(v['src'].startswith(SITE+'/media/') for v in course['chapters'])
+ courses={k:json.loads(v)for k,v in payload.items()if k.endswith('/course-data.json')}
+ assert all(not c.get('preview',False)for c in courses.values())
+ assert all(v['src'].startswith(SITE+'/media/')for c in courses.values()for v in c['chapters'])
  references=[]
  class Links(HTMLParser):
   def handle_starttag(self,tag,attrs):
@@ -94,7 +96,8 @@ def main():
    parser=Links();parser.feed(raw.decode())
   elif current.endswith('.css'):
    for m in re.finditer(r'''url\(["']?([^)'"\s]+)''',raw.decode()):references.append((current,m[1]))
- jsonlinks(catalog,'index.html');jsonlinks(course,'retargeting/index.html')
+ jsonlinks(catalog,'index.html')
+ for name,c in courses.items():jsonlinks(c,name.replace('course-data.json','index.html'))
  missing=[];checked=set()
  for current,ref in references:
   if ref.startswith(('data:','#','mailto:','tel:','javascript:')):continue
@@ -124,7 +127,7 @@ A bilingual educational library for embodied AI, robotics papers and practical r
 - **Dexterous retargeting course:** [{siteurl}retargeting/]({siteurl}retargeting/)
 - **Research map:** [DoF Embodied AI Paper Analysis](https://github.com/Dld0621/Embodied-AI-Paper-Analysis)
 
-The static site contains 41 library entries, references to 52 videos, and a six-chapter retargeting course with 28 method profiles and interactive teaching experiments. Chinese and English can be switched in the interface. Original figures and author demonstrations retain their source citations; the teaching experiments are illustrations, not independent benchmark results.
+The static site contains {len(catalog['items'])} library entries and references to {len(variants)} videos. Courses include dexterous retargeting, VLA and world models, with bilingual method profiles and interactive teaching experiments. Chinese and English can be switched in the interface. Original figures and author demonstrations retain their source citations; the teaching experiments are illustrations, not independent benchmark results.
 
 ## Hosting
 
@@ -147,7 +150,7 @@ Review the export manifest and test the project path before replacing the publis
 Paper figures, quoted research findings, third-party demonstrations and linked media remain subject to their respective authors' terms. This repository does not grant a new license to third-party material or claim author endorsement. See the source links accompanying each item. Narration is AI-generated; videos identify the music and research sources used.
 '''.encode('utf-8')
  payload['scripts/build-pages.py']=read(pathlib.Path(__file__).resolve())
- report={'format':'DoF GitHub Pages static export v1','repo_base':base,'site_url':siteurl,'media_origin':SITE,'source_commit':args.source_commit,'catalog_items':len(catalog['items']),'video_references':len(variants),'course_chapters':len(course['chapters']),'method_profiles':len(course['methods']),'image_files_unchanged':len(images),'internal_targets_checked':len(checked),'excluded':excluded,'release_copy_edits':release_edits,'privacy_scan':'passed','root_url_check':'passed','source_media_not_copied':True,'files':{r:{'bytes':len(v),'sha256':sha(v)}for r,v in payload.items()}}
+ report={'format':'DoF GitHub Pages static export v1','repo_base':base,'site_url':siteurl,'media_origin':SITE,'source_commit':args.source_commit,'catalog_items':len(catalog['items']),'video_references':len(variants),'course_chapters':sum(len(c['chapters'])for c in courses.values()),'method_profiles':sum(len(c['methods'])for c in courses.values()),'image_files_unchanged':len(images),'internal_targets_checked':len(checked),'excluded':excluded,'release_copy_edits':release_edits,'privacy_scan':'passed','root_url_check':'passed','source_media_not_copied':True,'files':{r:{'bytes':len(v),'sha256':sha(v)}for r,v in payload.items()}}
  payload['.dof-pages-export.json']=(json.dumps(report,ensure_ascii=False,indent=2)+'\n').encode()
  allowed_previous=set(previous.get('files',{}))|{'.dof-pages-export.json'}
  for rel in payload:

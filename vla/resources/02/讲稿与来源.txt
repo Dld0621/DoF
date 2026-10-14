@@ -1,0 +1,84 @@
+﻿VLA 02｜动作怎样成为模型输出
+VLA 02 · How Actions Become Model Outputs
+
+The action space comes before the decoder / 先有动作空间，再选解码方式
+Our robot now knows which cup to grasp, but its next movement still needs a representation. Three different decisions are often mixed together: action meaning, temporal grouping, and prediction method. Meaning specifies joint targets or Cartesian changes, with units and coordinate conventions. Grouping specifies whether the model predicts one command or several commands together. Prediction specifies tokens, regression, diffusion, or a learned flow over continuous actions. Changing one decision does not logically require changing the other two.
+机器人现在知道要抓哪个杯子，但下一步动作仍然需要一种表示。三个不同决定经常被混在一起：动作含义、时间分组，以及预测方法。动作含义规定关节目标或笛卡尔变化，以及单位和坐标约定。时间分组规定模型预测一条指令，还是一起预测多条指令。预测方法则选择 token、回归、扩散，或者连续动作上的学习流。改变其中一个决定，并不意味着必须同时改变另外两个。
+https://arxiv.org/abs/2307.15818
+https://arxiv.org/abs/2501.09747
+https://www.pi.website/download/pi0.pdf
+
+Continuous actions and discrete codes / 连续动作与离散编码
+A physical displacement is continuous even when a model represents it with a discrete token. A tokenizer assigns that displacement to a code, and a decoder maps the code back to a number. Therefore, token prediction does not imply that the robot can occupy only a few physical positions. The controller executes decoded references and may interpolate between them over time. Quantization does introduce approximation error, and its consequences depend on the task's tolerance. A coarse movement representation may suffice for approaching a cup but struggle near a tight insertion.
+物理位移是连续量，即使模型用离散 token 来表示它。分词器把位移分配给一个编码，解码器再把编码还原成数值。因此，预测 token 不代表机器人只能停在少数几个物理位置。控制器执行解码后的参考，还可能在时间上对这些参考进行插值。但量化确实会引入近似误差，其影响取决于任务容差。接近杯子时够用的粗糙动作表示，在紧配合插入附近可能就不够了。
+https://arxiv.org/abs/2307.15818
+https://arxiv.org/abs/2406.09246
+
+An eight-bin worked example / 八个分箱的数值例子
+Consider an illustrative translation range from minus four to plus four centimeters. Divide it into eight equal bins and decode each bin to its center. Each bin is one centimeter wide, giving a maximum half-centimeter error inside the range. A requested one point two centimeters becomes one point five, an error of three millimeters. Increasing the bin count reduces this bound, but changes prediction difficulty and sequence design. Clipping an out-of-range command creates additional error beyond this simple bound.
+考虑一个教学平移范围：从负四厘米到正四厘米。把这个范围分成八个等宽分箱，每个分箱解码成中心值。每个分箱宽一厘米，因此范围内最大误差是半厘米。要求移动一点二厘米，会变成一点五厘米，误差为三毫米。增加分箱数量能够降低这个误差上界，但也会改变预测难度和序列设计。把范围外指令裁剪回范围内，还会产生超出这个简单上界的误差。
+https://arxiv.org/abs/2501.09747
+
+Autoregression predicts codes in sequence / 自回归按顺序预测编码
+An autoregressive decoder predicts the next token using the observation and previous tokens. Training commonly minimizes negative log probability of the demonstrated token sequence. The product of conditional probabilities defines the probability assigned to the entire sequence. This is convenient for language-model backbones, but serial generation creates a dependency chain. If a chunk contains many dimensions and timesteps, naive binning can produce a long sequence. Token count is thus a systems issue as well as a representational choice.
+自回归解码器根据观测和之前的 token，预测下一个 token。训练通常最小化示范 token 序列的负对数概率。各条件概率的乘积，定义了整段序列获得的概率。这种方式适合语言模型主干，但串行生成会形成一条依赖链。如果一个动作块包含很多维度和时间步，朴素分箱就可能产生很长的序列。所以 token 数量既是表示选择，也是系统工程问题。
+https://arxiv.org/abs/2307.15818
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/abs/2502.19645
+
+FAST compresses time structure / FAST 利用时间结构压缩动作
+FAST addresses the redundancy of representing every action dimension at every timestep separately. Follow its original figure from left to right, starting with a normalized action chunk. A discrete cosine transform expresses each action channel using frequency components across time. The coefficients are quantized and serialized, then compressed further with byte-pair encoding. Decoding reverses the process to recover a continuous action sequence. Smooth, correlated motion can therefore use a different code length than arbitrary independent samples.
+FAST 处理的是：每一时刻、每个动作维度分别编码所产生的冗余。沿着原图从左向右看，首先输入的是归一化动作块。离散余弦变换，把各动作通道表示成沿时间变化的频率分量。这些系数随后被量化、序列化，再通过字节对编码进一步压缩。解码时逆转这个过程，还原连续动作序列。因此，平滑且相关的动作，与任意独立采样的动作，可以具有不同的编码长度。
+https://arxiv.org/abs/2501.09747
+
+Compression is not intelligence / 压缩率不等于策略能力
+A tokenizer can reconstruct recorded motions accurately while the policy predicts its codes poorly. Reconstruction tests the representation; rollout tests the behavior of the learned policy. FAST is an action tokenizer, not a complete robot policy by itself. A model using FAST still needs observations, task conditioning, training data, and an execution schedule. Likewise, faster training does not prove lower end-to-end response latency on a particular robot. Always follow the reported quantity: compression, training time, action throughput, or task completion.
+分词器可能准确还原已记录动作，但策略仍然难以预测正确编码。这是不同的测量：重建检验表示，实际运行检验学习到的控制策略。FAST 是动作分词器，本身不是一个完整的机器人策略。使用 FAST 的模型，仍然需要观测、任务条件、训练数据，以及执行时序。同样，训练更快，并不能证明某台机器人上的端到端反应延迟更低。必须看清实际报告的量：压缩率、训练时间、动作吞吐，还是任务完成表现。
+https://arxiv.org/abs/2501.09747
+https://arxiv.org/abs/2502.19645
+
+Chunks organize behavior through time / 动作块组织时间上的行为
+Action chunking groups several future commands into a single prediction problem. It can reduce repeated decisions and help represent coherent motions, including pauses in demonstrations. ACT uses a Transformer and a conditional variational autoencoder during training to model action chunks. Its temporal ensembling combines overlapping predictions referring to the same future timestep. This is distinct from taking the average of all future steps in one chunk. And chunking is compatible with discrete tokens, continuous regression, diffusion, or flow matching.
+动作分块把多条未来指令，组合成一个预测问题。它可以减少重复决策，也有助于表示连贯动作，包括示范中的停顿。ACT 用 Transformer，并在训练中采用条件变分自编码器，来建模动作块。它的时间集成，会合并指向同一未来时间步的重叠预测。这与把一个动作块内所有未来时间步直接平均，并不是一回事。同时，动作分块可以搭配离散 token、连续回归、扩散，或者流匹配。
+https://arxiv.org/abs/2304.13705
+https://arxiv.org/abs/2303.04137
+
+Regression is a serious baseline / 回归也是必须认真比较的基线
+A continuous regression head predicts numerical actions directly, often producing a full chunk in parallel. An L1 objective penalizes absolute coordinate differences from demonstrated actions. An L2 objective instead penalizes squared differences, which weights larger errors more strongly. OpenVLA-OFT shows why this simple family belongs in a serious comparison of fine-tuning recipes. Its recipe combines parallel decoding, action chunks, continuous outputs, and L1 regression. The result is a concrete configuration, not proof that regression universally beats every generative decoder.
+连续回归头直接预测数值动作，通常可以并行输出完整动作块。L1 目标惩罚预测动作与示范动作在各坐标上的绝对差值。L2 目标则惩罚平方差，因此对较大误差施加更大权重。OpenVLA-OFT 说明，在认真比较微调方案时，这类简单方法不能缺席。其方案结合了并行解码、动作分块、连续输出，以及 L1 回归。这个结果对应具体配置，并不证明回归在所有情况下都胜过生成式解码器。
+https://arxiv.org/abs/2502.19645
+
+Why several valid motions complicate averaging / 为什么多个合理动作会让平均变危险
+Imagine that the gripper can reach the cup by moving left or right around an obstacle. Both demonstrated routes succeed, but their pointwise mean may pass straight through the obstacle. This teaching example explains why a multimodal action distribution can matter. A deterministic loss may summarize incompatible choices instead of committing to one coherent route. Generative policies can represent alternatives, although successful training and sampling are still required. Neither stochasticity nor a smooth-looking trajectory is a guarantee against physical collision.
+想象夹爪可以从障碍左侧，或者右侧，绕过去拿杯子。两种示范路线都能成功，但逐点平均后的路线可能直接穿过障碍。这个教学例子解释了：为什么多峰动作分布有时十分重要。确定性损失可能把不兼容的选择概括到一起，而不是选定一条连贯路线。生成式策略能够表示不同选择，但仍然需要成功的训练和采样。随机性或者看起来平滑的轨迹，都不是避免物理碰撞的保证。
+https://arxiv.org/abs/2303.04137
+
+Diffusion refines a noisy action sequence / 扩散逐步修正含噪动作序列
+Diffusion Policy begins inference with a noisy action sequence and repeatedly refines it. During training, known noise is added to demonstrations at sampled noise levels. The network learns a denoising objective while conditioned on the robot's observations. At deployment, a sampling procedure uses this learned information to generate a coherent action chunk. The refinement steps happen inside inference; they are not separate physical actions of the robot. Their computational cost must therefore be included when measuring the time before commands become available.
+Diffusion Policy 在推理时，从一个含噪动作序列开始，反复进行修正。训练时，会在采样的噪声等级下，给示范动作加入已知噪声。网络在机器人观测条件下，学习一个去噪目标。部署时，采样过程利用这些学习到的信息，生成连贯动作块。这些修正步骤发生在模型推理内部，并不是机器人分别执行的物理动作。因此，测量指令可用之前的等待时间时，必须把这些计算成本算进去。
+https://arxiv.org/abs/2303.04137
+
+Flow matching as a velocity field / 把流匹配理解成一个速度场
+For a simple flow-matching construction, interpolate between random noise and a demonstrated action chunk. At interpolation time tau, combine noise with weight one minus tau and actions with weight tau. The target velocity along this straight path is the action chunk minus the sampled noise. The network learns that velocity conditioned on observations and interpolation time. At inference, numerical integration transports a noise sample toward the learned action distribution. Tau describes generative computation, not the seconds elapsed in the physical task.
+在一种简单的流匹配构造中，我们在随机噪声与示范动作块之间插值。在插值时刻 tau，噪声权重是一减 tau，动作权重是 tau。沿这条直线路径的目标速度，就是动作块减去采样噪声。网络根据观测和插值时刻，学习这个速度。推理时，数值积分把噪声样本输运到学习到的动作分布附近。tau 描述的是生成过程中的计算进度，不是物理任务经过的秒数。
+https://www.pi.website/download/pi0.pdf
+
+Compare generators without slogans / 不用口号比较生成器
+Autoregression factors a token sequence; diffusion and flow iteratively generate continuous samples. Parallel regression directly predicts continuous coordinates under a supervised loss. These descriptions explain mechanisms, but do not establish a universal speed ranking. Actual cost depends on model size, sequence length, sampling steps, caching, precision, and hardware. Likewise, precision depends on data quality and the control interface, not only decoder vocabulary. Keep these factors visible when someone attributes every improvement to a single architectural ingredient.
+自回归分解 token 序列；扩散和流匹配则迭代生成连续样本。并行回归在监督损失下，直接预测连续坐标。这些描述解释了机制，却不能建立一个普遍成立的速度排名。实际开销取决于模型规模、序列长度、采样步数、缓存、精度，以及硬件。同样，精度取决于数据质量与控制接口，而不只是解码器采用什么术语。当有人把所有提升归因于一个架构组件时，要把这些因素同时摆出来。
+https://www.pi.website/download/pi0.pdf
+https://arxiv.org/abs/2501.09747
+https://arxiv.org/abs/2502.19645
+
+The chunk that was already committed / 已经进入执行队列的动作块
+Now move the cup while the robot is executing a previously generated chunk. Newly generated actions cannot simply replace commands that have already run or are committed to run. If two chunks disagree at their boundary, switching between them can introduce a sudden jump. Choosing a decoder therefore does not finish the problem of producing continuous behavior. Prediction, queue management, and physical execution must agree about which timestamps remain editable. Our deployment chapter will make this commitment boundary explicit with a moving timeline.
+现在，在机器人执行上一段动作块时，把杯子挪走。新生成动作，不能直接替换已经执行，或者确定即将执行的指令。如果两个动作块在交界处不一致，切换时就可能产生突然跳变。因此，选好解码器，并不意味着已经解决行为连续性问题。预测、队列管理和物理执行，必须对哪些时间戳仍可修改达成一致。部署章节会用一条移动时间轴，把这个不可随意修改的边界画清楚。
+https://www.pi.website/download/real_time_chunking.pdf
+
+Choose the representation for the actual task / 根据真实任务选择表示
+For a practical comparison, freeze the observation pipeline and define one robot action contract first. Then vary the representation or decoder while keeping the data and evaluation budget comparable. Measure both task completion and the delays that affect correction of the moved cup. Inspect failure trajectories, because a good average can hide jitter, ignored instructions, or late reactions. There is no reason to select the most complicated decoder before this evidence exists. Next, we use these distinctions to understand the major families of robot foundation policies.
+实际比较时，先固定观测流程，并定义一份机器人动作接口约定。随后改变表示或解码器，同时尽量保持数据和评估预算可比。既测量任务完成情况，也测量影响杯子移动后纠正动作的各种延迟。还要检查失败轨迹，因为良好平均值可能掩盖抖动、忽略指令，或反应过晚。在获得这些证据之前，没有理由直接选择最复杂的解码器。下一章，我们用这些区分，理解机器人基础策略的主要路线。
+https://arxiv.org/abs/2501.09747
+https://arxiv.org/abs/2304.13705
+https://arxiv.org/abs/2303.04137
+https://arxiv.org/abs/2502.19645

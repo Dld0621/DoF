@@ -1,0 +1,14 @@
+﻿00:00 示范是一条同步记录 / A demonstration is a synchronized record
+00:38 指令动作与实测状态不同 / Commanded actions and measured states differ
+01:11 训练之前先建立数据字典 / Use a data dictionary before training
+01:48 归一化必须可还原且可追溯 / Normalization must be reversible and versioned
+02:25 共享数据集里仍然是不同身体 / Shared datasets still contain different bodies
+03:02 统一平台有助于研究环境多样性 / A shared platform can isolate environment diversity
+03:41 行为克隆拟合示范中的决策 / Behavior cloning fits demonstrated decisions
+04:18 网络知识与机器人经验监督不同能力 / Web knowledge and robot experience supervise different things
+04:56 人类视频没有直接给出机器人真值 / Human video does not contain robot ground truth
+05:33 混合权重决定模型反复练习什么 / Mixture weights define what the model practices
+06:07 知识隔离区分梯度路径 / Knowledge insulation separates gradient paths
+06:44 适配不只是选择 LoRA / Adaptation is more than choosing LoRA
+07:23 数据切分应与泛化主张一致 / Split episodes, environments, and claims together
+07:57 一份可复现的训练交接 / A reproducible training handoff

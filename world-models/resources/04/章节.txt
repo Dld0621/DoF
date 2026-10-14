@@ -1,0 +1,14 @@
+﻿00:00 可信的画面，只是起点 / A convincing future is only the beginning
+00:33 换一个动作，未来会怎样 / Ask what changes when the action changes
+01:03 预测有用的特征 / Predict useful features
+01:35 无标签，不等于没有动作信息 / Unlabeled does not mean action-free
+02:07 把预测变成决策 / Turn predictions into a decision
+02:38 准确读懂机器人证据 / Read the robot evidence precisely
+03:12 从视频里发现控制量 / Discover a control from video
+03:45 从短序列到交互世界 / From short rollouts to interactive worlds
+04:21 记忆，不只是镜头平滑 / Memory is more than a smooth camera
+04:55 视觉细节怎样影响学习 / When visual details change learning
+05:33 扩散世界里的两只时钟 / Two clocks inside a diffusion world
+06:06 先看 Cosmos 的版本与接口 / Read the Cosmos version and interface
+06:43 同一个骨干，不同预测任务 / One backbone, different prediction jobs
+07:18 按用途选择证据 / Choose the evidence for the job

@@ -1,0 +1,14 @@
+﻿00:00 什么才算有效证据？ / What would count as evidence?
+00:33 运行之前，定义完整杯子任务 / Define the whole cup task before running it
+01:09 严格成功与部分进展是不同指标 / Strict success and partial progress are different metrics
+01:45 选择能够回答问题的基线 / Choose baselines that answer the intended question
+02:21 比较分数之前，先匹配接口 / Match interfaces before matching scores
+03:02 区分数据优势与适配优势 / Separate data advantage from adaptation advantage
+03:38 泛化需要明确留出维度 / Generalization needs an explicit held-out axis
+04:17 基准名字不能消除协议差异 / Benchmark names do not erase protocol differences
+04:56 记录次数、不确定性与人工介入 / Count attempts, uncertainty, and interventions
+05:31 消融实验应该隔离一个主张 / Ablations should isolate a claim
+06:09 吞吐量引入了另一个分母 / Throughput adds another denominator
+06:44 把挪动杯子变成可控扰动 / Test the moved cup as a controlled disturbance
+07:17 动作策略与世界模型回答不同问题 / An action policy and a world model answer different questions
+07:53 一份实用的 DoF 基线报告 / A practical baseline report for DoF

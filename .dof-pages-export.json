@@ -1,27 +1,29 @@
 {
-  "format": "DoF GitHub Pages static export v1",
+  "format": "DoF GitHub Pages static export v2",
   "repo_base": "/DoF/",
   "site_url": "https://dld0621.github.io/DoF/",
   "media_origin": "https://dof-embodied-ai.steven12123.chatgpt.site",
-  "source_commit": "f8923e6e6a144809a243a0f4c6888d32e7f2327f",
-  "catalog_items": 41,
-  "video_references": 52,
-  "course_chapters": 6,
-  "method_profiles": 28,
-  "image_files_unchanged": 135,
-  "internal_targets_checked": 305,
-  "excluded": [],
-  "release_copy_edits": {
-    "Video/Paper/第三期_深度解读/查看深度解读.html": 1,
-    "Video/Paper/第六期_深度解读/查看深度解读.html": 1
-  },
+  "catalog_items": 43,
+  "video_references": 64,
+  "courses": 3,
+  "course_chapters": 18,
+  "method_profiles": 69,
   "privacy_scan": "passed",
   "root_url_check": "passed",
   "source_media_not_copied": true,
+  "site_publication": "verified static export; publication status tracked by GitHub Pages",
   "files": {
+    ".nojekyll": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
     "DoF首页.html": {
-      "bytes": 11921,
-      "sha256": "f9e2af41083dda634b8d4efa4d9b80b9154455703aaeb5da980b899a2514dad8"
+      "bytes": 12561,
+      "sha256": "eebb6e43992a385460b4d978aeab852af2314c408f0896b9a8d0e298a3c644d0"
+    },
+    "README.md": {
+      "bytes": 5391,
+      "sha256": "e1f3032c4fff82ee6edbe4731b5847db5166051a2e3e48824bbdd06d505d259c"
     },
     "Video/Infra/完整精修版/第一期_配套资料/中英字幕.srt": {
       "bytes": 11198,
@@ -764,8 +766,8 @@
       "sha256": "97e9eebd2fe70672ae11b594b07be5bb39896c0414c1eebdb3c8e998fbcb7b37"
     },
     "app.js": {
-      "bytes": 15449,
-      "sha256": "39c3ce24e6b939fa9677507877848ca916064b78250d2bfcf90aa52ba0dbe329"
+      "bytes": 15484,
+      "sha256": "bcefedcbfe327cdbfbcc6732f6d82e5158432bbac8b98e743b0a7823fd458e95"
     },
     "assets/brand-poster.png": {
       "bytes": 1918372,
@@ -1012,8 +1014,28 @@
       "sha256": "153c76ea7cbe10045753824e3b3c6ce174f23ec0a5e92cf67b552206d98b08c7"
     },
     "catalog.js": {
-      "bytes": 137622,
-      "sha256": "4991c2bdccfd5b47302d7afb74d235cdc78f9eccc105e4210684a78e57b9db37"
+      "bytes": 173471,
+      "sha256": "1cb3630e24491b60406663cea18ce3eba3644cea3381cda3caf540c516063f83"
+    },
+    "course-kit/course.js": {
+      "bytes": 18970,
+      "sha256": "9647361ac45e6ae64c37732f992f110203f0ed2dbe67c4a77347f4c967385dde"
+    },
+    "course-kit/labs.js": {
+      "bytes": 6806,
+      "sha256": "2669ea1751fb4d6dceda1a144d4fac41b4f1bf0bb2cee9a7095687ec4e7d1b30"
+    },
+    "course-kit/style.css": {
+      "bytes": 22225,
+      "sha256": "e19d4e639bb1585c7eac6b9811441c4336881a136b0fa75d5ce658ba973f9bb3"
+    },
+    "course-kit/vla-labs.js": {
+      "bytes": 14399,
+      "sha256": "c68a3f655374cfe8a85e19a50387b4d8d898b27222ee1bc41adeecaa441bd197"
+    },
+    "course-kit/wm-labs.js": {
+      "bytes": 16832,
+      "sha256": "b996f478132fea6bbf3b705bc6d91e23efe3098bad993f773effcf0ad817da8a"
     },
     "favicon.svg": {
       "bytes": 712,
@@ -1028,12 +1050,12 @@
       "sha256": "d051a8c47936990a9085693d307bb7cea1bc1b6d7ed956bcbaacf674f4ec96b9"
     },
     "index.html": {
-      "bytes": 11921,
-      "sha256": "f9e2af41083dda634b8d4efa4d9b80b9154455703aaeb5da980b899a2514dad8"
+      "bytes": 12561,
+      "sha256": "eebb6e43992a385460b4d978aeab852af2314c408f0896b9a8d0e298a3c644d0"
     },
     "locale.js": {
-      "bytes": 9615,
-      "sha256": "a0a0a30aa158eead34a50db5ae73f9e4b842ced102bf452a9cdeca2596d20477"
+      "bytes": 10323,
+      "sha256": "78c90616f95b37438e274c31b95768b9aa665c428261c35cd3eacb2004d4da54"
     },
     "retargeting/app.js": {
       "bytes": 28892,
@@ -1279,25 +1301,421 @@
       "bytes": 18768,
       "sha256": "27974b40003696db0c7a262e1372d7d0b675fe2a9bda42b65c8a2b431ef48d84"
     },
+    "scripts/build-pages.py": {
+      "bytes": 11339,
+      "sha256": "944fbc6b0daf9c3f47b28c09c280b312bf0c5bbcecf6cd31078e9d91d08276f6"
+    },
     "style.css": {
-      "bytes": 22720,
-      "sha256": "ffe1232cb8b5fb67906d0c7f3ded84b4c1b10afdf446e4bb86a953ce7f8975a7"
+      "bytes": 23478,
+      "sha256": "3d11ce65a509c2689ec4a375437e0f302af04c5798f1c0aa85ffaea672ff8141"
+    },
+    "vla/assets/00c33e57938b-pi05_fig3.png": {
+      "bytes": 199709,
+      "sha256": "00c33e57938b4f99eaca7349a9944ee2662c819c470ec74444a0a7eb06956829"
+    },
+    "vla/assets/04ee00751c08-groot_fig3.png": {
+      "bytes": 180064,
+      "sha256": "04ee00751c0879a587978861f5e63caf36a360c95069eeb735877206df67e80e"
+    },
+    "vla/assets/242a438797d6-diffusion_fig2.png": {
+      "bytes": 259515,
+      "sha256": "242a438797d6e3ac5d98e7ea264afa1543f2cc82ae4351862096f6b0927cf268"
+    },
+    "vla/assets/2c1a4da89b4b-smolvla_fig2.png": {
+      "bytes": 130428,
+      "sha256": "2c1a4da89b4b1338afddf5a6a509c1e9de6f5c3398d49f6d3591508a7f863f33"
+    },
+    "vla/assets/3a7de69c615a-ki_fig1.png": {
+      "bytes": 87016,
+      "sha256": "3a7de69c615a11827b7d274eab0ba70342c008b1e94a34fc792bd3e2fb47dfdd"
+    },
+    "vla/assets/4aad65343bee-cover.jpg": {
+      "bytes": 124179,
+      "sha256": "4aad65343beee644c18ae67a298a18426953d65c0d39a5ace73008143b9b7bb7"
+    },
+    "vla/assets/5511224dc6a3-cover.jpg": {
+      "bytes": 125976,
+      "sha256": "5511224dc6a36565a6a588271af5b19c38adae86aa8ac9ac6b183fe75eece304"
+    },
+    "vla/assets/6779e3eb0eae-act_fig5.png": {
+      "bytes": 32242,
+      "sha256": "6779e3eb0eae46388fbeca6a52962f3cb5c6875aedb393eb0936856e42cbe014"
+    },
+    "vla/assets/68815fc14887-openvla_fig3.png": {
+      "bytes": 310597,
+      "sha256": "68815fc148876fbcfe237c92b96499bde5341eff93f52f6a1c043f5ec0036105"
+    },
+    "vla/assets/78e6b8f4f061-oft_fig2.png": {
+      "bytes": 163722,
+      "sha256": "78e6b8f4f06112ffd2340a4210aff0ccc37ce21d3117dc5ba4a17df104dbb98a"
+    },
+    "vla/assets/7db40f1a20c7-droid_fig2.png": {
+      "bytes": 188514,
+      "sha256": "7db40f1a20c793cb403e8e9f6caa205b6416957c9c62b9b41b3d0fdefb7ee510"
+    },
+    "vla/assets/9344e25f28cf-rtc_fig3.png": {
+      "bytes": 56395,
+      "sha256": "9344e25f28cf6ccfa69cdce51736e611f81c664b764c09a16dde2b886f339a48"
+    },
+    "vla/assets/9563e5748717-rt1_fig3.png": {
+      "bytes": 177194,
+      "sha256": "9563e57487175d8958cf020d60df65d8f40c9cc4842301bea791284e0ee1cf5f"
+    },
+    "vla/assets/a6e15695f24b-cover.jpg": {
+      "bytes": 122160,
+      "sha256": "a6e15695f24b3f25e611d5517c5dff22471980f6bbfcdc670b7e827bb79b6c75"
+    },
+    "vla/assets/b32bfc3437cc-pi0_fig7.png": {
+      "bytes": 33862,
+      "sha256": "b32bfc3437cc1d009e334d2e38c3f49d55463c318ba8434bd682504ff46d67c0"
+    },
+    "vla/assets/b50192a7b045-octo_fig2.png": {
+      "bytes": 303645,
+      "sha256": "b50192a7b0457e883f1ab88f5af133b2a98d677c0df98a4dee4094a64608b7e0"
+    },
+    "vla/assets/bb67b944814a-oxe_fig2.png": {
+      "bytes": 172413,
+      "sha256": "bb67b944814aee881a99b80475819fab084741fc113e298e8d5c2edbc8937dfe"
+    },
+    "vla/assets/c017511fa3c6-fast_fig4.png": {
+      "bytes": 78974,
+      "sha256": "c017511fa3c6378559bccb493ee48273f02ddf2779b0473eff981428710b5d70"
+    },
+    "vla/assets/d111332dae0a-pi06_fig1.png": {
+      "bytes": 733567,
+      "sha256": "d111332dae0a6d5a18d91c6b419e8eab6be2baf50b0078147d294cc305d0181a"
+    },
+    "vla/assets/d2cbd1ffba98-cover.jpg": {
+      "bytes": 125119,
+      "sha256": "d2cbd1ffba98d7f69185338ccce606911356481f2a433d76839513e9c41d6ba3"
+    },
+    "vla/assets/e1f833ed5e48-cover.jpg": {
+      "bytes": 125439,
+      "sha256": "e1f833ed5e48a1110440ec05d315df79b1e4f249f067abc91a40d37369d98a0a"
+    },
+    "vla/assets/e52f9d4a3121-oft_fig3.png": {
+      "bytes": 485725,
+      "sha256": "e52f9d4a312138c128e9f45d149a5fdee02e699775c45084e51674f0de4e7759"
+    },
+    "vla/assets/e8df900d159b-openvla_fig2.png": {
+      "bytes": 132721,
+      "sha256": "e8df900d159b42115176cff115c3914f68ecc4a03f08b3232536efa5cecbac0b"
+    },
+    "vla/assets/eb354240cf69-cover.jpg": {
+      "bytes": 115402,
+      "sha256": "eb354240cf692f4cd7b854156441e00e067500ea159e41680fd6f74ac8d0ca65"
+    },
+    "vla/assets/f678a5e8b392-pi07_fig2.png": {
+      "bytes": 251200,
+      "sha256": "f678a5e8b3927ee84087ef075cd0bac23bdbc0dc53f85a1ef2805c52422c6d76"
+    },
+    "vla/assets/fdc801bf58d4-rt2_fig1.png": {
+      "bytes": 493530,
+      "sha256": "fdc801bf58d43ef0799ab9752961ef6e1b3564bcec9c02fc268681e286abc33e"
+    },
+    "vla/course-data.json": {
+      "bytes": 334792,
+      "sha256": "594ee41f357e7e53469bd96b879c745bc1b58123002c5a7e1a4e477f09852a88"
+    },
+    "vla/index.html": {
+      "bytes": 5611,
+      "sha256": "670698c546c03d7d9bec9de2f5ff373512981d3206906f8e56a5d266f2f2398f"
+    },
+    "vla/resources/01/中英字幕.srt": {
+      "bytes": 16884,
+      "sha256": "acafc02c67fb23dfb01870e1a29150cd5fbfa7e52c747bb7539bea56c4d5e919"
+    },
+    "vla/resources/01/章节.txt": {
+      "bytes": 1211,
+      "sha256": "faf7ff85d752055401fcb64257b6c7540e9803fd44380f691c2ec2a6d38f57a4"
+    },
+    "vla/resources/01/讲稿与来源.txt": {
+      "bytes": 16283,
+      "sha256": "ff068395d659cf55aaebba6a750bbd6c8d03172a97c61b382cd30bc8a86666fe"
+    },
+    "vla/resources/02/中英字幕.srt": {
+      "bytes": 17737,
+      "sha256": "32b375a2d67e6de2c7a03c328f7ca609ec817e8b9332bf29b520fdf4686943c0"
+    },
+    "vla/resources/02/章节.txt": {
+      "bytes": 1126,
+      "sha256": "1d796ea7e9974f9f62a80f9808f88d9fc23d1500d7062285d79f31e08ca642b4"
+    },
+    "vla/resources/02/讲稿与来源.txt": {
+      "bytes": 16858,
+      "sha256": "41f746a434d527997288da30a34b7c3cd0f562013c45fdad7d7571333ffde607"
+    },
+    "vla/resources/03/中英字幕.srt": {
+      "bytes": 18653,
+      "sha256": "2c175fe5b020762d9ad1587ea13da2f8898cef5e69ea7ea3863a823bec639ddf"
+    },
+    "vla/resources/03/章节.txt": {
+      "bytes": 1219,
+      "sha256": "eb962889430f844a3534232fb7550d08777dd1e446fe4d405dba30b1f2bef2fe"
+    },
+    "vla/resources/03/讲稿与来源.txt": {
+      "bytes": 17829,
+      "sha256": "83fa0987e4bcb90388a79accfddfade02f8b2c990a145144e7a62fd0fb332c08"
+    },
+    "vla/resources/04/中英字幕.srt": {
+      "bytes": 18559,
+      "sha256": "ef0759371adfc8807ff0d1f4ef22b368324fa9022b6a9235468d17092abc0a1b"
+    },
+    "vla/resources/04/章节.txt": {
+      "bytes": 1270,
+      "sha256": "0c713b23ad8302f232187cdae9b2dc53c47f60c1fb54eedb009015ada2d0ddca"
+    },
+    "vla/resources/04/讲稿与来源.txt": {
+      "bytes": 17918,
+      "sha256": "5d0672241fcad0bddbb96ba519ad432059d8d03761415333b9ed9866991d466b"
+    },
+    "vla/resources/05/中英字幕.srt": {
+      "bytes": 18260,
+      "sha256": "540625cc827acbaf4a38fb214119f226c4a5d752f9d25307890d524ed93e5fe9"
+    },
+    "vla/resources/05/章节.txt": {
+      "bytes": 1294,
+      "sha256": "cd0dba7cb14a9f9b2ac9be9f469e3d30d10acdfd298ad401e8decede0a53c38a"
+    },
+    "vla/resources/05/讲稿与来源.txt": {
+      "bytes": 17655,
+      "sha256": "f0edc348af52248b7dfce844036bd6702bfb06a1a30c2a2dd7b371e10b9d543c"
+    },
+    "vla/resources/06/中英字幕.srt": {
+      "bytes": 18723,
+      "sha256": "110fd67acdc19db0d6c32cba6ea52a3b5624afe4c12dea44be8f04844bd3cf31"
+    },
+    "vla/resources/06/章节.txt": {
+      "bytes": 1256,
+      "sha256": "de3fb00e195a0cd637b1c6121e954f16b6b64c7f80117d6412f5fad49477066c"
+    },
+    "vla/resources/06/讲稿与来源.txt": {
+      "bytes": 18243,
+      "sha256": "2197e2001e32896754b6d445207852568e3351a48e1efeb5cd9a4bd6172bdad3"
     },
     "window.svg": {
       "bytes": 386,
       "sha256": "decf1cf7bb22b5c99c4857cfcd5718ce5465c4454166317589c83fc73df74b66"
     },
-    ".nojekyll": {
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    "world-models/assets/006cb8523158-daydreamer_fig6.png": {
+      "bytes": 400493,
+      "sha256": "006cb85231582eaea9d9c3a57e93ab9009ca228e6f6892061bf2e37f41264f6f"
     },
-    "README.md": {
-      "bytes": 2376,
-      "sha256": "d5aef06756c63291fc438b701bd83ab821e612b9d8dbd08c077ec272bcb37125"
+    "world-models/assets/009e1a9bb6e4-dreamer3v2_eq1.png": {
+      "bytes": 121265,
+      "sha256": "009e1a9bb6e4090212c459b2d4d913406a9f653ad5e2374f2d47fdcd067a6dd3"
     },
-    "scripts/build-pages.py": {
-      "bytes": 11003,
-      "sha256": "7881ab4a27f3140305a933805a7f15b1f8a9fac56943f6a8415d6a898803ff25"
+    "world-models/assets/0177b225a9af-gr2-fig1-p2.png": {
+      "bytes": 861019,
+      "sha256": "0177b225a9afde9a4db1582817759675b4b2de8f0811285c0f60c666d227051c"
+    },
+    "world-models/assets/0417949529c7-cover.jpg": {
+      "bytes": 130804,
+      "sha256": "0417949529c7059814f1f6f66138174eb631fa36455049ba8e5e28b24936cf94"
+    },
+    "world-models/assets/089a5a9e11fa-cover.jpg": {
+      "bytes": 136740,
+      "sha256": "089a5a9e11fa212a8bcc18f501b85c0a2f5217e9f92310e06a0fbf1dfce4420a"
+    },
+    "world-models/assets/1f7964474248-daydreamer_fig1.png": {
+      "bytes": 611855,
+      "sha256": "1f796447424815b56fd38df0964613807a823e01dcef0c509f3670dc7174bff8"
+    },
+    "world-models/assets/239e0b74c2a0-dreamgen-fig2-p2.png": {
+      "bytes": 1135654,
+      "sha256": "239e0b74c2a070ebbdbfc731ab5922e5ca9c8408a9077f9e1ba49b3668349a75"
+    },
+    "world-models/assets/28505436614d-genie1-fig8-p5.png": {
+      "bytes": 39827,
+      "sha256": "28505436614da69380dc764ae3989d46c02b69a03ba7095da472da6d35d64831"
+    },
+    "world-models/assets/3018d6b52ec0-daydreamer_fig2.png": {
+      "bytes": 97248,
+      "sha256": "3018d6b52ec0870f44a83363fe2532fa087809a88fd9cf108688a480033a6d0c"
+    },
+    "world-models/assets/31829a75f615-tdmpc_fig2.png": {
+      "bytes": 206040,
+      "sha256": "31829a75f61546924300c8d30aaee581e9abd18aa4769a55b6795b420dbf10b0"
+    },
+    "world-models/assets/39e20561c048-cover.jpg": {
+      "bytes": 135136,
+      "sha256": "39e20561c048d7fc29f686b821f3e205ec65bd87df6eb193d9cf3c77249070d5"
+    },
+    "world-models/assets/3cc44b24df31-dreamer1_fig8.png": {
+      "bytes": 298188,
+      "sha256": "3cc44b24df317c8ac2e8625c73f4c31fe384b8578c67cc76594199ec85757450"
+    },
+    "world-models/assets/407dd6ec803f-cover.jpg": {
+      "bytes": 131733,
+      "sha256": "407dd6ec803f1d265b2917b41bc1fd0c2f75973315c7b6f5b81539eecb6ecc32"
+    },
+    "world-models/assets/423bdb2cbb00-planet_fig2.png": {
+      "bytes": 107603,
+      "sha256": "423bdb2cbb00a3bda56ec768bd19a34d1e16cd75a17e97ce6d94dd871ce49ada"
+    },
+    "world-models/assets/5148bfd1d931-tdmpc2_fig4.png": {
+      "bytes": 142273,
+      "sha256": "5148bfd1d931e6bda2bb1e0472abe83f47e0ee5e1b3e79c8c54cdf22a2877312"
+    },
+    "world-models/assets/607b04c4f72f-diamond-fig5-p8.png": {
+      "bytes": 65093,
+      "sha256": "607b04c4f72f382af0225a4939685fea5d85adf71033b8b9aa35380dc7b05d9e"
+    },
+    "world-models/assets/759cb915006a-dreamer3v2_fig4.png": {
+      "bytes": 728256,
+      "sha256": "759cb915006afb507f04ff31db44d9ccf73cc63ce970fb66683cccc36c34c332"
+    },
+    "world-models/assets/766da578fedc-dreamer3v2_fig3.png": {
+      "bytes": 215675,
+      "sha256": "766da578fedc542bdaf77f5a6402d86f1868ca4e37586ffac95abf4412306fa9"
+    },
+    "world-models/assets/7b8b663a593c-iris-fig1-p2.png": {
+      "bytes": 41983,
+      "sha256": "7b8b663a593cfa3806ed7d4a3584f1ba750a670a371f7148967fc09374be3cae"
+    },
+    "world-models/assets/9afef7e26293-dreamer1_fig8.png": {
+      "bytes": 298920,
+      "sha256": "9afef7e2629399f1e135171d5416591de9365f26126c450a849179d29bcda12a"
+    },
+    "world-models/assets/9bfc91bce5be-cosmos3-fig5-p11.png": {
+      "bytes": 200970,
+      "sha256": "9bfc91bce5bed237ff79ac4553409ec5a12ffaa2dddff2c71cb23eaddada75ad"
+    },
+    "world-models/assets/9f4696f95338-vjepa2-fig2-p4.png": {
+      "bytes": 250666,
+      "sha256": "9f4696f95338be183d3d2f3524d4071373c5e72451f4577f5e2877a0311e50a5"
+    },
+    "world-models/assets/a0a07d8d0e2b-dreamer2_fig2.png": {
+      "bytes": 113948,
+      "sha256": "a0a07d8d0e2bda125304de9971f50b07d255d2a90f4855c8fe6d8fd3a4b9816b"
+    },
+    "world-models/assets/a1f5c31359f5-vjepa2-fig10-p14.png": {
+      "bytes": 1556521,
+      "sha256": "a1f5c31359f524e5c4a53ad9b9237ee71b02a6fa47f5ae47d34ba37c96b6173f"
+    },
+    "world-models/assets/a45019758dea-cover.jpg": {
+      "bytes": 131254,
+      "sha256": "a45019758dea548028686dcbbd446d26d3b97efa1a718052faafa4f32547ee5b"
+    },
+    "world-models/assets/aa13625d8a39-worldvla-fig2-p4.png": {
+      "bytes": 312838,
+      "sha256": "aa13625d8a392fc1cd3a29a1e1450c965634d3661a7e05f29871263952b12166"
+    },
+    "world-models/assets/bd4eecb8d5d5-daydreamer_fig5.png": {
+      "bytes": 562446,
+      "sha256": "bd4eecb8d5d58b99cc157bcbc4e26df5c983b5480088c96c4bc7361c805b1fcc"
+    },
+    "world-models/assets/c562ca5effb8-muzero_fig1.png": {
+      "bytes": 145076,
+      "sha256": "c562ca5effb87dc5e67fea8cb21cb0685fc749a8e48a14474d89e7ff1b41f0a0"
+    },
+    "world-models/assets/d5a9197ff852-unipi-fig2-p4.png": {
+      "bytes": 144151,
+      "sha256": "d5a9197ff852fc80d36e9ce64d5fde8e5c038ccd8fff6bc46d3db8bd082c8039"
+    },
+    "world-models/assets/dca10b0fca13-diamond-fig1-p2.png": {
+      "bytes": 75930,
+      "sha256": "dca10b0fca13c9f85265ee62615fb02eb3c5aee72487d1492a78bef41c675f10"
+    },
+    "world-models/assets/dd924cf0bf41-cover.jpg": {
+      "bytes": 126780,
+      "sha256": "dd924cf0bf41123ab420f8f468439fa63d88bb6e8790afd47a30a46edb2a94e4"
+    },
+    "world-models/assets/e0ce8717587b-vjepa2-fig7-p11.png": {
+      "bytes": 128486,
+      "sha256": "e0ce8717587b66a8413b46b50d8d868beaa8d9c4a93ab22df1729ec63588149f"
+    },
+    "world-models/assets/ea288c77ec7d-cosmos1-fig4-p5.png": {
+      "bytes": 51280,
+      "sha256": "ea288c77ec7d473b086511efe9d0a8e637990ab940d153c347213095f48a6c34"
+    },
+    "world-models/assets/ea6044021bae-genie1-fig3-p4.png": {
+      "bytes": 321783,
+      "sha256": "ea6044021baeea71c3efcb37ff7477c583a55c9cc1d64041f12a21d88aabf20e"
+    },
+    "world-models/assets/ee2bfd4d0cf2-tdmpc2_fig10.png": {
+      "bytes": 297472,
+      "sha256": "ee2bfd4d0cf2ad2b894896c74e66bade7ae34e68776052d425d5c3d6ece22539"
+    },
+    "world-models/course-data.json": {
+      "bytes": 356597,
+      "sha256": "babffae5398560cb43b658498fbb89b7367ecbfe4d585855914a59234a80cb8d"
+    },
+    "world-models/index.html": {
+      "bytes": 5598,
+      "sha256": "8025c754c4c59cb1d2376d408c97cd3c350027559f05f58083a8b0320b0ec996"
+    },
+    "world-models/resources/01/中英字幕.srt": {
+      "bytes": 16202,
+      "sha256": "b9e9123999c45cda4e3370071771645b0a700f9376963875c846e213cb9119be"
+    },
+    "world-models/resources/01/章节.txt": {
+      "bytes": 1063,
+      "sha256": "12345e4aa7c08091b42fb3be4ca566ceaf58e1acf1fd64ee7a8b556bf5761173"
+    },
+    "world-models/resources/01/讲稿与来源.txt": {
+      "bytes": 16049,
+      "sha256": "7b17770292f372d4e4f6652187a0a847075d3a572556772b47efad62952b2acf"
+    },
+    "world-models/resources/02/中英字幕.srt": {
+      "bytes": 16963,
+      "sha256": "b68eae1dbd54c68fe87ce8434b9af576fd5811e555a01745df0c9ba22f5ec0e0"
+    },
+    "world-models/resources/02/章节.txt": {
+      "bytes": 1093,
+      "sha256": "84b111343e84e92ebdd33c516e05ab31164314fb95e71776f55dd0ff717b1e04"
+    },
+    "world-models/resources/02/讲稿与来源.txt": {
+      "bytes": 17003,
+      "sha256": "ff8339cf9a964d4248fd1d2c2d89f077914446a651864fe8fc83baaab1b24095"
+    },
+    "world-models/resources/03/中英字幕.srt": {
+      "bytes": 16307,
+      "sha256": "6b44c86728acf87248c1a13889aaff1f66ee6513f2d3ffab9fe70a140dbef743"
+    },
+    "world-models/resources/03/章节.txt": {
+      "bytes": 1188,
+      "sha256": "64a93242c8da0b633416dd24eb4a567c11e22a1b30d6da26e8d7eac65eb82fbc"
+    },
+    "world-models/resources/03/讲稿与来源.txt": {
+      "bytes": 16293,
+      "sha256": "56057ffe78d823edbcfa6366cc8327d13622f9d347183d90e0f06c8cb1b925a6"
+    },
+    "world-models/resources/04/中英字幕.srt": {
+      "bytes": 17374,
+      "sha256": "dc4c0f414e7624e3a00b3b34e3aeec1c8258e815206c1e0f904aa7f01f9b76ca"
+    },
+    "world-models/resources/04/章节.txt": {
+      "bytes": 1032,
+      "sha256": "030d7164f60665bbb35988ecf73141c54d0b0edab2d08a39170e8fcd8517d8df"
+    },
+    "world-models/resources/04/讲稿与来源.txt": {
+      "bytes": 16534,
+      "sha256": "b07bae8f90431096fabecb30e46c3b4431331a4cddf6bd2cbca990441641b522"
+    },
+    "world-models/resources/05/中英字幕.srt": {
+      "bytes": 16643,
+      "sha256": "5fbb9f208ddb42985c2ffbd32ea352b27b4f8f88e2b1985143f201463c8b1410"
+    },
+    "world-models/resources/05/章节.txt": {
+      "bytes": 1246,
+      "sha256": "d4140f427fde16332be4f3e284a13bcfa235bca01d667441cb0eff7dc75a7e20"
+    },
+    "world-models/resources/05/讲稿与来源.txt": {
+      "bytes": 16627,
+      "sha256": "7bf2e4ca1808fc461c4b66f09b6c73e15ba4f08834abada2b89b1ef072bc607b"
+    },
+    "world-models/resources/06/中英字幕.srt": {
+      "bytes": 16686,
+      "sha256": "1c73ca99a536eb7f5941f495fce4e3a7c245238e8f1e157b740e03a73c34e7ba"
+    },
+    "world-models/resources/06/章节.txt": {
+      "bytes": 1233,
+      "sha256": "b182a62daec55ea68336916ef7bcd1008421273421b7dbbded6fab14e0a4ebd9"
+    },
+    "world-models/resources/06/讲稿与来源.txt": {
+      "bytes": 16871,
+      "sha256": "6d2c9872acfda1e65164e6e1d93dcac5aa3d692a0cbac0f2b7e4fc224ccdce28"
     }
   }
 }

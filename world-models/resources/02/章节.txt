@@ -1,0 +1,14 @@
+﻿00:00 模型应该记住什么？ / What should the model remember?
+00:29 几何是一种状态描述 / Geometry is one possible state description
+01:03 潜变量是学习出来的信息容器 / A latent vector is learned storage
+01:38 记忆与不确定性承担不同任务 / Memory and uncertainty play different roles
+02:12 后验：用真实观测更新 / Posterior: update with the actual observation
+02:44 先验：没有新画面也要继续预测 / Prior: continue without seeing the answer
+03:18 三个预测头回答三个问题 / Three prediction heads answer three questions
+03:51 为什么还要重建？ / Why reconstruct at all?
+04:29 让先验与后验彼此匹配 / Make the prior and posterior compatible
+05:05 Dreamer 各代改变了什么？ / What changed across Dreamer generations?
+05:43 不确定性的两种来源 / Two sources of uncertainty
+06:20 单步准确，也可能长期漂移 / One-step accuracy can hide drift
+06:52 围绕任务选择保留的信息 / Choose information for the task
+07:24 从内部状态走向决策 / From internal state to a decision

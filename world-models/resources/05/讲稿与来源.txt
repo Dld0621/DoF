@@ -1,0 +1,88 @@
+﻿世界模型 05｜怎样与 VLA 接成真正的闭环？
+World Models 05 · Connecting Prediction to a VLA
+
+Four places where a world model can help / 世界模型可以在四个位置帮忙
+Give a robot the instruction to move a cup onto a coaster, and several decisions appear before the hand moves. A world model might generate training examples, suggest a visual plan, help evaluate candidate actions, or support joint learning of video and behavior. These are different positions in the system, with different inputs and different responsibilities. We will connect each position to a concrete paper, then build a clearly labeled engineering example for our cup task.
+让机器人把杯子放到杯垫上，在手开始运动之前，就已经出现了多个决策问题。世界模型可以生成训练样本、提出视觉计划、帮助评估候选动作，或者支持视频与行为的联合学习。它们处在系统的不同位置，接收不同输入，也承担不同职责。我们把这些位置对应到具体论文，再为杯子任务构建明确标注的工程示例。
+https://arxiv.org/abs/2302.00111v3
+https://arxiv.org/abs/2505.12705v2
+https://arxiv.org/abs/2410.06158v1
+https://arxiv.org/abs/2506.21539v1
+https://arxiv.org/abs/2506.09985v1
+
+The interface must connect images to commands / 接口必须把图像接到指令上
+A vision-language-action policy receives observations and a task description, then outputs commands in a particular robot interface. A generated video instead describes a possible sequence of appearances. To connect them, specify the robot embodiment, coordinate frame, units, time step, and which signals are observed or predicted. A cup moving right in image space could result from object motion, camera motion, or a different viewpoint. Without a grounded action interface, visual progress does not uniquely determine the command that caused it.
+视觉语言动作策略接收观测与任务描述，再输出某种机器人接口下的指令。生成视频描述的则是一串可能出现的画面。要连接两者，就必须明确机器人形态、坐标系、单位、时间步，以及哪些信号被观察、哪些被预测。图像中的杯子向右移动，可能来自物体运动、相机运动，或者视角变化。缺少有依据的动作接口，视觉进展并不能唯一决定造成变化的指令。
+https://arxiv.org/abs/2302.00111v3
+https://arxiv.org/abs/2506.09985v1
+
+UniPi turns a video plan into actions / UniPi 把视频计划转成动作
+UniPi starts from the current image and a language instruction, and generates a video describing a possible task trajectory. An inverse-dynamics model then converts visual transitions into actions for the target environment. Follow the original pipeline carefully: the video generator proposes what should happen, while the inverse model estimates how to produce that change. This separates a visual planning interface from the embodiment-specific control interface. It also creates two possible failure points: an impossible visual plan or an incorrect action inferred from it.
+UniPi 从当前图像与语言指令出发，生成描述可能任务轨迹的视频。逆动力学模型再把视觉转移转成目标环境里的动作。仔细看原流程图：视频生成器提出应该发生什么，逆模型估计怎样实现这种变化。这样，视觉规划接口与具体机器人形态的控制接口被分开。同时也带来两个失败位置：视觉计划本身不可实现，或者由它推断的动作错误。
+https://arxiv.org/abs/2302.00111v3
+
+A possible feedback loop is not the reported one / 可以反馈，不等于实验已经反馈
+UniPi discusses applying its components in a model-predictive-control loop, but explicitly describes its reported experiments as open-loop. That distinction matters when the cup slips halfway through the plan. An open-loop execution does not automatically regenerate the plan from the changed scene. Also distinguish video evaluation from robot evaluation: a classifier recognizing success in a generated final frame measures that generated video. It is not, by itself, a measured rate of physically completed robot tasks.
+UniPi 讨论了把组件放进模型预测控制循环，但明确把报告中的实验描述为开环。当杯子在计划执行到一半时滑动，这个区别就非常重要。开环执行不会自动根据变化后的场景重新生成计划。还要区分视频评估与机器人评估：分类器在生成末帧中识别成功，测量的是那段生成视频。这本身并不是物理机器人实际完成任务的成功率。
+https://arxiv.org/abs/2302.00111v3
+
+DreamGen uses a model to make training data / DreamGen 用模型生产训练数据
+DreamGen places video generation before policy training rather than requiring the generator to run at every control step. Its pipeline first adapts a video world model to the target robot, then generates trajectories from initial images and instructions. A latent-action model or inverse-dynamics model supplies pseudo-actions for the generated visual transitions. The resulting examples are used to train a downstream robot policy. The useful question is whether those synthetic examples improve real execution under the reported data and evaluation conditions.
+DreamGen 把视频生成放在策略训练之前，而不是要求生成器在每个控制步运行。流程先让视频世界模型适配目标机器人，再根据起始图像与指令生成轨迹。潜在动作模型或逆动力学模型为生成的视觉转移补上伪动作。这些样本用于训练下游机器人策略。真正有用的问题是：在报告的数据与评估条件下，这些合成样本是否改善真实执行。
+https://arxiv.org/abs/2505.12705v2
+
+Pseudo-actions are estimates, not measurements / 伪动作是估计，不是实测
+Suppose a generated trajectory shows the cup rising, but the fingers never form a stable contact. An inverse model may still output a plausible-looking command sequence, because it must explain the visual transition it was given. Those labels were inferred; they were not measured during the imagined event. Synthetic-data quality therefore needs checks for instruction alignment, action plausibility, and downstream usefulness. DreamGen's robot adaptation also uses collected robot data, so synthetic augmentation should not be described as learning physical control from no robot experience.
+假设生成轨迹显示杯子升起，但手指从未形成稳定接触。逆模型仍可能输出看起来合理的指令序列，因为它需要解释给定的视觉转移。这些标签是推断出来的，并不是在那个想象事件中测量到的。因此，合成数据质量需要检查指令一致性、动作合理性，以及下游是否真正受益。DreamGen 的机器人适配也使用采集的机器人数据，所以合成增强不能被描述为没有机器人经验就学会物理控制。
+https://arxiv.org/abs/2505.12705v2
+
+GR-2 jointly learns video and behavior / GR-2 联合学习视频与行为
+GR-2 connects video prediction and action generation inside a shared learning system. It first learns from large-scale video, then adapts using robot trajectories with actions. In the original method, video and action predictions are parallel outputs, with a conditional variational action component. This is different from searching many imagined futures online and choosing the best trajectory. And the robot's low-level controller frequency should not be reported as the neural model's decision frequency; those numbers belong to different layers of the execution stack.
+GR-2 在同一学习系统中连接视频预测与动作生成。它先从大规模视频学习，再使用带动作的机器人轨迹适配。在原方法中，视频与动作是并行输出，动作分支包含条件变分组件。这与在线搜索许多想象未来、再选最优轨迹不同。机器人的底层控制频率也不能写成神经模型的决策频率；它们属于执行系统的不同层。
+https://arxiv.org/abs/2410.06158v1
+
+WorldVLA shares visual and action prediction / WorldVLA 共享视觉与动作预测
+The original WorldVLA studies an autoregressive system that jointly models visual information and robot actions. Action prediction can benefit from understanding visual consequences, while action information can help predict scene changes. Its attention design addresses dependencies within predicted action sequences, including the risk of compounding action errors. Read this as a particular joint-training architecture with its reported LIBERO evaluation. The presence of a world-modeling objective does not establish that deployment performs explicit online MPC or that the system has already solved arbitrary physical manipulation.
+原版 WorldVLA 研究自回归系统，联合建模视觉信息与机器人动作。动作预测可以从理解视觉后果中受益，动作信息也可以帮助预测场景变化。它的注意力设计处理预测动作序列内部的依赖，包括动作误差累积的风险。应把它理解为一种具体的联合训练架构，并结合论文报告的 LIBERO 评估来读。加入世界建模目标，并不能证明部署时执行了显式在线 MPC，也不能证明它已经解决任意真实操作任务。
+https://arxiv.org/abs/2506.21539v1
+
+A runtime evaluator is another integration choice / 运行时评估器是另一种接法
+Now build an engineering example, rather than attributing a new experiment to those papers. A VLA proposes several candidate actions for moving the cup, and an action-conditioned model predicts their consequences. A task score ranks candidates, while the controller executes only the selected first step and observes again. V-JEPA 2-AC provides a concrete example of feature-space planning, although it is not this exact VLA-candidate architecture. Adding a model should be justified by measured improvement over the same policy without that extra computation.
+现在构建一个工程示例，而不是把新实验归到上述论文名下。VLA 为移动杯子提出多个候选动作，动作条件模型预测它们的后果。任务评分排序候选，控制器只执行选中的第一步，然后重新观察。V-JEPA 2-AC 提供了特征空间规划的具体例子，但它不是这里完全相同的 VLA 候选架构。增加模型，需要用实测改进来证明价值，并与没有额外计算的同一策略比较。
+https://arxiv.org/abs/2506.09985v1
+https://arxiv.org/abs/2310.16828v2
+
+A learned judge is not an independent safety proof / 学习评判器不是独立安全证明
+A model and a policy trained on similar data may share the same blind spot. Both might treat a transparent cup as empty space or miss an unstable contact behind the fingers. A high predicted reward therefore cannot replace joint limits, collision checks, controller limits, or direct measurements needed by the application. Some of those checks use geometry or known robot mechanics rather than the learned predictor. Treat model confidence as one signal to evaluate, with explicit fallback behavior when observation and prediction disagree.
+在相似数据上训练的模型与策略，可能共享同一个盲点。两者都可能把透明杯子当成空处，或者漏掉手指背后的不稳定接触。因此，高预测奖励不能替代应用所需的关节限制、碰撞检查、控制器约束或直接测量。其中一些检查依靠几何或已知机器人机构，而不是学习预测器。应把模型置信度当成需要评估的一种信号，并明确观测与预测不一致时的退回行为。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2506.09985v1
+
+Close the loop at the actual control rate / 按照真实控制速度闭环
+Our cup example now has a complete loop: observe, estimate, propose, predict, choose, execute, and observe again. But each stage consumes time, and the robot continues moving while some computations are running. A prediction based on an old frame can become stale before its selected action reaches the controller. Measure end-to-end latency, synchronize timestamps, and define how action chunks are interrupted or refreshed. The right planning horizon depends on those timings and on how rapidly the relevant contacts can change.
+现在杯子例子拥有完整循环：观察、估计、提议、预测、选择、执行，再次观察。但每个阶段都消耗时间，而部分计算运行时机器人仍在运动。基于旧画面的预测，在所选动作到达控制器之前就可能过时。需要测量端到端延迟，同步时间戳，并定义动作块如何中断或更新。合适的规划长度取决于这些时序，也取决于相关接触变化得有多快。
+https://arxiv.org/abs/2506.09985v1
+https://proceedings.mlr.press/v205/wu23c.html
+
+Contact exposes errors that pixels can hide / 接触会暴露像素隐藏的误差
+Moving a visible object across free space is different from predicting what happens when fingers make contact. A small pose error can change whether a finger touches the rim, pushes the cup, or misses it entirely. Friction, compliance, and unseen support conditions then affect whether the object lifts or slips. A visually smooth prediction may hide these discontinuities instead of resolving them. For this application, evaluate contact transitions and complete pick-and-place outcomes, not only image resemblance or an attractive generated grasp.
+预测可见物体在自由空间中移动，与预测手指接触后的情况不同。很小的位姿误差，就可能改变手指是碰到杯沿、推动杯子，还是完全错过。摩擦、柔顺性与看不见的支撑条件，随后影响物体是升起还是滑落。视觉平滑的预测，可能掩盖这些突变，而不是解决它们。对这种应用，应评估接触转换与完整抓放结果，而不只是图像相似度或好看的生成抓握。
+https://proceedings.mlr.press/v205/wu23c.html
+https://arxiv.org/abs/2506.09985v1
+https://arxiv.org/abs/2505.12705v2
+
+Choose the least expensive useful role / 选择成本合理、确实有用的角色
+If deployment compute is tight, synthetic-data generation can move expensive video modeling into an offline stage. If the task has a clear goal image and calibrated actions, online feature-space planning may be a candidate to test. If action labels and video trajectories are available, joint learning can share useful representations across objectives. These are conditional design choices, not a ranking of paper names. Choose by the available data, sensor interface, control deadline, and the failure that the added model is meant to reduce.
+如果部署算力紧张，合成数据可以把昂贵的视频建模移到离线阶段。如果任务有清楚的目标图像与校准动作，可以测试在线特征空间规划。如果动作标签与视频轨迹都可用，联合学习可以让不同目标共享有用表示。这些是带条件的设计选择，而不是论文名字的排名。应根据可用数据、传感器接口、控制时限，以及希望新增模型减少哪类失败来选择。
+https://arxiv.org/abs/2505.12705v2
+https://arxiv.org/abs/2410.06158v1
+https://arxiv.org/abs/2506.09985v1
+
+Follow the evidence across every interface / 沿每一个接口追踪证据
+A hybrid system is only as convincing as the evidence connecting its stages. For generated data, check whether inferred labels improve an independently evaluated policy. For visual plans, check whether actions realize them; for runtime evaluation, check whether the chosen action improves the real task under the same budget. Keep video quality, action prediction, and completed physical outcomes as separate measurements. The final chapter turns these distinctions into a practical evaluation protocol that preserves failures and makes comparisons interpretable.
+混合系统是否可信，取决于连接各阶段的证据。对于生成数据，要检查推断标签是否改善了独立评估的策略。对于视觉计划，要检查动作是否实现计划；对于运行时评估，要在相同预算下检查所选动作是否改善真实任务。把视频质量、动作预测与完整物理结果分开测量。最后一章把这些区别转成实际评测协议，保留失败，并让比较能够被正确解读。
+https://arxiv.org/abs/2302.00111v3
+https://arxiv.org/abs/2505.12705v2
+https://arxiv.org/abs/2410.06158v1
+https://arxiv.org/abs/2506.21539v1
+https://arxiv.org/abs/2506.09985v1

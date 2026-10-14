@@ -1,0 +1,344 @@
+﻿1
+00:00:00,850 --> 00:00:07,690
+Suppose our model predicts three futures: the cup stays still, slides toward the target, or tips over.
+假设模型预测了三种未来：杯子保持不动、滑向目标，或者倾倒。
+
+2
+00:00:07,910 --> 00:00:12,290
+It has not yet decided which outcome is desirable or which command to execute.
+它还没有决定哪个结果值得追求，也没有决定执行哪条指令。
+
+3
+00:00:12,710 --> 00:00:18,230
+We need an objective, an action-selection procedure, and a way to handle limited computation.
+我们还需要目标函数、动作选择过程，以及处理有限计算资源的方法。
+
+4
+00:00:18,650 --> 00:00:26,475
+This chapter follows two different routes: searching through futures at decision time, and training a policy using imagined futures beforehand.
+这一章沿两条不同路线展开：在决策时搜索未来，以及提前利用想象的未来训练策略。
+
+5
+00:00:26,490 --> 00:00:31,170
+Both use a world model, but they spend their computation in different places.
+两条路线都使用世界模型，但把计算花在了不同位置。
+
+6
+00:00:31,858 --> 00:00:38,638
+For our teaching example, a useful score could reward reaching the target and penalize tipping or excessive motion.
+在教学例子中，可以奖励到达目标，并惩罚倾倒或过大的运动。
+
+7
+00:00:39,178 --> 00:00:45,098
+A planner evaluates a sequence, because a harmless first movement can prepare a useful later contact.
+规划器评估一串动作，因为第一步看似平淡的运动，可能为后面的有效接触做准备。
+
+8
+00:00:45,538 --> 00:00:50,578
+The exact reward, discount, horizon, and constraints determine which sequence looks best.
+具体奖励、折扣、规划长度和约束，共同决定哪串动作最优。
+
+9
+00:00:51,018 --> 00:00:56,138
+A model does not discover the user's true preferences merely by predicting images accurately.
+即使模型能准确预测图像，也不会因此自动发现用户真正的偏好。
+
+10
+00:00:56,618 --> 00:01:01,158
+And a penalty in the score is not the same as a hard constraint that the controller guarantees.
+评分中的惩罚项，也不等于控制器能够保证的硬约束。
+
+11
+00:01:01,887 --> 00:01:09,267
+The cross-entropy method begins with a distribution over action sequences, often described by means and variances.
+交叉熵方法从动作序列的分布开始，通常用均值和方差描述。
+
+12
+00:01:09,667 --> 00:01:14,947
+It samples candidates, rolls each through the learned dynamics, and scores the predicted outcomes.
+它采样候选序列，用学习的动力学逐个推演，并评价预测结果。
+
+13
+00:01:15,387 --> 00:01:20,427
+The best subset becomes the elite set, from which the next sampling distribution is fitted.
+表现最好的子集成为精英集合，用它拟合下一轮采样分布。
+
+14
+00:01:20,907 --> 00:01:27,092
+Repeating this process concentrates the search around promising sequences, as in PlaNet's latent-space planning.
+不断重复，搜索就集中到有希望的序列附近，PlaNet 的潜空间规划采用了这种做法。
+
+15
+00:01:27,107 --> 00:01:33,247
+The animation illustrates that mechanism; its drawn paths are not measurements from a robot experiment.
+这里的动画演示这一机制，画出的路径并不是机器人实验测量结果。
+
+16
+00:01:33,920 --> 00:01:41,440
+After optimization, model-predictive control executes the first action, rather than blindly committing to the entire sequence.
+优化后，模型预测控制执行第一个动作，而不是盲目承诺整串序列。
+
+17
+00:01:41,700 --> 00:01:47,440
+The camera observes what actually happened, the state estimate is updated, and planning starts again.
+相机观察实际发生了什么，状态估计得到更新，然后重新规划。
+
+18
+00:01:47,700 --> 00:01:54,160
+This feedback can correct a cup that moved less than predicted, provided sensing and computation arrive in time.
+只要感知和计算足够及时，这种反馈就能纠正杯子实际移动小于预测的情况。
+
+19
+00:01:54,560 --> 00:02:01,165
+Longer horizons can reveal delayed rewards, but they also require more computation and expose more model error.
+更长的规划范围可以看到延迟奖励，却也需要更多计算，并暴露更多模型误差。
+
+20
+00:02:01,180 --> 00:02:06,400
+Replanning helps manage uncertainty; it does not make inaccurate dynamics disappear.
+重新规划有助于处理不确定性，但不会让错误的动力学自动消失。
+
+21
+00:02:07,068 --> 00:02:16,108
+TD-MPC learns a compact representation, a transition model, a reward predictor, a value function, and a policy prior.
+TD-MPC 学习紧凑表示、状态转移模型、奖励预测器、价值函数，以及策略先验。
+
+22
+00:02:16,828 --> 00:02:26,428
+Follow the original training diagram: encoded observations provide targets for latent consistency, while recorded rewards supervise reward predictions.
+沿着原训练图看：编码后的观测提供潜在一致性目标，记录的奖励监督奖励预测。
+
+23
+00:02:27,168 --> 00:02:33,173
+Temporal-difference targets train value estimates that summarize rewards beyond the explicitly simulated horizon.
+时序差分目标训练价值估计，用来概括显式推演范围以外的奖励。
+
+24
+00:02:33,188 --> 00:02:40,048
+Unlike image-reconstructing models, this objective does not require a decoder to reproduce every pixel.
+与重建图像的模型不同，这个目标不要求解码器恢复每个像素。
+
+25
+00:02:40,388 --> 00:02:44,208
+Its state must still preserve distinctions that matter for the control objective.
+但它的状态仍然必须保留影响控制目标的重要差异。
+
+26
+00:02:44,785 --> 00:02:50,905
+A finite rollout only predicts the next few steps, while the task may continue much longer.
+有限长度的推演只预测接下来几步，但任务可能持续更久。
+
+27
+00:02:51,565 --> 00:02:57,645
+TD-MPC therefore combines predicted near-term rewards with a learned value estimate at the end of the horizon.
+因此，TD-MPC 把近期预测奖励与规划末端的学习价值估计结合起来。
+
+28
+00:02:58,285 --> 00:03:04,865
+The policy prior also contributes promising candidate actions, reducing dependence on uninformed sampling.
+策略先验还提供有希望的候选动作，减少对无信息随机采样的依赖。
+
+29
+00:03:05,365 --> 00:03:11,030
+This is a cooperation between planning and learned behavior, rather than a choice that excludes one or the other.
+这体现的是规划与学习行为的合作，而不是必须二选一。
+
+30
+00:03:11,045 --> 00:03:17,185
+However, an optimistic terminal value can mislead the planner even when short-term transitions look accurate.
+不过，即使短期转移看起来准确，过于乐观的终端价值也可能误导规划器。
+
+31
+00:03:17,693 --> 00:03:25,353
+TD-MPC2 improves the architecture and training recipe, and scales the approach across tasks and model sizes.
+TD-MPC2 改进架构与训练配方，并扩展到不同任务与模型规模。
+
+32
+00:03:25,953 --> 00:03:34,653
+Its planner iteratively refines sampled sequences with weighted updates; that is related to, but not identical to, the simple CEM sketch.
+它的规划器用加权更新反复优化采样序列，与刚才简化的 CEM 示意有关，但并不完全相同。
+
+33
+00:03:35,213 --> 00:03:41,693
+The original figure aggregates single-task results across four simulated domains and one hundred four tasks.
+原图汇总了四类仿真环境、一百零四个任务的单任务结果。
+
+34
+00:03:42,333 --> 00:03:45,933
+Separate experiments address visual inputs and multi-task agents.
+视觉输入与多任务智能体由另外的实验评估。
+
+35
+00:03:46,213 --> 00:03:51,593
+Do not turn that total into a claim that one camera-only robot learned every task in the physical world.
+不能把这个总数说成一台只用相机的机器人在真实世界学会了全部任务。
+
+36
+00:03:52,130 --> 00:03:57,950
+Dreamer starts imagined trajectories from states inferred from real experience in its replay buffer.
+Dreamer 从回放数据中推断出的真实经验状态出发，生成想象轨迹。
+
+37
+00:03:58,530 --> 00:04:05,830
+The actor chooses imagined actions, the world model predicts subsequent states and rewards, and the critic estimates future return.
+策略选择想象动作，世界模型预测后续状态与奖励，价值网络估计未来回报。
+
+38
+00:04:06,350 --> 00:04:11,390
+These rollouts improve the actor and critic without executing every proposed action in the environment.
+这些推演能够改进策略和价值网络，而不用在环境里执行每一个候选动作。
+
+39
+00:04:11,930 --> 00:04:16,015
+At deployment, the trained actor can directly select an action from the inferred state.
+部署时，训练好的策略可以直接从推断状态选择动作。
+
+40
+00:04:16,030 --> 00:04:22,290
+Learning behavior inside a model therefore does not imply running an online trajectory search before every motor command.
+因此，在模型中学习行为，并不意味着每条电机指令之前都进行在线轨迹搜索。
+
+41
+00:04:22,882 --> 00:04:31,342
+An imagined sequence begins from an observation-informed posterior, then continues through prior predictions without future measurements.
+想象序列从根据观测推断的后验开始，随后没有未来测量，只靠先验预测延续。
+
+42
+00:04:31,822 --> 00:04:40,002
+The value function supplies a learning signal beyond the short imagination horizon, while predicted continuation handles episode endings.
+价值函数提供超出短期想象范围的学习信号，预测的继续概率处理回合终止。
+
+43
+00:04:40,522 --> 00:04:48,247
+During a behavior-learning update, the world model supplies the imagined environment rather than being rewarded for making the actor look successful.
+在行为学习更新中，世界模型提供想象环境，而不是因为让策略显得成功就得到奖励。
+
+44
+00:04:48,262 --> 00:04:52,202
+Its parameters are trained through the separate model-learning objective.
+模型参数由独立的模型学习目标训练。
+
+45
+00:04:52,622 --> 00:04:58,142
+Real interaction must still check whether the improved imagined behavior transfers back to the actual environment.
+仍然需要真实交互，检查想象中改进的行为能否回到实际环境。
+
+46
+00:04:58,894 --> 00:05:05,874
+The first Dreamer emphasized learning behavior through gradients of imagined latent trajectories in continuous control.
+第一版 Dreamer 强调用想象潜在轨迹的梯度，在连续控制中学习行为。
+
+47
+00:05:06,414 --> 00:05:13,634
+DreamerV2 introduced categorical latent variables and a revised learning recipe, including balanced divergence terms.
+DreamerV2 引入类别潜变量，并调整学习配方，包括平衡的散度项。
+
+48
+00:05:14,194 --> 00:05:20,254
+DreamerV3 focuses on robustness across domains through changes such as scale handling and normalization.
+DreamerV3 通过处理数值尺度、归一化等改动，提高跨领域的稳健性。
+
+49
+00:05:20,754 --> 00:05:28,119
+These versions share the imagination-based actor-critic structure, but their distributions and optimization details are not interchangeable.
+这些版本共享基于想象的策略价值结构，但分布形式和优化细节不能互换。
+
+50
+00:05:28,134 --> 00:05:34,114
+A categorical latent state also does not mean the physical robot must use discrete motor actions.
+类别潜在状态，也不意味着物理机器人必须使用离散电机动作。
+
+51
+00:05:34,843 --> 00:05:42,463
+DayDreamer brings this learning loop onto physical robots, including quadruped locomotion and robotic-arm pick-and-place.
+DayDreamer 把这套学习循环带到物理机器人上，包括四足行走与机械臂抓放。
+
+52
+00:05:42,983 --> 00:05:48,183
+The current policy collects experience while a learner updates the world model and behavior from replay.
+当前策略收集经验，同时学习端利用回放更新世界模型与行为。
+
+53
+00:05:48,683 --> 00:05:54,843
+Asynchronous execution matters because a robot must keep receiving commands while expensive training runs elsewhere.
+异步执行很重要，因为耗时训练在另一端运行时，机器人仍然需要持续接收指令。
+
+54
+00:05:55,363 --> 00:06:00,883
+The sensors, action spaces, rewards, and task constraints differ across the published platforms.
+论文各平台的传感器、动作空间、奖励和任务约束并不相同。
+
+55
+00:06:01,103 --> 00:06:07,583
+This is concrete evidence for those physical setups, not a guarantee that any camera-only cup task learns equally fast.
+这是这些物理配置的具体证据，并不保证任何纯视觉杯子任务都能同样快地学会。
+
+56
+00:06:08,169 --> 00:06:16,149
+MuZero supplies a third useful comparison: a learned representation initializes a search state from observation history.
+MuZero 提供了第三种对照：学习表示把观测历史转成搜索起始状态。
+
+57
+00:06:16,569 --> 00:06:20,809
+Its dynamics function predicts the next hidden state and reward after an action.
+动力学函数预测动作之后的下一个隐藏状态与奖励。
+
+58
+00:06:21,149 --> 00:06:26,829
+A prediction function supplies values and policy priors, which guide Monte Carlo tree search.
+预测函数提供价值与策略先验，引导蒙特卡洛树搜索。
+
+59
+00:06:27,229 --> 00:06:32,974
+The original training objective targets these decision-relevant quantities without requiring image reconstruction.
+原始训练目标面向这些决策相关量，不要求重建图像。
+
+60
+00:06:32,989 --> 00:06:43,149
+Success in its board-game and Atari evaluations therefore supports task-oriented planning, rather than demonstrating a complete physical simulator or a robot controller.
+因此，棋类与 Atari 评测中的成功支持任务导向规划，而不是证明它拥有完整物理仿真器或机器人控制器。
+
+61
+00:06:43,939 --> 00:06:49,699
+Return to the cup and hold the observations, action interface, and task objective fixed.
+回到杯子，固定观测、动作接口与任务目标。
+
+62
+00:06:50,019 --> 00:06:59,139
+An MPC system spends online computation evaluating sequences; an imagined-learning system can spend more training computation improving an actor.
+MPC 系统在线评估序列，想象学习系统则可以把更多训练计算用于改进策略。
+
+63
+00:06:59,539 --> 00:07:04,899
+A hybrid can use a learned actor to propose candidates and a model to refine or evaluate them.
+混合系统可以让学习策略提出候选，再由模型优化或评估。
+
+64
+00:07:05,339 --> 00:07:11,244
+Measure the resulting task success and decision latency rather than assuming one arrangement is universally better.
+应测量任务成功率和决策延迟，而不是假定某种安排在所有情境下更好。
+
+65
+00:07:11,259 --> 00:07:17,699
+The comparison is meaningful only when both systems receive the same usable information and comparable budgets.
+只有系统获得相同的可用信息，并采用可比较的预算，这种比较才有意义。
+
+66
+00:07:18,368 --> 00:07:27,048
+When reading a new method, trace four questions through its diagram: what predicts, what scores, what chooses, and what is executed.
+阅读新方法时，沿流程图追踪四个问题：谁预测、谁评分、谁选择，以及最终执行什么。
+
+67
+00:07:27,568 --> 00:07:34,008
+Then separate training-time rollouts from decision-time rollouts, and identify where real observations return.
+接着区分训练阶段推演与决策阶段推演，并找出真实观测在哪里重新进入。
+
+68
+00:07:34,468 --> 00:07:40,228
+This prevents confusing a world model with its planner, or a learned policy with a generated video.
+这样就不会把世界模型与规划器混为一谈，也不会把学习策略等同于生成视频。
+
+69
+00:07:40,368 --> 00:07:49,348
+The next chapter applies the same questions to predictive representations, interactive video worlds, and recent models that connect video and robot actions.
+下一章把同样的问题用于预测表示、交互视频世界，以及连接视频与机器人动作的新模型。

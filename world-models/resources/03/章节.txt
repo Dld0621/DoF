@@ -1,0 +1,14 @@
+﻿00:00 有了预测，还缺一个决策规则 / A prediction still needs a decision rule
+00:31 先定义什么是好轨迹 / Define what a good trajectory means
+01:01 CEM 改进的是候选分布 / CEM improves a distribution of candidates
+01:33 MPC 只执行一步，再重新观察 / MPC executes one step, then looks again
+02:07 TD-MPC 学习控制需要的量 / TD-MPC learns quantities needed for control
+02:44 短期规划可以接上终端价值 / A short horizon can use a terminal value
+03:17 在 TD-MPC2 自己的协议下读结果 / Read TD-MPC2 under its own protocol
+03:52 Dreamer 把一部分决策计算移入训练 / Dreamer moves search effort into learning
+04:22 想象需要有依据的起点 / Imagination needs a grounded starting point
+04:58 Dreamer 各版本改变了学习配方 / Dreamer versions change the learning recipe
+05:34 DayDreamer 把执行与学习分开 / DayDreamer separates acting from learning
+06:08 MuZero 学习的是对搜索有用的模型 / MuZero learns a model useful for search
+06:43 用同一杯子任务比较路线 / Compare routes on the same cup task
+07:18 沿着计算发生的位置读方法 / Track where the computation happens

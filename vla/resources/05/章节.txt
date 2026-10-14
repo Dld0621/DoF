@@ -1,0 +1,14 @@
+﻿00:00 模型推理时，世界不会暂停 / The world does not pause during inference
+00:33 把真正发生的延迟加起来 / Add the delays that actually occur
+01:08 同步动作分块会产生停顿 / Synchronous chunking creates pauses
+01:44 异步推理让计算与动作重叠 / Asynchronous inference overlaps computation and motion
+02:20 把推理延迟换算成已确定执行的步数 / Convert inference delay into committed steps
+02:54 RTC 让下一段适应已确定执行的前缀 / RTC conditions the next chunk on its committed prefix
+03:28 测量完整系统，也看延迟尾部 / Measure the whole stack, including the tail
+04:04 仅用摄像头，也仍需机器人接口 / Camera-only control still needs a robot interface
+04:39 在正确层级诊断失败 / Diagnose failures at the correct layer
+05:13 恢复能力应当被专门测量 / Recovery should be a measured capability
+05:49 流畅解说之外，还要有运行边界 / Operational boundaries belong outside fluent narration
+06:24 针对实际失败分布进行适配 / Adapt with evidence from the actual failure distribution
+07:04 把推理到任务完成之间的阶段分开 / Stage the transition from inference to a task
+07:40 用可测量的系统真正闭环 / Close the loop with a measured system

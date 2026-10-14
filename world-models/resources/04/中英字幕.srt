@@ -1,0 +1,439 @@
+﻿1
+00:00:00,850 --> 00:00:06,130
+Watch a generated hand reach toward a cup, and the scene may look completely convincing.
+看一只生成的人手伸向杯子，整个场景可能非常逼真。
+
+2
+00:00:06,810 --> 00:00:09,110
+But what exactly has the model demonstrated?
+但模型究竟证明了什么？
+
+3
+00:00:10,010 --> 00:00:12,650
+Perhaps it produced a plausible movie from a prompt.
+它也许只是根据提示生成了一段合理的视频。
+
+4
+00:00:13,270 --> 00:00:16,570
+Perhaps it predicted how a particular action changes the scene.
+也许它预测了某个具体动作怎样改变场景。
+
+5
+00:00:17,070 --> 00:00:21,190
+Or perhaps those predictions helped a real robot choose a successful action.
+也可能这些预测确实帮助真机器人选出了成功的动作。
+
+6
+00:00:21,810 --> 00:00:24,810
+These are different tests, requiring different evidence.
+这是不同的测试，需要不同的证据。
+
+7
+00:00:25,470 --> 00:00:32,950
+The original Sora report already showed why: impressive video generation can coexist with incorrect physics and missing object state changes.
+最初的 Sora 研究报告已经说明：出色的视频生成，也可能伴随错误物理和物体状态缺失。
+
+8
+00:00:33,599 --> 00:00:38,039
+Hold the starting observation fixed and compare two possible commands.
+固定起始观测，比较两个可能的指令。
+
+9
+00:00:38,479 --> 00:00:41,459
+One moves the gripper left; the other closes it.
+一个让夹爪向左移动，另一个让夹爪闭合。
+
+10
+00:00:41,659 --> 00:00:46,199
+An action-conditioned world model should predict different consequences for those inputs.
+动作条件世界模型应该为这两个输入预测不同后果。
+
+11
+00:00:46,579 --> 00:00:51,299
+The control must have a defined meaning, whether it is a game key or a robot displacement.
+控制量必须有明确含义，可能是游戏按键，也可能是机器人位移。
+
+12
+00:00:51,719 --> 00:00:58,499
+A text description of movement is a useful condition, but it does not automatically specify a calibrated motor command.
+动作的文字描述可以作为条件，但不会自动变成经过标定的电机指令。
+
+13
+00:00:58,919 --> 00:01:03,239
+This action interface is the first connection to inspect when comparing video models.
+比较视频模型时，首先要检查的就是这个动作接口。
+
+14
+00:01:03,802 --> 00:01:11,342
+V-JEPA 2 takes a different route: its prediction target is a representation, rather than every future pixel.
+V-JEPA 2 走了另一条路线：预测目标是表征，而不是未来的每个像素。
+
+15
+00:01:11,722 --> 00:01:13,862
+Read the original figure from left to right.
+从左到右读这张原图。
+
+16
+00:01:14,222 --> 00:01:20,122
+First, an encoder sees a partially masked video, and a predictor estimates features for the missing regions.
+首先，编码器观察部分被遮挡的视频，预测器估计缺失区域的特征。
+
+17
+00:01:20,562 --> 00:01:23,722
+The targets come from an exponential moving average encoder.
+预测目标来自指数移动平均编码器。
+
+18
+00:01:24,042 --> 00:01:27,702
+This stage learns visual representations from large amounts of video.
+这一阶段从大量视频中学习视觉表示。
+
+19
+00:01:28,122 --> 00:01:34,722
+The separate action-conditioned stage then freezes the encoder and learns how robot actions and poses change those features.
+随后独立的动作条件阶段冻结编码器，学习机器人动作和位姿怎样改变这些特征。
+
+20
+00:01:35,351 --> 00:01:41,131
+The robot stage uses under sixty-two hours from DROID, but the word unlabeled needs care.
+机器人阶段使用不足六十二小时的 DROID 数据，但“无标签”需要准确理解。
+
+21
+00:01:41,351 --> 00:01:45,451
+It means the training does not need task names, rewards, or success labels.
+它指训练不需要任务名称、奖励或成功标签。
+
+22
+00:01:45,891 --> 00:01:50,051
+The videos still include end-effector position, orientation, and gripper state.
+视频仍然配有末端位置、朝向和夹爪状态。
+
+23
+00:01:50,391 --> 00:01:54,671
+Differences between consecutive states define seven-dimensional action inputs.
+相邻状态之差构成七维动作输入。
+
+24
+00:01:54,931 --> 00:01:59,796
+The predictor learns both from observed feature histories and from short rollouts of its own predictions.
+预测器既学习真实观测的特征历史，也学习将自身预测继续向前滚动。
+
+25
+00:01:59,811 --> 00:02:06,791
+So this is learning without task annotation, not learning physical robot control from completely action-free internet video.
+因此，这是不依赖任务标注的学习，并不是只靠完全没有动作信息的网络视频学会机器人控制。
+
+26
+00:02:07,363 --> 00:02:09,503
+Now follow the planning diagram.
+现在沿着规划图往下看。
+
+27
+00:02:10,103 --> 00:02:13,883
+The current image and the goal image are encoded into the same feature space.
+当前图像与目标图像被编码到同一特征空间。
+
+28
+00:02:14,523 --> 00:02:17,643
+Candidate action sequences produce candidate future features.
+候选动作序列产生各自对应的未来特征。
+
+29
+00:02:18,023 --> 00:02:24,323
+The cross-entropy method repeatedly samples actions and refines the distribution around candidates that approach the goal.
+交叉熵方法反复采样动作，并围绕更接近目标的候选调整分布。
+
+30
+00:02:24,563 --> 00:02:28,883
+The robot executes only the first action, observes the result, and plans again.
+机器人只执行第一步，观察结果，再次规划。
+
+31
+00:02:29,263 --> 00:02:31,763
+This closes the loop through real observations.
+真实观测就这样构成闭环。
+
+32
+00:02:31,783 --> 00:02:37,983
+The world model predicts consequences; the optimizer selects actions according to the chosen goal-distance objective.
+世界模型预测后果；优化器按照选定的目标距离函数选择动作。
+
+33
+00:02:38,592 --> 00:02:46,992
+V-JEPA 2-AC was tested on physical Franka arms in two laboratories, including reaching, grasping, and pick-and-place.
+V-JEPA 2-AC 在两间实验室的实体 Franka 机械臂上测试了到达、抓取和取放。
+
+34
+00:02:47,632 --> 00:02:50,452
+Pick-and-place used several supplied image subgoals.
+取放使用了外部提供的多个图像子目标。
+
+35
+00:02:50,792 --> 00:02:54,812
+Zero-shot here means no extra training data from those target laboratories.
+这里的零样本指没有额外使用目标实验室的训练数据。
+
+36
+00:02:55,392 --> 00:02:58,532
+It does not mean the model had never seen robot trajectories.
+它并不表示模型从未见过机器人轨迹。
+
+37
+00:02:58,812 --> 00:03:03,437
+And the reported comparison used sixteen seconds to plan one action on a single GPU.
+论文中的对照设置还需要在单张 GPU 上用十六秒规划一个动作。
+
+38
+00:03:03,452 --> 00:03:11,852
+That is evidence for a particular planning system, with camera and horizon limitations, not a claim of real-time universal manipulation.
+这证明了一个具体规划系统的能力，同时仍有相机和时域限制，不能直接称为实时通用操作。
+
+39
+00:03:12,621 --> 00:03:19,081
+Genie starts from a different missing ingredient: internet video often lacks the actions that produced it.
+Genie 面对的是另一种缺失：网络视频通常没有记录产生画面的动作。
+
+40
+00:03:19,181 --> 00:03:23,781
+Its latent-action model compresses changes between frames into discrete codes.
+它的潜动作模型把帧间变化压缩为离散编码。
+
+41
+00:03:24,101 --> 00:03:31,241
+The video tokenizer describes the scene, while the dynamics model combines visual tokens with the selected action code.
+视频 tokenizer 描述场景，动力学模型再把视觉 tokens 与选定的动作编码结合。
+
+42
+00:03:31,441 --> 00:03:35,341
+At inference, choosing a code influences the next generated frame.
+推理时，选择哪个编码会影响下一张生成图像。
+
+43
+00:03:35,601 --> 00:03:41,846
+This makes video-only learning interactive, but the code is not automatically a robot command in meters or radians.
+这让纯视频学习具有交互性，但编码不会自动成为以米或弧度计量的机器人命令。
+
+44
+00:03:41,861 --> 00:03:45,301
+That physical correspondence would still need to be established.
+这种与物理控制量的对应关系仍需要另外建立。
+
+45
+00:03:45,910 --> 00:03:51,910
+The Genie generations show a progression in interaction, not a single interchangeable model.
+Genie 各代展示的是交互能力的演进，不能把它们视作一个可互换的模型。
+
+46
+00:03:52,390 --> 00:03:56,950
+The first paper reported about one frame per second and sixteen frames of memory.
+第一代论文报告大约每秒一帧，以及十六帧记忆。
+
+47
+00:03:57,630 --> 00:04:04,750
+Genie 2 accepts keyboard and mouse controls from an initial image; most published examples lasted ten to twenty seconds.
+Genie 2 从初始图像出发，接受键盘与鼠标控制；多数公开例子持续十到二十秒。
+
+48
+00:04:05,390 --> 00:04:10,310
+Genie 3 extended this to interactive scenes lasting minutes at seven-twenty-p resolution.
+Genie 3 将其扩展到持续数分钟、七百二十 p 分辨率的交互场景。
+
+49
+00:04:10,990 --> 00:04:15,290
+Its current official page reports twenty to twenty-four frames per second.
+当前官方模型页报告每秒二十到二十四帧。
+
+50
+00:04:15,450 --> 00:04:20,450
+These figures describe specific releases, not guarantees for every generated world.
+这些数值描述具体版本，并不是对每一个生成世界的保证。
+
+51
+00:04:21,040 --> 00:04:24,320
+Consider painting a wall, turning away, and returning.
+想象给墙涂色，然后转身离开，再回头。
+
+52
+00:04:24,720 --> 00:04:29,640
+A consistent world should preserve where the paint went, rather than inventing a fresh wall.
+一致的世界应该保留油漆的位置，而不是重新编造一面墙。
+
+53
+00:04:30,100 --> 00:04:35,460
+This is why revisitation demonstrations are more informative than a smooth forward camera movement.
+因此，回访场景的演示，比镜头一直平滑向前更能说明问题。
+
+54
+00:04:35,660 --> 00:04:41,440
+But visual persistence alone does not establish correct forces, collisions, or every possible interaction.
+然而，视觉信息持续存在，并不能证明力、碰撞或任意交互都正确。
+
+55
+00:04:42,060 --> 00:04:47,165
+Genie 3 still documents a limited action space and difficulty with multiple independent agents.
+Genie 3 仍明确说明动作空间有限，多独立智能体交互也有困难。
+
+56
+00:04:47,180 --> 00:04:55,160
+SIMA completing goals inside that generated world is virtual-agent evidence, which must remain separate from physical robot validation.
+SIMA 在生成世界里完成目标，属于虚拟智能体证据，必须与实体机器人验证分开。
+
+57
+00:04:55,886 --> 00:05:01,206
+Now switch from providing an interactive world to training a policy inside one.
+现在从提供交互世界，转向在世界模型内部训练策略。
+
+58
+00:05:01,746 --> 00:05:07,586
+IRIS encodes game images as discrete tokens and predicts future tokens, rewards, and episode endings.
+IRIS 将游戏图像编码为离散 tokens，并预测未来 tokens、奖励和回合结束。
+
+59
+00:05:08,006 --> 00:05:10,846
+Its policy learns from those imagined trajectories.
+策略从这些想象轨迹中学习。
+
+60
+00:05:11,426 --> 00:05:14,946
+DIAMOND instead predicts future images with conditional diffusion.
+DIAMOND 则用条件扩散预测未来图像。
+
+61
+00:05:15,506 --> 00:05:21,511
+The original comparison highlights small visual inconsistencies, including bricks and reward objects.
+这张原始对比图标出了细小的不一致，包括砖块和奖励物体。
+
+62
+00:05:21,526 --> 00:05:27,006
+Losing such details can change the learning signal, even when the overall picture looks similar.
+即使整体画面看起来相似，丢掉这些细节也可能改变学习信号。
+
+63
+00:05:27,546 --> 00:05:33,246
+These are Atari experiments under specified data budgets, not measurements of physical robot competence.
+这些是限定数据预算的 Atari 实验，不是实体机器人能力的测量。
+
+64
+00:05:33,933 --> 00:05:37,313
+A diffusion world model has two different clocks.
+扩散世界模型里有两只不同的时钟。
+
+65
+00:05:37,813 --> 00:05:41,653
+Environment time advances when an action leads to the next observation.
+动作带来下一次观测时，环境时间向前推进。
+
+66
+00:05:42,033 --> 00:05:46,753
+Denoising time counts the internal refinement steps used to produce that observation.
+去噪时间则记录生成这次观测需要多少内部修正步骤。
+
+67
+00:05:47,233 --> 00:05:51,573
+DIAMOND used three denoising steps in its main Atari experiments.
+DIAMOND 的主要 Atari 实验使用三步去噪。
+
+68
+00:05:51,893 --> 00:05:59,813
+Its separate Counter-Strike demonstration used fixed human gameplay data and human keyboard controls, without training an RL agent there.
+另一个 Counter-Strike 演示使用固定的人类游戏记录和真人键鼠控制，并没有在其中训练强化学习代理。
+
+69
+00:06:00,133 --> 00:06:06,053
+A playable video can therefore demonstrate a learned environment while saying little about the quality of a learned policy.
+因此，一段可玩的生成视频能够展示学到的环境，却未必说明学到的策略有多好。
+
+70
+00:06:06,781 --> 00:06:11,741
+Cosmos is a family, so attach a version and an interface to every claim.
+Cosmos 是一个家族，每项结论都应带上版本和接口。
+
+71
+00:06:12,221 --> 00:06:18,701
+The earlier platform combined video curation, tokenizers, foundation models, and adaptation tools.
+早期平台包含视频整理、tokenizer、基础模型和适配工具。
+
+72
+00:06:18,981 --> 00:06:26,921
+Predict generates future video; Transfer conditions visual generation on spatial inputs; Reason supports physical reasoning in language.
+Predict 生成未来视频；Transfer 用空间输入约束视觉生成；Reason 支持语言形式的物理推理。
+
+73
+00:06:27,201 --> 00:06:29,981
+But these are not permanent walls between capabilities.
+但这些用途之间并非永远不变的边界。
+
+74
+00:06:30,421 --> 00:06:36,126
+By early twenty twenty-six, Predict 2.5 also had robot action-conditioned and policy recipes.
+到了二〇二六年初，Predict 2.5 也提供了机器人动作条件与策略配方。
+
+75
+00:06:36,141 --> 00:06:43,301
+A useful comparison names the actual checkpoint, its training data, its outputs, and its evaluation environment.
+有用的比较必须明确具体权重、训练数据、输出，以及评测环境。
+
+76
+00:06:43,947 --> 00:06:50,647
+Cosmos 3 makes that connection explicit through a shared architecture for understanding, generation, and actions.
+Cosmos 3 通过共享理解、生成和动作的架构，让这种联系更加明确。
+
+77
+00:06:51,127 --> 00:06:55,367
+Its original diagram combines an autoregressive stream with a diffusion stream.
+原图将自回归分支与扩散分支结合起来。
+
+78
+00:06:55,707 --> 00:06:59,247
+Change what is observed and what must be predicted, and the task changes.
+改变哪些量已知、哪些量需要预测，任务就会改变。
+
+79
+00:06:59,547 --> 00:07:02,447
+Given actions, predict video: forward dynamics.
+给定动作，预测视频：这是正动力学。
+
+80
+00:07:02,767 --> 00:07:05,727
+Given visual changes, infer actions: inverse dynamics.
+给定视觉变化，推断动作：这是逆动力学。
+
+81
+00:07:06,027 --> 00:07:09,352
+Jointly predict actions and video: a policy configuration.
+同时预测动作和视频：这是策略配置。
+
+82
+00:07:09,367 --> 00:07:18,367
+The DROID post-trained policy has physical robot evidence; that evidence belongs to the adapted policy, rather than automatically to every base-model output.
+经过 DROID 后训练的策略有实体机器人证据；这些证据属于适配后的策略，不会自动适用于基础模型的每一种输出。
+
+83
+00:07:18,999 --> 00:07:23,359
+When choosing a world model, begin with the job you need it to do.
+选择世界模型时，先从你需要它完成的工作出发。
+
+84
+00:07:23,479 --> 00:07:27,679
+For data generation, inspect coverage and whether useful structure survives.
+用于数据生成，就检查覆盖范围，以及有用结构是否保留。
+
+85
+00:07:27,999 --> 00:07:33,379
+For planning, inspect action calibration, rollout errors, and measured decision latency.
+用于规划，就检查动作标定、滚动预测误差和实测决策延迟。
+
+86
+00:07:33,759 --> 00:07:38,719
+For imagined policy learning, evaluate the resulting policy in the original environment.
+用于想象训练，就回到原环境评测训练出来的策略。
+
+87
+00:07:38,959 --> 00:07:44,344
+For robotics, report physical task outcomes separately from image scores and simulated successes.
+用于机器人，就把实体任务结果与图像分数、仿真成功分开报告。
+
+88
+00:07:44,359 --> 00:07:50,658
+A beautiful prediction becomes useful when its particular interface and evidence match the decision you want to make.
+当一个预测的具体接口与证据，匹配你真正要做的决策时，它才变得有用。

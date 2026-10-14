@@ -1,0 +1,14 @@
+﻿00:00 第一帧之后，杯子被挪走了 / The cup moves after the first image
+00:28 给 VLA 一个可操作的定义 / A working definition of VLA
+00:59 策略是一个条件分布 / The policy is a conditional distribution
+01:31 图像、状态和历史分别解决什么 / Images, state, and history have different jobs
+02:05 像素变成特征，不等于完整世界 / Pixels become features, not a ready-made world
+02:38 动作向量是一份接口约定 / An action vector is an interface contract
+03:09 一个很小的单位错误，改变整段动作 / One small unit error changes the motion
+03:40 策略不是电机伺服环 / The policy is not the motor servo
+04:13 预测一整段，不代表全部执行 / Predicting a chunk does not mean executing all of it
+04:47 闭环意味着新证据改变动作 / Closed loop means new evidence changes action
+05:16 语言落地需要有控制的干预 / Grounding needs a controlled intervention
+05:48 泛化有几条不同的轴 / Generalization has several separate axes
+06:21 相关策略很重要，但分类要准确 / Related policies are useful, but labels matter
+06:55 读下一篇论文时先问这些 / A checklist for reading the next paper

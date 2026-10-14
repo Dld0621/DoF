@@ -1,0 +1,14 @@
+﻿00:00 世界模型可以在四个位置帮忙 / Four places where a world model can help
+00:29 接口必须把图像接到指令上 / The interface must connect images to commands
+01:03 UniPi 把视频计划转成动作 / UniPi turns a video plan into actions
+01:38 可以反馈，不等于实验已经反馈 / A possible feedback loop is not the reported one
+02:11 DreamGen 用模型生产训练数据 / DreamGen uses a model to make training data
+02:44 伪动作是估计，不是实测 / Pseudo-actions are estimates, not measurements
+03:20 GR-2 联合学习视频与行为 / GR-2 jointly learns video and behavior
+03:54 WorldVLA 共享视觉与动作预测 / WorldVLA shares visual and action prediction
+04:32 运行时评估器是另一种接法 / A runtime evaluator is another integration choice
+05:08 学习评判器不是独立安全证明 / A learned judge is not an independent safety proof
+05:41 按照真实控制速度闭环 / Close the loop at the actual control rate
+06:13 接触会暴露像素隐藏的误差 / Contact exposes errors that pixels can hide
+06:46 选择成本合理、确实有用的角色 / Choose the least expensive useful role
+07:19 沿每一个接口追踪证据 / Follow the evidence across every interface

@@ -1,0 +1,349 @@
+﻿1
+00:00:00,850 --> 00:00:05,150
+Our cup is moving, but the model has limited memory and computation.
+杯子正在运动，但模型的记忆和计算资源有限。
+
+2
+00:00:05,650 --> 00:00:11,930
+It could preserve every pixel, track explicit position and velocity, or compress the scene into learned features.
+它可以保留每个像素，跟踪明确的位置与速度，也可以把场景压缩成学习到的特征。
+
+3
+00:00:12,430 --> 00:00:17,230
+These choices determine which changes are easy to predict and which details might disappear.
+这些选择决定哪些变化容易预测，哪些细节可能消失。
+
+4
+00:00:17,850 --> 00:00:24,890
+A representation is useful because of the information it keeps for future decisions, not because its numbers look interpretable.
+一种表示是否有用，取决于它为未来决策保留了什么信息，而不是这些数字看起来是否容易解释。
+
+5
+00:00:25,310 --> 00:00:28,927
+We will now follow the information through the model one step at a time.
+现在，我们沿着信息流动的路径，一步一步打开模型。
+
+6
+00:00:29,377 --> 00:00:36,557
+An explicit model might store the cup pose, object velocity, and the robot configuration in known coordinates.
+显式模型可以在已知坐标系中保存杯子位姿、物体速度和机器人构型。
+
+7
+00:00:36,937 --> 00:00:43,437
+A mesh or point cloud provides geometric information, while additional variables describe motion and contact.
+网格或点云提供几何信息，另外的变量描述运动与接触。
+
+8
+00:00:43,857 --> 00:00:50,377
+This structure can make collision queries and debugging convenient, but perception must estimate the required quantities.
+这种结构便于碰撞查询和调试，但感知系统必须估计出所需的量。
+
+9
+00:00:50,877 --> 00:00:55,482
+Missing mass or friction still creates a modeling problem even if the mesh is very detailed.
+即使网格非常精细，缺少质量或摩擦信息仍然会造成建模问题。
+
+10
+00:00:55,497 --> 00:01:02,457
+An explicit representation therefore moves some difficulty into estimation; it does not remove uncertainty by itself.
+因此，显式表示只是把一部分困难移到了状态估计，并不会自行消除不确定性。
+
+11
+00:01:03,023 --> 00:01:08,803
+A latent representation replaces some hand-designed variables with a vector learned from data.
+潜在表示用从数据中学到的向量，替代部分人工设计的变量。
+
+12
+00:01:09,423 --> 00:01:17,263
+The encoder maps an observation into this internal space, where nearby values need not correspond to nearby physical positions.
+编码器把观测映射到内部空间；其中数值相近，不一定代表物理位置相近。
+
+13
+00:01:17,823 --> 00:01:25,863
+Training decides which distinctions remain useful: moving versus stationary, grasped versus released, or different expected rewards.
+训练决定哪些差异值得保留，例如运动与静止、抓住与松开，或者不同的预期奖励。
+
+14
+00:01:26,363 --> 00:01:31,988
+Small vectors allow many future trajectories to be computed without repeatedly generating large images.
+紧凑向量让系统能够计算大量未来轨迹，而不用反复生成大幅图像。
+
+15
+00:01:32,003 --> 00:01:37,523
+The cost is that an apparently smooth latent transition can conceal a physically important error.
+代价是，看起来平滑的潜空间转移，也可能隐藏着重要的物理错误。
+
+16
+00:01:38,029 --> 00:01:45,669
+The recurrent state-space model, or RSSM, combines a deterministic memory with stochastic latent variables.
+递归状态空间模型，简称 RSSM，把确定性的记忆与随机潜变量结合起来。
+
+17
+00:01:46,169 --> 00:01:53,029
+The memory carries information forward from previous states and actions, such as evidence that our cup was already sliding.
+记忆把先前状态和动作的信息带到后面，例如杯子之前已经在滑动的证据。
+
+18
+00:01:53,409 --> 00:01:58,174
+The stochastic part represents alternatives that remain after accounting for that history.
+随机部分表示在考虑历史后仍然存在的不同可能性。
+
+19
+00:01:58,189 --> 00:02:06,289
+In the original comparison, a purely deterministic recurrent model and a purely stochastic model are distinct design choices.
+在原论文的比较中，纯确定性递归模型与纯随机模型是不同设计。
+
+20
+00:02:06,629 --> 00:02:11,989
+Combining them is a modeling decision, not proof that every hidden physical variable has been recovered.
+把两者结合，是一种建模选择，并不证明所有隐藏物理变量都已经恢复。
+
+21
+00:02:12,612 --> 00:02:19,572
+At the next real camera frame, the model first carries its previous memory forward using the executed action.
+下一张真实相机图像到来时，模型先利用已执行的动作，把之前的记忆向前推进。
+
+22
+00:02:20,052 --> 00:02:24,572
+It then combines that prediction with the new observation to infer a posterior state.
+随后结合这一步预测与新观测，推断后验状态。
+
+23
+00:02:24,892 --> 00:02:31,952
+If the cup moved less than expected, the observation can correct the internal estimate instead of blindly continuing the old forecast.
+如果杯子移动得比预期少，观测可以纠正内部估计，而不是盲目延续旧预测。
+
+24
+00:02:32,472 --> 00:02:37,557
+This is a state-estimation update; it does not automatically change all the neural-network parameters.
+这是状态估计的更新，并不意味着神经网络的所有参数都会立刻改变。
+
+25
+00:02:37,572 --> 00:02:43,572
+Updating the current belief and training the model weights happen through different operations and often at different rates.
+更新当前状态判断与训练模型权重，是不同操作，往往也采用不同频率。
+
+26
+00:02:44,180 --> 00:02:51,280
+During an imagined rollout, the next real observation is unavailable because the action has not happened yet.
+在想象轨迹中，下一个真实观测并不存在，因为动作还没有发生。
+
+27
+00:02:51,860 --> 00:02:58,240
+The model must sample or predict a prior latent state using only its memory and the proposed action history.
+模型只能根据记忆和提出的动作历史，采样或预测先验潜在状态。
+
+28
+00:02:58,480 --> 00:03:04,380
+That predicted state becomes input to the next imagined step, which makes multi-step errors possible.
+这个预测状态又成为下一步想象的输入，因此误差可能逐步累积。
+
+29
+00:03:04,840 --> 00:03:12,405
+Feeding recorded future images back into every step tests observation-conditioned estimation instead of this harder open-loop prediction.
+每一步都重新输入录像中的未来图像，测试的是受观测条件约束的估计，而不是更难的开环预测。
+
+30
+00:03:12,420 --> 00:03:18,120
+Always mark the exact point where real observations stop and model-generated states take over.
+必须标明：真实观测在哪一步停止，模型生成状态从哪里开始接替。
+
+31
+00:03:18,628 --> 00:03:26,428
+From its internal state, Dreamer can reconstruct observations, predict reward, and predict whether an episode continues.
+Dreamer 可以从内部状态重建观测、预测奖励，并预测一个回合是否继续。
+
+32
+00:03:27,028 --> 00:03:32,428
+Reconstruction asks what the sensors would see; reward asks how the task scores this situation.
+重建回答传感器会看到什么；奖励回答任务如何评价当前情况。
+
+33
+00:03:33,008 --> 00:03:39,788
+Continuation estimates whether future rewards should still count beyond this transition under the environment termination rules.
+继续信号根据环境的终止规则，估计这次转移之后的未来奖励是否还应计入。
+
+34
+00:03:40,048 --> 00:03:46,413
+For the cup task, a good-looking reconstruction can coexist with an incorrect prediction that a slipping grasp will succeed.
+在杯子任务里，重建图像看起来很好，也可能同时错误预测滑动中的抓握会成功。
+
+35
+00:03:46,428 --> 00:03:51,148
+Evaluate the heads separately because their errors affect the policy through different routes.
+这些预测头应分别评估，因为它们通过不同路径影响策略。
+
+36
+00:03:51,715 --> 00:03:58,215
+A reconstruction objective forces the internal state to retain information that explains the observed inputs.
+重建目标要求内部状态保留能够解释观测输入的信息。
+
+37
+00:03:58,715 --> 00:04:05,975
+Without informative objectives, an encoder could output nearly identical features for every scene and make prediction trivially easy.
+缺少有信息量的目标时，编码器可能为每个场景输出几乎相同的特征，让预测变得毫无意义地简单。
+
+38
+00:04:06,415 --> 00:04:12,940
+However, preserving all visible detail may spend capacity on backgrounds or textures that do not matter for control.
+但是，保存所有可见细节，也可能把模型容量耗在与控制无关的背景或纹理上。
+
+39
+00:04:12,955 --> 00:04:21,880
+Decoder-free approaches such as TD-MPC2 instead train representations through quantities and consistency losses relevant to their control objective.
+TD-MPC2 等无解码器方法，则通过与控制目标相关的量和一致性损失来训练表示。
+
+40
+00:04:21,895 --> 00:04:28,795
+Removing pixel reconstruction changes the learning problem; it does not remove the need to preserve task-relevant distinctions.
+移除像素重建改变了学习问题，却没有免除保留任务相关差异的要求。
+
+41
+00:04:29,520 --> 00:04:34,220
+The posterior has access to an observation that the prior does not see.
+后验可以访问先验看不到的观测。
+
+42
+00:04:34,620 --> 00:04:40,560
+A divergence term trains the prior to predict states that the observation-informed posterior would produce.
+散度项训练先验，让它能够预测后验根据观测推断出的状态。
+
+43
+00:04:41,160 --> 00:04:46,840
+The same family of objectives also encourages representations that the dynamics model can predict.
+同类目标还会鼓励形成动力学模型能够预测的表示。
+
+44
+00:04:47,380 --> 00:04:55,365
+These pressures must be balanced: overly simple representations can lose information, while an inaccurate prior makes imagination unreliable.
+两种压力需要平衡：表示过于简单会丢失信息，先验不准确则会让想象不可靠。
+
+45
+00:04:55,380 --> 00:05:04,540
+DreamerV2 and V3 use carefully separated gradient paths and balancing choices rather than treating every component as an interchangeable prediction loss.
+DreamerV2 和 V3 使用经过区分的梯度路径与平衡设计，而不是把所有部分当作可互换的预测损失。
+
+46
+00:05:05,149 --> 00:05:12,729
+The original Dreamer learns behavior through imagined latent trajectories, using continuous stochastic latent variables.
+最初的 Dreamer 使用连续随机潜变量，通过想象中的潜在轨迹学习行为。
+
+47
+00:05:13,309 --> 00:05:21,149
+DreamerV2 introduces categorical latent variables and balancing techniques, with strong results in its Atari evaluation setting.
+DreamerV2 引入类别型潜变量与平衡技术，并在其 Atari 评测设置中取得较好结果。
+
+48
+00:05:21,629 --> 00:05:28,554
+A categorical latent code is internal model storage; it does not mean the physical robot must use discrete joint commands.
+类别型潜编码是模型内部的信息存储方式，并不意味着实体机器人必须使用离散关节指令。
+
+49
+00:05:28,569 --> 00:05:35,569
+DreamerV3 adds robustness techniques for different scales of inputs, rewards, and returns across diverse task domains.
+DreamerV3 增加了面向不同输入、奖励和回报尺度的稳定训练设计，以适应多种任务领域。
+
+50
+00:05:36,209 --> 00:05:42,749
+These are changes to a complete learning system, so comparison requires matching the full training and evaluation setup.
+这些变化属于完整学习系统，因此比较时要对齐整套训练与评测配置。
+
+51
+00:05:43,337 --> 00:05:50,197
+The cup may slide differently because the process varies, or because the model has not learned this material well.
+杯子滑动不同，可能是过程存在变化，也可能是模型还不了解这种材质。
+
+52
+00:05:50,917 --> 00:05:58,697
+The first concerns variability that remains given the available information; the second concerns missing knowledge in the learned predictor.
+前者涉及给定可用信息后仍然存在的变化；后者涉及学习到的预测器缺少知识。
+
+53
+00:05:59,397 --> 00:06:06,402
+A stochastic latent model can represent multiple futures without necessarily telling us which uncertainty source caused the spread.
+随机潜变量模型可以表示多个未来，却不一定能说明这种分散来自哪一类不确定性。
+
+54
+00:06:06,417 --> 00:06:14,737
+An ensemble can reveal disagreement between fitted models, but agreement does not establish correctness outside the training distribution.
+集成模型能够揭示多个拟合模型之间的分歧，但它们达成一致，也不能证明在训练分布之外预测正确。
+
+55
+00:06:15,437 --> 00:06:20,177
+Confidence needs its own held-out calibration test before it guides high-consequence decisions.
+在用置信度支持后果重大的决策前，需要独立的留出数据校准测试。
+
+56
+00:06:20,889 --> 00:06:26,169
+Imagine a small bias that makes every predicted push move the cup slightly too far.
+假设模型存在微小偏差，让每次预测推动都把杯子移得稍远一点。
+
+57
+00:06:26,609 --> 00:06:32,209
+One-step evaluation may show a modest error because each prediction starts from a real observed state.
+单步评测可能只显示小误差，因为每次预测都从真实观测状态开始。
+
+58
+00:06:32,549 --> 00:06:39,489
+An open-loop rollout repeatedly uses its own output, so the position bias changes the conditions for later contacts.
+开环滚动预测反复使用自身输出，因此位置偏差会改变后续接触的条件。
+
+59
+00:06:39,909 --> 00:06:44,974
+Once a contact is missed, the error may grow abruptly rather than increase smoothly with horizon.
+一旦漏掉接触，误差可能突然放大，而不是随着预测长度平滑增长。
+
+60
+00:06:44,989 --> 00:06:52,269
+Plot error against physical prediction time, and compare corrected rollouts with uncorrected ones under the same action sequence.
+应按实际预测时间绘制误差，并在相同动作序列下比较有观测校正与无校正的轨迹。
+
+61
+00:06:52,917 --> 00:06:59,037
+For reaching toward a visible cup, approximate position may be enough to choose a useful first motion.
+对于靠近可见杯子的动作，近似位置可能足以选择有用的第一步。
+
+62
+00:06:59,337 --> 00:07:06,357
+For lifting a slippery cup, the model may need contact, gripper state, and recent motion to distinguish success from failure.
+对于抬起易滑杯子，模型可能需要接触、夹爪状态与近期运动，才能区分成功和失败。
+
+63
+00:07:06,637 --> 00:07:12,317
+For pouring, orientation and the changing contents become relevant even when the external shape barely changes.
+对于倒水，朝向和内部液体变化变得重要，即使外部形状几乎没有变化。
+
+64
+00:07:12,957 --> 00:07:17,102
+There is no single representation whose usefulness follows from its name alone.
+不存在一种仅凭名称就能保证有用的表示。
+
+65
+00:07:17,117 --> 00:07:24,137
+Define the decisions and measurements first, then test whether the chosen state supports those decisions on held-out situations.
+应先定义决策与测量，再测试所选状态能否在留出场景中支持这些决策。
+
+66
+00:07:24,958 --> 00:07:30,278
+We can now describe the model without using the vague phrase that it understands physics.
+现在，我们可以不用“理解物理”这种模糊说法来描述模型。
+
+67
+00:07:30,838 --> 00:07:37,398
+Specify what it observes, how it remembers history, which future variables it predicts, and how those predictions are trained.
+应说明它观测什么、怎样记住历史、预测哪些未来变量，以及这些预测如何训练。
+
+68
+00:07:37,598 --> 00:07:41,118
+Then inspect where uncertainty and prediction error enter the chain.
+接着检查不确定性和预测误差从链路的哪里进入。
+
+69
+00:07:41,718 --> 00:07:48,883
+The next chapter turns these predictions into actions through trajectory search, terminal values, and actors trained inside the model.
+下一章通过轨迹搜索、终端价值，以及在模型中训练的策略，把这些预测转变成动作。
+
+70
+00:07:48,898 --> 00:07:56,198
+The same learned state can support different decision procedures, with different online compute costs and different failure modes.
+同一套学习状态可以支持不同决策过程，它们的在线计算成本和失败方式也会不同。

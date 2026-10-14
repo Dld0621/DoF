@@ -1,0 +1,87 @@
+﻿世界模型 03｜预测怎样变成动作？
+World Models 03 · How Predictions Become Actions
+
+A prediction still needs a decision rule / 有了预测，还缺一个决策规则
+Suppose our model predicts three futures: the cup stays still, slides toward the target, or tips over. It has not yet decided which outcome is desirable or which command to execute. We need an objective, an action-selection procedure, and a way to handle limited computation. This chapter follows two different routes: searching through futures at decision time, and training a policy using imagined futures beforehand. Both use a world model, but they spend their computation in different places.
+假设模型预测了三种未来：杯子保持不动、滑向目标，或者倾倒。它还没有决定哪个结果值得追求，也没有决定执行哪条指令。我们还需要目标函数、动作选择过程，以及处理有限计算资源的方法。这一章沿两条不同路线展开：在决策时搜索未来，以及提前利用想象的未来训练策略。两条路线都使用世界模型，但把计算花在了不同位置。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/1912.01603v3
+
+Define what a good trajectory means / 先定义什么是好轨迹
+For our teaching example, a useful score could reward reaching the target and penalize tipping or excessive motion. A planner evaluates a sequence, because a harmless first movement can prepare a useful later contact. The exact reward, discount, horizon, and constraints determine which sequence looks best. A model does not discover the user's true preferences merely by predicting images accurately. And a penalty in the score is not the same as a hard constraint that the controller guarantees.
+在教学例子中，可以奖励到达目标，并惩罚倾倒或过大的运动。规划器评估一串动作，因为第一步看似平淡的运动，可能为后面的有效接触做准备。具体奖励、折扣、规划长度和约束，共同决定哪串动作最优。即使模型能准确预测图像，也不会因此自动发现用户真正的偏好。评分中的惩罚项，也不等于控制器能够保证的硬约束。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2310.16828v2
+
+CEM improves a distribution of candidates / CEM 改进的是候选分布
+The cross-entropy method begins with a distribution over action sequences, often described by means and variances. It samples candidates, rolls each through the learned dynamics, and scores the predicted outcomes. The best subset becomes the elite set, from which the next sampling distribution is fitted. Repeating this process concentrates the search around promising sequences, as in PlaNet's latent-space planning. The animation illustrates that mechanism; its drawn paths are not measurements from a robot experiment.
+交叉熵方法从动作序列的分布开始，通常用均值和方差描述。它采样候选序列，用学习的动力学逐个推演，并评价预测结果。表现最好的子集成为精英集合，用它拟合下一轮采样分布。不断重复，搜索就集中到有希望的序列附近，PlaNet 的潜空间规划采用了这种做法。这里的动画演示这一机制，画出的路径并不是机器人实验测量结果。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+
+MPC executes one step, then looks again / MPC 只执行一步，再重新观察
+After optimization, model-predictive control executes the first action, rather than blindly committing to the entire sequence. The camera observes what actually happened, the state estimate is updated, and planning starts again. This feedback can correct a cup that moved less than predicted, provided sensing and computation arrive in time. Longer horizons can reveal delayed rewards, but they also require more computation and expose more model error. Replanning helps manage uncertainty; it does not make inaccurate dynamics disappear.
+优化后，模型预测控制执行第一个动作，而不是盲目承诺整串序列。相机观察实际发生了什么，状态估计得到更新，然后重新规划。只要感知和计算足够及时，这种反馈就能纠正杯子实际移动小于预测的情况。更长的规划范围可以看到延迟奖励，却也需要更多计算，并暴露更多模型误差。重新规划有助于处理不确定性，但不会让错误的动力学自动消失。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2310.16828v2
+
+TD-MPC learns quantities needed for control / TD-MPC 学习控制需要的量
+TD-MPC learns a compact representation, a transition model, a reward predictor, a value function, and a policy prior. Follow the original training diagram: encoded observations provide targets for latent consistency, while recorded rewards supervise reward predictions. Temporal-difference targets train value estimates that summarize rewards beyond the explicitly simulated horizon. Unlike image-reconstructing models, this objective does not require a decoder to reproduce every pixel. Its state must still preserve distinctions that matter for the control objective.
+TD-MPC 学习紧凑表示、状态转移模型、奖励预测器、价值函数，以及策略先验。沿着原训练图看：编码后的观测提供潜在一致性目标，记录的奖励监督奖励预测。时序差分目标训练价值估计，用来概括显式推演范围以外的奖励。与重建图像的模型不同，这个目标不要求解码器恢复每个像素。但它的状态仍然必须保留影响控制目标的重要差异。
+https://arxiv.org/abs/2203.04955
+https://arxiv.org/abs/2310.16828v2
+
+A short horizon can use a terminal value / 短期规划可以接上终端价值
+A finite rollout only predicts the next few steps, while the task may continue much longer. TD-MPC therefore combines predicted near-term rewards with a learned value estimate at the end of the horizon. The policy prior also contributes promising candidate actions, reducing dependence on uninformed sampling. This is a cooperation between planning and learned behavior, rather than a choice that excludes one or the other. However, an optimistic terminal value can mislead the planner even when short-term transitions look accurate.
+有限长度的推演只预测接下来几步，但任务可能持续更久。因此，TD-MPC 把近期预测奖励与规划末端的学习价值估计结合起来。策略先验还提供有希望的候选动作，减少对无信息随机采样的依赖。这体现的是规划与学习行为的合作，而不是必须二选一。不过，即使短期转移看起来准确，过于乐观的终端价值也可能误导规划器。
+https://arxiv.org/abs/2203.04955
+https://arxiv.org/abs/2310.16828v2
+
+Read TD-MPC2 under its own protocol / 在 TD-MPC2 自己的协议下读结果
+TD-MPC2 improves the architecture and training recipe, and scales the approach across tasks and model sizes. Its planner iteratively refines sampled sequences with weighted updates; that is related to, but not identical to, the simple CEM sketch. The original figure aggregates single-task results across four simulated domains and one hundred four tasks. Separate experiments address visual inputs and multi-task agents. Do not turn that total into a claim that one camera-only robot learned every task in the physical world.
+TD-MPC2 改进架构与训练配方，并扩展到不同任务与模型规模。它的规划器用加权更新反复优化采样序列，与刚才简化的 CEM 示意有关，但并不完全相同。原图汇总了四类仿真环境、一百零四个任务的单任务结果。视觉输入与多任务智能体由另外的实验评估。不能把这个总数说成一台只用相机的机器人在真实世界学会了全部任务。
+https://arxiv.org/abs/2310.16828v2
+
+Dreamer moves search effort into learning / Dreamer 把一部分决策计算移入训练
+Dreamer starts imagined trajectories from states inferred from real experience in its replay buffer. The actor chooses imagined actions, the world model predicts subsequent states and rewards, and the critic estimates future return. These rollouts improve the actor and critic without executing every proposed action in the environment. At deployment, the trained actor can directly select an action from the inferred state. Learning behavior inside a model therefore does not imply running an online trajectory search before every motor command.
+Dreamer 从回放数据中推断出的真实经验状态出发，生成想象轨迹。策略选择想象动作，世界模型预测后续状态与奖励，价值网络估计未来回报。这些推演能够改进策略和价值网络，而不用在环境里执行每一个候选动作。部署时，训练好的策略可以直接从推断状态选择动作。因此，在模型中学习行为，并不意味着每条电机指令之前都进行在线轨迹搜索。
+https://arxiv.org/abs/1912.01603v3
+https://arxiv.org/abs/2010.02193
+https://arxiv.org/abs/2301.04104v2
+
+Imagination needs a grounded starting point / 想象需要有依据的起点
+An imagined sequence begins from an observation-informed posterior, then continues through prior predictions without future measurements. The value function supplies a learning signal beyond the short imagination horizon, while predicted continuation handles episode endings. During a behavior-learning update, the world model supplies the imagined environment rather than being rewarded for making the actor look successful. Its parameters are trained through the separate model-learning objective. Real interaction must still check whether the improved imagined behavior transfers back to the actual environment.
+想象序列从根据观测推断的后验开始，随后没有未来测量，只靠先验预测延续。价值函数提供超出短期想象范围的学习信号，预测的继续概率处理回合终止。在行为学习更新中，世界模型提供想象环境，而不是因为让策略显得成功就得到奖励。模型参数由独立的模型学习目标训练。仍然需要真实交互，检查想象中改进的行为能否回到实际环境。
+https://arxiv.org/abs/2010.02193
+https://arxiv.org/abs/2301.04104v2
+
+Dreamer versions change the learning recipe / Dreamer 各版本改变了学习配方
+The first Dreamer emphasized learning behavior through gradients of imagined latent trajectories in continuous control. DreamerV2 introduced categorical latent variables and a revised learning recipe, including balanced divergence terms. DreamerV3 focuses on robustness across domains through changes such as scale handling and normalization. These versions share the imagination-based actor-critic structure, but their distributions and optimization details are not interchangeable. A categorical latent state also does not mean the physical robot must use discrete motor actions.
+第一版 Dreamer 强调用想象潜在轨迹的梯度，在连续控制中学习行为。DreamerV2 引入类别潜变量，并调整学习配方，包括平衡的散度项。DreamerV3 通过处理数值尺度、归一化等改动，提高跨领域的稳健性。这些版本共享基于想象的策略价值结构，但分布形式和优化细节不能互换。类别潜在状态，也不意味着物理机器人必须使用离散电机动作。
+https://arxiv.org/abs/1912.01603v3
+https://arxiv.org/abs/2010.02193
+https://arxiv.org/abs/2301.04104v2
+https://www.nature.com/articles/s41586-025-08744-2
+
+DayDreamer separates acting from learning / DayDreamer 把执行与学习分开
+DayDreamer brings this learning loop onto physical robots, including quadruped locomotion and robotic-arm pick-and-place. The current policy collects experience while a learner updates the world model and behavior from replay. Asynchronous execution matters because a robot must keep receiving commands while expensive training runs elsewhere. The sensors, action spaces, rewards, and task constraints differ across the published platforms. This is concrete evidence for those physical setups, not a guarantee that any camera-only cup task learns equally fast.
+DayDreamer 把这套学习循环带到物理机器人上，包括四足行走与机械臂抓放。当前策略收集经验，同时学习端利用回放更新世界模型与行为。异步执行很重要，因为耗时训练在另一端运行时，机器人仍然需要持续接收指令。论文各平台的传感器、动作空间、奖励和任务约束并不相同。这是这些物理配置的具体证据，并不保证任何纯视觉杯子任务都能同样快地学会。
+https://proceedings.mlr.press/v205/wu23c.html
+
+MuZero learns a model useful for search / MuZero 学习的是对搜索有用的模型
+MuZero supplies a third useful comparison: a learned representation initializes a search state from observation history. Its dynamics function predicts the next hidden state and reward after an action. A prediction function supplies values and policy priors, which guide Monte Carlo tree search. The original training objective targets these decision-relevant quantities without requiring image reconstruction. Success in its board-game and Atari evaluations therefore supports task-oriented planning, rather than demonstrating a complete physical simulator or a robot controller.
+MuZero 提供了第三种对照：学习表示把观测历史转成搜索起始状态。动力学函数预测动作之后的下一个隐藏状态与奖励。预测函数提供价值与策略先验，引导蒙特卡洛树搜索。原始训练目标面向这些决策相关量，不要求重建图像。因此，棋类与 Atari 评测中的成功支持任务导向规划，而不是证明它拥有完整物理仿真器或机器人控制器。
+https://arxiv.org/abs/1911.08265
+
+Compare routes on the same cup task / 用同一杯子任务比较路线
+Return to the cup and hold the observations, action interface, and task objective fixed. An MPC system spends online computation evaluating sequences; an imagined-learning system can spend more training computation improving an actor. A hybrid can use a learned actor to propose candidates and a model to refine or evaluate them. Measure the resulting task success and decision latency rather than assuming one arrangement is universally better. The comparison is meaningful only when both systems receive the same usable information and comparable budgets.
+回到杯子，固定观测、动作接口与任务目标。MPC 系统在线评估序列，想象学习系统则可以把更多训练计算用于改进策略。混合系统可以让学习策略提出候选，再由模型优化或评估。应测量任务成功率和决策延迟，而不是假定某种安排在所有情境下更好。只有系统获得相同的可用信息，并采用可比较的预算，这种比较才有意义。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2301.04104v2
+https://arxiv.org/abs/2310.16828v2
+
+Track where the computation happens / 沿着计算发生的位置读方法
+When reading a new method, trace four questions through its diagram: what predicts, what scores, what chooses, and what is executed. Then separate training-time rollouts from decision-time rollouts, and identify where real observations return. This prevents confusing a world model with its planner, or a learned policy with a generated video. The next chapter applies the same questions to predictive representations, interactive video worlds, and recent models that connect video and robot actions.
+阅读新方法时，沿流程图追踪四个问题：谁预测、谁评分、谁选择，以及最终执行什么。接着区分训练阶段推演与决策阶段推演，并找出真实观测在哪里重新进入。这样就不会把世界模型与规划器混为一谈，也不会把学习策略等同于生成视频。下一章把同样的问题用于预测表示、交互视频世界，以及连接视频与机器人动作的新模型。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/1912.01603v3
+https://arxiv.org/abs/1911.08265

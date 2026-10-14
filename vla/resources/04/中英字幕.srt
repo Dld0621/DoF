@@ -1,0 +1,419 @@
+﻿1
+00:00:00,850 --> 00:00:05,790
+A training demonstration is not simply a video with a task title attached.
+训练示范，不只是附带任务标题的一段视频。
+
+2
+00:00:06,330 --> 00:00:12,510
+It contains observations, robot state, actions, timestamps, and information about the episode.
+它包含观测、机器人状态、动作、时间戳，以及回合相关信息。
+
+3
+00:00:13,110 --> 00:00:18,510
+For our cup task, the learner must know which command corresponds to each observed situation.
+对于杯子任务，学习器必须知道每种观测情境对应哪条指令。
+
+4
+00:00:19,010 --> 00:00:24,795
+If image timing and action timing drift apart, a correct demonstration can become misleading supervision.
+如果图像时间与动作时间发生偏移，正确示范也可能变成误导性监督。
+
+5
+00:00:24,810 --> 00:00:31,030
+The policy may learn to close the gripper before contact or move toward a previous object position.
+策略可能学到接触前就闭合夹爪，或者朝物体先前的位置运动。
+
+6
+00:00:31,750 --> 00:00:37,450
+Data engineering therefore changes the learning problem itself, not just the convenience of loading files.
+因此，数据工程改变的是学习问题本身，而不只是文件读取是否方便。
+
+7
+00:00:38,079 --> 00:00:43,879
+Suppose a human commands a gripper to move, but contact prevents it from reaching the target.
+假设操作者要求夹爪移动，但接触阻止它到达目标。
+
+8
+00:00:44,499 --> 00:00:48,999
+The commanded reference and the measured robot position now describe different quantities.
+此时，指令参考与机器人实测位置，描述的是不同的量。
+
+9
+00:00:49,559 --> 00:00:54,399
+A dataset must specify which quantity is the action label and which is an observation.
+数据集必须说明：哪一个量是动作标签，哪一个量是观测。
+
+10
+00:00:55,039 --> 00:01:01,639
+In ACT's original setup, leader joint positions provide actions while follower joints provide observations.
+在 ACT 原始系统中，主手关节位置提供动作，从手机器人关节提供观测。
+
+11
+00:01:02,399 --> 00:01:06,624
+Replacing one with the other can change what the policy learns about effort and contact.
+把两者互相替换，可能改变策略对施力和接触的学习。
+
+12
+00:01:06,639 --> 00:01:10,379
+The name joint position alone does not resolve this distinction.
+仅仅写着关节位置，并不能解决这种区分。
+
+13
+00:01:11,086 --> 00:01:17,911
+For every action field, record units, reference frame, absolute or relative meaning, and valid range.
+对每个动作字段，记录单位、参考系、绝对或相对含义，以及有效范围。
+
+14
+00:01:17,926 --> 00:01:23,046
+Also specify how orientation is encoded and what open or closed means for the gripper.
+还要说明姿态怎样编码，以及夹爪的打开和闭合如何表示。
+
+15
+00:01:23,586 --> 00:01:30,811
+For every camera, record its identity, preprocessing, calibration information when available, and timestamp convention.
+对每个相机，记录身份、预处理、可用标定信息，以及时间戳约定。
+
+16
+00:01:30,826 --> 00:01:36,206
+A wrist camera and a room camera should not silently exchange names between datasets.
+腕部相机与房间相机，不能在不同数据集中悄悄交换名字。
+
+17
+00:01:36,706 --> 00:01:42,366
+These definitions make it possible to write adapters that preserve semantics instead of merely tensor shapes.
+这些定义让适配层能够保留语义，而不只是保证张量形状一致。
+
+18
+00:01:42,926 --> 00:01:47,366
+They also make failures reproducible when a new embodiment enters the training mixture.
+当新的机器人形态加入训练混合时，它们也有助于复现失败。
+
+19
+00:01:48,013 --> 00:01:54,773
+Many policies normalize action values before learning so coordinates have comparable numerical scales.
+许多策略会先归一化动作值，让不同坐标具有可比较的数值尺度。
+
+20
+00:01:55,293 --> 00:02:00,713
+As a teaching example, divide a displacement by four centimeters to obtain a normalized value.
+举个教学例子：用四厘米去除一个位移，得到归一化数值。
+
+21
+00:02:01,173 --> 00:02:07,293
+A two-centimeter command becomes zero point five, and decoding must recover the original physical unit.
+两厘米指令变成零点五，而解码必须恢复原来的物理单位。
+
+22
+00:02:07,753 --> 00:02:13,298
+Actual implementations may use statistics, quantiles, clipping, or field-specific rules instead.
+实际实现也可能使用统计量、分位数、裁剪，或者针对不同字段的规则。
+
+23
+00:02:13,313 --> 00:02:18,753
+The saved normalization metadata must match the checkpoint and the selected robot dataset.
+保存的归一化元数据，必须与权重以及所选机器人数据集匹配。
+
+24
+00:02:19,273 --> 00:02:24,953
+Applying another dataset's statistics can corrupt otherwise plausible predictions before they reach the controller.
+套用另一个数据集的统计量，可能在指令到达控制器前，就破坏看似合理的预测。
+
+25
+00:02:25,753 --> 00:02:32,873
+The Open X-Embodiment figure shows diversity across robot platforms, scenes, skills, and objects.
+Open X-Embodiment 原图展示了机器人平台、场景、技能和物体的多样性。
+
+26
+00:02:33,613 --> 00:02:37,873
+Those axes are valuable, but they are not interchangeable measures of coverage.
+这些维度很有价值，但它们不能互相替代，作为覆盖程度的指标。
+
+27
+00:02:38,613 --> 00:02:43,353
+Many trajectories on one arm do not equal many distinct embodiments or environments.
+一台机械臂上的大量轨迹，并不等于很多不同机器人形态或环境。
+
+28
+00:02:44,073 --> 00:02:50,078
+A common dataset format enables sharing; the policy still needs compatible or adaptable interfaces.
+统一数据格式支持共享，但策略仍然需要兼容或者可适配的接口。
+
+29
+00:02:50,093 --> 00:02:56,453
+When grasp geometry or action semantics differ, naive mixing may create conflicting training targets.
+抓取几何或动作语义不同时，朴素混合可能产生互相冲突的训练目标。
+
+30
+00:02:56,893 --> 00:03:02,233
+We should inspect the actual mixture used by a model rather than inherit the collection's full headline size.
+因此，应检查模型实际使用的数据混合，而不是沿用整个集合的宣传规模。
+
+31
+00:03:02,982 --> 00:03:09,682
+DROID follows a different emphasis: a shared robot platform collects data in varied real environments.
+DROID 的重点有所不同：用统一机器人平台，在多样真实环境中收集数据。
+
+32
+00:03:10,222 --> 00:03:16,642
+Its original hardware figure shows the arm, gripper, external cameras, wrist camera, and collection equipment.
+原始硬件图展示了机械臂、夹爪、外部相机、腕部相机，以及采集设备。
+
+33
+00:03:17,082 --> 00:03:22,782
+Standardizing hardware reduces some interface variation while retaining diversity in scenes and tasks.
+统一硬件减少了部分接口差异，同时保留场景和任务的多样性。
+
+34
+00:03:23,222 --> 00:03:29,407
+The collection system includes wearable teleoperation equipment; that does not define every later policy's input.
+采集系统包含可穿戴遥操作设备，但这并不规定之后每个策略的输入。
+
+35
+00:03:29,422 --> 00:03:36,042
+For a camera-only human interface, our collection method can differ while preserving the robot record contract.
+如果人类界面只用摄像头，可以改变采集方式，同时保持机器人数据记录约定。
+
+36
+00:03:36,282 --> 00:03:41,162
+Collection hardware, policy observations, and evaluation hardware must be described separately.
+采集硬件、策略观测，以及评估硬件，需要分别说明。
+
+37
+00:03:41,964 --> 00:03:48,964
+Behavior cloning trains the policy to assign high likelihood, or low error, to demonstrated actions.
+行为克隆让策略对示范动作赋予高概率，或者产生较低预测误差。
+
+38
+00:03:49,464 --> 00:03:55,924
+The loss depends on the representation: token likelihood, regression error, or a generative training objective.
+具体损失取决于表示：token 概率、回归误差，或者生成式训练目标。
+
+39
+00:03:56,184 --> 00:04:00,464
+All are supervised by actions associated with observations in the training data.
+这些目标都由训练数据中，与观测配对的动作提供监督。
+
+40
+00:04:00,824 --> 00:04:06,629
+A lower training loss means better fit under that objective, not necessarily better physical task completion.
+较低训练损失表示更好地拟合该目标，并不必然表示物理任务完成得更好。
+
+41
+00:04:06,644 --> 00:04:12,524
+During deployment, the policy's own errors can produce states that the demonstrations rarely visited.
+部署时，策略自身的误差可能让系统进入示范中很少出现的状态。
+
+42
+00:04:13,044 --> 00:04:18,244
+The resulting distribution shift is one reason recovery behavior needs explicit data and evaluation.
+这种分布偏移，是恢复行为需要专门数据和评估的一个原因。
+
+43
+00:04:18,971 --> 00:04:24,936
+Image-text pretraining can teach associations among objects, words, and visual situations.
+图文预训练可以学习物体、词语和视觉情境之间的关联。
+
+44
+00:04:24,951 --> 00:04:31,991
+Robot demonstrations connect observations and instructions to executable action sequences on particular bodies.
+机器人示范则把观测和指令，连接到特定身体上能够执行的动作序列。
+
+45
+00:04:32,571 --> 00:04:37,491
+A caption saying grasp the cup does not provide the robot's calibrated joint trajectory.
+一句拿起杯子的描述，并不提供机器人经过标定的关节轨迹。
+
+46
+00:04:37,911 --> 00:04:43,896
+Conversely, a dataset of motions with identical instructions may provide weak supervision for language choice.
+反过来，所有指令都相同的动作数据集，对语言选择提供的监督可能很弱。
+
+47
+00:04:43,911 --> 00:04:50,071
+The pi-zero-point-five figure shows distinct data sources entering different training and inference roles.
+π0.5 原图展示了不同数据源在训练与推理中的不同角色。
+
+48
+00:04:50,591 --> 00:04:56,031
+Understanding these roles is more informative than adding every sample into one undifferentiated data count.
+理解这些角色，比把所有样本加成一个不加区分的数据总数，更有信息量。
+
+49
+00:04:56,751 --> 00:05:02,971
+Human videos can expand coverage of objects and behaviors beyond existing robot demonstrations.
+人类视频可以扩展现有机器人示范之外的物体和行为覆盖。
+
+50
+00:05:03,591 --> 00:05:08,311
+But the visible human hand is not a direct measurement of another robot's motor command.
+不过，可见的人手，并不是对另一台机器人电机指令的直接测量。
+
+51
+00:05:08,611 --> 00:05:15,851
+A learning system must specify its bridge: visual objectives, estimated motion, latent actions, or another signal.
+学习系统必须说明连接方式：视觉目标、估计运动、潜在动作，或者其他信号。
+
+52
+00:05:16,731 --> 00:05:20,296
+Estimated labels carry the assumptions and errors of the estimation process.
+估计出来的标签，也会携带估计过程中的假设与误差。
+
+53
+00:05:20,311 --> 00:05:27,751
+In GR00T's heterogeneous training, data sources with different supervision are handled through explicit modeling choices.
+在 GR00T 的异构训练中，不同监督形式的数据源，通过明确建模选择来处理。
+
+54
+00:05:28,211 --> 00:05:32,651
+Calling all such signals ground truth would hide exactly the uncertainty we need to track.
+把所有这些信号都叫作真值，反而会掩盖我们需要跟踪的不确定性。
+
+55
+00:05:33,260 --> 00:05:39,380
+Suppose dataset A has nine times as many frames as dataset B in a teaching example.
+在一个教学例子中，数据集 A 的帧数是数据集 B 的九倍。
+
+56
+00:05:39,920 --> 00:05:44,760
+Uniform sampling over all frames gives A roughly ninety percent of the training examples.
+对全部帧均匀采样，会让 A 大约占据百分之九十的训练样本。
+
+57
+00:05:45,220 --> 00:05:50,240
+Equal sampling between datasets gives B much more influence without collecting any new data.
+在数据集之间等比例采样，则会在不新增数据的情况下，提高 B 的影响力。
+
+58
+00:05:50,740 --> 00:05:55,550
+Neither choice is universally correct; each defines a different effective training distribution.
+两种选择都不是普遍正确的；它们分别定义了不同的有效训练分布。
+
+59
+00:05:56,400 --> 00:06:02,225
+Repeated idle frames, long episodes, and duplicated demonstrations can similarly distort apparent coverage.
+重复静止帧、较长回合，以及重复示范，也会扭曲表面上的覆盖程度。
+
+60
+00:06:02,240 --> 00:06:07,160
+Report sampling and filtering alongside dataset names when interpreting an ablation.
+解释消融实验时，应把采样与过滤方式，和数据集名字一起报告。
+
+61
+00:06:07,768 --> 00:06:13,928
+Knowledge insulation addresses how a new action expert can learn without disrupting the pretrained backbone.
+知识隔离研究：新动作专家怎样学习，同时减少对预训练主干的干扰。
+
+62
+00:06:14,348 --> 00:06:20,108
+The backbone receives token-based supervision from discretized actions and general vision-language data.
+主干通过离散动作和通用视觉语言数据，获得基于 token 的监督。
+
+63
+00:06:20,428 --> 00:06:26,308
+The action expert learns continuous generation, but its gradients are stopped before entering the backbone.
+动作专家学习连续动作生成，但其梯度在进入主干之前被截断。
+
+64
+00:06:26,808 --> 00:06:32,488
+Look for the stop-gradient boundary in the original figure; it changes which loss updates which parameters.
+请看原图的梯度截断边界：它改变了哪个损失更新哪些参数。
+
+65
+00:06:32,968 --> 00:06:37,193
+This does not mean that the entire backbone is frozen or that action learning disappears.
+这不意味着整个主干被冻结，也不意味着动作学习消失。
+
+66
+00:06:37,208 --> 00:06:43,508
+At inference, the continuous expert can be used without generating the training-time discrete action sequence.
+推理时，可以使用连续动作专家，而不生成训练时的离散动作序列。
+
+67
+00:06:44,179 --> 00:06:51,059
+Fine-tuning choices include which parameters to update, which data to use, and which interface to predict.
+微调选择包括更新哪些参数、使用哪些数据，以及预测哪一种接口。
+
+68
+00:06:51,779 --> 00:06:57,859
+Low-rank adaptation can reduce trainable parameters, but it does not repair inconsistent action labels.
+低秩适配可以减少可训练参数，但不能修复不一致的动作标签。
+
+69
+00:06:58,659 --> 00:07:03,859
+A new camera viewpoint may require different evidence than a new gripper or a new contact task.
+新的相机视角，与新的夹爪或者新的接触任务，可能需要不同的数据证据。
+
+70
+00:07:04,199 --> 00:07:10,324
+OpenVLA-OFT further shows that changing the action head and loss can matter alongside parameter efficiency.
+OpenVLA-OFT 进一步说明，除了参数效率，动作头与损失的变化也很重要。
+
+71
+00:07:10,339 --> 00:07:17,379
+Reserve validation data to select these choices, then evaluate the selected system on untouched test conditions.
+用验证集选择这些方案，再在未使用过的测试条件上评估最终系统。
+
+72
+00:07:17,899 --> 00:07:23,159
+Otherwise, repeated tuning against the test set can turn evaluation into an unreported training stage.
+否则，对着测试集反复调整，会让评估变成未报告的训练阶段。
+
+73
+00:07:23,745 --> 00:07:29,325
+Randomly splitting neighboring frames can place almost identical views in training and testing.
+随机切分相邻帧，可能让几乎相同的画面同时进入训练集和测试集。
+
+74
+00:07:29,885 --> 00:07:35,285
+That does not test the same capability as withholding complete episodes, objects, or environments.
+这与留出完整回合、物体，或者环境，测试的并不是同一种能力。
+
+75
+00:07:35,945 --> 00:07:41,185
+Choose the split according to the claim: new scene, new instruction, new object, or new embodiment.
+应根据主张选择切分：新场景、新指令、新物体，或者新机器人形态。
+
+76
+00:07:41,725 --> 00:07:46,690
+Keep normalization statistics and model selection within the allowed training and validation data.
+归一化统计与模型选择，也必须限制在允许使用的训练和验证数据内。
+
+77
+00:07:46,705 --> 00:07:52,110
+Record exclusions and failures, because silently discarding difficult episodes changes the problem.
+记录排除项和失败，因为悄悄删除困难回合，会改变问题本身。
+
+78
+00:07:52,125 --> 00:07:57,265
+An honest split defines precisely what the final reported generalization can support.
+诚实的数据切分，精确定义了最终泛化结果能够支持什么结论。
+
+79
+00:07:57,870 --> 00:08:03,930
+Before training, assemble a compact manifest linking each dataset, transformation, and checkpoint.
+训练之前，建立一份紧凑清单，把数据集、变换与权重连接起来。
+
+80
+00:08:04,170 --> 00:08:10,830
+Include action conventions, timestamp alignment, camera mapping, filtering, mixture weights, and split identifiers.
+其中包含动作约定、时间对齐、相机映射、过滤、混合权重，以及切分标识。
+
+81
+00:08:11,290 --> 00:08:15,390
+Then document the objective and which parameters each loss is allowed to update.
+接着记录训练目标，以及每项损失可以更新哪些参数。
+
+82
+00:08:15,770 --> 00:08:21,090
+For the cup task, this lets us distinguish a poor policy from a wrong unit or mislabeled camera.
+对于杯子任务，这能帮助区分策略表现不佳，还是单位错误、相机标签错误。
+
+83
+00:08:21,430 --> 00:08:26,955
+The resulting checkpoint becomes one part of a reproducible system, rather than an isolated weight file.
+由此产生的权重，才是可复现系统的一部分，而不是孤立的参数文件。
+
+84
+00:08:26,970 --> 00:08:32,030
+Next we bring that system into real time, where computation and physical motion overlap.
+下一章，我们把这个系统放入实时运行，让计算与物理运动真正发生交叠。

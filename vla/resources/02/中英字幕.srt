@@ -1,0 +1,419 @@
+﻿1
+00:00:00,850 --> 00:00:06,710
+Our robot now knows which cup to grasp, but its next movement still needs a representation.
+机器人现在知道要抓哪个杯子，但下一步动作仍然需要一种表示。
+
+2
+00:00:07,690 --> 00:00:13,590
+Three different decisions are often mixed together: action meaning, temporal grouping, and prediction method.
+三个不同决定经常被混在一起：动作含义、时间分组，以及预测方法。
+
+3
+00:00:13,870 --> 00:00:19,310
+Meaning specifies joint targets or Cartesian changes, with units and coordinate conventions.
+动作含义规定关节目标或笛卡尔变化，以及单位和坐标约定。
+
+4
+00:00:19,970 --> 00:00:24,390
+Grouping specifies whether the model predicts one command or several commands together.
+时间分组规定模型预测一条指令，还是一起预测多条指令。
+
+5
+00:00:24,950 --> 00:00:30,775
+Prediction specifies tokens, regression, diffusion, or a learned flow over continuous actions.
+预测方法则选择 token、回归、扩散，或者连续动作上的学习流。
+
+6
+00:00:30,790 --> 00:00:35,290
+Changing one decision does not logically require changing the other two.
+改变其中一个决定，并不意味着必须同时改变另外两个。
+
+7
+00:00:35,839 --> 00:00:41,519
+A physical displacement is continuous even when a model represents it with a discrete token.
+物理位移是连续量，即使模型用离散 token 来表示它。
+
+8
+00:00:42,019 --> 00:00:47,659
+A tokenizer assigns that displacement to a code, and a decoder maps the code back to a number.
+分词器把位移分配给一个编码，解码器再把编码还原成数值。
+
+9
+00:00:48,059 --> 00:00:53,559
+Therefore, token prediction does not imply that the robot can occupy only a few physical positions.
+因此，预测 token 不代表机器人只能停在少数几个物理位置。
+
+10
+00:00:54,059 --> 00:00:58,979
+The controller executes decoded references and may interpolate between them over time.
+控制器执行解码后的参考，还可能在时间上对这些参考进行插值。
+
+11
+00:00:59,419 --> 00:01:05,124
+Quantization does introduce approximation error, and its consequences depend on the task's tolerance.
+但量化确实会引入近似误差，其影响取决于任务容差。
+
+12
+00:01:05,139 --> 00:01:10,859
+A coarse movement representation may suffice for approaching a cup but struggle near a tight insertion.
+接近杯子时够用的粗糙动作表示，在紧配合插入附近可能就不够了。
+
+13
+00:01:11,567 --> 00:01:16,787
+Consider an illustrative translation range from minus four to plus four centimeters.
+考虑一个教学平移范围：从负四厘米到正四厘米。
+
+14
+00:01:17,607 --> 00:01:21,067
+Divide it into eight equal bins and decode each bin to its center.
+把这个范围分成八个等宽分箱，每个分箱解码成中心值。
+
+15
+00:01:21,507 --> 00:01:26,787
+Each bin is one centimeter wide, giving a maximum half-centimeter error inside the range.
+每个分箱宽一厘米，因此范围内最大误差是半厘米。
+
+16
+00:01:27,207 --> 00:01:32,567
+A requested one point two centimeters becomes one point five, an error of three millimeters.
+要求移动一点二厘米，会变成一点五厘米，误差为三毫米。
+
+17
+00:01:32,767 --> 00:01:38,392
+Increasing the bin count reduces this bound, but changes prediction difficulty and sequence design.
+增加分箱数量能够降低这个误差上界，但也会改变预测难度和序列设计。
+
+18
+00:01:38,407 --> 00:01:42,825
+Clipping an out-of-range command creates additional error beyond this simple bound.
+把范围外指令裁剪回范围内，还会产生超出这个简单上界的误差。
+
+19
+00:01:43,275 --> 00:01:49,135
+An autoregressive decoder predicts the next token using the observation and previous tokens.
+自回归解码器根据观测和之前的 token，预测下一个 token。
+
+20
+00:01:49,915 --> 00:01:54,775
+Training commonly minimizes negative log probability of the demonstrated token sequence.
+训练通常最小化示范 token 序列的负对数概率。
+
+21
+00:01:55,235 --> 00:02:00,595
+The product of conditional probabilities defines the probability assigned to the entire sequence.
+各条件概率的乘积，定义了整段序列获得的概率。
+
+22
+00:02:01,135 --> 00:02:07,020
+This is convenient for language-model backbones, but serial generation creates a dependency chain.
+这种方式适合语言模型主干，但串行生成会形成一条依赖链。
+
+23
+00:02:07,035 --> 00:02:13,235
+If a chunk contains many dimensions and timesteps, naive binning can produce a long sequence.
+如果一个动作块包含很多维度和时间步，朴素分箱就可能产生很长的序列。
+
+24
+00:02:14,015 --> 00:02:17,635
+Token count is thus a systems issue as well as a representational choice.
+所以 token 数量既是表示选择，也是系统工程问题。
+
+25
+00:02:18,283 --> 00:02:24,323
+FAST addresses the redundancy of representing every action dimension at every timestep separately.
+FAST 处理的是：每一时刻、每个动作维度分别编码所产生的冗余。
+
+26
+00:02:24,883 --> 00:02:29,763
+Follow its original figure from left to right, starting with a normalized action chunk.
+沿着原图从左向右看，首先输入的是归一化动作块。
+
+27
+00:02:30,243 --> 00:02:36,363
+A discrete cosine transform expresses each action channel using frequency components across time.
+离散余弦变换，把各动作通道表示成沿时间变化的频率分量。
+
+28
+00:02:36,863 --> 00:02:42,063
+The coefficients are quantized and serialized, then compressed further with byte-pair encoding.
+这些系数随后被量化、序列化，再通过字节对编码进一步压缩。
+
+29
+00:02:42,823 --> 00:02:46,648
+Decoding reverses the process to recover a continuous action sequence.
+解码时逆转这个过程，还原连续动作序列。
+
+30
+00:02:46,663 --> 00:02:52,503
+Smooth, correlated motion can therefore use a different code length than arbitrary independent samples.
+因此，平滑且相关的动作，与任意独立采样的动作，可以具有不同的编码长度。
+
+31
+00:02:53,131 --> 00:02:59,551
+A tokenizer can reconstruct recorded motions accurately while the policy predicts its codes poorly.
+分词器可能准确还原已记录动作，但策略仍然难以预测正确编码。
+
+32
+00:03:00,151 --> 00:03:05,251
+Reconstruction tests the representation; rollout tests the behavior of the learned policy.
+这是不同的测量：重建检验表示，实际运行检验学习到的控制策略。
+
+33
+00:03:05,931 --> 00:03:10,211
+FAST is an action tokenizer, not a complete robot policy by itself.
+FAST 是动作分词器，本身不是一个完整的机器人策略。
+
+34
+00:03:10,611 --> 00:03:17,071
+A model using FAST still needs observations, task conditioning, training data, and an execution schedule.
+使用 FAST 的模型，仍然需要观测、任务条件、训练数据，以及执行时序。
+
+35
+00:03:17,851 --> 00:03:22,951
+Likewise, faster training does not prove lower end-to-end response latency on a particular robot.
+同样，训练更快，并不能证明某台机器人上的端到端反应延迟更低。
+
+36
+00:03:23,491 --> 00:03:28,991
+Always follow the reported quantity: compression, training time, action throughput, or task completion.
+必须看清实际报告的量：压缩率、训练时间、动作吞吐，还是任务完成表现。
+
+37
+00:03:29,640 --> 00:03:34,360
+Action chunking groups several future commands into a single prediction problem.
+动作分块把多条未来指令，组合成一个预测问题。
+
+38
+00:03:34,800 --> 00:03:40,680
+It can reduce repeated decisions and help represent coherent motions, including pauses in demonstrations.
+它可以减少重复决策，也有助于表示连贯动作，包括示范中的停顿。
+
+39
+00:03:41,340 --> 00:03:47,100
+ACT uses a Transformer and a conditional variational autoencoder during training to model action chunks.
+ACT 用 Transformer，并在训练中采用条件变分自编码器，来建模动作块。
+
+40
+00:03:47,460 --> 00:03:52,660
+Its temporal ensembling combines overlapping predictions referring to the same future timestep.
+它的时间集成，会合并指向同一未来时间步的重叠预测。
+
+41
+00:03:53,060 --> 00:03:56,845
+This is distinct from taking the average of all future steps in one chunk.
+这与把一个动作块内所有未来时间步直接平均，并不是一回事。
+
+42
+00:03:56,860 --> 00:04:02,800
+And chunking is compatible with discrete tokens, continuous regression, diffusion, or flow matching.
+同时，动作分块可以搭配离散 token、连续回归、扩散，或者流匹配。
+
+43
+00:04:03,446 --> 00:04:10,386
+A continuous regression head predicts numerical actions directly, often producing a full chunk in parallel.
+连续回归头直接预测数值动作，通常可以并行输出完整动作块。
+
+44
+00:04:10,866 --> 00:04:16,046
+An L1 objective penalizes absolute coordinate differences from demonstrated actions.
+L1 目标惩罚预测动作与示范动作在各坐标上的绝对差值。
+
+45
+00:04:16,506 --> 00:04:22,446
+An L2 objective instead penalizes squared differences, which weights larger errors more strongly.
+L2 目标则惩罚平方差，因此对较大误差施加更大权重。
+
+46
+00:04:22,986 --> 00:04:28,831
+OpenVLA-OFT shows why this simple family belongs in a serious comparison of fine-tuning recipes.
+OpenVLA-OFT 说明，在认真比较微调方案时，这类简单方法不能缺席。
+
+47
+00:04:28,846 --> 00:04:35,346
+Its recipe combines parallel decoding, action chunks, continuous outputs, and L1 regression.
+其方案结合了并行解码、动作分块、连续输出，以及 L1 回归。
+
+48
+00:04:35,866 --> 00:04:41,966
+The result is a concrete configuration, not proof that regression universally beats every generative decoder.
+这个结果对应具体配置，并不证明回归在所有情况下都胜过生成式解码器。
+
+49
+00:04:42,503 --> 00:04:47,243
+Imagine that the gripper can reach the cup by moving left or right around an obstacle.
+想象夹爪可以从障碍左侧，或者右侧，绕过去拿杯子。
+
+50
+00:04:47,783 --> 00:04:52,863
+Both demonstrated routes succeed, but their pointwise mean may pass straight through the obstacle.
+两种示范路线都能成功，但逐点平均后的路线可能直接穿过障碍。
+
+51
+00:04:53,423 --> 00:04:57,843
+This teaching example explains why a multimodal action distribution can matter.
+这个教学例子解释了：为什么多峰动作分布有时十分重要。
+
+52
+00:04:58,203 --> 00:05:03,803
+A deterministic loss may summarize incompatible choices instead of committing to one coherent route.
+确定性损失可能把不兼容的选择概括到一起，而不是选定一条连贯路线。
+
+53
+00:05:04,503 --> 00:05:10,188
+Generative policies can represent alternatives, although successful training and sampling are still required.
+生成式策略能够表示不同选择，但仍然需要成功的训练和采样。
+
+54
+00:05:10,203 --> 00:05:15,323
+Neither stochasticity nor a smooth-looking trajectory is a guarantee against physical collision.
+随机性或者看起来平滑的轨迹，都不是避免物理碰撞的保证。
+
+55
+00:05:15,971 --> 00:05:21,851
+Diffusion Policy begins inference with a noisy action sequence and repeatedly refines it.
+Diffusion Policy 在推理时，从一个含噪动作序列开始，反复进行修正。
+
+56
+00:05:22,091 --> 00:05:26,651
+During training, known noise is added to demonstrations at sampled noise levels.
+训练时，会在采样的噪声等级下，给示范动作加入已知噪声。
+
+57
+00:05:27,071 --> 00:05:31,431
+The network learns a denoising objective while conditioned on the robot's observations.
+网络在机器人观测条件下，学习一个去噪目标。
+
+58
+00:05:31,911 --> 00:05:37,871
+At deployment, a sampling procedure uses this learned information to generate a coherent action chunk.
+部署时，采样过程利用这些学习到的信息，生成连贯动作块。
+
+59
+00:05:38,231 --> 00:05:43,456
+The refinement steps happen inside inference; they are not separate physical actions of the robot.
+这些修正步骤发生在模型推理内部，并不是机器人分别执行的物理动作。
+
+60
+00:05:43,471 --> 00:05:49,391
+Their computational cost must therefore be included when measuring the time before commands become available.
+因此，测量指令可用之前的等待时间时，必须把这些计算成本算进去。
+
+61
+00:05:50,018 --> 00:05:56,478
+For a simple flow-matching construction, interpolate between random noise and a demonstrated action chunk.
+在一种简单的流匹配构造中，我们在随机噪声与示范动作块之间插值。
+
+62
+00:05:56,818 --> 00:06:02,478
+At interpolation time tau, combine noise with weight one minus tau and actions with weight tau.
+在插值时刻 tau，噪声权重是一减 tau，动作权重是 tau。
+
+63
+00:06:02,738 --> 00:06:07,498
+The target velocity along this straight path is the action chunk minus the sampled noise.
+沿这条直线路径的目标速度，就是动作块减去采样噪声。
+
+64
+00:06:07,938 --> 00:06:12,598
+The network learns that velocity conditioned on observations and interpolation time.
+网络根据观测和插值时刻，学习这个速度。
+
+65
+00:06:12,818 --> 00:06:18,183
+At inference, numerical integration transports a noise sample toward the learned action distribution.
+推理时，数值积分把噪声样本输运到学习到的动作分布附近。
+
+66
+00:06:18,198 --> 00:06:23,258
+Tau describes generative computation, not the seconds elapsed in the physical task.
+tau 描述的是生成过程中的计算进度，不是物理任务经过的秒数。
+
+67
+00:06:23,824 --> 00:06:30,784
+Autoregression factors a token sequence; diffusion and flow iteratively generate continuous samples.
+自回归分解 token 序列；扩散和流匹配则迭代生成连续样本。
+
+68
+00:06:31,464 --> 00:06:36,044
+Parallel regression directly predicts continuous coordinates under a supervised loss.
+并行回归在监督损失下，直接预测连续坐标。
+
+69
+00:06:36,564 --> 00:06:41,564
+These descriptions explain mechanisms, but do not establish a universal speed ranking.
+这些描述解释了机制，却不能建立一个普遍成立的速度排名。
+
+70
+00:06:41,904 --> 00:06:47,649
+Actual cost depends on model size, sequence length, sampling steps, caching, precision, and hardware.
+实际开销取决于模型规模、序列长度、采样步数、缓存、精度，以及硬件。
+
+71
+00:06:47,664 --> 00:06:54,004
+Likewise, precision depends on data quality and the control interface, not only decoder vocabulary.
+同样，精度取决于数据质量与控制接口，而不只是解码器采用什么术语。
+
+72
+00:06:54,784 --> 00:06:59,984
+Keep these factors visible when someone attributes every improvement to a single architectural ingredient.
+当有人把所有提升归因于一个架构组件时，要把这些因素同时摆出来。
+
+73
+00:07:00,751 --> 00:07:05,431
+Now move the cup while the robot is executing a previously generated chunk.
+现在，在机器人执行上一段动作块时，把杯子挪走。
+
+74
+00:07:06,031 --> 00:07:11,311
+Newly generated actions cannot simply replace commands that have already run or are committed to run.
+新生成动作，不能直接替换已经执行，或者确定即将执行的指令。
+
+75
+00:07:11,691 --> 00:07:16,731
+If two chunks disagree at their boundary, switching between them can introduce a sudden jump.
+如果两个动作块在交界处不一致，切换时就可能产生突然跳变。
+
+76
+00:07:17,051 --> 00:07:21,551
+Choosing a decoder therefore does not finish the problem of producing continuous behavior.
+因此，选好解码器，并不意味着已经解决行为连续性问题。
+
+77
+00:07:22,451 --> 00:07:27,896
+Prediction, queue management, and physical execution must agree about which timestamps remain editable.
+预测、队列管理和物理执行，必须对哪些时间戳仍可修改达成一致。
+
+78
+00:07:27,911 --> 00:07:32,651
+Our deployment chapter will make this commitment boundary explicit with a moving timeline.
+部署章节会用一条移动时间轴，把这个不可随意修改的边界画清楚。
+
+79
+00:07:33,419 --> 00:07:40,419
+For a practical comparison, freeze the observation pipeline and define one robot action contract first.
+实际比较时，先固定观测流程，并定义一份机器人动作接口约定。
+
+80
+00:07:40,799 --> 00:07:46,159
+Then vary the representation or decoder while keeping the data and evaluation budget comparable.
+随后改变表示或解码器，同时尽量保持数据和评估预算可比。
+
+81
+00:07:46,619 --> 00:07:50,664
+Measure both task completion and the delays that affect correction of the moved cup.
+既测量任务完成情况，也测量影响杯子移动后纠正动作的各种延迟。
+
+82
+00:07:50,679 --> 00:07:57,239
+Inspect failure trajectories, because a good average can hide jitter, ignored instructions, or late reactions.
+还要检查失败轨迹，因为良好平均值可能掩盖抖动、忽略指令，或反应过晚。
+
+83
+00:07:57,819 --> 00:08:02,164
+There is no reason to select the most complicated decoder before this evidence exists.
+在获得这些证据之前，没有理由直接选择最复杂的解码器。
+
+84
+00:08:02,179 --> 00:08:08,179
+Next, we use these distinctions to understand the major families of robot foundation policies.
+下一章，我们用这些区分，理解机器人基础策略的主要路线。

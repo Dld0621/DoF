@@ -1,0 +1,88 @@
+﻿VLA 01｜从看见到真正行动
+VLA 01 · From Seeing to Acting
+
+The cup moves after the first image / 第一帧之后，杯子被挪走了
+Ask a robot to place the red cup in the left tray. It sees the scene, begins reaching, and somebody moves the cup. A remembered trajectory now points toward empty space instead of the object. The interesting question is what information can change the next command. This course follows that command from camera pixels to physical consequences. We separate understanding the request, generating motion, and correcting it during execution.
+请机器人把红杯子放进左边的托盘。它看见场景，开始伸手，这时有人挪动了杯子。原来的动作轨迹，现在指向空处，而不是杯子。真正值得追问的是：什么信息能够改变下一条指令？这套课程将跟随这条指令，从相机像素走到真实的物理结果。我们会区分理解任务、生成动作，以及执行期间纠正动作这三件事。
+https://arxiv.org/abs/2307.15818
+https://www.pi.website/download/real_time_chunking.pdf
+
+A working definition of VLA / 给 VLA 一个可操作的定义
+VLA stands for vision, language, and action: three connected parts of a robot policy. Visual observations tell the policy what is currently visible around the robot. Language specifies the intended task, such as choosing the red cup rather than the blue one. The output must eventually specify actions in a robot's executable control interface. A model that only describes the photograph has not completed this mapping. Different papers implement this connection with different architectures and action representations.
+VLA 是视觉、语言和动作：机器人策略中相互连接的三部分。视觉观测告诉策略，机器人周围目前能够看见什么。语言指定目标任务，例如选择红杯子，而不是蓝杯子。输出最终必须落到机器人能够执行的控制接口中。仅仅描述照片的模型，还没有完成这种映射。不同论文会用不同的结构和动作表示，来建立这种连接。
+https://arxiv.org/abs/2307.15818
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/abs/2405.12213
+
+The policy is a conditional distribution / 策略是一个条件分布
+Write the policy as a distribution over actions, conditioned on observations and the instruction. The observation may contain several images, recent history, and the robot's measured joint state. The action may be one command or an entire short sequence of commands. Conditioning means the same scene can produce different behavior when the instruction changes. A distribution also allows several sensible ways of reaching around an obstacle. It does not automatically certify that every sampled movement will be safe or successful.
+把策略写成一个分布：根据观测和指令，给出可能的动作。观测可以包含多路图像、近期历史，以及机器人的实测关节状态。动作可以是一条指令，也可以是一小段连续指令。条件化意味着：同一个场景，换一句指令，就应该产生不同的行为。使用分布，也允许机器人以几种不同但合理的方式绕过障碍。不过，这并不自动保证每个采样动作都安全，也不保证任务成功。
+https://www.pi.website/download/pi0.pdf
+https://arxiv.org/abs/2405.12213
+
+Images, state, and history have different jobs / 图像、状态和历史分别解决什么
+The outside camera shows the cup and tray, while a wrist camera shows the grasp region. Joint encoders report the robot's configuration, even when an arm is partly hidden. These measurements complement each other; they do not contain exactly the same information. A single image cannot reveal every relevant velocity, contact force, or occluded surface. History can help infer motion, but it also increases computation and must remain temporally aligned. Camera-only human observation does not mean discarding the robot's own sensors.
+外部相机显示杯子与托盘，腕部相机显示抓取区域。即使机械臂部分被遮挡，关节编码器仍能报告机器人的构型。这些测量互相补充，并不是完全等价的信息副本。单幅图像不能揭示所有相关速度、接触力和被遮挡表面。历史可以帮助推断运动，但也会增加计算量，而且必须保证时间对齐。因此，仅用摄像头观察人类，并不意味着机器人应丢掉自己的传感器。
+https://arxiv.org/abs/2405.12213
+https://arxiv.org/abs/2506.01844
+
+Pixels become features, not a ready-made world / 像素变成特征，不等于完整世界
+In OpenVLA, image encoders produce visual features that are projected into the language model. Instruction tokens and image features then influence predictions of robot action tokens. The architecture figure shows this interface: images enter, numerical actions leave. Those internal features need not be an explicit point cloud, mesh, or calibrated object map. A useful representation can support control without exposing a complete geometric reconstruction. Whether that representation remains reliable under occlusion is an experimental question.
+在 OpenVLA 中，图像编码器产生视觉特征，再投影到语言模型的输入空间。指令 token 和图像特征共同影响机器人动作 token 的预测。原论文结构图把这个接口画得很清楚：图像进入，数值动作输出。这些内部特征，不一定是显式点云、网格，或者经过标定的物体地图。即使没有输出完整几何重建，有用的表示仍然可以支持控制。但这种表示在遮挡下是否依然可靠，需要用实验回答。
+https://arxiv.org/abs/2406.09246
+
+An action vector is an interface contract / 动作向量是一份接口约定
+Suppose a robot receives three translation changes, three rotation changes, and a gripper value. Seven numbers alone do not tell us what those commands actually mean. Translation could use meters or millimeters, in a frame following the wrist or fixed to the base. Rotation uses an axis convention; gripper values might mean position or an open command. An adapter must preserve all these meanings when converting the model output for execution. Shape compatibility is only the first interface check.
+假设教学机器人接收三维平移变化、三维旋转变化，以及一个夹爪数值。单看这七个数字，我们还不知道指令到底是什么意思。平移可以使用米或毫米，坐标系可以跟随机器人手腕，也可以固定在基座。旋转可能采用特定的轴约定；夹爪值可能表示位置，也可能表示打开指令。把模型输出转换为执行指令时，适配层必须保留这些含义。张量形状兼容，只是接口检查的第一步。
+https://arxiv.org/abs/2212.06817
+https://arxiv.org/abs/2310.08864
+
+One small unit error changes the motion / 一个很小的单位错误，改变整段动作
+Here is a numerical teaching example, not a published robot benchmark. The policy requests a horizontal change of two centimeters in the base frame. That displacement is zero point zero two meters, or twenty millimeters. If an adapter interprets the meter value as millimeters, the commanded motion becomes negligible. If the reference frame is rotated, even a correctly scaled value can point the wrong way. These failures can resemble poor intelligence while originating in a deterministic conversion.
+下面是数值教学例子，不是某篇论文的机器人实验结果。策略要求在基座坐标系中，水平移动两厘米。这个位移就是零点零二米，也就是二十毫米。如果适配层把以米表示的数值当成毫米，执行位移就会非常小。如果参考坐标系发生旋转，即使比例正确，运动方向也可能错误。这些失败看起来像模型不够聪明，实际却可能来自确定性的转换错误。
+https://arxiv.org/abs/2310.08864
+
+The policy is not the motor servo / 策略不是电机伺服环
+After action decoding, a controller still has to move real joints toward the requested reference. It may handle interpolation, inverse kinematics, joint limits, and hardware feedback. The division depends on whether the policy outputs joint targets, end-effector motion, or torque. A policy update and a low-level servo update therefore need not happen at the same frequency. Calling a model end-to-end does not remove physical actuators or every interface around it. Evaluate the complete deployed system when judging practical behavior.
+动作解码以后，控制器仍然要驱动真实关节，追踪给定参考。这个控制器可能处理插值、逆运动学、关节限位，以及硬件反馈。具体分工取决于策略输出的是关节目标、末端运动，还是力矩。所以，策略更新与底层伺服更新，不必发生在同一个频率。把模型称为端到端，并不会让物理执行器和周围所有接口消失。判断实际表现时，应当评估完整部署系统。
+https://arxiv.org/abs/2212.06817
+https://www.pi.website/download/pi0.pdf
+
+Predicting a chunk does not mean executing all of it / 预测一整段，不代表全部执行
+Many policies predict a chunk containing several future commands from one observation. The prediction horizon counts proposed commands; the execution horizon counts those applied. For illustration, predict ten steps, execute only two, then observe the scene again. The remaining eight predictions can be replaced using newer evidence about the moved cup. This is receding-horizon execution, and it helps connect coherent short motions with feedback. The numbers here define our example, not the default configuration of every VLA.
+许多策略会根据一次观测，预测包含若干未来指令的动作块。预测时域表示提出多少条指令；执行时域表示实际执行其中多少条。举个例子：预测十步，只执行两步，然后重新观察场景。剩余八步预测，可以根据杯子移动后的新证据进行替换。这就是滚动时域执行，它将连贯的短动作与反馈连接起来。这里的数字只是教学设定，并不是所有 VLA 的默认配置。
+https://arxiv.org/abs/2303.04137
+https://www.pi.website/download/real_time_chunking.pdf
+
+Closed loop means new evidence changes action / 闭环意味着新证据改变动作
+Return to the cup that moved after the first observation. A closed-loop policy can observe the new location and adjust a later command. But the robot cannot revise commands that have already been executed in the physical world. Camera delay, model inference, and queued actions all postpone when correction takes effect. Consequently, a camera running frequently does not guarantee equally frequent behavioral correction. Later we will draw the full timing diagram instead of treating frame rate as responsiveness.
+回到第一帧之后被挪动的杯子。闭环策略可以观察新位置，并调整后续指令。不过，机器人无法改写已经在物理世界中执行的指令。相机延迟、模型推理，以及排队动作，都会推迟纠正真正生效的时刻。因此，相机频繁采集，并不保证行为也能以同样频率得到纠正。后面的章节会画出完整时间图，而不是把帧率直接当成反应速度。
+https://arxiv.org/abs/2307.15818
+https://www.pi.website/download/real_time_chunking.pdf
+
+Grounding needs a controlled intervention / 语言落地需要有控制的干预
+To test language grounding, keep the scene fixed and change only the instruction. Ask for the red cup in one trial and the blue cup in another. If the robot always chooses the nearest object, apparent success may hide ignored language. Also keep reset conditions comparable, so a different starting pose does not explain the difference. A convincing demonstration shows the instruction changing the relevant choice, not just narration. This simple intervention turns an attractive video into a more informative diagnostic.
+检验语言落地时，可以固定场景，只改变指令。一次要求拿红杯子，另一次要求拿蓝杯子。如果机器人总是选择最近的物体，表面成功可能掩盖它忽略语言的问题。还要保持重置条件可比，避免用不同初始位姿来解释结果差异。有说服力的展示，应证明指令改变了相关选择，而不仅仅是配了一段解说。这种简单干预，会让漂亮的视频变成更有信息量的诊断。
+https://arxiv.org/abs/2406.09246
+https://www.pi.website/download/pi05_KI.pdf
+
+Generalization has several separate axes / 泛化有几条不同的轴
+Recognizing a new cup, handling a slippery cup, and operating a new robot are different tests. The first emphasizes appearance; the second changes interaction; the third changes embodiment. A new room can change lighting, camera geometry, object arrangement, and movement space together. Zero-shot only has meaning relative to the training and adaptation preceding evaluation. We will record what was withheld and what was still familiar for each comparison. There is no single number that substitutes for this specification.
+识别新杯子、处理打滑杯子，以及操作新机器人，是不同的测试。第一种可能侧重外观，第二种改变物理交互，第三种改变机器人身体。陌生房间可能同时改变光照、相机几何、物体布局，以及可运动空间。论文中的零样本，必须结合测试前的训练和适配过程理解。比较每种方法时，我们都会记录哪些因素被留出，哪些因素仍然熟悉。不存在一个能够替代这些说明的单一数字。
+https://arxiv.org/abs/2307.15818
+https://arxiv.org/abs/2406.09246
+https://www.pi.website/download/pi05.pdf
+
+Related policies are useful, but labels matter / 相关策略很重要，但分类要准确
+Action Chunking with Transformers and Diffusion Policy are important robot policy baselines. These algorithms do not automatically become VLAs merely by outputting actions from images. A language-conditioned version needs language input and training connecting it to behavior. A generalist language-conditioned policy need not be built around a giant language model. Octo shows why flexible policy interfaces matter alongside the large-VLM research route. We will compare concrete implementations rather than decide capabilities from names.
+动作分块 Transformer 和 Diffusion Policy，都是重要的机器人策略基线。仅仅因为它们根据图像输出动作，其核心算法并不会自动成为 VLA。带语言条件的版本，需要明确语言输入，以及把语言连接到行为的训练。反过来，带语言条件的通用策略，也不一定围绕一个巨大语言模型构建。Octo 展示了另一条重要路线：除了大型 VLM，也应重视灵活的策略接口。我们会比较具体实现，而不是根据名字推断能力。
+https://arxiv.org/abs/2304.13705
+https://arxiv.org/abs/2303.04137
+https://arxiv.org/abs/2405.12213
+
+A checklist for reading the next paper / 读下一篇论文时先问这些
+Before judging a new VLA, reconstruct its complete path from input to execution. Identify which observations and instructions reach the policy, and what action interface leaves it. Then locate the training supervision, the feedback schedule, and the conditions of evaluation. For our moved cup, ask when the new image can first affect a physical command. This links semantic understanding to robot behavior without assuming either alone is sufficient. Next, we inspect action representations: numbers, tokens, trajectories, and generative decoders.
+判断一个新 VLA 之前，先重建它从输入到执行的完整路径。确认哪些观测和指令进入策略，以及输出采用什么动作接口。接着定位训练监督、反馈时序，以及评估条件。对于被挪动的杯子，要问新图像最早何时能够影响物理指令。这个问题把语义理解与真实行为连接起来，同时不预设任何一方单独就够用。下一章，我们直接拆解动作表示：数值、token、轨迹，以及生成式解码器。
+https://arxiv.org/abs/2307.15818
+https://arxiv.org/abs/2406.09246
+https://www.pi.website/download/real_time_chunking.pdf

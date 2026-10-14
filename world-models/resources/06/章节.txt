@@ -1,0 +1,14 @@
+﻿00:00 先决定到底在测试什么 / Decide what the model is being tested for
+00:33 记录实际的状态转移接口 / Record the actual transition interface
+01:08 真值取决于你问的问题 / Ground truth depends on the question
+01:41 一条记录，不包含所有反事实 / One recorded future is not every counterfactual
+02:15 测试泛化之前，先分好数据 / Split episodes before testing generalization
+02:48 不能让训练损失替自己证明优势 / Do not let the training loss certify itself
+03:20 在多个时域测试递推预测 / Test recursive prediction at several horizons
+03:55 不确定性需要分布层面的测试 / Uncertainty needs a distributional test
+04:28 图像质量与控制质量回答不同问题 / Image quality and control quality answer different questions
+05:03 把成功定义覆盖完整事件 / Define success over the complete event
+05:33 公平比较信息与计算资源 / Compare information and computation fairly
+06:11 建立能回答问题的基线阶梯 / Build a baseline ladder that answers questions
+06:47 让失败留在分母里 / Keep failures in the denominator
+07:27 有用的模型，要在闭环里证明价值 / A useful model earns its place in the loop

@@ -1,0 +1,89 @@
+﻿VLA 06｜实验结果究竟证明了什么
+VLA 06 · What the Results Actually Prove
+
+What would count as evidence? / 什么才算有效证据？
+Two videos show robots placing a cup successfully, but they may answer very different questions. One policy might be trained for that exact scene; another might face a held-out environment. One clip might hide resets, while another includes every attempt and intervention. To compare systems, we first define the task, inputs, training access, execution conditions, and scoring rule. Only then can success numbers refer to a shared question. This chapter turns the mechanisms we studied into an evaluation plan with interpretable outcomes.
+两段视频都显示机器人成功放杯子，但它们可能回答完全不同的问题。一个策略可能专门针对该场景训练，另一个则面对留出的新环境。一个片段可能隐藏重置过程，另一个则包含每次尝试和人工介入。要比较系统，首先定义任务、输入、训练权限、执行条件，以及评分规则。只有这样，成功数字才可能指向同一个问题。这一章把前面学习的机制，转化成一份结果能够解释的评估方案。
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/abs/2502.19645
+https://www.pi.website/download/real_time_chunking.pdf
+
+Define the whole cup task before running it / 运行之前，定义完整杯子任务
+For our teaching task, require the specified cup to finish inside the requested tray. The robot must release it, leave it stable, and finish within the declared time limit. Also define what happens after a drop, wrong-object grasp, timeout, or human intervention. A lift alone establishes only an intermediate event, not completion of the full instruction. These criteria are our illustrative protocol, not a universal rule used by all published benchmarks. Writing them down first prevents an attractive partial behavior from changing the goal after the trial.
+对于教学任务，我们要求指定杯子最终位于指定托盘内部。机器人必须释放杯子，让它保持稳定，并在预先声明的时间限制内完成。还要定义掉落、抓错物体、超时，或者人工介入之后怎样计分。单纯提起杯子，只能证明中间事件发生，不能证明完整指令完成。这些条件是我们的示例协议，并不是所有已发表基准都采用的统一规则。提前写明规则，可以防止一次漂亮的局部行为，在试验之后改变任务目标。
+https://www.pi.website/download/pi0.pdf
+https://arxiv.org/abs/2406.09246
+
+Strict success and partial progress are different metrics / 严格成功与部分进展是不同指标
+A task can earn partial credit without satisfying the strict completion condition. The original pi-zero evaluation figure reports average task progress for several multistage activities. Read that vertical axis before interpreting a bar as a binary success rate. In a teaching example with four equally weighted stages, completing three earns a progress score of seventy-five percent. If stable release is missing, strict success for that same trial can still be zero. Both measurements can be useful, provided they remain separately labeled and their definitions are preserved.
+任务可以获得部分得分，同时仍未满足严格完成条件。π0 原始评估图，对几种多阶段任务报告的是平均任务进展。把柱状图读成二元成功率之前，先看清纵轴。在四个等权阶段的教学例子中，完成三个阶段，进展分数就是百分之七十五。如果没有完成稳定释放，同一次试验的严格成功仍然可以是零。两种测量都可以有价值，前提是分开标注，并保留各自定义。
+https://www.pi.website/download/pi0.pdf
+
+Choose baselines that answer the intended question / 选择能够回答问题的基线
+A meaningful baseline set should include more than other large models with impressive names. Include a task-appropriate policy trained from scratch, such as ACT or Diffusion Policy when applicable. Then compare pretrained generalists under a stated adaptation budget and a compatible robot interface. If the test requires choosing between language instructions, a baseline must receive comparable task information. An unconditioned specialist can be evaluated separately, but silently denying it the instruction creates a different problem. The baseline's role should explain what hypothesis the comparison can test.
+有意义的基线集合，不应只包含名字醒目的其他大模型。应包含从零训练且适合任务的策略，例如在适用条件下使用 ACT 或 Diffusion Policy。再在明确适配预算，以及兼容机器人接口下，比较预训练通用策略。如果测试要求根据不同语言指令选择目标，基线必须获得可比的任务信息。无条件专用策略可以单独评估，但悄悄不给它指令，会变成另一个问题。基线的角色，应说明这项比较究竟能够检验什么假设。
+https://arxiv.org/abs/2304.13705
+https://arxiv.org/abs/2303.04137
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/abs/2405.12213
+
+Match interfaces before matching scores / 比较分数之前，先匹配接口
+Check observation cameras, image preprocessing, state inputs, action coordinates, gripper conventions, and control frequency. Also check how many predicted actions are executed before another observation can change behavior. A strong model connected through a wrong normalization adapter is not a fair test of its capability. Some architectures need different native configurations; forcing identical settings can also handicap a method. Report both the common evaluation contract and any method-specific adjustments required to meet it. Fairness means making meaningful differences explicit, not pretending all implementations are identical.
+检查观测相机、图像预处理、状态输入、动作坐标、夹爪约定，以及控制频率。还要检查，在新观测能够改变行为之前，会执行多少个预测动作。强模型如果连接了错误归一化适配器，就不是对其能力的公平检验。某些架构需要不同的原生配置，强迫完全相同设置，也可能损害某种方法。因此，应同时报告共同评估约定，以及满足约定所需的方法专用调整。公平意味着公开有意义的差异，而不是假装所有实现完全相同。
+https://arxiv.org/abs/2502.19645
+https://arxiv.org/abs/2405.12213
+https://arxiv.org/abs/2310.08864
+
+Separate data advantage from adaptation advantage / 区分数据优势与适配优势
+A pretrained VLA may have seen broad robot experience before receiving the target demonstrations. A scratch baseline has not, even if both receive the same final fine-tuning dataset. That is a legitimate comparison of initialization value, provided the earlier data advantage is disclosed. It is not automatically a controlled test of architecture alone. Likewise, different tuning effort, training steps, or privileged observations can explain apparent gains. Keep a table of pretraining access, target data, parameter updates, and compute for every baseline.
+预训练 VLA 在收到目标示范之前，可能已经接触了广泛机器人经验。从零训练的基线则没有，即使二者最后使用相同的微调数据集。这可以合理比较初始化的价值，前提是公开先前的数据优势。但这并不会自动成为只检验架构的受控实验。同样，不同调参投入、训练步数，或者额外观测，都可能解释表面提升。应为每个基线列出预训练数据权限、目标数据、参数更新范围，以及计算投入。
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/abs/2506.01844
+https://arxiv.org/abs/2502.19645
+
+Generalization needs an explicit held-out axis / 泛化需要明确留出维度
+The OpenVLA evaluation figure separates visual, motion, physical, semantic, and language-grounding conditions. That separation matters because unfamiliar appearance and unfamiliar motor interaction need not improve together. For the cup example, change background, object position, cup geometry, or instruction in separate test groups. Then add combined shifts if the application requires them, while keeping their labels distinct. A single aggregate can hide a policy that grounds language well but fails on new physical shapes. The figure is evidence about its published setup, not a permanent ranking for every robot.
+OpenVLA 评估图，把视觉、运动、物理、语义，以及语言落地条件分开。这种区分很重要，因为陌生外观与陌生运动交互，不一定同时得到改善。对于杯子例子，可以分别建立背景、位置、杯子几何，或者指令变化的测试组。如果应用需要，再加入组合变化，同时保留不同测试组的标签。一个总平均值，可能掩盖策略语言落地较好，却在新物理形状上失败的问题。这张图证明的是原论文配置下的表现，不是所有机器人的永久排名。
+https://arxiv.org/abs/2406.09246
+
+Benchmark names do not erase protocol differences / 基准名字不能消除协议差异
+The LIBERO illustration distinguishes spatial, object, goal, and longer-horizon task suites. Using the same benchmark name does not prove two papers used identical data or evaluation procedures. Check suite versions, demonstration processing, reset states, observation modalities, action conventions, and trial counts. OpenVLA-OFT's reported result belongs to the recipe and protocol described in that paper. It should not be transferred unchanged to an arbitrary robot, room, or later checkpoint. Use the paper's comparison to form a hypothesis, then test that hypothesis under your own matched conditions.
+LIBERO 示意图区分了空间、物体、目标，以及较长时域任务集合。使用相同基准名字，并不证明两篇论文采用相同数据或评估流程。检查任务集版本、示范处理、重置状态、观测模态、动作约定，以及试验次数。OpenVLA-OFT 的报告结果，属于论文中描述的具体方案与协议。不能把它原封不动转移到任意机器人、房间，或者后续权重版本。用论文比较形成假设，再在自己的匹配条件下检验假设。
+https://arxiv.org/abs/2502.19645
+
+Count attempts, uncertainty, and interventions / 记录次数、不确定性与人工介入
+Eight successes in ten trials and eighty in one hundred both produce an observed eighty percent. They do not provide the same amount of evidence about the underlying success probability. Report the numerator and denominator, variation across seeds or resets, and an appropriate uncertainty estimate. Do not quietly remove crashes, timeouts, or operator rescues unless the protocol explicitly excludes them. For repeated trials in the same environment, consider whether outcomes are sufficiently independent. A polished percentage becomes useful only when the underlying trial accounting is visible.
+十次成功八次，与一百次成功八十次，观测成功率都是百分之八十。但对于真实成功概率，它们提供的证据量并不相同。应报告成功次数与总次数、不同种子或重置间的变化，以及合适的不确定性估计。除非协议明确排除，否则不能悄悄删除崩溃、超时，或者人工救场。在相同环境中重复试验时，还要考虑结果是否具有足够独立性。只有底层试验账目清楚可见，一个漂亮百分比才真正有用。
+https://arxiv.org/abs/2406.09246
+https://www.pi.website/download/pistar06.pdf
+
+Ablations should isolate a claim / 消融实验应该隔离一个主张
+To test whether an action expert helps, compare systems that differ in that relevant ingredient. If data, model size, training budget, and control frequency all change, attribution becomes ambiguous. Ablations can examine language conditioning, pretraining, action representation, chunk execution, or a gradient boundary. Knowledge Insulation provides a concrete example where stopping one gradient path is the hypothesis of interest. Keep the comparison close enough that the resulting difference speaks to that mechanism. When complete matching is impossible, state the confound rather than attaching all credit to one component.
+检验动作专家是否有帮助时，应比较在这个相关组件上存在差异的系统。如果数据、模型规模、训练预算和控制频率都改变，归因就会变得模糊。消融可以检验语言条件、预训练、动作表示、动作块执行，或者梯度边界。知识隔离提供了具体例子：关注的假设，是截断某一条梯度路径的作用。应让比较条件足够接近，使结果差异能够说明该机制的作用。如果无法完全匹配，应说明混杂因素，而不是把所有功劳都归给一个组件。
+https://www.pi.website/download/pi05_KI.pdf
+https://arxiv.org/abs/2502.19645
+https://arxiv.org/abs/2405.12213
+
+Throughput adds another denominator / 吞吐量引入了另一个分母
+A policy can succeed often but move so slowly that few tasks finish in an hour. Another may move quickly but fail frequently, making raw movement speed a poor summary. Throughput counts completed useful work per unit time under a specified operating protocol. The time denominator may include resets, recovery, and assistance, so its definition must be explicit. RECAP and real-time chunking motivate measuring reliability and task duration together. This remains separate from action-generation throughput, which counts model outputs rather than completed tasks.
+一个策略可以经常成功，却因为动作太慢，每小时只能完成少量任务。另一个可能动作很快，却频繁失败，因此单看运动速度也不合适。吞吐量衡量的是：在指定运行协议下，单位时间完成多少有效工作。时间分母可能包含重置、恢复与协助，因此必须明确其定义。RECAP 与实时动作分块，都说明可靠性和任务时长应放在一起测量。这仍然不同于动作生成吞吐量，后者统计模型输出，而不是已完成任务。
+https://www.pi.website/download/pistar06.pdf
+https://www.pi.website/download/real_time_chunking.pdf
+
+Test the moved cup as a controlled disturbance / 把挪动杯子变成可控扰动
+Return to our running example and turn it into a repeatable disturbance test. Specify the cup displacement, the phase of the reach, and the allowed correction interval. Record when the new image was captured and when the robot first changed its physical command. Compare scheduling strategies using the same underlying policy whenever that intervention is technically valid. Then separate failure to notice the change from failure to act on it quickly enough. This test connects feedback theory, action queues, and practical task success without inventing a benchmark result.
+回到贯穿课程的例子，把它变成可重复的扰动测试。明确杯子位移、伸手动作的阶段，以及允许的纠正区间。记录新图像何时采集，以及机器人何时首次改变物理指令。在技术条件允许时，使用同一个策略比较不同调度方式。接着区分：没有发现变化，还是发现后没有足够快地行动。这个测试把反馈、动作队列和实际任务成功连接起来，同时不虚构基准结果。
+https://www.pi.website/download/real_time_chunking.pdf
+https://arxiv.org/abs/2506.01844
+
+An action policy and a world model answer different questions / 动作策略与世界模型回答不同问题
+A policy asks what action to take given the current context and desired task. An action-conditioned world model asks what may happen if a particular action is taken. A system can use predicted consequences to select goals or compare candidate plans before executing. But generating a convincing future image does not prove that the robot can physically realize it. The pi-zero-point-seven architecture illustrates one connection through contextual subgoals while retaining an action policy. The world-model course develops prediction and planning in detail; here we preserve the interface boundary.
+策略追问的是：给定当前上下文与目标任务，应该采取什么动作？带动作条件的世界模型追问：如果采取某个动作，接下来可能发生什么？系统可以利用预测结果，在执行之前选择目标，或者比较候选计划。但是，生成一幅逼真的未来图像，并不能证明机器人能够在物理上实现它。π0.7 的架构展示了通过上下文子目标连接两者的方式，同时仍保留动作策略。世界模型课程会详细展开预测与规划，这里先保留二者的接口边界。
+https://www.pi.website/download/pi07.pdf
+
+A practical baseline report for DoF / 一份实用的 DoF 基线报告
+A useful report begins with the task contract and the exact system version under evaluation. Then list each baseline's observations, action format, training access, adaptation, and execution schedule. Present strict success, partial progress, latency, and throughput in separate columns with clear denominators. Keep representative failures alongside successes and connect every claimed mechanism to an appropriate ablation. Our cup example then becomes a small reproducible study rather than another isolated demonstration. This is how model knowledge becomes the infrastructure needed to build and improve real robotic systems.
+有用的报告，首先写明任务约定，以及被评估系统的确切版本。随后列出各基线的观测、动作格式、训练数据权限、适配，以及执行时序。把严格成功、部分进展、延迟和吞吐量，放在不同列中，并明确分母。保留有代表性的成功与失败，并让每个机制主张对应合适的消融实验。这样，杯子例子就成为一个小型可复现研究，而不只是又一段孤立演示。这就是如何把模型知识，转化为构建和改进真实机器人系统所需要的认知基础。
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/abs/2502.19645
+https://www.pi.website/download/real_time_chunking.pdf

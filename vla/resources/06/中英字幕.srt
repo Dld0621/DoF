@@ -1,0 +1,419 @@
+﻿1
+00:00:00,850 --> 00:00:06,970
+Two videos show robots placing a cup successfully, but they may answer very different questions.
+两段视频都显示机器人成功放杯子，但它们可能回答完全不同的问题。
+
+2
+00:00:07,610 --> 00:00:12,570
+One policy might be trained for that exact scene; another might face a held-out environment.
+一个策略可能专门针对该场景训练，另一个则面对留出的新环境。
+
+3
+00:00:13,150 --> 00:00:17,670
+One clip might hide resets, while another includes every attempt and intervention.
+一个片段可能隐藏重置过程，另一个则包含每次尝试和人工介入。
+
+4
+00:00:18,130 --> 00:00:24,350
+To compare systems, we first define the task, inputs, training access, execution conditions, and scoring rule.
+要比较系统，首先定义任务、输入、训练权限、执行条件，以及评分规则。
+
+5
+00:00:24,670 --> 00:00:27,615
+Only then can success numbers refer to a shared question.
+只有这样，成功数字才可能指向同一个问题。
+
+6
+00:00:27,630 --> 00:00:33,190
+This chapter turns the mechanisms we studied into an evaluation plan with interpretable outcomes.
+这一章把前面学习的机制，转化成一份结果能够解释的评估方案。
+
+7
+00:00:33,820 --> 00:00:39,620
+For our teaching task, require the specified cup to finish inside the requested tray.
+对于教学任务，我们要求指定杯子最终位于指定托盘内部。
+
+8
+00:00:39,940 --> 00:00:44,860
+The robot must release it, leave it stable, and finish within the declared time limit.
+机器人必须释放杯子，让它保持稳定，并在预先声明的时间限制内完成。
+
+9
+00:00:45,200 --> 00:00:51,280
+Also define what happens after a drop, wrong-object grasp, timeout, or human intervention.
+还要定义掉落、抓错物体、超时，或者人工介入之后怎样计分。
+
+10
+00:00:51,800 --> 00:00:56,745
+A lift alone establishes only an intermediate event, not completion of the full instruction.
+单纯提起杯子，只能证明中间事件发生，不能证明完整指令完成。
+
+11
+00:00:56,760 --> 00:01:03,260
+These criteria are our illustrative protocol, not a universal rule used by all published benchmarks.
+这些条件是我们的示例协议，并不是所有已发表基准都采用的统一规则。
+
+12
+00:01:03,840 --> 00:01:08,660
+Writing them down first prevents an attractive partial behavior from changing the goal after the trial.
+提前写明规则，可以防止一次漂亮的局部行为，在试验之后改变任务目标。
+
+13
+00:01:09,226 --> 00:01:14,266
+A task can earn partial credit without satisfying the strict completion condition.
+任务可以获得部分得分，同时仍未满足严格完成条件。
+
+14
+00:01:14,866 --> 00:01:21,066
+The original pi-zero evaluation figure reports average task progress for several multistage activities.
+π0 原始评估图，对几种多阶段任务报告的是平均任务进展。
+
+15
+00:01:21,646 --> 00:01:26,106
+Read that vertical axis before interpreting a bar as a binary success rate.
+把柱状图读成二元成功率之前，先看清纵轴。
+
+16
+00:01:26,386 --> 00:01:33,331
+In a teaching example with four equally weighted stages, completing three earns a progress score of seventy-five percent.
+在四个等权阶段的教学例子中，完成三个阶段，进展分数就是百分之七十五。
+
+17
+00:01:33,346 --> 00:01:38,706
+If stable release is missing, strict success for that same trial can still be zero.
+如果没有完成稳定释放，同一次试验的严格成功仍然可以是零。
+
+18
+00:01:38,886 --> 00:01:44,486
+Both measurements can be useful, provided they remain separately labeled and their definitions are preserved.
+两种测量都可以有价值，前提是分开标注，并保留各自定义。
+
+19
+00:01:45,175 --> 00:01:50,495
+A meaningful baseline set should include more than other large models with impressive names.
+有意义的基线集合，不应只包含名字醒目的其他大模型。
+
+20
+00:01:50,815 --> 00:01:57,155
+Include a task-appropriate policy trained from scratch, such as ACT or Diffusion Policy when applicable.
+应包含从零训练且适合任务的策略，例如在适用条件下使用 ACT 或 Diffusion Policy。
+
+21
+00:01:57,695 --> 00:02:03,255
+Then compare pretrained generalists under a stated adaptation budget and a compatible robot interface.
+再在明确适配预算，以及兼容机器人接口下，比较预训练通用策略。
+
+22
+00:02:03,655 --> 00:02:09,820
+If the test requires choosing between language instructions, a baseline must receive comparable task information.
+如果测试要求根据不同语言指令选择目标，基线必须获得可比的任务信息。
+
+23
+00:02:09,835 --> 00:02:17,075
+An unconditioned specialist can be evaluated separately, but silently denying it the instruction creates a different problem.
+无条件专用策略可以单独评估，但悄悄不给它指令，会变成另一个问题。
+
+24
+00:02:17,455 --> 00:02:21,295
+The baseline's role should explain what hypothesis the comparison can test.
+基线的角色，应说明这项比较究竟能够检验什么假设。
+
+25
+00:02:21,863 --> 00:02:30,723
+Check observation cameras, image preprocessing, state inputs, action coordinates, gripper conventions, and control frequency.
+检查观测相机、图像预处理、状态输入、动作坐标、夹爪约定，以及控制频率。
+
+26
+00:02:31,183 --> 00:02:36,703
+Also check how many predicted actions are executed before another observation can change behavior.
+还要检查，在新观测能够改变行为之前，会执行多少个预测动作。
+
+27
+00:02:37,223 --> 00:02:42,643
+A strong model connected through a wrong normalization adapter is not a fair test of its capability.
+强模型如果连接了错误归一化适配器，就不是对其能力的公平检验。
+
+28
+00:02:43,263 --> 00:02:49,863
+Some architectures need different native configurations; forcing identical settings can also handicap a method.
+某些架构需要不同的原生配置，强迫完全相同设置，也可能损害某种方法。
+
+29
+00:02:50,163 --> 00:02:55,883
+Report both the common evaluation contract and any method-specific adjustments required to meet it.
+因此，应同时报告共同评估约定，以及满足约定所需的方法专用调整。
+
+30
+00:02:56,223 --> 00:03:01,943
+Fairness means making meaningful differences explicit, not pretending all implementations are identical.
+公平意味着公开有意义的差异，而不是假装所有实现完全相同。
+
+31
+00:03:02,679 --> 00:03:08,899
+A pretrained VLA may have seen broad robot experience before receiving the target demonstrations.
+预训练 VLA 在收到目标示范之前，可能已经接触了广泛机器人经验。
+
+32
+00:03:09,619 --> 00:03:14,379
+A scratch baseline has not, even if both receive the same final fine-tuning dataset.
+从零训练的基线则没有，即使二者最后使用相同的微调数据集。
+
+33
+00:03:14,939 --> 00:03:20,979
+That is a legitimate comparison of initialization value, provided the earlier data advantage is disclosed.
+这可以合理比较初始化的价值，前提是公开先前的数据优势。
+
+34
+00:03:21,619 --> 00:03:25,039
+It is not automatically a controlled test of architecture alone.
+但这并不会自动成为只检验架构的受控实验。
+
+35
+00:03:25,639 --> 00:03:31,939
+Likewise, different tuning effort, training steps, or privileged observations can explain apparent gains.
+同样，不同调参投入、训练步数，或者额外观测，都可能解释表面提升。
+
+36
+00:03:32,519 --> 00:03:38,239
+Keep a table of pretraining access, target data, parameter updates, and compute for every baseline.
+应为每个基线列出预训练数据权限、目标数据、参数更新范围，以及计算投入。
+
+37
+00:03:38,948 --> 00:03:47,148
+The OpenVLA evaluation figure separates visual, motion, physical, semantic, and language-grounding conditions.
+OpenVLA 评估图，把视觉、运动、物理、语义，以及语言落地条件分开。
+
+38
+00:03:47,628 --> 00:03:53,648
+That separation matters because unfamiliar appearance and unfamiliar motor interaction need not improve together.
+这种区分很重要，因为陌生外观与陌生运动交互，不一定同时得到改善。
+
+39
+00:03:54,008 --> 00:04:00,948
+For the cup example, change background, object position, cup geometry, or instruction in separate test groups.
+对于杯子例子，可以分别建立背景、位置、杯子几何，或者指令变化的测试组。
+
+40
+00:04:01,368 --> 00:04:06,193
+Then add combined shifts if the application requires them, while keeping their labels distinct.
+如果应用需要，再加入组合变化，同时保留不同测试组的标签。
+
+41
+00:04:06,208 --> 00:04:11,948
+A single aggregate can hide a policy that grounds language well but fails on new physical shapes.
+一个总平均值，可能掩盖策略语言落地较好，却在新物理形状上失败的问题。
+
+42
+00:04:12,448 --> 00:04:16,908
+The figure is evidence about its published setup, not a permanent ranking for every robot.
+这张图证明的是原论文配置下的表现，不是所有机器人的永久排名。
+
+43
+00:04:17,553 --> 00:04:23,753
+The LIBERO illustration distinguishes spatial, object, goal, and longer-horizon task suites.
+LIBERO 示意图区分了空间、物体、目标，以及较长时域任务集合。
+
+44
+00:04:24,173 --> 00:04:30,213
+Using the same benchmark name does not prove two papers used identical data or evaluation procedures.
+使用相同基准名字，并不证明两篇论文采用相同数据或评估流程。
+
+45
+00:04:30,573 --> 00:04:38,753
+Check suite versions, demonstration processing, reset states, observation modalities, action conventions, and trial counts.
+检查任务集版本、示范处理、重置状态、观测模态、动作约定，以及试验次数。
+
+46
+00:04:39,093 --> 00:04:44,298
+OpenVLA-OFT's reported result belongs to the recipe and protocol described in that paper.
+OpenVLA-OFT 的报告结果，属于论文中描述的具体方案与协议。
+
+47
+00:04:44,313 --> 00:04:49,133
+It should not be transferred unchanged to an arbitrary robot, room, or later checkpoint.
+不能把它原封不动转移到任意机器人、房间，或者后续权重版本。
+
+48
+00:04:49,493 --> 00:04:55,433
+Use the paper's comparison to form a hypothesis, then test that hypothesis under your own matched conditions.
+用论文比较形成假设，再在自己的匹配条件下检验假设。
+
+49
+00:04:56,125 --> 00:05:01,910
+Eight successes in ten trials and eighty in one hundred both produce an observed eighty percent.
+十次成功八次，与一百次成功八十次，观测成功率都是百分之八十。
+
+50
+00:05:01,925 --> 00:05:06,985
+They do not provide the same amount of evidence about the underlying success probability.
+但对于真实成功概率，它们提供的证据量并不相同。
+
+51
+00:05:07,385 --> 00:05:13,865
+Report the numerator and denominator, variation across seeds or resets, and an appropriate uncertainty estimate.
+应报告成功次数与总次数、不同种子或重置间的变化，以及合适的不确定性估计。
+
+52
+00:05:14,225 --> 00:05:20,610
+Do not quietly remove crashes, timeouts, or operator rescues unless the protocol explicitly excludes them.
+除非协议明确排除，否则不能悄悄删除崩溃、超时，或者人工救场。
+
+53
+00:05:20,625 --> 00:05:26,265
+For repeated trials in the same environment, consider whether outcomes are sufficiently independent.
+在相同环境中重复试验时，还要考虑结果是否具有足够独立性。
+
+54
+00:05:26,725 --> 00:05:31,305
+A polished percentage becomes useful only when the underlying trial accounting is visible.
+只有底层试验账目清楚可见，一个漂亮百分比才真正有用。
+
+55
+00:05:31,977 --> 00:05:37,377
+To test whether an action expert helps, compare systems that differ in that relevant ingredient.
+检验动作专家是否有帮助时，应比较在这个相关组件上存在差异的系统。
+
+56
+00:05:37,917 --> 00:05:44,517
+If data, model size, training budget, and control frequency all change, attribution becomes ambiguous.
+如果数据、模型规模、训练预算和控制频率都改变，归因就会变得模糊。
+
+57
+00:05:44,977 --> 00:05:52,177
+Ablations can examine language conditioning, pretraining, action representation, chunk execution, or a gradient boundary.
+消融可以检验语言条件、预训练、动作表示、动作块执行，或者梯度边界。
+
+58
+00:05:52,537 --> 00:05:58,342
+Knowledge Insulation provides a concrete example where stopping one gradient path is the hypothesis of interest.
+知识隔离提供了具体例子：关注的假设，是截断某一条梯度路径的作用。
+
+59
+00:05:58,357 --> 00:06:02,777
+Keep the comparison close enough that the resulting difference speaks to that mechanism.
+应让比较条件足够接近，使结果差异能够说明该机制的作用。
+
+60
+00:06:03,157 --> 00:06:08,637
+When complete matching is impossible, state the confound rather than attaching all credit to one component.
+如果无法完全匹配，应说明混杂因素，而不是把所有功劳都归给一个组件。
+
+61
+00:06:09,304 --> 00:06:14,524
+A policy can succeed often but move so slowly that few tasks finish in an hour.
+一个策略可以经常成功，却因为动作太慢，每小时只能完成少量任务。
+
+62
+00:06:15,204 --> 00:06:20,004
+Another may move quickly but fail frequently, making raw movement speed a poor summary.
+另一个可能动作很快，却频繁失败，因此单看运动速度也不合适。
+
+63
+00:06:20,424 --> 00:06:25,464
+Throughput counts completed useful work per unit time under a specified operating protocol.
+吞吐量衡量的是：在指定运行协议下，单位时间完成多少有效工作。
+
+64
+00:06:25,944 --> 00:06:32,024
+The time denominator may include resets, recovery, and assistance, so its definition must be explicit.
+时间分母可能包含重置、恢复与协助，因此必须明确其定义。
+
+65
+00:06:32,644 --> 00:06:37,229
+RECAP and real-time chunking motivate measuring reliability and task duration together.
+RECAP 与实时动作分块，都说明可靠性和任务时长应放在一起测量。
+
+66
+00:06:37,244 --> 00:06:43,604
+This remains separate from action-generation throughput, which counts model outputs rather than completed tasks.
+这仍然不同于动作生成吞吐量，后者统计模型输出，而不是已完成任务。
+
+67
+00:06:44,151 --> 00:06:49,031
+Return to our running example and turn it into a repeatable disturbance test.
+回到贯穿课程的例子，把它变成可重复的扰动测试。
+
+68
+00:06:49,451 --> 00:06:54,191
+Specify the cup displacement, the phase of the reach, and the allowed correction interval.
+明确杯子位移、伸手动作的阶段，以及允许的纠正区间。
+
+69
+00:06:54,431 --> 00:06:59,451
+Record when the new image was captured and when the robot first changed its physical command.
+记录新图像何时采集，以及机器人何时首次改变物理指令。
+
+70
+00:06:59,651 --> 00:07:05,531
+Compare scheduling strategies using the same underlying policy whenever that intervention is technically valid.
+在技术条件允许时，使用同一个策略比较不同调度方式。
+
+71
+00:07:05,851 --> 00:07:09,956
+Then separate failure to notice the change from failure to act on it quickly enough.
+接着区分：没有发现变化，还是发现后没有足够快地行动。
+
+72
+00:07:09,971 --> 00:07:16,751
+This test connects feedback theory, action queues, and practical task success without inventing a benchmark result.
+这个测试把反馈、动作队列和实际任务成功连接起来，同时不虚构基准结果。
+
+73
+00:07:17,317 --> 00:07:22,477
+A policy asks what action to take given the current context and desired task.
+策略追问的是：给定当前上下文与目标任务，应该采取什么动作？
+
+74
+00:07:22,917 --> 00:07:27,577
+An action-conditioned world model asks what may happen if a particular action is taken.
+带动作条件的世界模型追问：如果采取某个动作，接下来可能发生什么？
+
+75
+00:07:28,117 --> 00:07:34,077
+A system can use predicted consequences to select goals or compare candidate plans before executing.
+系统可以利用预测结果，在执行之前选择目标，或者比较候选计划。
+
+76
+00:07:34,557 --> 00:07:39,817
+But generating a convincing future image does not prove that the robot can physically realize it.
+但是，生成一幅逼真的未来图像，并不能证明机器人能够在物理上实现它。
+
+77
+00:07:40,097 --> 00:07:47,037
+The pi-zero-point-seven architecture illustrates one connection through contextual subgoals while retaining an action policy.
+π0.7 的架构展示了通过上下文子目标连接两者的方式，同时仍保留动作策略。
+
+78
+00:07:47,417 --> 00:07:52,997
+The world-model course develops prediction and planning in detail; here we preserve the interface boundary.
+世界模型课程会详细展开预测与规划，这里先保留二者的接口边界。
+
+79
+00:07:53,603 --> 00:07:59,523
+A useful report begins with the task contract and the exact system version under evaluation.
+有用的报告，首先写明任务约定，以及被评估系统的确切版本。
+
+80
+00:08:00,203 --> 00:08:07,003
+Then list each baseline's observations, action format, training access, adaptation, and execution schedule.
+随后列出各基线的观测、动作格式、训练数据权限、适配，以及执行时序。
+
+81
+00:08:07,623 --> 00:08:13,883
+Present strict success, partial progress, latency, and throughput in separate columns with clear denominators.
+把严格成功、部分进展、延迟和吞吐量，放在不同列中，并明确分母。
+
+82
+00:08:14,403 --> 00:08:20,408
+Keep representative failures alongside successes and connect every claimed mechanism to an appropriate ablation.
+保留有代表性的成功与失败，并让每个机制主张对应合适的消融实验。
+
+83
+00:08:20,423 --> 00:08:26,523
+Our cup example then becomes a small reproducible study rather than another isolated demonstration.
+这样，杯子例子就成为一个小型可复现研究，而不只是又一段孤立演示。
+
+84
+00:08:27,263 --> 00:08:32,383
+This is how model knowledge becomes the infrastructure needed to build and improve real robotic systems.
+这就是如何把模型知识，转化为构建和改进真实机器人系统所需要的认知基础。

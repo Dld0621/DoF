@@ -1,0 +1,419 @@
+﻿1
+00:00:00,850 --> 00:00:07,170
+Robot foundation policies did not develop along one straight line from small models to large ones.
+机器人基础策略，并不是沿着从小模型到大模型的一条直线发展。
+
+2
+00:00:07,650 --> 00:00:14,670
+Some work improves robot-specific architectures; some transfers semantic knowledge from pretrained vision-language models.
+有些工作改进机器人专用架构，有些则迁移预训练视觉语言模型的语义知识。
+
+3
+00:00:15,090 --> 00:00:21,670
+Others emphasize reusable robot data, flexible action interfaces, efficient adaptation, or learning from deployment.
+还有一些重视可复用机器人数据、灵活动作接口、高效适配，或者从部署中继续学习。
+
+4
+00:00:22,190 --> 00:00:27,230
+We will organize the major models by those decisions rather than by one headline success rate.
+我们将根据这些决定组织主要模型，而不是按一个醒目的成功率排名。
+
+5
+00:00:27,610 --> 00:00:32,670
+The same cup task will serve as a reference, while each paper keeps its own experimental scope.
+同一个杯子任务作为理解参照，同时每篇论文保留自己的实验适用范围。
+
+6
+00:00:32,990 --> 00:00:37,970
+Our comparison distinguishes published mechanisms from capabilities that still need local testing.
+比较时，我们会区分已发表机制，以及仍需在本地验证的能力。
+
+7
+00:00:38,574 --> 00:00:45,914
+RT-1 combines language-conditioned image processing with a Transformer that predicts discretized robot actions.
+RT-1 将语言条件图像处理，与预测离散机器人动作的 Transformer 结合。
+
+8
+00:00:46,414 --> 00:00:52,134
+In the original diagram, a sentence embedding modulates visual features before token reduction.
+原图中，句子嵌入先调制视觉特征，随后再压缩视觉 token。
+
+9
+00:00:52,834 --> 00:00:58,094
+TokenLearner reduces the visual representation before temporal information reaches the Transformer.
+TokenLearner 减少视觉表示的大小，然后时间信息进入 Transformer。
+
+10
+00:00:58,514 --> 00:01:04,439
+This design places emphasis on efficient control from a substantial, diverse robot demonstration dataset.
+这个设计强调：通过规模较大且多样的机器人示范数据，实现高效控制。
+
+11
+00:01:04,454 --> 00:01:10,754
+Its pretrained visual and language components do not make it the same recipe as adapting a large VLM.
+它使用预训练视觉和语言组件，但这不等于直接适配大型 VLM 的方案。
+
+12
+00:01:11,294 --> 00:01:15,954
+The distinction matters when asking where a model's semantic knowledge and motor competence originate.
+追问模型的语义知识和运动能力来自哪里时，这个区分十分重要。
+
+13
+00:01:16,700 --> 00:01:23,560
+RT-2 asks whether a pretrained vision-language model can directly produce low-level robot actions.
+RT-2 追问：预训练视觉语言模型，能否直接产生底层机器人动作？
+
+14
+00:01:24,040 --> 00:01:30,160
+It represents actions using token strings and co-fine-tunes on robot data and web vision-language tasks.
+它把动作表示为 token 字符串，并共同微调机器人数据与网络视觉语言任务。
+
+15
+00:01:30,600 --> 00:01:35,900
+The paper studies versions derived from PaLI-X and PaLM-E rather than one universal architecture.
+论文研究的是来自 PaLI-X 和 PaLM-E 的不同版本，而不是一个通用架构。
+
+16
+00:01:36,420 --> 00:01:41,745
+Semantic transfer can help select an object described through a concept absent from robot demonstrations.
+语义迁移可以帮助选择用某个概念描述的物体，即使机器人示范中未出现该概念。
+
+17
+00:01:41,760 --> 00:01:47,480
+That does not imply the robot acquired an entirely new physical skill solely by reading the web.
+但这并不意味着机器人仅靠阅读网络，就学会了全新的物理技能。
+
+18
+00:01:47,820 --> 00:01:51,620
+The learned action repertoire still depends on the robot training distribution.
+学习到的动作能力，仍然取决于机器人训练数据的分布。
+
+19
+00:01:52,331 --> 00:01:59,011
+Open X-Embodiment gathers robot datasets under a common format and studies cross-embodiment training.
+Open X-Embodiment 用统一格式汇集机器人数据集，并研究跨形态训练。
+
+20
+00:01:59,451 --> 00:02:05,671
+RT-1-X and RT-2-X apply that broader data mixture to related policy architectures.
+RT-1-X 和 RT-2-X 把更广泛的数据混合用于相关策略架构。
+
+21
+00:02:06,251 --> 00:02:11,731
+The important variable is not just the model name, but which robot experiences entered training.
+重要变量不只是模型名字，还包括哪些机器人的经验进入了训练。
+
+22
+00:02:12,211 --> 00:02:17,536
+A skill observed on one platform may help another when relevant visual and action structure transfers.
+如果相关视觉和动作结构能够迁移，一个平台上的技能可能帮助另一个平台。
+
+23
+00:02:17,551 --> 00:02:25,231
+However, standardizing file formats does not erase differences in grippers, coordinates, controllers, or cameras.
+但是，统一文件格式，并不会消除夹爪、坐标、控制器或相机的差异。
+
+24
+00:02:25,891 --> 00:02:31,931
+Cross-embodiment transfer is therefore something to measure, not a consequence guaranteed by concatenating datasets.
+所以跨形态迁移需要测量，而不是把数据集拼在一起就必然发生。
+
+25
+00:02:32,692 --> 00:02:39,532
+OpenVLA adapts a pretrained Prismatic vision-language model into an openly released robot policy.
+OpenVLA 将预训练 Prismatic 视觉语言模型，适配成开放发布的机器人策略。
+
+26
+00:02:39,952 --> 00:02:45,132
+Its architecture combines DINOv2 and SigLIP visual features with a Llama language backbone.
+它的架构结合 DINOv2、SigLIP 视觉特征，以及 Llama 语言主干。
+
+27
+00:02:45,632 --> 00:02:51,792
+The original release predicts discretized action tokens and decodes them into continuous robot commands.
+原始版本预测离散动作 token，再把它们解码成连续机器人指令。
+
+28
+00:02:52,212 --> 00:02:57,937
+The study also examines adaptation to new setups, including parameter-efficient fine-tuning.
+研究还检验了对新配置的适配，包括参数高效微调。
+
+29
+00:02:57,952 --> 00:03:04,832
+Unlike RT-2's co-fine-tuning recipe, its main robot adaptation uses robot action data alone.
+与 RT-2 的共同微调方案不同，其主要机器人适配阶段仅使用机器人动作数据。
+
+30
+00:03:05,152 --> 00:03:09,912
+This is a useful example of why shared terminology can conceal different training choices.
+这个例子说明，相同术语背后，可能藏着不同的训练选择。
+
+31
+00:03:10,490 --> 00:03:17,050
+Octo starts from the needs of a reusable generalist robot policy rather than a large conversational model.
+Octo 从可复用通用机器人策略的需求出发，而不是从大型对话模型出发。
+
+32
+00:03:17,530 --> 00:03:22,450
+It accepts task descriptions through language or goal images and supports observation histories.
+它可以通过语言或目标图像接收任务描述，也支持观测历史。
+
+33
+00:03:22,950 --> 00:03:29,230
+The original architecture separates observation tokenizers, a Transformer backbone, and action readouts.
+原始结构将观测编码器、Transformer 主干，以及动作读出模块分开。
+
+34
+00:03:29,730 --> 00:03:36,530
+A diffusion action head models action chunks, while adaptation can introduce new sensors or action spaces.
+扩散动作头建模动作块，而适配时可以引入新传感器或动作空间。
+
+35
+00:03:36,630 --> 00:03:42,090
+Follow the lower half of the figure: some interfaces change while the pretrained core remains reusable.
+看原图下半部分：部分接口发生变化，但预训练核心仍可复用。
+
+36
+00:03:42,650 --> 00:03:47,330
+This makes interface flexibility a first-class design objective rather than an afterthought.
+这让接口灵活性成为首要设计目标，而不是事后补丁。
+
+37
+00:03:47,891 --> 00:03:54,171
+SmolVLA combines a compact pretrained vision-language model with a flow-matching action expert.
+SmolVLA 将紧凑的预训练视觉语言模型，与流匹配动作专家结合。
+
+38
+00:03:54,531 --> 00:04:00,811
+It reduces computation through choices such as fewer visual tokens and using intermediate backbone layers.
+它通过减少视觉 token、使用主干中间层等选择，降低计算量。
+
+39
+00:04:01,031 --> 00:04:05,711
+The paper's main model contains approximately four hundred fifty million parameters.
+论文中的主要模型，大约包含四亿五千万个参数。
+
+40
+00:04:05,971 --> 00:04:12,551
+Its robot pretraining uses curated community datasets, followed by adaptation for the evaluated settings.
+其机器人预训练采用筛选后的社区数据集，然后针对评估配置进行适配。
+
+41
+00:04:12,891 --> 00:04:17,276
+The accompanying asynchronous system separates model inference from action execution.
+配套的异步系统，将模型推理与动作执行分开。
+
+42
+00:04:17,291 --> 00:04:23,791
+Small parameter count can improve accessibility, but does not alone determine real robot latency or success.
+较小参数量可以降低使用门槛，但不能单独决定真实机器人的延迟或成功率。
+
+43
+00:04:24,480 --> 00:04:30,480
+Pi-zero augments a pretrained vision-language backbone with a separate continuous-action expert.
+π0 在预训练视觉语言主干上，加入独立的连续动作专家。
+
+44
+00:04:31,140 --> 00:04:37,100
+That expert generates action chunks through flow matching, conditioned on images, language, and robot state.
+该专家根据图像、语言和机器人状态，通过流匹配生成动作块。
+
+45
+00:04:37,840 --> 00:04:42,900
+Training combines diverse robot experience with subsequent specialization for demanding tasks.
+训练结合多样机器人经验，以及后续针对高难任务的专门训练。
+
+46
+00:04:43,460 --> 00:04:49,765
+This creates two different evaluation questions: what the base policy can do, and what post-training enables.
+由此产生两个不同的评估问题：基础策略能做什么，以及后训练又带来了什么。
+
+47
+00:04:49,780 --> 00:04:55,940
+An impressive folding demonstration should therefore be labeled with its actual training and deployment stage.
+因此，出色的叠衣示范，也应标注实际训练和部署阶段。
+
+48
+00:04:56,540 --> 00:05:01,040
+The presence of a strong language backbone does not replace that physical task experience.
+强大的语言主干，并不能替代这些物理任务经验。
+
+49
+00:05:01,789 --> 00:05:07,789
+Pi-zero-point-five broadens the learning mixture beyond a single kind of robot action supervision.
+π0.5 把学习数据混合扩展到单一机器人动作监督之外。
+
+50
+00:05:08,389 --> 00:05:14,669
+Its original paper combines heterogeneous sources and predicts high-level subtasks as well as low-level actions.
+原论文结合异构数据源，同时预测高层子任务和底层动作。
+
+51
+00:05:15,189 --> 00:05:21,249
+The initial training stage uses discrete action tokens; later training adds continuous action generation.
+初始训练阶段使用离散动作 token，后续训练加入连续动作生成。
+
+52
+00:05:21,649 --> 00:05:26,249
+At execution, a selected subtask helps condition the detailed robot movement.
+执行时，选出的子任务会进一步限定机器人的具体动作。
+
+53
+00:05:26,689 --> 00:05:31,314
+The later knowledge-insulation study refines how the backbone and action expert learn together.
+后续知识隔离研究，进一步改进主干与动作专家的共同学习方式。
+
+54
+00:05:31,329 --> 00:05:36,889
+Keep the original model and that later training recipe distinct when reproducing or comparing results.
+复现或者比较结果时，应区分原始模型和这个后续训练方案。
+
+55
+00:05:37,515 --> 00:05:42,895
+Pi-star-zero-point-six adds a learning loop around the policy through the RECAP method.
+π*0.6 通过 RECAP 方法，在策略外围增加一条继续学习的循环。
+
+56
+00:05:43,295 --> 00:05:49,995
+The system collects autonomous experience and human corrections, then uses reward information to improve behavior.
+系统收集自主执行经验和人工纠正，再利用奖励信息改进行为。
+
+57
+00:05:50,355 --> 00:05:56,875
+A value function helps estimate which actions improve expected progress, supporting advantage-conditioned training.
+价值函数帮助估计哪些动作改善预期进展，从而支持优势条件训练。
+
+58
+00:05:57,115 --> 00:06:02,555
+This goes beyond simply treating every recorded action as an equally desirable imitation target.
+这超出了把每条已记录动作，都当成同样理想的模仿目标。
+
+59
+00:06:02,655 --> 00:06:08,535
+The star identifies the experience-improved policy, so it should not disappear from a comparison label.
+星号表示经过经验改进的策略，因此比较标签中不应把它省掉。
+
+60
+00:06:08,815 --> 00:06:14,775
+Its evaluation includes both reliability and throughput, with human feedback still part of the learning process.
+其评估包含可靠性与吞吐量，同时人工反馈仍然属于学习过程的一部分。
+
+61
+00:06:15,400 --> 00:06:21,140
+Pi-zero-point-seven studies richer ways of steering a generalist policy at inference time.
+π0.7 研究在推理时，用更丰富的信息引导通用策略。
+
+62
+00:06:21,460 --> 00:06:27,240
+Its prompts can include detailed subtask instructions, subgoal images, and episode metadata.
+它的提示可以包含详细子任务指令、子目标图像，以及回合元数据。
+
+63
+00:06:27,860 --> 00:06:34,320
+The architecture also incorporates observation history, rather than relying only on an isolated current image.
+架构也纳入了观测历史，而不只依赖孤立的当前图像。
+
+64
+00:06:34,580 --> 00:06:40,625
+In the original figure, the action policy consumes context produced by humans or additional model components.
+原图中，动作策略接收的上下文，可以来自人类，也可以来自额外模型组件。
+
+65
+00:06:40,640 --> 00:06:46,500
+Richer steering can recombine learned skills, but it does not establish unlimited physical competence.
+更丰富的引导能够重组已学技能，但这不代表无限的物理能力。
+
+66
+00:06:46,880 --> 00:06:51,360
+We reserve the detailed prediction and planning mechanisms for the separate world-model course.
+具体的预测与规划机制，我们留到独立的世界模型课程详细讲解。
+
+67
+00:06:51,909 --> 00:07:00,009
+The original GR00T N1 paper combines a vision-language module with an action-generating diffusion Transformer.
+原始 GR00T N1 论文，将视觉语言模块与生成动作的扩散 Transformer 结合。
+
+68
+00:07:00,629 --> 00:07:07,169
+Its action module uses flow matching, so architectural and training-objective names describe different aspects.
+动作模块采用流匹配，因此架构名称和训练目标名称描述的是不同方面。
+
+69
+00:07:07,709 --> 00:07:12,829
+Embodiment-specific state and action modules handle differences between robot interfaces.
+形态专用的状态与动作模块，处理不同机器人接口之间的差异。
+
+70
+00:07:13,409 --> 00:07:18,674
+The training mixture includes real robot experience and additional human or synthetic data sources.
+训练混合包含真实机器人经验，以及额外的人类或合成数据源。
+
+71
+00:07:18,689 --> 00:07:25,609
+Inspect the green modules in the figure: sharing a foundation does not mean deleting robot-specific adapters.
+注意原图中的绿色模块：共享基础模型，并不意味着删除机器人专用适配器。
+
+72
+00:07:26,169 --> 00:07:30,829
+Results from the original N1 paper must not be relabeled as measurements of a later release.
+原始 N1 论文的结果，也不能改贴成后续版本的测量结果。
+
+73
+00:07:31,527 --> 00:07:38,987
+As of our source check, NVIDIA's official repository presents a later GR00T N1-point-seven release.
+在本次来源核验时，英伟达官方仓库已经展示了较新的 GR00T N1.7 版本。
+
+74
+00:07:39,447 --> 00:07:45,107
+That repository documents a different backbone and updated interfaces from the original N1 paper.
+该仓库记录了不同于原始 N1 论文的主干，以及更新后的接口。
+
+75
+00:07:45,607 --> 00:07:52,127
+OpenVLA-OFT likewise changes the action recipe instead of merely renaming the original OpenVLA checkpoint.
+OpenVLA-OFT 同样改变了动作方案，并非仅仅给原始 OpenVLA 权重改名。
+
+76
+00:07:52,647 --> 00:07:59,732
+Consequently, a reproducible comparison identifies the checkpoint, code revision, action format, and adaptation stage.
+因此，可复现的比较必须标明权重、代码版本、动作格式，以及适配阶段。
+
+77
+00:07:59,747 --> 00:08:03,527
+A familiar family name is not enough to recover those choices.
+一个熟悉的模型家族名字，并不足以还原这些选择。
+
+78
+00:08:04,027 --> 00:08:09,147
+Our companion records pin the sources checked for this course rather than declaring a permanent ranking.
+伴读资料会固定本课程核验的来源，而不是宣布一个永久不变的排名。
+
+79
+00:08:09,863 --> 00:08:15,443
+For our cup task, first diagnose the bottleneck before selecting a model family.
+对于杯子任务，选择模型家族之前，先诊断瓶颈。
+
+80
+00:08:15,963 --> 00:08:22,343
+If language is ignored, investigate grounding and training supervision, not merely faster action sampling.
+如果语言被忽略，应调查语言落地与训练监督，而不只是加快动作采样。
+
+81
+00:08:22,843 --> 00:08:29,483
+If the robot interface changes, examine adaptable inputs, action heads, and available target demonstrations.
+如果机器人接口改变，应检查可适配输入、动作头，以及目标平台示范。
+
+82
+00:08:30,103 --> 00:08:35,488
+If motion becomes stale, investigate the deployment timeline alongside the network architecture.
+如果动作总是过时，应把部署时序与网络架构放在一起分析。
+
+83
+00:08:35,503 --> 00:08:42,123
+If repeated physical errors dominate, consider what corrective experience the training process actually uses.
+如果重复物理错误占主导，就要看训练过程实际利用了哪些纠错经验。
+
+84
+00:08:42,643 --> 00:08:48,063
+The next chapter follows these ideas into data records, supervision, and cross-embodiment training.
+下一章，我们将沿着这些问题，进入数据记录、监督与跨形态训练。

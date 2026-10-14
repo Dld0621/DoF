@@ -1,0 +1,91 @@
+﻿世界模型 06｜什么才算有效证据？
+World Models 06 · What Counts as Evidence?
+
+Decide what the model is being tested for / 先决定到底在测试什么
+A world model can pass one test and fail another: it may predict convincing images while choosing poor actions. Start by separating representation quality, future prediction, and the performance of the controller using those predictions. For our cup task, the final application asks whether the robot completes the requested transfer under defined conditions. Intermediate scores explain what happened, but they do not replace that outcome. This chapter builds a protocol from collected data through prediction tests to complete physical execution.
+世界模型可能通过一项测试，却在另一项失败：它可以预测可信图像，却选出糟糕动作。首先区分表示质量、未来预测，以及使用这些预测的控制器表现。在杯子任务中，最终应用关心的是机器人能否在规定条件下完成要求的转移。中间指标用来解释发生了什么，但不能替代最终结果。这一章从采集数据、预测测试，一直建立到完整物理执行的评测协议。
+https://arxiv.org/abs/2301.04104v2
+https://arxiv.org/abs/2310.16828v2
+https://arxiv.org/abs/2506.09985v1
+
+Record the actual transition interface / 记录实际的状态转移接口
+A useful robot transition record contains synchronized observations, the executed command, its duration, and relevant robot state. Keep coordinate frames, units, action limits, camera calibration, and timestamps with the data. The command requested by a policy may differ from the command applied after clipping, interpolation, or a controller override. Training on the wrong one teaches the model a misleading action-to-outcome relationship. For video-only data, explicitly record that calibrated robot actions are unavailable rather than silently inventing them.
+一条有用的机器人转移记录包含同步观测、实际执行指令、持续时间，以及相关机器人状态。同时保存坐标系、单位、动作限制、相机标定和时间戳。策略请求的指令，可能不同于经过裁剪、插值或控制器覆盖后实际施加的指令。用错了其中一个，就会教给模型错误的动作与结果关系。对于纯视频数据，应明确记录缺少校准机器人动作，而不是悄悄编造动作。
+https://proceedings.mlr.press/v205/wu23c.html
+https://arxiv.org/abs/2506.09985v1
+
+Ground truth depends on the question / 真值取决于你问的问题
+The next recorded camera frame is a target for predicting that sensor observation, including its noise and occlusions. It is not automatically ground truth for every hidden physical variable. Object pose may require calibrated tracking, contact may require suitable measurements or annotations, and task success needs an explicit event definition. Simulation can expose state and contact variables that a physical camera cannot directly observe. Keep those privileged labels separate from the information available to the deployed controller.
+记录的下一张相机图像，可以作为该传感器观测的预测目标，其中也包含噪声与遮挡。它并不自动成为所有隐藏物理变量的真值。物体位姿可能需要标定跟踪，接触可能需要合适的测量或标注，任务成功则需要明确的事件定义。仿真可以提供物理相机无法直接观察的状态与接触变量。应把这些额外真值标签，与部署控制器能够获得的信息分开。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://proceedings.mlr.press/v205/wu23c.html
+https://arxiv.org/abs/2310.16828v2
+
+One recorded future is not every counterfactual / 一条记录，不包含所有反事实
+A logged transition tells us what followed the action that was actually executed. It does not reveal what the same scene would have done under every alternative command. Counterfactual evaluation needs additional interventions, repeatable resets, or a separately validated simulator, with their assumptions made explicit. Real resets are imperfect: friction, grasp position, and object velocity may change between trials. Use repeated conditions and report that variability instead of presenting a single alternative prediction as verified physical truth.
+一条转移记录告诉我们，实际执行某个动作之后发生了什么。它并不会揭示，同一场景在所有其他指令下会怎样发展。反事实评估需要额外干预、可重复重置，或经过独立验证的仿真器，并明确各自假设。真实重置并不完美，摩擦、抓握位置与物体速度可能在试验间变化。应重复测试条件并报告变化，而不是把单次替代预测写成已验证的物理真相。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2506.09985v1
+
+Split episodes before testing generalization / 测试泛化之前，先分好数据
+Split data by complete trajectories and by the generalization question you actually care about. Random neighboring frames from one recording can make train and test sets nearly identical. For the cup example, separate familiar scenes from new objects, camera positions, lighting, and action ranges. Keep validation decisions separate from the final held-out test, and disclose any adaptation on the target setup. Generalization is a relationship between training and test distributions, not a property established by one impressive demonstration.
+按完整轨迹划分数据，并围绕真正关心的泛化问题划分。同一录像中随机抽取的相邻帧，可能让训练集与测试集几乎相同。在杯子例子中，应区分熟悉场景与新物体、新相机位置、新光照及新动作范围。让验证阶段的选择与最终保留测试分开，并披露是否在目标配置上进行适配。泛化描述的是训练分布与测试分布的关系，而不是一次精彩演示就能确立的性质。
+https://arxiv.org/abs/2506.09985v1
+https://arxiv.org/abs/2310.16828v2
+
+Do not let the training loss certify itself / 不能让训练损失替自己证明优势
+A representation can improve on its own training objective without improving the task that motivated it. The first Dreamer compared representation objectives through the performance of the resulting controller, as this original figure shows. That result belongs to its architecture and tasks; it does not prove reconstruction is always necessary. When comparing latent models, avoid declaring victory only on a distance measured by the same learned encoder being optimized. Add independent physical or downstream measurements wherever the application permits.
+一种表示可以在自己的训练目标上进步，却没有改善最初希望解决的任务。第一版 Dreamer 通过最终控制器的表现比较表示目标，原图展示的就是这种实验。结果属于其架构与任务，并不证明重建在所有情况下都必要。比较潜在模型时，不应仅凭正在优化的同一编码器所测距离就宣布胜出。在应用允许时，应补充独立物理测量或下游指标。
+https://arxiv.org/abs/1912.01603v3
+https://arxiv.org/abs/2310.16828v2
+
+Test recursive prediction at several horizons / 在多个时域测试递推预测
+Fix a context window, mark where observations stop, then predict forward using the recorded future actions. At each horizon, compare the predictions with held-out observations or available state labels. Do not quietly reinsert the true next image at every step and call that a long open-loop rollout. The original Dreamer prediction figure distinguishes context frames from model-generated future frames. Report errors around contact changes as well as averages, because a short critical failure can disappear inside a long easy sequence.
+固定上下文窗口，标明观测停止的位置，再使用记录的未来动作向前预测。在各个预测时域，把预测与保留观测或可用状态标签比较。不要每一步悄悄重新输入真实下一帧，却把它叫作长期开环推演。Dreamer 的原预测图区分了上下文帧与模型生成的未来帧。除了平均误差，还应报告接触变化附近的错误，因为短暂而关键的失败可能淹没在长段简单序列里。
+https://arxiv.org/abs/2301.04104v2
+
+Uncertainty needs a distributional test / 不确定性需要分布层面的测试
+A single observed future cannot tell us whether every other predicted future was impossible. Evaluate a probabilistic model with measures appropriate to its output, such as likelihoods when meaningful or coverage over held-out repeated outcomes. Wide intervals can cover many outcomes while providing little useful precision, so report their width as well. Our interactive linear-system example has a known noise model and an analytical reference distribution. Its displayed coverage is a teaching result, not calibration evidence for Dreamer or a physical robot.
+只观察到一个未来，并不能说明模型预测的所有其他未来都不可能。应使用适合其输出的指标评估概率模型，例如有意义的似然，或保留重复结果中的覆盖率。很宽的区间可能覆盖许多结果，却缺少有用精度，因此也应报告区间宽度。交互式线性系统例子拥有已知噪声模型与解析参考分布。其中显示的覆盖率是教学结果，并不是 Dreamer 或物理机器人的校准证据。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2301.04104v2
+
+Image quality and control quality answer different questions / 图像质量与控制质量回答不同问题
+Pixel errors, perceptual distances, and video-distribution scores describe aspects of generated observations. They do not directly measure whether the cup was grasped, transported, placed, and released correctly. Conversely, a task-oriented model may support useful control without ever generating a detailed image. TD-MPC2's separate visual-control figure measures episode return on ten image-based simulation tasks, rather than a photorealism score. Keep the metric name, input type, environment, and trial budget attached to every reported number.
+像素误差、感知距离与视频分布分数，描述生成观测的不同方面。它们并不直接测量杯子是否被正确抓住、运送、放置并释放。反过来，任务导向模型即使从不生成精细图像，也可能支持有效控制。TD-MPC2 的独立视觉控制图，测量十个图像输入仿真任务的回合回报，而不是照片真实感分数。每一个报告数值，都应附带指标名称、输入类型、环境，以及试验预算。
+https://arxiv.org/abs/2310.16828v2
+https://arxiv.org/abs/2506.09985v1
+
+Define success over the complete event / 把成功定义覆盖完整事件
+For a proposed cup-transfer benchmark, define the sequence before running any method: grasp, lift, transport, place, release, and remain stable. Specify the required tolerances and observation period instead of changing them after seeing results. A brief lift does not count as complete placement, and a human rescue should remain visible in the record. DayDreamer's arm figure reports its own objects-per-minute task measure, which illustrates why the actual success and throughput definitions matter.
+对于拟议的杯子转移基准，应在运行方法之前定义过程：抓握、抬起、运送、放置、释放，并保持稳定。应规定容差与观察时长，而不是看到结果后再修改。短暂抬起不能算完整放置，人工救援也应保留在记录中。DayDreamer 的机械臂图报告了自己的每分钟物体数指标，说明实际成功与吞吐定义为何重要。
+https://proceedings.mlr.press/v205/wu23c.html
+
+Compare information and computation fairly / 公平比较信息与计算资源
+Match observations, action space, control rate, data access, and task definitions before comparing architectures. Report training compute separately from decision-time compute, including candidate counts, planning iterations, and end-to-end latency. A state-based simulator baseline receives different information from a camera-only physical controller. An oracle-state baseline can still be informative if it is clearly labeled as privileged. V-JEPA 2-AC's reported planning latency shows why inference hardware and search settings belong beside task results rather than in an omitted footnote.
+比较架构之前，先匹配观测、动作空间、控制频率、可用数据与任务定义。把训练计算与决策计算分开报告，包括候选数量、规划迭代次数，以及端到端延迟。基于仿真状态的基线，与只用相机的物理控制器接收的信息不同。只要明确标为使用额外信息，真值状态基线仍然可以提供参考。V-JEPA 2-AC 报告的规划延迟说明，推理硬件与搜索设置应放在任务结果旁，而不是被省略的脚注里。
+https://arxiv.org/abs/2506.09985v1
+https://arxiv.org/abs/2310.16828v2
+
+Build a baseline ladder that answers questions / 建立能回答问题的基线阶梯
+Start prediction tests with simple baselines: repeat the latest observation, extrapolate measured motion, and remove action conditioning where that ablation is meaningful. These reveal whether the learned model uses actions and history rather than exploiting a mostly static dataset. For control, compare the same policy with and without model assistance, then vary one component at a time. Use matched budgets where possible and explicitly report remaining differences. An ablation is useful because it isolates a question, not because adding more rows automatically makes the evaluation rigorous.
+预测测试先从简单基线开始：重复最新观测、外推测得的运动，并在有意义时移除动作条件。它们揭示模型是否真正利用动作与历史，而不是利用数据大部分静止的特点。控制方面，比较同一策略有无模型辅助，再逐项改变组件。尽量匹配预算，并明确报告剩余差异。消融的价值在于隔离问题，而不是多加几行结果就自动让评估严谨。
+https://arxiv.org/abs/1912.01603v3
+https://arxiv.org/abs/2310.16828v2
+https://arxiv.org/abs/2506.09985v1
+
+Keep failures in the denominator / 让失败留在分母里
+Save every trial identifier, initial condition, action trace, prediction trace, outcome, and intervention reason. Separate perception failures, wrong dynamics, misleading task scores, solver delays, and controller execution errors. A successful-only video collection removes the very cases needed to understand reliability. Report completed trials, exclusions with reasons, variation across seeds or conditions, and uncertainty appropriate to the sample size. For generated training data, preserve the filtering rule and rejected examples too, because selection changes the distribution that the final policy learns from.
+保存每次试验编号、初始条件、动作轨迹、预测轨迹、结果与干预原因。区分感知失败、动力学错误、任务评分误导、求解延迟，以及控制执行错误。只收录成功视频，会删掉理解可靠性最需要的案例。报告完整试验、剔除理由、种子或条件间变化，以及与样本量相符的不确定性。对于生成训练数据，也应保留筛选规则和被拒样本，因为筛选会改变最终策略所学的数据分布。
+https://proceedings.mlr.press/v205/wu23c.html
+https://arxiv.org/abs/2310.16828v2
+https://arxiv.org/abs/2506.09985v1
+https://arxiv.org/abs/2505.12705v2
+
+A useful model earns its place in the loop / 有用的模型，要在闭环里证明价值
+There is no single ranking that combines a video generator, a latent planner, and a policy trained in imagination across unrelated tasks. State-of-the-art claims only make sense inside a specified dataset, input interface, budget, metric, and evaluation procedure. For your robot, begin with the simplest measurable baseline, identify the failure that matters, and add a world model where it can address that failure. Then test the complete loop, including the cases where its predictions are wrong.
+不存在一个可以跨无关任务，把视频生成器、潜在规划器与想象训练策略合并比较的统一排名。最先进结果的说法，只有放在明确数据集、输入接口、预算、指标与评估过程里才有意义。对自己的机器人，应从最简单且可测量的基线开始，找出关键失败，再在能够改善它的位置加入世界模型。然后测试完整闭环，也包括预测错误的情况。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2301.04104v2
+https://arxiv.org/abs/2310.16828v2
+https://arxiv.org/abs/2506.09985v1

@@ -1,0 +1,14 @@
+﻿00:00 这是一张路线图，不是总排行榜 / A family tree, not a leaderboard
+00:38 RT-1：构建可扩展的机器人策略 / RT-1: make a scalable robot policy
+01:16 RT-2：把动作接进 VLM 的词汇 / RT-2: actions become part of a VLM vocabulary
+01:52 RT-X：在不同机器人之间共享经验 / RT-X: sharing experience across embodiments
+02:32 OpenVLA：开放的 VLM 适配路线 / OpenVLA: an accessible VLM adaptation route
+03:10 Octo：灵活输入与动作头 / Octo: flexible inputs and action heads
+03:47 SmolVLA：紧凑且开放的路线 / SmolVLA: a compact and open route
+04:24 π0：通过流匹配生成连续动作 / Pi-zero: continuous control through flow matching
+05:01 π0.5：异构监督信号 / Pi-zero-point-five: heterogeneous supervision
+05:37 π*0.6：从部署经验中继续学习 / Pi-star-zero-point-six: learn from deployments
+06:15 π0.7：更丰富的引导上下文 / Pi-zero-point-seven: richer steering context
+06:51 GR00T：共享表示与形态适配器 / GR00T: shared representations and embodiment adapters
+07:31 版本变化会改变比较对象 / Versions change the object being compared
+08:09 从瓶颈出发选择路线 / Choose a route by the bottleneck

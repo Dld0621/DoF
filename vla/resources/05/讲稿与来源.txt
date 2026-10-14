@@ -1,0 +1,82 @@
+﻿VLA 05｜机器人必须及时反应时
+VLA 05 · When the Robot Must React
+
+The world does not pause during inference / 模型推理时，世界不会暂停
+The cup moves while the model is still processing the previous image. Even a correct prediction for that image may now describe the wrong physical situation. Real-time deployment asks when information was captured, when actions were generated, and when they execute. These timestamps connect computation to the changing world around the robot. A policy that performs well with paused simulation can behave differently when physical time keeps running. We therefore treat timing as part of the deployed policy, not a cosmetic performance statistic.
+模型仍在处理上一帧图像时，杯子已经移动了。即使对那幅图像的预测是正确的，也可能已经不适用于当前物理情境。实时部署要追问：信息何时采集、动作何时生成，以及何时执行。这些时间戳，把计算过程与机器人周围持续变化的世界连接起来。在暂停式仿真中表现良好的策略，在物理时间持续流逝时，可能表现不同。因此，我们把时序视为部署策略的一部分，而不是装饰性的性能指标。
+https://www.pi.website/download/real_time_chunking.pdf
+https://arxiv.org/abs/2506.01844
+
+Add the delays that actually occur / 把真正发生的延迟加起来
+Consider a simplified serial example with forty milliseconds of capture and preprocessing delay. Suppose inference then takes one hundred twenty milliseconds, followed by eighty milliseconds in an action queue. The first resulting command uses information that is already two hundred forty milliseconds old. This sum is a teaching example, not a latency measurement of any named model. In an asynchronous system, some intervals overlap, so the real timing diagram must determine the calculation. Reporting only neural-network inference time would miss important sources of delayed correction.
+考虑一个简化的串行例子：采集和预处理延迟四十毫秒。假设推理再用一百二十毫秒，之后又在动作队列中等待八十毫秒。最终第一条指令使用的信息，就已经是二百四十毫秒之前的了。这个加法是教学例子，不是对任何一个模型的延迟测量。在异步系统中，部分区间会重叠，因此必须根据真实时间图进行计算。只报告神经网络推理时间，会漏掉影响延迟纠正的重要来源。
+https://www.pi.website/download/real_time_chunking.pdf
+
+Synchronous chunking creates pauses / 同步动作分块会产生停顿
+A simple synchronous system predicts a chunk, executes it, and then waits for the next prediction. During this waiting interval, the robot may stop even when demonstrations contained smooth continuous motion. That pause changes the physical trajectory and can matter for dynamic contact or moving objects. Increasing the execution horizon can reduce how often the system pauses, but prolongs open-loop commitment. Shortening it can improve opportunities for feedback while increasing inference demands. This is a deployment tradeoff, not something solved by choosing the word chunking.
+简单同步系统先预测一个动作块，执行它，然后等待下一次预测。在等待区间内，即使示范动作是平滑连续的，机器人也可能停下来。停顿改变了物理轨迹，对于动态接触或运动物体，可能产生重要影响。增加执行时域，可以减少停顿次数，却也会延长不接受新反馈的执行承诺。缩短执行时域，可以增加接受反馈的机会，但也会增加推理需求。这是部署中的权衡，不是选用动作分块这个术语就能解决的问题。
+https://www.pi.website/download/real_time_chunking.pdf
+https://arxiv.org/abs/2506.01844
+
+Asynchronous inference overlaps computation and motion / 异步推理让计算与动作重叠
+In an asynchronous system, the robot executes queued actions while another process predicts future ones. SmolVLA's original diagram separates the robot client from the policy server. A new observation is sent before the current queue empties, allowing inference to overlap execution. When the response arrives, the system must align it with the actions that remain relevant. Otherwise, a numerically valid chunk may start from a state the robot has already left. Asynchrony removes some waiting, but does not erase observation age or guarantee smooth switching.
+在异步系统中，机器人执行排队动作，同时另一个进程预测后续动作。SmolVLA 原图把机器人客户端与策略服务器分开。在当前队列清空前发送新观测，让推理与执行发生重叠。响应到达时，系统必须把它与仍然有效的后续动作对齐。否则，一个数值上有效的动作块，可能仍从机器人已经离开的状态出发。异步消除了一部分等待，但不会消除观测年龄，也不保证切换平滑。
+https://arxiv.org/abs/2506.01844
+
+Convert inference delay into committed steps / 把推理延迟换算成已确定执行的步数
+Use another teaching example: a controller runs at fifty updates per second. Each action step occupies twenty milliseconds, and inference takes one hundred twenty milliseconds. Roughly six queued steps will execute while that inference is running. If a new prediction describes those same timestamps, their values are no longer freely replaceable. The system should distinguish executed history, committed near-future actions, and a still-editable future suffix. That distinction makes queue management a temporal consistency problem rather than a simple list append.
+再用一个教学例子：控制器每秒更新五十次。每个动作步占用二十毫秒，模型推理需要一百二十毫秒。于是，在这次推理期间，大约有六个排队动作步会被执行。如果新预测涉及这些相同时间戳，它们的数值就不再能够自由替换。系统应区分已执行历史、已确定执行的近期动作，以及仍可修改的未来后缀。这种区分，让队列管理成为时间一致性问题，而不只是向列表追加元素。
+https://www.pi.website/download/real_time_chunking.pdf
+
+RTC conditions the next chunk on its committed prefix / RTC 让下一段适应已确定执行的前缀
+Real-time chunking treats generation of the next action chunk as a constrained inpainting problem. The near-future prefix is guided by actions that will execute before inference can finish. The remaining suffix can adapt to the latest observation, including the moved cup. The original timeline shows stronger guidance near committed actions and weaker guidance farther into the future. This encourages compatible chunk transitions while retaining room for new corrections. It is a specific inference method for diffusion or flow policies, not a universal cure for all latency.
+实时动作分块，把下一段动作的生成视为带约束的补全问题。近期前缀由推理完成前就会执行的动作引导。其余后缀则能够适应最新观测，包括被挪动的杯子。原始时间图显示：已确定执行动作附近引导更强，越远的未来引导越弱。这样既鼓励动作块平滑衔接，又为新的纠正保留空间。这是针对扩散或流策略的具体推理方法，并不是所有延迟问题的通用解药。
+https://www.pi.website/download/real_time_chunking.pdf
+
+Measure the whole stack, including the tail / 测量完整系统，也看延迟尾部
+Measure capture-to-command delay, action throughput, and task duration as different quantities. Record the robot, inference hardware, numerical precision, camera resolution, and batch size. Also record chunk length, executed steps, network transport, and whether model inputs are cached. A low average latency can hide occasional stalls that break contact or empty the action queue. Inspect the latency distribution and missed deadlines, not only the best warmed-up inference call. Parameter count alone cannot recover any of these operational measurements.
+把采集到指令的延迟、动作吞吐量，以及任务时长，作为不同的量测量。记录机器人、推理硬件、数值精度、相机分辨率，以及批大小。还要记录动作块长度、执行步数、网络传输，以及模型输入是否缓存。较低平均延迟，可能掩盖偶发停顿；这些停顿会破坏接触，或者耗尽动作队列。应检查延迟分布和错过的期限，而不仅是预热后最好的一次推理。仅靠参数量，无法还原这些运行测量。
+https://www.pi.website/download/real_time_chunking.pdf
+https://arxiv.org/abs/2502.19645
+
+Camera-only control still needs a robot interface / 仅用摄像头，也仍需机器人接口
+For a camera-only human interface, we can observe the operator without gloves or wearable trackers. That choice describes human observation; it does not remove the robot's joint encoders or controller. Nor does every VLA automatically turn visible human motion into a desired robot action. A direct autonomous policy follows its task conditioning, while teleoperation requires an additional intent interface. If camera motion is used for demonstrations, its estimates must be mapped into the recorded action contract. Keep these modes separate when designing an experiment or labeling a demonstration.
+对于仅用摄像头的人类界面，可以不戴手套或跟踪器，直接观察操作者。这个选择描述的是人类观测，并不会移除机器人的关节编码器或控制器。也并不是每个 VLA 都会自动把可见人类动作，转换成所需机器人动作。直接自主策略遵循其任务条件，而遥操作需要额外的意图接口。如果用相机观察运动来采集示范，其估计必须映射到记录动作的接口约定。设计实验或标注演示时，应把这些运行模式分清楚。
+https://arxiv.org/abs/2403.12945
+https://arxiv.org/abs/2405.12213
+
+Diagnose failures at the correct layer / 在正确层级诊断失败
+When the robot misses the cup, inspect the full chain before blaming the action generator. Did the instruction identify the intended cup, and did the image contain enough evidence to locate it? Were action units and frames correct, and did the controller track the decoded reference? Was the reference current, or was it based on an observation captured before the cup moved? Finally, did physical contact fail despite an apparently appropriate reaching motion? These questions produce different interventions and prevent one failure label from hiding several causes.
+机器人抓空杯子时，先检查完整链路，不要立刻归咎于动作生成器。指令是否指定了正确杯子，图像是否提供了足够的定位证据？动作单位与坐标是否正确，控制器是否追踪了解码后的参考？参考是否仍然有效，还是来自杯子移动之前采集的观测？最后，即使接近动作看起来合适，真实接触是否仍然失败？这些问题对应不同改进措施，避免一个失败标签掩盖多种原因。
+https://arxiv.org/abs/2406.09246
+https://www.pi.website/download/real_time_chunking.pdf
+
+Recovery should be a measured capability / 恢复能力应当被专门测量
+A selected author video can show that recovery happened, but cannot tell us how reliably it happens. The OpenVLA example shown here contains a reattempt after an unsuccessful interaction with a cup. It is useful qualitative evidence, with the original playback speed clearly labeled. To measure recovery, define the disturbance, when it occurs, the allowed time, and the success condition. Then repeat trials under comparable resets and retain both successful and failed outcomes. A retry that eventually drops the cup is not a successful recovery merely because it looked adaptive.
+原作者精选视频可以展示恢复曾经发生，却不能说明恢复有多可靠。这里的 OpenVLA 例子，展示了一次杯子交互不顺利之后的重新尝试。它是有价值的定性证据，我们会清楚标出原片播放速度。要测量恢复，应定义扰动内容、发生时刻、允许时间，以及成功条件。随后在可比重置条件下重复试验，并保留成功与失败结果。一次重试如果最终摔落杯子，不能因为看起来有适应性，就算作成功恢复。
+https://arxiv.org/abs/2406.09246
+
+Operational boundaries belong outside fluent narration / 流畅解说之外，还要有运行边界
+A deployed system needs explicit behavior when observations disappear, inference stalls, or commands become invalid. Depending on the hardware and task, that may involve a controlled hold, abort, or operator intervention. Those choices should be implemented and tested with the actual controller rather than inferred from model confidence. A confident token prediction is not a calibrated estimate of collision risk or grasp stability. Log when an intervention occurs and count its role in the evaluation protocol. Otherwise, an apparently autonomous rollout can quietly depend on unreported assistance.
+部署系统需要明确规定：观测丢失、推理停顿，或者指令无效时，该怎么做。根据硬件和任务不同，可能采取受控保持、中止，或者人工介入。这些选择应在真实控制器上实现和测试，而不是从模型置信度推断。高置信度 token 预测，并不是经过校准的碰撞风险或抓取稳定性估计。发生介入时应记录下来，并在评估协议中明确它的角色。否则，看似自主的运行，可能悄悄依赖了未报告的帮助。
+https://www.pi.website/download/real_time_chunking.pdf
+https://arxiv.org/abs/2403.12945
+
+Adapt with evidence from the actual failure distribution / 针对实际失败分布进行适配
+If failures repeatedly occur after the cup moves, additional static demonstrations may not address the cause. First check timing and interfaces, then collect data covering the relevant correction or recovery states. Supervised fine-tuning can learn from corrected demonstrations, but unsuccessful experience needs appropriate treatment. RECAP provides an example of using value and advantage information alongside experience and human corrections. The original learning-loop figure separates data collection, value learning, and policy improvement. This is an additional training procedure, not a capability that appears merely by turning on logging.
+如果失败总发生在杯子移动之后，增加静态示范未必能解决原因。应先检查时序和接口，再收集覆盖相关纠正或恢复状态的数据。监督微调可以学习纠正示范，而失败经验则需要合适的处理方式。RECAP 展示了如何把价值与优势信息，同执行经验和人工纠正结合。原始学习循环图，区分了数据收集、价值学习，以及策略改进。这是一套额外训练流程，不是打开日志记录就会自动出现的能力。
+https://arxiv.org/abs/2406.09246
+https://www.pi.website/download/pistar06.pdf
+
+Stage the transition from inference to a task / 把推理到任务完成之间的阶段分开
+Producing a finite action tensor is an interface check, not proof of a successful robot task. Playback against recorded observations can reveal gross errors, but does not expose closed-loop distribution shift. A simulator can exercise the control loop under its assumptions, which still differ from physical hardware. Real execution then tests contact, sensing, delays, and disturbances together. A short lift establishes less than transporting, placing, and releasing the cup at the requested location. Label each stage precisely so progress remains useful without overstating completion.
+产生有限数值的动作张量，是接口检查，不是机器人任务成功的证明。对录制观测回放，可以发现明显错误，却无法暴露闭环分布偏移。仿真可以在其假设下运行控制环，但这些假设仍与物理硬件不同。真实执行随后把接触、感知、延迟和扰动放在一起检验。短暂提起杯子所证明的内容，少于把它搬运、放置并释放到指定位置。准确标记每个阶段，才能让进展有用，又不夸大完成程度。
+https://arxiv.org/abs/2405.12213
+https://arxiv.org/abs/2406.09246
+
+Close the loop with a measured system / 用可测量的系统真正闭环
+Our moved-cup example now has a complete deployment explanation. The observation arrives with an age, the model produces a timed chunk, and the queue commits actions. The controller realizes those references, while new measurements create opportunities for correction. Failures become diagnostic data only when we record enough information to locate their cause. A deployable model is therefore a model plus interfaces, scheduling, and a verified operating procedure. The final chapter asks how to compare that complete system fairly against meaningful baselines.
+到这里，被挪动杯子的例子，已经有了一套完整部署解释。观测到达时已有一定年龄，模型生成带时间关系的动作块，队列再确定执行。控制器执行这些参考，同时新测量带来纠正机会。只有记录足够信息来定位原因，失败才会变成有诊断价值的数据。所以，可部署模型实际上包含模型、接口、调度，以及经过验证的运行流程。最后一章，我们将讨论如何把这个完整系统，与有意义的基线公平比较。
+https://www.pi.website/download/real_time_chunking.pdf
+https://arxiv.org/abs/2506.01844
+https://www.pi.website/download/pistar06.pdf

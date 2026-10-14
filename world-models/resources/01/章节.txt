@@ -1,0 +1,14 @@
+﻿00:00 机器人行动之前 / Before the robot moves
+00:31 一张图像，不等于完整状态 / An image is not the full state
+00:59 历史观测改变判断 / History changes what the robot knows
+01:29 动作必须有明确含义 / An action needs an exact meaning
+02:01 未来可能是一种分布 / The future may be a distribution
+02:32 先看清预测图的条件 / Read a prediction figure carefully
+03:02 重建与预测回答不同问题 / Reconstruction asks a different question
+03:36 用紧凑状态承载预测 / A compact state can carry the prediction
+04:08 预测来自转移数据 / Predictions are learned from transitions
+04:41 一条路线：行动前搜索 / One route searches before acting
+05:14 另一条路线：在想象中训练策略 / Another route trains a policy in imagination
+05:46 实体机器人证据从哪里开始 / Where the physical evidence starts
+06:17 闭环修正，也要知道模型边界 / Close the loop without trusting it blindly
+06:49 接下来，逐层打开世界模型 / The map for the next five chapters

@@ -1,0 +1,89 @@
+﻿世界模型 02｜模型内部究竟存了什么？
+World Models 02 · What Lives Inside the Model?
+
+What should the model remember? / 模型应该记住什么？
+Our cup is moving, but the model has limited memory and computation. It could preserve every pixel, track explicit position and velocity, or compress the scene into learned features. These choices determine which changes are easy to predict and which details might disappear. A representation is useful because of the information it keeps for future decisions, not because its numbers look interpretable. We will now follow the information through the model one step at a time.
+杯子正在运动，但模型的记忆和计算资源有限。它可以保留每个像素，跟踪明确的位置与速度，也可以把场景压缩成学习到的特征。这些选择决定哪些变化容易预测，哪些细节可能消失。一种表示是否有用，取决于它为未来决策保留了什么信息，而不是这些数字看起来是否容易解释。现在，我们沿着信息流动的路径，一步一步打开模型。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2310.16828v2
+
+Geometry is one possible state description / 几何是一种状态描述
+An explicit model might store the cup pose, object velocity, and the robot configuration in known coordinates. A mesh or point cloud provides geometric information, while additional variables describe motion and contact. This structure can make collision queries and debugging convenient, but perception must estimate the required quantities. Missing mass or friction still creates a modeling problem even if the mesh is very detailed. An explicit representation therefore moves some difficulty into estimation; it does not remove uncertainty by itself.
+显式模型可以在已知坐标系中保存杯子位姿、物体速度和机器人构型。网格或点云提供几何信息，另外的变量描述运动与接触。这种结构便于碰撞查询和调试，但感知系统必须估计出所需的量。即使网格非常精细，缺少质量或摩擦信息仍然会造成建模问题。因此，显式表示只是把一部分困难移到了状态估计，并不会自行消除不确定性。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://proceedings.mlr.press/v205/wu23c.html
+
+A latent vector is learned storage / 潜变量是学习出来的信息容器
+A latent representation replaces some hand-designed variables with a vector learned from data. The encoder maps an observation into this internal space, where nearby values need not correspond to nearby physical positions. Training decides which distinctions remain useful: moving versus stationary, grasped versus released, or different expected rewards. Small vectors allow many future trajectories to be computed without repeatedly generating large images. The cost is that an apparently smooth latent transition can conceal a physically important error.
+潜在表示用从数据中学到的向量，替代部分人工设计的变量。编码器把观测映射到内部空间；其中数值相近，不一定代表物理位置相近。训练决定哪些差异值得保留，例如运动与静止、抓住与松开，或者不同的预期奖励。紧凑向量让系统能够计算大量未来轨迹，而不用反复生成大幅图像。代价是，看起来平滑的潜空间转移，也可能隐藏着重要的物理错误。
+https://arxiv.org/abs/1912.01603v3
+https://arxiv.org/abs/2310.16828v2
+
+Memory and uncertainty play different roles / 记忆与不确定性承担不同任务
+The recurrent state-space model, or RSSM, combines a deterministic memory with stochastic latent variables. The memory carries information forward from previous states and actions, such as evidence that our cup was already sliding. The stochastic part represents alternatives that remain after accounting for that history. In the original comparison, a purely deterministic recurrent model and a purely stochastic model are distinct design choices. Combining them is a modeling decision, not proof that every hidden physical variable has been recovered.
+递归状态空间模型，简称 RSSM，把确定性的记忆与随机潜变量结合起来。记忆把先前状态和动作的信息带到后面，例如杯子之前已经在滑动的证据。随机部分表示在考虑历史后仍然存在的不同可能性。在原论文的比较中，纯确定性递归模型与纯随机模型是不同设计。把两者结合，是一种建模选择，并不证明所有隐藏物理变量都已经恢复。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+
+Posterior: update with the actual observation / 后验：用真实观测更新
+At the next real camera frame, the model first carries its previous memory forward using the executed action. It then combines that prediction with the new observation to infer a posterior state. If the cup moved less than expected, the observation can correct the internal estimate instead of blindly continuing the old forecast. This is a state-estimation update; it does not automatically change all the neural-network parameters. Updating the current belief and training the model weights happen through different operations and often at different rates.
+下一张真实相机图像到来时，模型先利用已执行的动作，把之前的记忆向前推进。随后结合这一步预测与新观测，推断后验状态。如果杯子移动得比预期少，观测可以纠正内部估计，而不是盲目延续旧预测。这是状态估计的更新，并不意味着神经网络的所有参数都会立刻改变。更新当前状态判断与训练模型权重，是不同操作，往往也采用不同频率。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2301.04104v2
+https://proceedings.mlr.press/v205/wu23c.html
+
+Prior: continue without seeing the answer / 先验：没有新画面也要继续预测
+During an imagined rollout, the next real observation is unavailable because the action has not happened yet. The model must sample or predict a prior latent state using only its memory and the proposed action history. That predicted state becomes input to the next imagined step, which makes multi-step errors possible. Feeding recorded future images back into every step tests observation-conditioned estimation instead of this harder open-loop prediction. Always mark the exact point where real observations stop and model-generated states take over.
+在想象轨迹中，下一个真实观测并不存在，因为动作还没有发生。模型只能根据记忆和提出的动作历史，采样或预测先验潜在状态。这个预测状态又成为下一步想象的输入，因此误差可能逐步累积。每一步都重新输入录像中的未来图像，测试的是受观测条件约束的估计，而不是更难的开环预测。必须标明：真实观测在哪一步停止，模型生成状态从哪里开始接替。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2301.04104v2
+
+Three prediction heads answer three questions / 三个预测头回答三个问题
+From its internal state, Dreamer can reconstruct observations, predict reward, and predict whether an episode continues. Reconstruction asks what the sensors would see; reward asks how the task scores this situation. Continuation estimates whether future rewards should still count beyond this transition under the environment termination rules. For the cup task, a good-looking reconstruction can coexist with an incorrect prediction that a slipping grasp will succeed. Evaluate the heads separately because their errors affect the policy through different routes.
+Dreamer 可以从内部状态重建观测、预测奖励，并预测一个回合是否继续。重建回答传感器会看到什么；奖励回答任务如何评价当前情况。继续信号根据环境的终止规则，估计这次转移之后的未来奖励是否还应计入。在杯子任务里，重建图像看起来很好，也可能同时错误预测滑动中的抓握会成功。这些预测头应分别评估，因为它们通过不同路径影响策略。
+https://arxiv.org/abs/2301.04104v2
+https://www.nature.com/articles/s41586-025-08744-2
+
+Why reconstruct at all? / 为什么还要重建？
+A reconstruction objective forces the internal state to retain information that explains the observed inputs. Without informative objectives, an encoder could output nearly identical features for every scene and make prediction trivially easy. However, preserving all visible detail may spend capacity on backgrounds or textures that do not matter for control. Decoder-free approaches such as TD-MPC2 instead train representations through quantities and consistency losses relevant to their control objective. Removing pixel reconstruction changes the learning problem; it does not remove the need to preserve task-relevant distinctions.
+重建目标要求内部状态保留能够解释观测输入的信息。缺少有信息量的目标时，编码器可能为每个场景输出几乎相同的特征，让预测变得毫无意义地简单。但是，保存所有可见细节，也可能把模型容量耗在与控制无关的背景或纹理上。TD-MPC2 等无解码器方法，则通过与控制目标相关的量和一致性损失来训练表示。移除像素重建改变了学习问题，却没有免除保留任务相关差异的要求。
+https://arxiv.org/abs/2301.04104v2
+https://arxiv.org/abs/2310.16828v2
+
+Make the prior and posterior compatible / 让先验与后验彼此匹配
+The posterior has access to an observation that the prior does not see. A divergence term trains the prior to predict states that the observation-informed posterior would produce. The same family of objectives also encourages representations that the dynamics model can predict. These pressures must be balanced: overly simple representations can lose information, while an inaccurate prior makes imagination unreliable. DreamerV2 and V3 use carefully separated gradient paths and balancing choices rather than treating every component as an interchangeable prediction loss.
+后验可以访问先验看不到的观测。散度项训练先验，让它能够预测后验根据观测推断出的状态。同类目标还会鼓励形成动力学模型能够预测的表示。两种压力需要平衡：表示过于简单会丢失信息，先验不准确则会让想象不可靠。DreamerV2 和 V3 使用经过区分的梯度路径与平衡设计，而不是把所有部分当作可互换的预测损失。
+https://arxiv.org/abs/2010.02193
+https://arxiv.org/abs/2301.04104v2
+https://www.nature.com/articles/s41586-025-08744-2
+
+What changed across Dreamer generations? / Dreamer 各代改变了什么？
+The original Dreamer learns behavior through imagined latent trajectories, using continuous stochastic latent variables. DreamerV2 introduces categorical latent variables and balancing techniques, with strong results in its Atari evaluation setting. A categorical latent code is internal model storage; it does not mean the physical robot must use discrete joint commands. DreamerV3 adds robustness techniques for different scales of inputs, rewards, and returns across diverse task domains. These are changes to a complete learning system, so comparison requires matching the full training and evaluation setup.
+最初的 Dreamer 使用连续随机潜变量，通过想象中的潜在轨迹学习行为。DreamerV2 引入类别型潜变量与平衡技术，并在其 Atari 评测设置中取得较好结果。类别型潜编码是模型内部的信息存储方式，并不意味着实体机器人必须使用离散关节指令。DreamerV3 增加了面向不同输入、奖励和回报尺度的稳定训练设计，以适应多种任务领域。这些变化属于完整学习系统，因此比较时要对齐整套训练与评测配置。
+https://arxiv.org/abs/1912.01603v3
+https://arxiv.org/abs/2010.02193
+https://arxiv.org/abs/2301.04104v2
+https://www.nature.com/articles/s41586-025-08744-2
+
+Two sources of uncertainty / 不确定性的两种来源
+The cup may slide differently because the process varies, or because the model has not learned this material well. The first concerns variability that remains given the available information; the second concerns missing knowledge in the learned predictor. A stochastic latent model can represent multiple futures without necessarily telling us which uncertainty source caused the spread. An ensemble can reveal disagreement between fitted models, but agreement does not establish correctness outside the training distribution. Confidence needs its own held-out calibration test before it guides high-consequence decisions.
+杯子滑动不同，可能是过程存在变化，也可能是模型还不了解这种材质。前者涉及给定可用信息后仍然存在的变化；后者涉及学习到的预测器缺少知识。随机潜变量模型可以表示多个未来，却不一定能说明这种分散来自哪一类不确定性。集成模型能够揭示多个拟合模型之间的分歧，但它们达成一致，也不能证明在训练分布之外预测正确。在用置信度支持后果重大的决策前，需要独立的留出数据校准测试。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+
+One-step accuracy can hide drift / 单步准确，也可能长期漂移
+Imagine a small bias that makes every predicted push move the cup slightly too far. One-step evaluation may show a modest error because each prediction starts from a real observed state. An open-loop rollout repeatedly uses its own output, so the position bias changes the conditions for later contacts. Once a contact is missed, the error may grow abruptly rather than increase smoothly with horizon. Plot error against physical prediction time, and compare corrected rollouts with uncorrected ones under the same action sequence.
+假设模型存在微小偏差，让每次预测推动都把杯子移得稍远一点。单步评测可能只显示小误差，因为每次预测都从真实观测状态开始。开环滚动预测反复使用自身输出，因此位置偏差会改变后续接触的条件。一旦漏掉接触，误差可能突然放大，而不是随着预测长度平滑增长。应按实际预测时间绘制误差，并在相同动作序列下比较有观测校正与无校正的轨迹。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/2301.04104v2
+
+Choose information for the task / 围绕任务选择保留的信息
+For reaching toward a visible cup, approximate position may be enough to choose a useful first motion. For lifting a slippery cup, the model may need contact, gripper state, and recent motion to distinguish success from failure. For pouring, orientation and the changing contents become relevant even when the external shape barely changes. There is no single representation whose usefulness follows from its name alone. Define the decisions and measurements first, then test whether the chosen state supports those decisions on held-out situations.
+对于靠近可见杯子的动作，近似位置可能足以选择有用的第一步。对于抬起易滑杯子，模型可能需要接触、夹爪状态与近期运动，才能区分成功和失败。对于倒水，朝向和内部液体变化变得重要，即使外部形状几乎没有变化。不存在一种仅凭名称就能保证有用的表示。应先定义决策与测量，再测试所选状态能否在留出场景中支持这些决策。
+https://proceedings.mlr.press/v205/wu23c.html
+https://arxiv.org/abs/2310.16828v2
+
+From internal state to a decision / 从内部状态走向决策
+We can now describe the model without using the vague phrase that it understands physics. Specify what it observes, how it remembers history, which future variables it predicts, and how those predictions are trained. Then inspect where uncertainty and prediction error enter the chain. The next chapter turns these predictions into actions through trajectory search, terminal values, and actors trained inside the model. The same learned state can support different decision procedures, with different online compute costs and different failure modes.
+现在，我们可以不用“理解物理”这种模糊说法来描述模型。应说明它观测什么、怎样记住历史、预测哪些未来变量，以及这些预测如何训练。接着检查不确定性和预测误差从链路的哪里进入。下一章通过轨迹搜索、终端价值，以及在模型中训练的策略，把这些预测转变成动作。同一套学习状态可以支持不同决策过程，它们的在线计算成本和失败方式也会不同。
+https://proceedings.mlr.press/v97/hafner19a/hafner19a.pdf
+https://arxiv.org/abs/1912.01603v3
+https://arxiv.org/abs/2310.16828v2

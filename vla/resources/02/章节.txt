@@ -1,0 +1,14 @@
+﻿00:00 先有动作空间，再选解码方式 / The action space comes before the decoder
+00:35 连续动作与离散编码 / Continuous actions and discrete codes
+01:11 八个分箱的数值例子 / An eight-bin worked example
+01:43 自回归按顺序预测编码 / Autoregression predicts codes in sequence
+02:18 FAST 利用时间结构压缩动作 / FAST compresses time structure
+02:53 压缩率不等于策略能力 / Compression is not intelligence
+03:29 动作块组织时间上的行为 / Chunks organize behavior through time
+04:03 回归也是必须认真比较的基线 / Regression is a serious baseline
+04:42 为什么多个合理动作会让平均变危险 / Why several valid motions complicate averaging
+05:15 扩散逐步修正含噪动作序列 / Diffusion refines a noisy action sequence
+05:50 把流匹配理解成一个速度场 / Flow matching as a velocity field
+06:23 不用口号比较生成器 / Compare generators without slogans
+07:00 已经进入执行队列的动作块 / The chunk that was already committed
+07:33 根据真实任务选择表示 / Choose the representation for the actual task

@@ -18,9 +18,9 @@
   const dialog=$('#watch-dialog'),player=$('#player');
   let active=null,variant=null,opener=null,seekOnLoad=null,lastStore=0,toastTimer;
   const routes={
-    foundations:{label:'foundationsLabel',ids:['infra-01','infra-02','infra-03','paper-16','paper-01','paper-02']},
+    foundations:{label:'foundationsLabel',ids:['course-world-models','infra-01','infra-02','infra-03','paper-16','paper-01','paper-02']},
     teleoperation:{label:'teleoperationLabel',ids:['course-retargeting','infra-04','infra-05','paper-35','paper-03','paper-04','paper-05','paper-06','paper-32','paper-34']},
-    policy:{label:'policyLabel',ids:['paper-07','paper-08','paper-09','paper-29','paper-18','paper-23','paper-25']}
+    policy:{label:'policyLabel',ids:['course-vla','paper-07','paper-08','paper-09','paper-29','paper-18','paper-23','paper-25']}
   };
   const preferred=x=>x.variants.find(v=>v.type==='deep')||x.variants[0];
   const shortDuration=x=>Math.min(...x.variants.map(v=>v.duration));

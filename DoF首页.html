@@ -9,7 +9,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="DoF">
   <meta property="og:title" content="DoF — Embodied AI, Understood">
-  <meta property="og:description" content="41 个主题，52 个视频。用原论文、真实演示和逐步推演理解具身智能。Explore the bilingual DoF learning library.">
+  <meta property="og:description" content="43 个主题，64 个视频。用原论文、真实演示和逐步推演理解具身智能。Explore the bilingual DoF learning library.">
   <meta property="og:url" content="https://dld0621.github.io/DoF/">
   <meta property="og:image" content="https://dld0621.github.io/DoF/assets/brand-poster.png">
   <meta property="og:locale" content="zh_CN">
@@ -20,7 +20,7 @@
   <header class="site-header">
     <a class="wordmark" href="#" aria-label="返回 DoF 首页" data-i18n-aria-label="homeAria">DoF <span>LEARNING LIBRARY</span></a>
     <a class="brand" href="#" aria-label="DoF 首页" data-i18n-aria-label="brandAria"><img src="assets/logo.png" alt="DoF Embodied AI"></a>
-    <div class="header-actions"><nav aria-label="主导航" data-i18n-aria-label="navAria"><a href="/DoF/retargeting/" data-i18n="courseLink">系统课程</a><a href="#library" data-series="paper">Paper</a><a href="#library" data-series="infra">Infra</a><a href="https://github.com/Dld0621/Embodied-AI-Paper-Analysis" target="_blank" rel="noopener">GitHub ↗</a></nav><div class="language-switch" role="group" aria-label="Language / 语言"><button type="button" data-lang="zh" aria-label="切换到中文" aria-pressed="true">中文</button><button type="button" data-lang="en" aria-label="Switch to English" aria-pressed="false">EN</button></div></div>
+    <div class="header-actions"><nav aria-label="主导航" data-i18n-aria-label="navAria"><a href="#courses" data-i18n="courseLink">系统课程</a><a href="#library" data-series="paper">Paper</a><a href="#library" data-series="infra">Infra</a><a href="https://github.com/Dld0621/Embodied-AI-Paper-Analysis" target="_blank" rel="noopener">GitHub ↗</a></nav><div class="language-switch" role="group" aria-label="Language / 语言"><button type="button" data-lang="zh" aria-label="切换到中文" aria-pressed="true">中文</button><button type="button" data-lang="en" aria-label="Switch to English" aria-pressed="false">EN</button></div></div>
   </header>
   <main>
     <section class="hero" aria-labelledby="hero-title">
@@ -33,7 +33,7 @@
       <div class="hero-art"><img src="assets/brand-poster.png" alt="DoF 品牌视觉：人手与机器人手相接，连接智能与物理世界" data-i18n-alt="heroAlt"><div class="art-caption"><span>INTELLIGENCE IN ACTION</span><span>OPEN · COLLABORATE · EMPOWER</span></div></div>
     </section>
     <section id="continue-section" class="continue-section" hidden=""><div class="continue-label" data-i18n="continueLabel">继续上次的探索</div><button id="continue-button" class="continue-button"></button><button id="clear-progress" class="quiet" title="清除继续观看记录" data-i18n="clearProgress" data-i18n-title="clearProgressAria">清除记录</button></section>
-    <section class="course-banner"><div><div class="eyebrow">NEW / DOF FIELD NOTES 001</div><h2 data-i18n="courseBannerTitle">灵巧手重定向，从头讲透。</h2><p data-i18n="courseBannerDescription">六章深度视频 · 28 项方法 · 可操作的几何实验与评测协议</p></div><a href="/DoF/retargeting/" class="button primary" data-i18n="courseBannerAction">进入双语课程 ↗</a></section>
+    <section class="course-index" id="courses"><a class="course-index-card" href="/DoF/retargeting/"><span class="eyebrow">DOF FIELD NOTES / 01</span><h2 data-i18n="course_retarget_title">灵巧手重定向</h2><p data-i18n="course_retarget_desc">坐标、几何 baseline、接触、执行与公平评测。</p><span class="text-link" data-i18n="courseBannerAction">进入双语课程 ↗</span></a><a class="course-index-card" href="/DoF/vla/"><span class="eyebrow">DOF FIELD NOTES / 02</span><h2 data-i18n="course_vla_title">视觉·语言·动作模型</h2><p data-i18n="course_vla_desc">六章深度视频 · 三个交互机制实验</p><span class="text-link" data-i18n="courseBannerAction">进入双语课程 ↗</span></a><a class="course-index-card" href="/DoF/world-models/"><span class="eyebrow">DOF FIELD NOTES / 03</span><h2 data-i18n="course_wm_title">世界模型</h2><p data-i18n="course_wm_desc">六章深度视频 · 三个交互机制实验</p><span class="text-link" data-i18n="courseBannerAction">进入双语课程 ↗</span></a></section>
     <section class="featured-section" aria-labelledby="featured-title"><div class="section-heading"><div><div class="eyebrow">GO DEEPER</div><h2 id="featured-title" data-i18n="featuredTitle">把一篇论文，真正拆开。</h2></div><span class="section-note" data-i18n="featuredNote">两组深度解读 · 从原理走到实验</span></div><div id="featured-grid" class="featured-grid"></div></section>
     <section id="routes" class="routes-section" aria-labelledby="route-title"><div class="section-heading"><div><div class="eyebrow">A WAY THROUGH</div><h2 id="route-title" data-i18n="routeTitle">从一个问题开始。</h2></div><span class="section-note" data-i18n="routeNote">选择路线，按顺序看下去</span></div><div class="routes">
       <button class="route" data-route="foundations"><span class="route-no" data-i18n="foundations.route-no">01 / 建立认知</span><h3 data-i18n="foundationsh3">机器人怎样理解世界？</h3><p data-i18n="foundationsp">世界模型 → VLA → 三维表示</p><span class="route-bottom" data-i18n="foundations.route-bottom">从 Infra 开始 <b>↗</b></span></button>

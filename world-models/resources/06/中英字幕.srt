@@ -1,0 +1,339 @@
+﻿1
+00:00:00,850 --> 00:00:07,910
+A world model can pass one test and fail another: it may predict convincing images while choosing poor actions.
+世界模型可能通过一项测试，却在另一项失败：它可以预测可信图像，却选出糟糕动作。
+
+2
+00:00:08,350 --> 00:00:14,670
+Start by separating representation quality, future prediction, and the performance of the controller using those predictions.
+首先区分表示质量、未来预测，以及使用这些预测的控制器表现。
+
+3
+00:00:15,230 --> 00:00:22,110
+For our cup task, the final application asks whether the robot completes the requested transfer under defined conditions.
+在杯子任务中，最终应用关心的是机器人能否在规定条件下完成要求的转移。
+
+4
+00:00:22,470 --> 00:00:26,575
+Intermediate scores explain what happened, but they do not replace that outcome.
+中间指标用来解释发生了什么，但不能替代最终结果。
+
+5
+00:00:26,590 --> 00:00:32,650
+This chapter builds a protocol from collected data through prediction tests to complete physical execution.
+这一章从采集数据、预测测试，一直建立到完整物理执行的评测协议。
+
+6
+00:00:33,296 --> 00:00:42,536
+A useful robot transition record contains synchronized observations, the executed command, its duration, and relevant robot state.
+一条有用的机器人转移记录包含同步观测、实际执行指令、持续时间，以及相关机器人状态。
+
+7
+00:00:42,776 --> 00:00:48,636
+Keep coordinate frames, units, action limits, camera calibration, and timestamps with the data.
+同时保存坐标系、单位、动作限制、相机标定和时间戳。
+
+8
+00:00:49,176 --> 00:00:56,336
+The command requested by a policy may differ from the command applied after clipping, interpolation, or a controller override.
+策略请求的指令，可能不同于经过裁剪、插值或控制器覆盖后实际施加的指令。
+
+9
+00:00:56,656 --> 00:01:01,021
+Training on the wrong one teaches the model a misleading action-to-outcome relationship.
+用错了其中一个，就会教给模型错误的动作与结果关系。
+
+10
+00:01:01,036 --> 00:01:08,376
+For video-only data, explicitly record that calibrated robot actions are unavailable rather than silently inventing them.
+对于纯视频数据，应明确记录缺少校准机器人动作，而不是悄悄编造动作。
+
+11
+00:01:08,865 --> 00:01:16,205
+The next recorded camera frame is a target for predicting that sensor observation, including its noise and occlusions.
+记录的下一张相机图像，可以作为该传感器观测的预测目标，其中也包含噪声与遮挡。
+
+12
+00:01:16,745 --> 00:01:20,385
+It is not automatically ground truth for every hidden physical variable.
+它并不自动成为所有隐藏物理变量的真值。
+
+13
+00:01:20,805 --> 00:01:30,125
+Object pose may require calibrated tracking, contact may require suitable measurements or annotations, and task success needs an explicit event definition.
+物体位姿可能需要标定跟踪，接触可能需要合适的测量或标注，任务成功则需要明确的事件定义。
+
+14
+00:01:31,165 --> 00:01:35,890
+Simulation can expose state and contact variables that a physical camera cannot directly observe.
+仿真可以提供物理相机无法直接观察的状态与接触变量。
+
+15
+00:01:35,905 --> 00:01:40,645
+Keep those privileged labels separate from the information available to the deployed controller.
+应把这些额外真值标签，与部署控制器能够获得的信息分开。
+
+16
+00:01:41,297 --> 00:01:46,217
+A logged transition tells us what followed the action that was actually executed.
+一条转移记录告诉我们，实际执行某个动作之后发生了什么。
+
+17
+00:01:46,617 --> 00:01:51,017
+It does not reveal what the same scene would have done under every alternative command.
+它并不会揭示，同一场景在所有其他指令下会怎样发展。
+
+18
+00:01:51,637 --> 00:02:00,637
+Counterfactual evaluation needs additional interventions, repeatable resets, or a separately validated simulator, with their assumptions made explicit.
+反事实评估需要额外干预、可重复重置，或经过独立验证的仿真器，并明确各自假设。
+
+19
+00:02:01,117 --> 00:02:07,097
+Real resets are imperfect: friction, grasp position, and object velocity may change between trials.
+真实重置并不完美，摩擦、抓握位置与物体速度可能在试验间变化。
+
+20
+00:02:07,457 --> 00:02:14,517
+Use repeated conditions and report that variability instead of presenting a single alternative prediction as verified physical truth.
+应重复测试条件并报告变化，而不是把单次替代预测写成已验证的物理真相。
+
+21
+00:02:15,024 --> 00:02:20,844
+Split data by complete trajectories and by the generalization question you actually care about.
+按完整轨迹划分数据，并围绕真正关心的泛化问题划分。
+
+22
+00:02:21,424 --> 00:02:26,004
+Random neighboring frames from one recording can make train and test sets nearly identical.
+同一录像中随机抽取的相邻帧，可能让训练集与测试集几乎相同。
+
+23
+00:02:26,424 --> 00:02:33,064
+For the cup example, separate familiar scenes from new objects, camera positions, lighting, and action ranges.
+在杯子例子中，应区分熟悉场景与新物体、新相机位置、新光照及新动作范围。
+
+24
+00:02:33,504 --> 00:02:39,829
+Keep validation decisions separate from the final held-out test, and disclose any adaptation on the target setup.
+让验证阶段的选择与最终保留测试分开，并披露是否在目标配置上进行适配。
+
+25
+00:02:39,844 --> 00:02:47,184
+Generalization is a relationship between training and test distributions, not a property established by one impressive demonstration.
+泛化描述的是训练分布与测试分布的关系，而不是一次精彩演示就能确立的性质。
+
+26
+00:02:48,013 --> 00:02:54,353
+A representation can improve on its own training objective without improving the task that motivated it.
+一种表示可以在自己的训练目标上进步，却没有改善最初希望解决的任务。
+
+27
+00:02:54,733 --> 00:03:01,973
+The first Dreamer compared representation objectives through the performance of the resulting controller, as this original figure shows.
+第一版 Dreamer 通过最终控制器的表现比较表示目标，原图展示的就是这种实验。
+
+28
+00:03:02,413 --> 00:03:08,273
+That result belongs to its architecture and tasks; it does not prove reconstruction is always necessary.
+结果属于其架构与任务，并不证明重建在所有情况下都必要。
+
+29
+00:03:08,633 --> 00:03:15,278
+When comparing latent models, avoid declaring victory only on a distance measured by the same learned encoder being optimized.
+比较潜在模型时，不应仅凭正在优化的同一编码器所测距离就宣布胜出。
+
+30
+00:03:15,293 --> 00:03:20,193
+Add independent physical or downstream measurements wherever the application permits.
+在应用允许时，应补充独立物理测量或下游指标。
+
+31
+00:03:20,850 --> 00:03:28,310
+Fix a context window, mark where observations stop, then predict forward using the recorded future actions.
+固定上下文窗口，标明观测停止的位置，再使用记录的未来动作向前预测。
+
+32
+00:03:28,970 --> 00:03:34,570
+At each horizon, compare the predictions with held-out observations or available state labels.
+在各个预测时域，把预测与保留观测或可用状态标签比较。
+
+33
+00:03:35,030 --> 00:03:40,390
+Do not quietly reinsert the true next image at every step and call that a long open-loop rollout.
+不要每一步悄悄重新输入真实下一帧，却把它叫作长期开环推演。
+
+34
+00:03:40,950 --> 00:03:46,615
+The original Dreamer prediction figure distinguishes context frames from model-generated future frames.
+Dreamer 的原预测图区分了上下文帧与模型生成的未来帧。
+
+35
+00:03:46,630 --> 00:03:54,930
+Report errors around contact changes as well as averages, because a short critical failure can disappear inside a long easy sequence.
+除了平均误差，还应报告接触变化附近的错误，因为短暂而关键的失败可能淹没在长段简单序列里。
+
+36
+00:03:55,532 --> 00:04:01,292
+A single observed future cannot tell us whether every other predicted future was impossible.
+只观察到一个未来，并不能说明模型预测的所有其他未来都不可能。
+
+37
+00:04:01,872 --> 00:04:10,172
+Evaluate a probabilistic model with measures appropriate to its output, such as likelihoods when meaningful or coverage over held-out repeated outcomes.
+应使用适合其输出的指标评估概率模型，例如有意义的似然，或保留重复结果中的覆盖率。
+
+38
+00:04:10,752 --> 00:04:16,612
+Wide intervals can cover many outcomes while providing little useful precision, so report their width as well.
+很宽的区间可能覆盖许多结果，却缺少有用精度，因此也应报告区间宽度。
+
+39
+00:04:16,932 --> 00:04:22,177
+Our interactive linear-system example has a known noise model and an analytical reference distribution.
+交互式线性系统例子拥有已知噪声模型与解析参考分布。
+
+40
+00:04:22,192 --> 00:04:28,192
+Its displayed coverage is a teaching result, not calibration evidence for Dreamer or a physical robot.
+其中显示的覆盖率是教学结果，并不是 Dreamer 或物理机器人的校准证据。
+
+41
+00:04:28,858 --> 00:04:36,218
+Pixel errors, perceptual distances, and video-distribution scores describe aspects of generated observations.
+像素误差、感知距离与视频分布分数，描述生成观测的不同方面。
+
+42
+00:04:36,918 --> 00:04:42,078
+They do not directly measure whether the cup was grasped, transported, placed, and released correctly.
+它们并不直接测量杯子是否被正确抓住、运送、放置并释放。
+
+43
+00:04:42,518 --> 00:04:48,638
+Conversely, a task-oriented model may support useful control without ever generating a detailed image.
+反过来，任务导向模型即使从不生成精细图像，也可能支持有效控制。
+
+44
+00:04:49,038 --> 00:04:57,623
+TD-MPC2's separate visual-control figure measures episode return on ten image-based simulation tasks, rather than a photorealism score.
+TD-MPC2 的独立视觉控制图，测量十个图像输入仿真任务的回合回报，而不是照片真实感分数。
+
+45
+00:04:57,638 --> 00:05:03,398
+Keep the metric name, input type, environment, and trial budget attached to every reported number.
+每一个报告数值，都应附带指标名称、输入类型、环境，以及试验预算。
+
+46
+00:05:03,945 --> 00:05:13,645
+For a proposed cup-transfer benchmark, define the sequence before running any method: grasp, lift, transport, place, release, and remain stable.
+对于拟议的杯子转移基准，应在运行方法之前定义过程：抓握、抬起、运送、放置、释放，并保持稳定。
+
+47
+00:05:14,065 --> 00:05:19,605
+Specify the required tolerances and observation period instead of changing them after seeing results.
+应规定容差与观察时长，而不是看到结果后再修改。
+
+48
+00:05:19,925 --> 00:05:25,605
+A brief lift does not count as complete placement, and a human rescue should remain visible in the record.
+短暂抬起不能算完整放置，人工救援也应保留在记录中。
+
+49
+00:05:25,945 --> 00:05:33,345
+DayDreamer's arm figure reports its own objects-per-minute task measure, which illustrates why the actual success and throughput definitions matter.
+DayDreamer 的机械臂图报告了自己的每分钟物体数指标，说明实际成功与吞吐定义为何重要。
+
+50
+00:05:33,893 --> 00:05:42,093
+Match observations, action space, control rate, data access, and task definitions before comparing architectures.
+比较架构之前，先匹配观测、动作空间、控制频率、可用数据与任务定义。
+
+51
+00:05:42,753 --> 00:05:50,273
+Report training compute separately from decision-time compute, including candidate counts, planning iterations, and end-to-end latency.
+把训练计算与决策计算分开报告，包括候选数量、规划迭代次数，以及端到端延迟。
+
+52
+00:05:50,753 --> 00:05:56,458
+A state-based simulator baseline receives different information from a camera-only physical controller.
+基于仿真状态的基线，与只用相机的物理控制器接收的信息不同。
+
+53
+00:05:56,473 --> 00:06:01,713
+An oracle-state baseline can still be informative if it is clearly labeled as privileged.
+只要明确标为使用额外信息，真值状态基线仍然可以提供参考。
+
+54
+00:06:02,053 --> 00:06:10,613
+V-JEPA 2-AC's reported planning latency shows why inference hardware and search settings belong beside task results rather than in an omitted footnote.
+V-JEPA 2-AC 报告的规划延迟说明，推理硬件与搜索设置应放在任务结果旁，而不是被省略的脚注里。
+
+55
+00:06:11,301 --> 00:06:21,861
+Start prediction tests with simple baselines: repeat the latest observation, extrapolate measured motion, and remove action conditioning where that ablation is meaningful.
+预测测试先从简单基线开始：重复最新观测、外推测得的运动，并在有意义时移除动作条件。
+
+56
+00:06:22,281 --> 00:06:28,521
+These reveal whether the learned model uses actions and history rather than exploiting a mostly static dataset.
+它们揭示模型是否真正利用动作与历史，而不是利用数据大部分静止的特点。
+
+57
+00:06:28,861 --> 00:06:35,281
+For control, compare the same policy with and without model assistance, then vary one component at a time.
+控制方面，比较同一策略有无模型辅助，再逐项改变组件。
+
+58
+00:06:35,421 --> 00:06:39,526
+Use matched budgets where possible and explicitly report remaining differences.
+尽量匹配预算，并明确报告剩余差异。
+
+59
+00:06:39,541 --> 00:06:46,661
+An ablation is useful because it isolates a question, not because adding more rows automatically makes the evaluation rigorous.
+消融的价值在于隔离问题，而不是多加几行结果就自动让评估严谨。
+
+60
+00:06:47,346 --> 00:06:55,326
+Save every trial identifier, initial condition, action trace, prediction trace, outcome, and intervention reason.
+保存每次试验编号、初始条件、动作轨迹、预测轨迹、结果与干预原因。
+
+61
+00:06:55,726 --> 00:07:03,226
+Separate perception failures, wrong dynamics, misleading task scores, solver delays, and controller execution errors.
+区分感知失败、动力学错误、任务评分误导、求解延迟，以及控制执行错误。
+
+62
+00:07:03,606 --> 00:07:08,611
+A successful-only video collection removes the very cases needed to understand reliability.
+只收录成功视频，会删掉理解可靠性最需要的案例。
+
+63
+00:07:08,626 --> 00:07:17,306
+Report completed trials, exclusions with reasons, variation across seeds or conditions, and uncertainty appropriate to the sample size.
+报告完整试验、剔除理由、种子或条件间变化，以及与样本量相符的不确定性。
+
+64
+00:07:17,706 --> 00:07:26,546
+For generated training data, preserve the filtering rule and rejected examples too, because selection changes the distribution that the final policy learns from.
+对于生成训练数据，也应保留筛选规则和被拒样本，因为筛选会改变最终策略所学的数据分布。
+
+65
+00:07:27,054 --> 00:07:35,694
+There is no single ranking that combines a video generator, a latent planner, and a policy trained in imagination across unrelated tasks.
+不存在一个可以跨无关任务，把视频生成器、潜在规划器与想象训练策略合并比较的统一排名。
+
+66
+00:07:35,994 --> 00:07:43,814
+State-of-the-art claims only make sense inside a specified dataset, input interface, budget, metric, and evaluation procedure.
+最先进结果的说法，只有放在明确数据集、输入接口、预算、指标与评估过程里才有意义。
+
+67
+00:07:44,354 --> 00:07:52,454
+For your robot, begin with the simplest measurable baseline, identify the failure that matters, and add a world model where it can address that failure.
+对自己的机器人，应从最简单且可测量的基线开始，找出关键失败，再在能够改善它的位置加入世界模型。
+
+68
+00:07:52,634 --> 00:07:56,714
+Then test the complete loop, including the cases where its predictions are wrong.
+然后测试完整闭环，也包括预测错误的情况。

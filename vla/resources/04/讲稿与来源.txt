@@ -1,0 +1,87 @@
+﻿VLA 04｜数据、监督与机器人形态
+VLA 04 · Data, Supervision and Embodiment
+
+A demonstration is a synchronized record / 示范是一条同步记录
+A training demonstration is not simply a video with a task title attached. It contains observations, robot state, actions, timestamps, and information about the episode. For our cup task, the learner must know which command corresponds to each observed situation. If image timing and action timing drift apart, a correct demonstration can become misleading supervision. The policy may learn to close the gripper before contact or move toward a previous object position. Data engineering therefore changes the learning problem itself, not just the convenience of loading files.
+训练示范，不只是附带任务标题的一段视频。它包含观测、机器人状态、动作、时间戳，以及回合相关信息。对于杯子任务，学习器必须知道每种观测情境对应哪条指令。如果图像时间与动作时间发生偏移，正确示范也可能变成误导性监督。策略可能学到接触前就闭合夹爪，或者朝物体先前的位置运动。因此，数据工程改变的是学习问题本身，而不只是文件读取是否方便。
+https://arxiv.org/abs/2403.12945
+https://arxiv.org/abs/2310.08864
+
+Commanded actions and measured states differ / 指令动作与实测状态不同
+Suppose a human commands a gripper to move, but contact prevents it from reaching the target. The commanded reference and the measured robot position now describe different quantities. A dataset must specify which quantity is the action label and which is an observation. In ACT's original setup, leader joint positions provide actions while follower joints provide observations. Replacing one with the other can change what the policy learns about effort and contact. The name joint position alone does not resolve this distinction.
+假设操作者要求夹爪移动，但接触阻止它到达目标。此时，指令参考与机器人实测位置，描述的是不同的量。数据集必须说明：哪一个量是动作标签，哪一个量是观测。在 ACT 原始系统中，主手关节位置提供动作，从手机器人关节提供观测。把两者互相替换，可能改变策略对施力和接触的学习。仅仅写着关节位置，并不能解决这种区分。
+https://arxiv.org/abs/2304.13705
+https://arxiv.org/abs/2403.12945
+
+Use a data dictionary before training / 训练之前先建立数据字典
+For every action field, record units, reference frame, absolute or relative meaning, and valid range. Also specify how orientation is encoded and what open or closed means for the gripper. For every camera, record its identity, preprocessing, calibration information when available, and timestamp convention. A wrist camera and a room camera should not silently exchange names between datasets. These definitions make it possible to write adapters that preserve semantics instead of merely tensor shapes. They also make failures reproducible when a new embodiment enters the training mixture.
+对每个动作字段，记录单位、参考系、绝对或相对含义，以及有效范围。还要说明姿态怎样编码，以及夹爪的打开和闭合如何表示。对每个相机，记录身份、预处理、可用标定信息，以及时间戳约定。腕部相机与房间相机，不能在不同数据集中悄悄交换名字。这些定义让适配层能够保留语义，而不只是保证张量形状一致。当新的机器人形态加入训练混合时，它们也有助于复现失败。
+https://arxiv.org/abs/2310.08864
+https://arxiv.org/abs/2405.12213
+
+Normalization must be reversible and versioned / 归一化必须可还原且可追溯
+Many policies normalize action values before learning so coordinates have comparable numerical scales. As a teaching example, divide a displacement by four centimeters to obtain a normalized value. A two-centimeter command becomes zero point five, and decoding must recover the original physical unit. Actual implementations may use statistics, quantiles, clipping, or field-specific rules instead. The saved normalization metadata must match the checkpoint and the selected robot dataset. Applying another dataset's statistics can corrupt otherwise plausible predictions before they reach the controller.
+许多策略会先归一化动作值，让不同坐标具有可比较的数值尺度。举个教学例子：用四厘米去除一个位移，得到归一化数值。两厘米指令变成零点五，而解码必须恢复原来的物理单位。实际实现也可能使用统计量、分位数、裁剪，或者针对不同字段的规则。保存的归一化元数据，必须与权重以及所选机器人数据集匹配。套用另一个数据集的统计量，可能在指令到达控制器前，就破坏看似合理的预测。
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/abs/2501.09747
+
+Shared datasets still contain different bodies / 共享数据集里仍然是不同身体
+The Open X-Embodiment figure shows diversity across robot platforms, scenes, skills, and objects. Those axes are valuable, but they are not interchangeable measures of coverage. Many trajectories on one arm do not equal many distinct embodiments or environments. A common dataset format enables sharing; the policy still needs compatible or adaptable interfaces. When grasp geometry or action semantics differ, naive mixing may create conflicting training targets. We should inspect the actual mixture used by a model rather than inherit the collection's full headline size.
+Open X-Embodiment 原图展示了机器人平台、场景、技能和物体的多样性。这些维度很有价值，但它们不能互相替代，作为覆盖程度的指标。一台机械臂上的大量轨迹，并不等于很多不同机器人形态或环境。统一数据格式支持共享，但策略仍然需要兼容或者可适配的接口。抓取几何或动作语义不同时，朴素混合可能产生互相冲突的训练目标。因此，应检查模型实际使用的数据混合，而不是沿用整个集合的宣传规模。
+https://arxiv.org/abs/2310.08864
+
+A shared platform can isolate environment diversity / 统一平台有助于研究环境多样性
+DROID follows a different emphasis: a shared robot platform collects data in varied real environments. Its original hardware figure shows the arm, gripper, external cameras, wrist camera, and collection equipment. Standardizing hardware reduces some interface variation while retaining diversity in scenes and tasks. The collection system includes wearable teleoperation equipment; that does not define every later policy's input. For a camera-only human interface, our collection method can differ while preserving the robot record contract. Collection hardware, policy observations, and evaluation hardware must be described separately.
+DROID 的重点有所不同：用统一机器人平台，在多样真实环境中收集数据。原始硬件图展示了机械臂、夹爪、外部相机、腕部相机，以及采集设备。统一硬件减少了部分接口差异，同时保留场景和任务的多样性。采集系统包含可穿戴遥操作设备，但这并不规定之后每个策略的输入。如果人类界面只用摄像头，可以改变采集方式，同时保持机器人数据记录约定。采集硬件、策略观测，以及评估硬件，需要分别说明。
+https://arxiv.org/abs/2403.12945
+
+Behavior cloning fits demonstrated decisions / 行为克隆拟合示范中的决策
+Behavior cloning trains the policy to assign high likelihood, or low error, to demonstrated actions. The loss depends on the representation: token likelihood, regression error, or a generative training objective. All are supervised by actions associated with observations in the training data. A lower training loss means better fit under that objective, not necessarily better physical task completion. During deployment, the policy's own errors can produce states that the demonstrations rarely visited. The resulting distribution shift is one reason recovery behavior needs explicit data and evaluation.
+行为克隆让策略对示范动作赋予高概率，或者产生较低预测误差。具体损失取决于表示：token 概率、回归误差，或者生成式训练目标。这些目标都由训练数据中，与观测配对的动作提供监督。较低训练损失表示更好地拟合该目标，并不必然表示物理任务完成得更好。部署时，策略自身的误差可能让系统进入示范中很少出现的状态。这种分布偏移，是恢复行为需要专门数据和评估的一个原因。
+https://arxiv.org/abs/2212.06817
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/abs/2303.04137
+
+Web knowledge and robot experience supervise different things / 网络知识与机器人经验监督不同能力
+Image-text pretraining can teach associations among objects, words, and visual situations. Robot demonstrations connect observations and instructions to executable action sequences on particular bodies. A caption saying grasp the cup does not provide the robot's calibrated joint trajectory. Conversely, a dataset of motions with identical instructions may provide weak supervision for language choice. The pi-zero-point-five figure shows distinct data sources entering different training and inference roles. Understanding these roles is more informative than adding every sample into one undifferentiated data count.
+图文预训练可以学习物体、词语和视觉情境之间的关联。机器人示范则把观测和指令，连接到特定身体上能够执行的动作序列。一句拿起杯子的描述，并不提供机器人经过标定的关节轨迹。反过来，所有指令都相同的动作数据集，对语言选择提供的监督可能很弱。π0.5 原图展示了不同数据源在训练与推理中的不同角色。理解这些角色，比把所有样本加成一个不加区分的数据总数，更有信息量。
+https://arxiv.org/abs/2307.15818
+https://www.pi.website/download/pi05.pdf
+
+Human video does not contain robot ground truth / 人类视频没有直接给出机器人真值
+Human videos can expand coverage of objects and behaviors beyond existing robot demonstrations. But the visible human hand is not a direct measurement of another robot's motor command. A learning system must specify its bridge: visual objectives, estimated motion, latent actions, or another signal. Estimated labels carry the assumptions and errors of the estimation process. In GR00T's heterogeneous training, data sources with different supervision are handled through explicit modeling choices. Calling all such signals ground truth would hide exactly the uncertainty we need to track.
+人类视频可以扩展现有机器人示范之外的物体和行为覆盖。不过，可见的人手，并不是对另一台机器人电机指令的直接测量。学习系统必须说明连接方式：视觉目标、估计运动、潜在动作，或者其他信号。估计出来的标签，也会携带估计过程中的假设与误差。在 GR00T 的异构训练中，不同监督形式的数据源，通过明确建模选择来处理。把所有这些信号都叫作真值，反而会掩盖我们需要跟踪的不确定性。
+https://arxiv.org/abs/2503.14734
+https://www.pi.website/download/pi07.pdf
+
+Mixture weights define what the model practices / 混合权重决定模型反复练习什么
+Suppose dataset A has nine times as many frames as dataset B in a teaching example. Uniform sampling over all frames gives A roughly ninety percent of the training examples. Equal sampling between datasets gives B much more influence without collecting any new data. Neither choice is universally correct; each defines a different effective training distribution. Repeated idle frames, long episodes, and duplicated demonstrations can similarly distort apparent coverage. Report sampling and filtering alongside dataset names when interpreting an ablation.
+在一个教学例子中，数据集 A 的帧数是数据集 B 的九倍。对全部帧均匀采样，会让 A 大约占据百分之九十的训练样本。在数据集之间等比例采样，则会在不新增数据的情况下，提高 B 的影响力。两种选择都不是普遍正确的；它们分别定义了不同的有效训练分布。重复静止帧、较长回合，以及重复示范，也会扭曲表面上的覆盖程度。解释消融实验时，应把采样与过滤方式，和数据集名字一起报告。
+https://arxiv.org/abs/2405.12213
+https://arxiv.org/abs/2310.08864
+
+Knowledge insulation separates gradient paths / 知识隔离区分梯度路径
+Knowledge insulation addresses how a new action expert can learn without disrupting the pretrained backbone. The backbone receives token-based supervision from discretized actions and general vision-language data. The action expert learns continuous generation, but its gradients are stopped before entering the backbone. Look for the stop-gradient boundary in the original figure; it changes which loss updates which parameters. This does not mean that the entire backbone is frozen or that action learning disappears. At inference, the continuous expert can be used without generating the training-time discrete action sequence.
+知识隔离研究：新动作专家怎样学习，同时减少对预训练主干的干扰。主干通过离散动作和通用视觉语言数据，获得基于 token 的监督。动作专家学习连续动作生成，但其梯度在进入主干之前被截断。请看原图的梯度截断边界：它改变了哪个损失更新哪些参数。这不意味着整个主干被冻结，也不意味着动作学习消失。推理时，可以使用连续动作专家，而不生成训练时的离散动作序列。
+https://www.pi.website/download/pi05_KI.pdf
+
+Adaptation is more than choosing LoRA / 适配不只是选择 LoRA
+Fine-tuning choices include which parameters to update, which data to use, and which interface to predict. Low-rank adaptation can reduce trainable parameters, but it does not repair inconsistent action labels. A new camera viewpoint may require different evidence than a new gripper or a new contact task. OpenVLA-OFT further shows that changing the action head and loss can matter alongside parameter efficiency. Reserve validation data to select these choices, then evaluate the selected system on untouched test conditions. Otherwise, repeated tuning against the test set can turn evaluation into an unreported training stage.
+微调选择包括更新哪些参数、使用哪些数据，以及预测哪一种接口。低秩适配可以减少可训练参数，但不能修复不一致的动作标签。新的相机视角，与新的夹爪或者新的接触任务，可能需要不同的数据证据。OpenVLA-OFT 进一步说明，除了参数效率，动作头与损失的变化也很重要。用验证集选择这些方案，再在未使用过的测试条件上评估最终系统。否则，对着测试集反复调整，会让评估变成未报告的训练阶段。
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/abs/2502.19645
+https://arxiv.org/abs/2405.12213
+
+Split episodes, environments, and claims together / 数据切分应与泛化主张一致
+Randomly splitting neighboring frames can place almost identical views in training and testing. That does not test the same capability as withholding complete episodes, objects, or environments. Choose the split according to the claim: new scene, new instruction, new object, or new embodiment. Keep normalization statistics and model selection within the allowed training and validation data. Record exclusions and failures, because silently discarding difficult episodes changes the problem. An honest split defines precisely what the final reported generalization can support.
+随机切分相邻帧，可能让几乎相同的画面同时进入训练集和测试集。这与留出完整回合、物体，或者环境，测试的并不是同一种能力。应根据主张选择切分：新场景、新指令、新物体，或者新机器人形态。归一化统计与模型选择，也必须限制在允许使用的训练和验证数据内。记录排除项和失败，因为悄悄删除困难回合，会改变问题本身。诚实的数据切分，精确定义了最终泛化结果能够支持什么结论。
+https://arxiv.org/abs/2403.12945
+https://arxiv.org/abs/2406.09246
+https://www.pi.website/download/pi05.pdf
+
+A reproducible training handoff / 一份可复现的训练交接
+Before training, assemble a compact manifest linking each dataset, transformation, and checkpoint. Include action conventions, timestamp alignment, camera mapping, filtering, mixture weights, and split identifiers. Then document the objective and which parameters each loss is allowed to update. For the cup task, this lets us distinguish a poor policy from a wrong unit or mislabeled camera. The resulting checkpoint becomes one part of a reproducible system, rather than an isolated weight file. Next we bring that system into real time, where computation and physical motion overlap.
+训练之前，建立一份紧凑清单，把数据集、变换与权重连接起来。其中包含动作约定、时间对齐、相机映射、过滤、混合权重，以及切分标识。接着记录训练目标，以及每项损失可以更新哪些参数。对于杯子任务，这能帮助区分策略表现不佳，还是单位错误、相机标签错误。由此产生的权重，才是可复现系统的一部分，而不是孤立的参数文件。下一章，我们把这个系统放入实时运行，让计算与物理运动真正发生交叠。
+https://arxiv.org/abs/2310.08864
+https://arxiv.org/abs/2406.09246
+https://arxiv.org/abs/2506.01844

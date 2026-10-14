@@ -1,0 +1,354 @@
+﻿1
+00:00:00,850 --> 00:00:04,030
+A robot faces a cup near the edge of a table.
+机器人面前有一只杯子，靠近桌子边缘。
+
+2
+00:00:04,350 --> 00:00:08,770
+It could approach the handle, push the cup, or move its camera to see the hidden side.
+它可以靠近杯柄、推动杯子，或者移动相机看看被遮挡的一侧。
+
+3
+00:00:09,110 --> 00:00:13,370
+Each choice changes what happens next, even though the starting image is identical.
+起始图像完全相同，不同选择却会带来不同后果。
+
+4
+00:00:13,990 --> 00:00:19,070
+A world model gives the robot a way to predict those consequences before committing to an action.
+世界模型让机器人有机会在行动之前预测这些后果。
+
+5
+00:00:19,410 --> 00:00:25,875
+This course follows that cup from a camera observation through imagined futures, action selection, and a real outcome.
+这套课程围绕这只杯子，从相机观测讲到预测未来、选择动作和实际结果。
+
+6
+00:00:25,890 --> 00:00:30,810
+The cup sequence is our teaching example, not a claimed experiment from a paper.
+杯子场景是我们的教学示例，不是某篇论文已经完成的实验。
+
+7
+00:00:31,425 --> 00:00:38,585
+The camera measures light arriving from visible surfaces; it does not directly measure everything that determines motion.
+相机测量可见表面传来的光，并不能直接测到决定运动的一切因素。
+
+8
+00:00:38,985 --> 00:00:43,145
+A cup can look stationary in one frame while actually sliding toward the edge.
+杯子在一帧中看起来静止，实际上却可能正滑向桌边。
+
+9
+00:00:43,445 --> 00:00:47,825
+Its mass, friction, contents, and contact with the gripper may also be partly hidden.
+它的质量、摩擦、内部物品和与夹爪的接触，也可能部分不可见。
+
+10
+00:00:48,305 --> 00:00:54,305
+We call the available sensor reading an observation, and the information needed to predict the process its state.
+传感器能提供的读数叫观测；预测过程所需的信息构成状态。
+
+11
+00:00:54,685 --> 00:00:59,245
+A learned internal state is an estimate, not a privileged view of the complete physical world.
+模型内部学到的状态是一种估计，并不是对整个物理世界的直接透视。
+
+12
+00:00:59,755 --> 00:01:04,595
+Two images taken a moment apart can reveal the direction of the sliding cup.
+相隔片刻的两张图像，可以揭示杯子的滑动方向。
+
+13
+00:01:05,175 --> 00:01:09,975
+Joint sensors and the previous gripper command add information that the camera alone may miss.
+关节传感器和之前的夹爪指令，还能补充单靠相机看不到的信息。
+
+14
+00:01:10,415 --> 00:01:16,195
+The model combines these measurements with its memory to update an internal belief about the current situation.
+模型结合这些测量和记忆，更新对当前情况的内部判断。
+
+15
+00:01:16,615 --> 00:01:22,635
+If two different physical states still fit the evidence, uncertainty should remain rather than vanish by assumption.
+如果两种不同物理状态都符合已有证据，就应保留不确定性，而不是假定它已经消失。
+
+16
+00:01:23,255 --> 00:01:28,875
+A moving camera may therefore improve the next decision even when it makes no immediate progress toward grasping.
+因此，移动相机即使没有立刻推进抓取，也可能改善下一次决策。
+
+17
+00:01:29,478 --> 00:01:34,738
+Predicting what happens after an action requires knowing exactly what that action means.
+预测动作的后果，首先要知道这个动作究竟是什么意思。
+
+18
+00:01:35,618 --> 00:01:41,378
+Move right could mean an image displacement, a joint target, or a Cartesian command in the robot base frame.
+向右移动，可能指图像位移、关节目标，也可能指机器人基坐标系中的笛卡尔指令。
+
+19
+00:01:42,238 --> 00:01:48,158
+The time interval matters too: the same velocity applied for different durations produces different motion.
+时间间隔同样重要：相同速度持续不同时间，会产生不同运动。
+
+20
+00:01:48,678 --> 00:01:55,643
+A useful robot model needs a documented control interface, consistent units, and synchronized observations and commands.
+可用于机器人的模型，需要明确的控制接口、一致的单位，以及同步的观测和指令。
+
+21
+00:01:55,658 --> 00:02:01,418
+Without that agreement, an impressive predicted video cannot tell the controller what signal to send.
+缺少这些约定，再惊艳的预测视频，也无法告诉控制器该发送什么信号。
+
+22
+00:02:01,917 --> 00:02:06,117
+Suppose the robot pushes a cup whose underside it has never seen.
+假设机器人推动一只从未看过杯底的杯子。
+
+23
+00:02:06,537 --> 00:02:12,437
+Different friction values could produce several plausible stopping positions from the same visible starting point.
+从同一个可见起点出发，不同摩擦可能对应多个合理的停止位置。
+
+24
+00:02:12,777 --> 00:02:19,397
+This ambiguity comes from incomplete information; genuine process variation can add another source of uncertainty.
+这种歧义来自信息不完整；过程本身的变化还会增加另一种不确定性。
+
+25
+00:02:19,737 --> 00:02:24,522
+Returning one average position may hide the important possibility that the cup falls off the table.
+只返回一个平均位置，可能掩盖杯子会掉下桌子的关键可能性。
+
+26
+00:02:24,537 --> 00:02:32,177
+Sampling possible futures can expose alternatives, but those samples are trustworthy only if the model captures the relevant variation.
+对未来采样能够展现不同可能，但只有模型捕捉到相关变化时，这些样本才有参考价值。
+
+27
+00:02:32,906 --> 00:02:39,006
+In this original Dreamer figure, the model receives a short context and the future action sequence.
+在这张 Dreamer 原图中，模型接收一段初始上下文，以及后续动作序列。
+
+28
+00:02:39,466 --> 00:02:44,106
+The later images are predictions made without receiving the intermediate camera frames.
+后续图像是在没有接收中间相机画面的情况下预测出来的。
+
+29
+00:02:44,346 --> 00:02:50,306
+That is an open-loop prediction test: it asks how far the model can continue from its initial information.
+这是一种开环预测测试，检查模型从初始信息出发能向前预测多远。
+
+30
+00:02:50,686 --> 00:02:55,066
+The true and predicted rows let us inspect drift in scene layout and moving bodies.
+真实行和预测行可以帮助我们观察场景结构与运动物体的偏差。
+
+31
+00:02:55,406 --> 00:03:01,946
+The quadruped shown here belongs to a simulated control domain; this figure is not a physical robot deployment.
+这里的四足机器人来自仿真控制环境；这张图并不是实体机器人部署实验。
+
+32
+00:03:02,766 --> 00:03:09,046
+Reconstructing an image means encoding an observation and recovering information from that observation.
+重建图像，是把一个观测编码后，再恢复这个观测中的信息。
+
+33
+00:03:09,666 --> 00:03:15,486
+Predicting a future means estimating something that has not yet been observed, given history and possible actions.
+预测未来，则是根据历史和可能动作，估计尚未观测到的内容。
+
+34
+00:03:15,886 --> 00:03:22,606
+A detailed three-dimensional cup mesh can help with geometry, but it does not by itself predict sliding or spilling.
+精细的三维杯子网格有助于理解几何，却不会自动预测滑动或泼洒。
+
+35
+00:03:23,086 --> 00:03:29,231
+Conversely, a useful predictor may operate on compact features without ever producing a photorealistic image.
+反过来，有用的预测器也可以只处理紧凑特征，从不生成照片般真实的图像。
+
+36
+00:03:29,246 --> 00:03:36,046
+Ask which future quantity the representation preserves, and which decision that quantity is intended to support.
+要问清楚：这种表示保留了哪种未来信息，又打算支持什么决策。
+
+37
+00:03:36,616 --> 00:03:41,876
+Follow the original diagram from the observation encoder into the internal variables.
+沿着这张原图，从观测编码器走到内部变量。
+
+38
+00:03:42,656 --> 00:03:48,576
+The model combines a recurrent memory with a stochastic representation, then advances them using an action.
+模型把递归记忆与随机表示结合起来，再通过动作推进它们。
+
+39
+00:03:49,096 --> 00:03:53,536
+A decoder can turn the internal state back into an image for training or inspection.
+解码器可以把内部状态还原成图像，用于训练或检查。
+
+40
+00:03:54,176 --> 00:03:59,376
+The imagined action and value computations on the right do not require rendering every future image.
+右侧想象过程中的动作与价值计算，并不需要把每个未来都渲染成图像。
+
+41
+00:03:59,996 --> 00:04:07,556
+This separation makes it possible to compare or learn from many compact trajectories, although every trajectory still depends on model accuracy.
+这种分离允许系统比较或学习大量紧凑轨迹，但每条轨迹仍然依赖模型的准确性。
+
+42
+00:04:08,174 --> 00:04:16,134
+For our cup, one useful training record contains an observation, an executed command, and the following observation.
+对于这只杯子，一条有用的训练记录包含观测、实际执行的指令，以及下一次观测。
+
+43
+00:04:16,614 --> 00:04:21,914
+Reward and termination information can be recorded as well when the learning algorithm needs them.
+如果学习算法需要，还可以记录奖励和回合结束信息。
+
+44
+00:04:22,354 --> 00:04:28,334
+The model learns regularities across many such transitions, including actions that did not succeed.
+模型从大量这样的转移中学习规律，其中也应包括没有成功的动作。
+
+45
+00:04:28,894 --> 00:04:36,034
+A dataset containing only gentle pushes provides weak evidence about collisions, drops, or unfamiliar cup materials.
+只包含轻推的数据，对碰撞、跌落或陌生杯子材质提供的证据很有限。
+
+46
+00:04:36,154 --> 00:04:41,174
+Imagining more rollouts does not create new physical evidence about those missing parts of the task.
+生成更多想象轨迹，并不会凭空增加这些缺失环节的物理证据。
+
+47
+00:04:41,723 --> 00:04:47,843
+One way to use the model is to propose several future command sequences and predict their consequences.
+使用模型的一种方式，是提出多组未来指令序列，预测各自的后果。
+
+48
+00:04:48,343 --> 00:04:53,263
+For example, compare approaching the handle directly with moving around an obstacle first.
+例如，比较直接靠近杯柄，和先绕过障碍物再靠近。
+
+49
+00:04:53,683 --> 00:05:00,543
+A task objective scores the predicted outcomes, perhaps combining progress with penalties for approaching the table edge.
+任务目标为预测结果评分，例如同时考虑进展与靠近桌边的代价。
+
+50
+00:05:00,843 --> 00:05:06,408
+The controller executes the first selected action, observes what really happened, and plans again.
+控制器执行所选序列的第一个动作，观察实际发生了什么，再重新规划。
+
+51
+00:05:06,423 --> 00:05:14,343
+This repeated correction is model predictive control; searching farther is useful only when prediction quality and computation allow it.
+这种反复修正就是模型预测控制；只有预测质量和计算预算允许时，看得更远才有价值。
+
+52
+00:05:14,809 --> 00:05:20,549
+Dreamer uses the learned model to train an actor and a value estimator on imagined trajectories.
+Dreamer 使用学到的模型，在想象轨迹上训练动作策略和价值估计器。
+
+53
+00:05:21,189 --> 00:05:26,569
+After observing the real environment, the actor can then choose an action from the inferred internal state.
+获得真实环境观测后，策略便能根据推断出的内部状态选择动作。
+
+54
+00:05:26,909 --> 00:05:31,089
+It does not need to run the same candidate-sequence search at every control step.
+它不需要在每个控制步骤都执行同样的候选序列搜索。
+
+55
+00:05:31,249 --> 00:05:37,369
+The diagram separates real experience, the replay buffer, world-model learning, and policy improvement.
+这张图区分了真实经验、回放数据、世界模型学习，以及策略改进。
+
+56
+00:05:37,609 --> 00:05:45,489
+Planning during action selection and using imagination during training are different computational choices, even when both rely on learned dynamics.
+行动选择时规划，与训练时使用想象，是两种不同的计算安排，即使它们都依赖学到的动力学。
+
+57
+00:05:46,215 --> 00:05:54,735
+DayDreamer tested this learning approach on four physical robot platforms, including two arms, a quadruped, and a wheeled robot.
+DayDreamer 在四种实体机器人平台上测试了这条学习路线，包括两种机械臂、四足机器人和轮式机器人。
+
+58
+00:05:55,275 --> 00:05:59,715
+The arms learned pick-and-place tasks using camera inputs and other configured signals.
+机械臂使用相机输入及其配置中的其他信号，学习抓取放置任务。
+
+59
+00:06:00,215 --> 00:06:05,455
+These experiments demonstrate that imagined training can support real control under the reported setup.
+这些实验证明：在论文报告的配置下，想象训练能够支持真实控制。
+
+60
+00:06:05,915 --> 00:06:10,420
+They do not establish that every new robot can safely learn any task without preparation.
+它们并没有证明，任意新机器人都能不经准备就安全学会任意任务。
+
+61
+00:06:10,435 --> 00:06:17,175
+Read the control interface, reward design, collection time, and intervention rules alongside the videos.
+观看视频时，还要结合控制接口、奖励设计、采集时间和人工干预规则一起理解。
+
+62
+00:06:17,826 --> 00:06:23,826
+Our robot predicts a stable lift, but the real cup starts slipping when the gripper accelerates.
+机器人预测杯子能稳定抬起，真实杯子却在夹爪加速时开始滑落。
+
+63
+00:06:24,306 --> 00:06:29,166
+The next observation can expose the mismatch and trigger a new estimate and a revised action.
+下一次观测能够暴露这种不一致，触发状态更新和动作调整。
+
+64
+00:06:29,586 --> 00:06:34,846
+That helps only if the sensors detect the problem early enough and the controller can still respond.
+但这只有在传感器足够早发现问题、控制器仍来得及响应时才有帮助。
+
+65
+00:06:35,686 --> 00:06:41,791
+Model confidence is not a physical guarantee, and an attractive future image is not a contact-force measurement.
+模型置信度不是物理保证，漂亮的未来图像也不是接触力测量。
+
+66
+00:06:41,806 --> 00:06:48,366
+Keep independent limits on motion, compare predictions with measurements, and retain the failed trials for diagnosis.
+应独立设置运动限制，对照预测与实测，并保留失败试次以便诊断。
+
+67
+00:06:49,117 --> 00:06:55,957
+We now have a precise question: given what the robot has observed and what it might do, what happens next?
+现在问题已经明确：给定机器人看到的内容，以及它可能采取的动作，接下来会发生什么？
+
+68
+00:06:56,637 --> 00:07:01,597
+Next we unpack representations, recurrent state, reward prediction, and uncertainty.
+下一章拆开表示、递归状态、奖励预测和不确定性。
+
+69
+00:07:02,137 --> 00:07:08,897
+Then we compare online planning with policies learned in imagination, and examine video and feature-prediction systems.
+随后比较在线规划和想象中学到的策略，再研究视频与特征预测系统。
+
+70
+00:07:09,417 --> 00:07:17,142
+The final chapters connect these models to robot policies and build an evaluation protocol that keeps visual quality separate from task success.
+最后两章将这些模型接入机器人策略，并建立区分画面质量与任务成功的评测协议。
+
+71
+00:07:17,157 --> 00:07:23,037
+Use the companion experiments to change one assumption and see which part of the predicted outcome changes.
+你可以在伴读实验里改变一个假设，观察预测结果的哪一部分随之变化。
