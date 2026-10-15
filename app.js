@@ -4,7 +4,6 @@
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const time=n=>`${Math.floor(n/60)}:${String(Math.floor(n%60)).padStart(2,'0')}`;
-  const totalTime=n=>`${Math.floor(n/3600)}h ${Math.round(n%3600/60)}m`;
   const bookmarkSVG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>';
   const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}};
   const store=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));return true;}catch{return false;}};
@@ -33,7 +32,6 @@
     $$('[data-i18n]').forEach(e=>e.innerHTML=t(e.dataset.i18n));
     for(const attr of ['aria-label','placeholder','title','alt'])$$(`[data-i18n-${attr}]`).forEach(e=>e.setAttribute(attr,t(e.getAttribute('data-i18n-'+attr))));
     $$('[data-lang]').forEach(e=>{e.classList.toggle('active',e.dataset.lang===lang);e.setAttribute('aria-pressed',String(e.dataset.lang===lang));});
-    $('#topic-stat').textContent=catalog.items.length;$('#video-stat').textContent=catalog.items.reduce((s,x)=>s+x.variants.length,0);$('#time-stat').textContent=totalTime(catalog.items.flatMap(x=>x.variants).reduce((s,v)=>s+v.duration,0));
     $('#count-all').textContent=catalog.items.length;$('#count-paper').textContent=catalog.items.filter(x=>x.series==='paper').length;$('#count-infra').textContent=catalog.items.filter(x=>x.series==='infra').length;
     renderCollections();
   }
@@ -46,8 +44,8 @@
   }
   function renderCollections(){
     $('#collection-grid').innerHTML=['paper','infra'].map(series=>{
-      const items=seriesItems(series),topics=catalog.seriesTopics[series];
-      return `<article class="collection-card"><div class="collection-topline"><span class="eyebrow">${series==='paper'?'01 / RESEARCH':'02 / FOUNDATIONS'}</span><span class="collection-count">${t('collectionCount',{count:items.length,videos:items.reduce((sum,x)=>sum+x.variants.length,0)})}</span></div><h3>${t(series+'Label')}</h3><p>${t(series+'Description')}</p><div class="collection-topics">${topics.map(topic=>`<a href="#library" data-series="${series}" data-topic-select="${esc(topic)}">${esc(topicText(topic))}<span>${items.filter(x=>x.topics.includes(topic)).length}</span></a>`).join('')}</div><a class="text-link" href="#library" data-series="${series}">${t(series==='paper'?'explorePaper':'exploreInfra')}</a></article>`;
+      const topics=catalog.seriesTopics[series];
+      return `<article class="collection-card"><div class="collection-topline"><span class="eyebrow">${t(series+'Eyebrow')}</span><span class="collection-arrow" aria-hidden="true">↗</span></div><a class="collection-title" href="#library" data-series="${series}"><h3>${t(series+'Label')}</h3></a><p>${t(series+'Description')}</p><div class="collection-topics">${topics.map(topic=>`<a href="#library" data-series="${series}" data-topic-select="${esc(topic)}">${esc(topicText(topic))}</a>`).join('')}</div><a class="text-link" href="#library" data-series="${series}">${t(series==='paper'?'explorePaper':'exploreInfra')}</a></article>`;
     }).join('');
   }
   function selectSeries(series,topic='全部主题'){
