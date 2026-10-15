@@ -5,8 +5,6 @@
   "media_origin": "https://dof-embodied-ai.steven12123.chatgpt.site",
   "catalog_items": 43,
   "video_references": 64,
-  "courses": 3,
-  "course_chapters": 18,
   "method_profiles": 69,
   "privacy_scan": "passed",
   "root_url_check": "passed",
@@ -18,12 +16,12 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "DoF首页.html": {
-      "bytes": 12561,
-      "sha256": "eebb6e43992a385460b4d978aeab852af2314c408f0896b9a8d0e298a3c644d0"
+      "bytes": 12039,
+      "sha256": "c9b9595c0470d59dbfb09b8d379a9d88e7a61aade994bdebbab5e0c606f38a6f"
     },
     "README.md": {
-      "bytes": 5391,
-      "sha256": "e1f3032c4fff82ee6edbe4731b5847db5166051a2e3e48824bbdd06d505d259c"
+      "bytes": 6338,
+      "sha256": "3402eee138e582a062fe1ea63ca7c7bd1c6bc7b0186d5244530d81afbc619553"
     },
     "Video/Infra/完整精修版/第一期_配套资料/中英字幕.srt": {
       "bytes": 11198,
@@ -766,8 +764,8 @@
       "sha256": "97e9eebd2fe70672ae11b594b07be5bb39896c0414c1eebdb3c8e998fbcb7b37"
     },
     "app.js": {
-      "bytes": 15484,
-      "sha256": "bcefedcbfe327cdbfbcc6732f6d82e5158432bbac8b98e743b0a7823fd458e95"
+      "bytes": 17359,
+      "sha256": "2aea145f69fe8e8517ed838fe0523dfecdaf5fc0f725f7d93e0fe8635fc64f2c"
     },
     "assets/brand-poster.png": {
       "bytes": 1918372,
@@ -1014,12 +1012,12 @@
       "sha256": "153c76ea7cbe10045753824e3b3c6ce174f23ec0a5e92cf67b552206d98b08c7"
     },
     "catalog.js": {
-      "bytes": 173471,
-      "sha256": "1cb3630e24491b60406663cea18ce3eba3644cea3381cda3caf540c516063f83"
+      "bytes": 173874,
+      "sha256": "965abc68c4bdd65f00ec86a97a87fbbc5d6ebef104f778091e5a18fbd955a658"
     },
     "course-kit/course.js": {
-      "bytes": 18970,
-      "sha256": "9647361ac45e6ae64c37732f992f110203f0ed2dbe67c4a77347f4c967385dde"
+      "bytes": 18992,
+      "sha256": "6ff415b40980df5f21ccc9f08e5b4f4031a7c1f6ea3d093c208f803ef92e80b7"
     },
     "course-kit/labs.js": {
       "bytes": 6806,
@@ -1050,16 +1048,16 @@
       "sha256": "d051a8c47936990a9085693d307bb7cea1bc1b6d7ed956bcbaacf674f4ec96b9"
     },
     "index.html": {
-      "bytes": 12561,
-      "sha256": "eebb6e43992a385460b4d978aeab852af2314c408f0896b9a8d0e298a3c644d0"
+      "bytes": 12039,
+      "sha256": "c9b9595c0470d59dbfb09b8d379a9d88e7a61aade994bdebbab5e0c606f38a6f"
     },
     "locale.js": {
-      "bytes": 10323,
-      "sha256": "78c90616f95b37438e274c31b95768b9aa665c428261c35cd3eacb2004d4da54"
+      "bytes": 10166,
+      "sha256": "c97813ced634a36569b1719902a98947fd196d17f1935021de95689f30d01da9"
     },
     "retargeting/app.js": {
-      "bytes": 28892,
-      "sha256": "c1772840609693305a298fe7d227f7337bf353583fb5067395426595d3ffa691"
+      "bytes": 28902,
+      "sha256": "d580aa0f086b10ef5dd0129b5d65372925c383fb301e37ad0aa9a67773aa013b"
     },
     "retargeting/assets/ako_fig1.webp": {
       "bytes": 314878,
@@ -1294,8 +1292,8 @@
       "sha256": "e9190ac52b94172f5d7abdd09a997fbc2bebb8263b679adb12da577eba836217"
     },
     "retargeting/index.html": {
-      "bytes": 14475,
-      "sha256": "5dc4c5a91c6e44c0c66cbc109d327690f20d8287e785047552fecaf4823b73f7"
+      "bytes": 14536,
+      "sha256": "4f7f301570ad91906a626469da3188bfaec0b9bfb4da8fbc946f0eb93932020a"
     },
     "retargeting/style.css": {
       "bytes": 18768,
@@ -1306,8 +1304,8 @@
       "sha256": "944fbc6b0daf9c3f47b28c09c280b312bf0c5bbcecf6cd31078e9d91d08276f6"
     },
     "style.css": {
-      "bytes": 23478,
-      "sha256": "3d11ce65a509c2689ec4a375437e0f302af04c5798f1c0aa85ffaea672ff8141"
+      "bytes": 25051,
+      "sha256": "ecd565ef9b677641c77c370f187cf09f591f98d224827540eb7aac48a7dde271"
     },
     "vla/assets/00c33e57938b-pi05_fig3.png": {
       "bytes": 199709,
@@ -1414,12 +1412,12 @@
       "sha256": "fdc801bf58d43ef0799ab9752961ef6e1b3564bcec9c02fc268681e286abc33e"
     },
     "vla/course-data.json": {
-      "bytes": 334792,
-      "sha256": "594ee41f357e7e53469bd96b879c745bc1b58123002c5a7e1a4e477f09852a88"
+      "bytes": 334803,
+      "sha256": "7ef2908fec251f8e0be8b3c76fd816c89a6be3d4a89d5c17daef95005c985643"
     },
     "vla/index.html": {
-      "bytes": 5611,
-      "sha256": "670698c546c03d7d9bec9de2f5ff373512981d3206906f8e56a5d266f2f2398f"
+      "bytes": 5685,
+      "sha256": "f2307ff6fce984cd9fb0886471b67f0ebe84ae92954bc228ea640765faf2dc57"
     },
     "vla/resources/01/中英字幕.srt": {
       "bytes": 16884,
@@ -1642,8 +1640,8 @@
       "sha256": "babffae5398560cb43b658498fbb89b7367ecbfe4d585855914a59234a80cb8d"
     },
     "world-models/index.html": {
-      "bytes": 5598,
-      "sha256": "8025c754c4c59cb1d2376d408c97cd3c350027559f05f58083a8b0320b0ec996"
+      "bytes": 5651,
+      "sha256": "72179f4374e48b1529a0b87e2f10af1273f0c72f583bfdc5ff4f66a19f0856bc"
     },
     "world-models/resources/01/中英字幕.srt": {
       "bytes": 16202,
@@ -1716,6 +1714,22 @@
     "world-models/resources/06/讲稿与来源.txt": {
       "bytes": 16871,
       "sha256": "6d2c9872acfda1e65164e6e1d93dcac5aa3d692a0cbac0f2b7e4fc224ccdce28"
+    },
+    "assets/brand/DoF-avatar.png": {
+      "bytes": 1203975,
+      "sha256": "8ab9e1a3571d58814ef1d5d09f8483c0db791ba129a0765b362beda35ea7e5f9"
+    },
+    "assets/brand/DoF-logo-transparent.png": {
+      "bytes": 397025,
+      "sha256": "d7c04ce6afdc33489e8cbc84a99f7aaeb7878702593b49d1b47024ccccf59778"
     }
-  }
+  },
+  "updated_at": "2026-10-15",
+  "primary_language": "en",
+  "collections": {
+    "paper": 35,
+    "infra": 8
+  },
+  "infra_deep_dives": 3,
+  "infra_chapters": 18
 }
